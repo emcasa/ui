@@ -1,4 +1,4 @@
 # UI
 
-EmCasa's design system.
+EmCasa's UI library.
 
