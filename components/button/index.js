@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import Button from './styles'
 
-class Button extends Component {
-  render() {
-    return (
-      <button>{this.props.children}</button>
-    )
-  }
-}
+export default (props) => (
+  <Button {...props}>
+    {props.children}
+  </Button>
+)
 
 Button.propTypes = {
   children: PropTypes.element.isRequired
 }
-
-export default Button
