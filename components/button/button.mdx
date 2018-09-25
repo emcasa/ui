@@ -7,13 +7,13 @@ import Button from './'
 
 # Button
 
-<PropsTable of={Button} />
+Button component.
 
 ## Basic usage
 
 <Playground>
   <p>
-  <Button active>Active</Button>
+  <Button active onClick={() => {alert('I\'ve been clicked!')}}>Active</Button>
   <Button>Normal</Button>
   <Button disabled>Disabled</Button>
   <Button active disabled>Active and disabled</Button>
@@ -23,3 +23,7 @@ import Button from './'
     <Button height="medium">Medium</Button>
   </p>
 </Playground>
+
+## Button Props
+
+<PropsTable of={Button} />

@@ -1,0 +1,29 @@
+---
+name: RadioGroup
+---
+
+import { Playground, PropsTable } from 'docz'
+import RadioButton from './radio-button'
+import RadioGroup from './'
+
+# RadioGroup
+
+Radio Group component.
+
+## Basic usage
+
+<Playground>
+  <RadioGroup selectedValue="a" onChange={(value) => {}}>
+    <RadioButton label="Option 1" value="a" />
+    <RadioButton label="Option 2" value="b" />
+    <RadioButton label="Option 3" value="c" />
+  </RadioGroup>
+</Playground>
+
+## Radio Group Props
+
+<PropsTable of={RadioGroup} />
+
+## Radio Button Props
+
+<PropsTable of={RadioButton} />
