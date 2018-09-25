@@ -4,7 +4,6 @@ import MEASURES from 'shared/measures'
 
 const Button = styled.button`
   font-size: ${MEASURES.font.default};
-  font-family: Roboto;
   letter-spacing: ${MEASURES.defaultLetterSpacing};
   height: 40px;
   padding: 8px 20px 8px 20px;
