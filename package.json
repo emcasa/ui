@@ -6,7 +6,8 @@
   "repository": "git@github.com:emcasa/ui.git",
   "author": "Lucas Tulio <lucasctulio@gmail.com>",
   "scripts": {
-    "start": "docz dev"
+    "start": "docz dev",
+    "build": "docz build"
   },
   "dependencies": {
     "docz": "0.11.2",

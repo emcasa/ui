@@ -1,22 +1,24 @@
 import styled, { css } from 'styled-components'
+import COLORS from 'shared/colors'
+import MEASURES from 'shared/measures'
 
 const Button = styled.button`
-  font-size: 18px;
-  letter-spacing: 0.56px;  
+  font-size: ${MEASURES.font.default};
+  font-family: Roboto;
+  letter-spacing: ${MEASURES.defaultLetterSpacing};
   height: 40px;
   padding: 8px 20px 8px 20px;
   border-radius: 4px;
   border: 1px solid;
   border-color: #e0e6ed;
-  cursor: pointer;
   
   ${props => props.active && css`
-    color: #ffffff;
-    background-color: #f50057;
-    border-color: #f50057;
+    color: ${COLORS.white};
+    background-color: ${COLORS.pink};
+    border-color: ${COLORS.pink};
   `}
 
-  ${props => props.disabled && css`cursor: default;`}
+  cursor: ${props => props.disabled ? 'default' : 'pointer'}
 `
 
 export default Button
