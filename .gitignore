@@ -2,3 +2,7 @@ node_modules/
 
 # Docz
 .docz/
+public/
+
+# macOS
+.DS_Store
