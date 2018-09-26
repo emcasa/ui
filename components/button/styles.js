@@ -2,26 +2,22 @@ import styled, { css } from 'styled-components'
 import COLORS from 'shared/colors'
 import MEASURES from 'shared/measures'
 
-const BUTTON_HEIGHT = {
-  tall: '60px',
-  medium: '40px'
-}
-
 const Button = styled.button`
   font-size: ${MEASURES.font.default};
   letter-spacing: ${MEASURES.defaultLetterSpacing};
   padding: 8px 20px 8px 20px;
   border-radius: 4px;
   border: 1px solid;
-  border-color: #e0e6ed;
-  
-  ${props => props.active && !props.disabled && css`
-    color: ${COLORS.white};
-    background-color: ${COLORS.pink};
-    border-color: ${COLORS.pink};
-  `}
+  border-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
+  background-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.white};
 
-  height: ${(props) => props.height ? BUTTON_HEIGHT[props.height] : BUTTON_HEIGHT.medium};
+  color: ${props => {
+    if (props.disabled) return COLORS.disabled; else
+    if (props.active) return COLORS.white; else
+    return COLORS.dark
+  }};
+
+  height: ${(props) => props.height ? MEASURES.buttonHeight[props.height] : MEASURES.buttonHeight.medium};
 
   cursor: ${props => props.disabled ? 'default' : 'pointer'};
 `
