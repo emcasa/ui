@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import COLORS from 'shared/colors'
 import MEASURES from 'shared/measures'
 
