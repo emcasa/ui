@@ -30,7 +30,6 @@ const Container = styled.div`
 const Label = styled.label`
   color: ${props => props.disabled ? COLORS.disabled : COLORS.dark};
   cursor: ${props => props.disabled ? 'default' : 'pointer'};
-  padding-top: 0.3rem;
 `
 
 export {

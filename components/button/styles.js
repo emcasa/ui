@@ -6,7 +6,7 @@ const Button = styled.button`
   font-size: ${MEASURES.font.default};
   letter-spacing: ${MEASURES.defaultLetterSpacing};
 
-  padding: 0.3rem 20px 0 20px;
+  padding: 0 20px 0 20px;
   border-radius: 4px;
   border: 1px solid;
   border-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
