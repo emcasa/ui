@@ -3,7 +3,6 @@ import COLORS from 'shared/colors'
 import MEASURES from 'shared/measures'
 
 const Input = styled.input`
-  -webkit-appearance: none;
   outline: none;
 
   font-size: ${MEASURES.font.default};
