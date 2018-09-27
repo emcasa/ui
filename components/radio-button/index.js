@@ -10,7 +10,6 @@ class RadioButton extends Component {
 
     return (
       <Container
-        name={name}
         onClick={() => {if (!disabled) onChange(value)}}
         disabled={disabled}
         checked={checked}

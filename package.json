@@ -11,6 +11,7 @@
     "build": "docz build"
   },
   "dependencies": {
+    "@rebass/grid": "6.0.0-4",
     "docz": "0.11.2",
     "docz-plugin-css": "0.11.0",
     "react": "16.5.2",
