@@ -1,6 +1,7 @@
+import React from 'react'
 import { injectGlobal } from 'styled-components'
 
-export default injectGlobal`
+injectGlobal`
   @font-face {
     font-family: "FaktSoftPro-Normal";
     src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.eot");
@@ -17,7 +18,11 @@ export default injectGlobal`
         url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.ttf") format('ttf');
   }
 
-  body {
+  * {
     font-family: 'FaktSoftPro-Normal';
   }  
 `
+
+const Wrapper = ({ children }) => (<>{children}</>)
+
+export default Wrapper
