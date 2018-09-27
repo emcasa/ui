@@ -761,7 +761,7 @@
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.2.tgz#54c5a964462be3d4d78af631363c18d6fa91ac26"
 
-"@rebass/grid@^6.0.0-4":
+"@rebass/grid@6.0.0-4":
   version "6.0.0-4"
   resolved "https://registry.yarnpkg.com/@rebass/grid/-/grid-6.0.0-4.tgz#95bb4367ddfd0d955e256fcd46ea26adb02411eb"
   dependencies:
