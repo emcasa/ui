@@ -7,7 +7,8 @@ const Input = styled.input`
 
   font-size: ${MEASURES.font.default};
   letter-spacing: ${MEASURES.defaultLetterSpacing};
-  padding: 18px 14px 18px 14px;
+
+  padding: 0.3rem 14px 0 14px;
   border-radius: 4px;
   border: 1px solid;
   border-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
