@@ -1,5 +1,9 @@
 import styled from 'styled-components'
+import COLORS from 'shared/colors'
 
-const View = styled.div``
+const Text = styled.p`
+  color: ${props => props.color ? props.color : COLORS.dark};
+  font-family: 'FaktPro-Blond';
+`
 
-export default View
+export default Text
