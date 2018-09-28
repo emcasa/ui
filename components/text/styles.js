@@ -1,8 +1,10 @@
 import styled from 'styled-components'
-import COLORS from 'shared/colors'
+import {
+  color,
+} from 'styled-system'
 
 const Text = styled.p`
-  color: ${props => props.color ? props.color : COLORS.dark};
+  ${color}
 `
 
 export default Text

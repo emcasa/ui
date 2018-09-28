@@ -1,5 +1,6 @@
 import React from 'react'
-import { injectGlobal } from 'styled-components'
+import { injectGlobal, ThemeProvider } from 'styled-components'
+import theme from 'theme'
 
 injectGlobal`
   @font-face {
@@ -20,9 +21,13 @@ injectGlobal`
 
   * {
     font-family: 'FaktSoftPro-Normal';
-  }  
+  }
 `
 
-const Wrapper = ({ children }) => (<>{children}</>)
+const Wrapper = ({ children }) => (
+  <ThemeProvider theme={theme}>
+   {children}
+   </ThemeProvider>
+)
 
 export default Wrapper
