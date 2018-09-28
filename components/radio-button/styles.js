@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
-import COLORS from 'shared/colors'
-import MEASURES from 'shared/measures'
+import COLORS from 'components/shared/colors'
+import MEASURES from 'components/shared/measures'
 import {Circle} from 'styled-icons/fa-regular/Circle'
 import {DotCircle} from 'styled-icons/fa-solid/DotCircle'
 

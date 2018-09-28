@@ -3,25 +3,28 @@
   "version": "0.1.0",
   "description": "EmCasa's UI library",
   "license": "MIT",
-  "main": "index.js",
+  "main": "components/",
   "repository": "git@github.com:emcasa/ui.git",
-  "author": "Lucas Tulio <lucas.tulio@emcasa.com>",
+  "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
     "start": "docz dev",
+    "test": "jest",
     "build": "docz build"
   },
   "dependencies": {
     "@rebass/grid": "6.0.0-4",
-    "docz": "0.11.2",
-    "docz-plugin-css": "0.11.0",
     "react": "16.5.2",
     "react-dom": "16.5.2",
     "styled-components": "3.4.9",
     "styled-icons": "3.0.0",
     "styled-system": "3.1.6"
   },
+  "devDependencies": {
+    "docz": "0.11.2",
+    "docz-plugin-css": "0.11.0",
+    "jest": "23.6.0"
+  },
   "publishConfig": {
     "access": "public"
   }
 }
-

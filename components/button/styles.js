@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import COLORS from 'shared/colors'
-import MEASURES from 'shared/measures'
+import COLORS from 'components/shared/colors'
+import MEASURES from 'components/shared/measures'
 
 const Button = styled.button`
   font-size: ${MEASURES.font.default};
