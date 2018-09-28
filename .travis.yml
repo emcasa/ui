@@ -10,7 +10,6 @@ deploy:
     on:
       tags: true
       repo: emcasa/ui
-      branch: master
   - provider: pages
     local-dir: public
     skip-cleanup: true
