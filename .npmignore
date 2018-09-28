@@ -1,3 +1,7 @@
 # Docz build
 ./docz
 ./public
+./doczrc.js
+
+# Tests
+__tests__/
