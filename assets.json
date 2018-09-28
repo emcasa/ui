@@ -1,6 +1,6 @@
 {
   "vendors.js": "/static/js/vendors.a989cc87.js",
-  "app.js": "/static/js/app.d2c0bef2.js",
+  "app.js": "/static/js/app.2f024610.js",
   "docs-button.js": "/static/js/docs-button.3db93b41.js",
   "docs-grid.js": "/static/js/docs-grid.2d88267a.js",
   "docs-home.js": "/static/js/docs-home.dd522cb4.js",
@@ -9,6 +9,6 @@
   "docs-radio-group.js": "/static/js/docs-radio-group.fcc6c4b7.js",
   "docs-text.js": "/static/js/docs-text.5b17cdc6.js",
   "docs-view.js": "/static/js/docs-view.2428e9a1.js",
-  "runtime~app.js": "/static/js/runtime~app.73640d8abcc007269729.js",
+  "runtime~app.js": "/static/js/runtime~app.80acc5dba1ec8818b289.js",
   "index.html": "/index.html"
 }
