@@ -1,7 +1,6 @@
 language: node_js
 node_js:
  - "node"
-script: yarn build
 deploy:
   - provider: npm
     email: lucas.tulio@emcasa.com
@@ -11,6 +10,7 @@ deploy:
       tags: true
       repo: emcasa/ui
   - provider: pages
+    script: yarn build
     local-dir: public
     skip-cleanup: true
     github-token: $GITHUB_TOKEN
