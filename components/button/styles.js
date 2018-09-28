@@ -1,24 +1,25 @@
 import styled from 'styled-components'
-import COLORS from 'shared/colors'
-import MEASURES from 'shared/measures'
+import {
+  fontSize,
+  color,
+  space,
+  letterSpacing,
+  borderColor,
+  background,
+  height
+} from 'styled-system'
 
-const Button = styled.button`
-  font-size: ${MEASURES.font.default};
-  letter-spacing: ${MEASURES.defaultLetterSpacing};
+let Button = styled.button`
+  ${color}
+  ${fontSize}
+  ${borderColor}
+  ${background}
+  ${letterSpacing}
+  ${height}
+  ${space}
 
-  padding: 0 20px 0 20px;
   border-radius: 4px;
   border: 1px solid;
-  border-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
-  background-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.white};
-
-  color: ${props => {
-    if (props.disabled) return COLORS.disabled; else
-    if (props.active) return COLORS.white; else
-    return COLORS.dark
-  }};
-
-  height: ${(props) => props.height ? MEASURES.buttonHeight[props.height] : MEASURES.buttonHeight.medium};
 
   cursor: ${props => props.disabled ? 'default' : 'pointer'};
 `
