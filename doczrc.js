@@ -1,6 +1,6 @@
 export default {
   dest: './public',
   base: '/',
-  hashRouter: true
+  hashRouter: true,
+  wrapper: 'wrapper.js'
 }
-

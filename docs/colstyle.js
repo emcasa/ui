@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import BaseCol from '../col/index.js'
+import BaseCol from 'components/col/index.js'
 
 const Col = styled(BaseCol)`
   border: 1px solid #979797;
