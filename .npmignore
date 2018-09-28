@@ -1,7 +1,12 @@
 # Docz build
 ./docz
+./docs
 ./public
-./doczrc.js
+doczrc.js
 
 # Tests
 __tests__/
+
+.travis.yml
+yarn.lock
+
