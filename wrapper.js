@@ -27,7 +27,7 @@ injectGlobal`
 const Wrapper = ({ children }) => (
   <ThemeProvider theme={theme}>
    {children}
-   </ThemeProvider>
+  </ThemeProvider>
 )
 
 export default Wrapper
