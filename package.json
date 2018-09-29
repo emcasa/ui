@@ -9,7 +9,7 @@
   "scripts": {
     "start": "docz dev",
     "test": "jest",
-    "build": "docz build"
+    "build": "docz build && sh scripts/postbuild.sh"
   },
   "dependencies": {
     "@rebass/grid": "6.0.0-4",
