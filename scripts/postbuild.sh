@@ -1,3 +1,3 @@
-mkdir ./public/public
-cp ./logo.png ./public/public
+mkdir ./public
+cp ./logo.png ./public
 
