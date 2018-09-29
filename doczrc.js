@@ -6,8 +6,9 @@ export default {
   wrapper: 'wrapper.js',
   themeConfig: {
     logo: {
-      src: '/logo.png',
-      width: 232
+      src: 'https://s3.amazonaws.com/emcasa-ui/logo/symbol.svg',
+      width: 50,
+      height: 50
     },
     colors: {
       primary: '#F50057',
