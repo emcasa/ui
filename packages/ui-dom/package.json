@@ -12,6 +12,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
+    "@emcasa/theme": "^0.1.0",
     "@rebass/grid": "6.0.0-4",
     "react": "16.5.2",
     "react-dom": "16.5.2",

@@ -1,10 +1,8 @@
-import styled from 'styled-components'
-import {
-  color,
-} from 'styled-system'
+import styled from "styled-components";
+import { color } from "styled-system";
 
 const Text = styled.p`
-  ${color}
-`
+  ${color};
+`;
 
-export default Text
+export default Text;

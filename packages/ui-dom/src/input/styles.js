@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import COLORS from 'components/shared/colors'
-import MEASURES from 'components/shared/measures'
+import styled from "styled-components";
+import COLORS from "@emcasa/theme/colors";
+import MEASURES from "@emcasa/theme/measures";
 
 const Input = styled.input`
   outline: none;
@@ -8,12 +8,13 @@ const Input = styled.input`
   font-size: ${MEASURES.font.default};
   letter-spacing: ${MEASURES.defaultLetterSpacing};
   padding: 0 14px 0 14px;
-  
+
   border-radius: 4px;
   border: 1px solid;
-  border-color: ${props => props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
+  border-color: ${props =>
+    props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
 
-  color: ${props => props.disabled ? COLORS.disabled : COLORS.dark};
+  color: ${props => (props.disabled ? COLORS.disabled : COLORS.dark)};
 
   height: ${MEASURES.buttonHeight.tall};
 
@@ -22,8 +23,8 @@ const Input = styled.input`
   }
 
   ::placeholder {
-    color: ${COLORS.disabled}
+    color: ${COLORS.disabled};
   }
-`
+`;
 
-export default Input
+export default Input;
