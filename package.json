@@ -15,7 +15,10 @@
     "docz": "docz build",
     "build": "lerna run build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",

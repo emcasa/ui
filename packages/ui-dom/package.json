@@ -13,12 +13,11 @@
   },
   "dependencies": {
     "@emcasa/ui": "^0.1.1",
-    "@rebass/grid": "6.0.0-4",
-    "react": "16.5.2",
-    "react-dom": "16.5.2",
-    "styled-components": "3.4.9",
-    "styled-icons": "3.0.0",
-    "styled-system": "3.1.6"
+    "@rebass/grid": "6.0.0-4"
+  },
+  "peerDependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
