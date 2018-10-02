@@ -1,7 +1,7 @@
 language: node_js
 node_js:
- - "node"
-script: yarn build
+  - "node"
+script: yarn bs && yarn build && yarn docz
 deploy:
   - provider: npm
     email: lucas.tulio@emcasa.com

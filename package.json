@@ -9,11 +9,11 @@
   ],
   "scripts": {
     "bs": "lerna bootstrap",
-    "start": "concurrently \"yarn watch\" \"yarn docz\"",
+    "start": "concurrently \"yarn watch\" \"yarn dev\"",
     "watch": "lerna run watch --parallel",
-    "docz": "docz dev",
-    "test": "jest",
-    "build": "docz build"
+    "dev": "docz dev",
+    "docz": "docz build",
+    "build": "lerna run build"
   },
   "dependencies": {},
   "devDependencies": {
