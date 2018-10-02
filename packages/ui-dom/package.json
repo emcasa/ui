@@ -3,10 +3,10 @@
   "version": "0.1.1",
   "description": "EmCasa's UI library",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "components/index.js",
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
-    "build": "babel src -d dist",
+    "build": "babel src -d components",
     "watch": "yarn build --watch",
     "test": "jest",
     "prepublish": "yarn build"
