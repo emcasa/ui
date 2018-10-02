@@ -1,0 +1,31 @@
+{
+  "name": "@emcasa/ui-native",
+  "version": "0.1.0",
+  "description": "EmCasa's UI library for react-native",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "author": "EmCasa <dev@emcasa.com>",
+  "scripts": {
+    "build": "babel src -d dist",
+    "watch": "yarn build --watch",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {
+    "@emcasa/theme": "^0.1.0",
+    "styled-components": "3.4.9",
+    "styled-icons": "3.0.0",
+    "styled-system": "3.1.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "babel-preset-react-native": "^5.0.2"
+  },
+  "peerDependencies": {
+    "react": "^16.5.2",
+    "react-native": "^0.57.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
