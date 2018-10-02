@@ -741,21 +741,6 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@emcasa/theme@file:packages/theme":
-  version "0.1.0"
-  dependencies:
-    styled-system "3.1.6"
-
-"@emcasa/ui-dom@file:packages/ui-dom":
-  version "0.1.0"
-  dependencies:
-    "@rebass/grid" "6.0.0-4"
-    react "16.5.2"
-    react-dom "16.5.2"
-    styled-components "3.4.9"
-    styled-icons "3.0.0"
-    styled-system "3.1.6"
-
 "@emotion/babel-utils@^0.6.4":
   version "0.6.10"
   resolved "https://registry.yarnpkg.com/@emotion/babel-utils/-/babel-utils-0.6.10.tgz#83dbf3dfa933fae9fc566e54fbb45f14674c6ccc"

@@ -8,17 +8,14 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "lerna link",
+    "bs": "lerna bootstrap",
     "start": "concurrently \"yarn watch\" \"yarn docz\"",
     "watch": "lerna run watch --parallel",
     "docz": "docz dev",
     "test": "jest",
     "build": "docz build"
   },
-  "dependencies": {
-    "@emcasa/theme": "file:packages/theme",
-    "@emcasa/ui-dom": "file:packages/ui-dom"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
