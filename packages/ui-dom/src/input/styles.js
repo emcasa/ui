@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import COLORS from "@emcasa/theme/colors";
-import MEASURES from "@emcasa/theme/measures";
+import COLORS from "@emcasa/ui/colors";
+import MEASURES from "@emcasa/ui/measures";
 
 const Input = styled.input`
   outline: none;

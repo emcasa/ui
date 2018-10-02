@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
-import COLORS from "@emcasa/theme/colors";
-import MEASURES from "@emcasa/theme/measures";
+import COLORS from "@emcasa/ui/colors";
+import MEASURES from "@emcasa/ui/measures";
 import { Circle } from "styled-icons/fa-regular/Circle";
 import { DotCircle } from "styled-icons/fa-solid/DotCircle";
 

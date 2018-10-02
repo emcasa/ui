@@ -1,6 +1,6 @@
 import React from "react";
 import { injectGlobal, ThemeProvider } from "styled-components";
-import theme from "@emcasa/theme";
+import theme from "@emcasa/ui";
 
 injectGlobal`
   @font-face {
