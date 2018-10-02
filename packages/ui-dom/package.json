@@ -1,0 +1,25 @@
+{
+  "name": "@emcasa/ui-dom",
+  "version": "0.1.0",
+  "description": "EmCasa's UI library",
+  "license": "MIT",
+  "main": "components/",
+  "author": "EmCasa <dev@emcasa.com>",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "@rebass/grid": "6.0.0-4",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "styled-components": "3.4.9",
+    "styled-icons": "3.0.0",
+    "styled-system": "3.1.6"
+  },
+  "devDependencies": {
+    "jest": "23.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
