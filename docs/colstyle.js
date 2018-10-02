@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BaseCol from "@emcasa/ui-dom/components/col/index.js";
+import { Col as BaseCol } from "@emcasa/ui-dom";
 
 const Col = styled(BaseCol)`
   border: 1px solid #979797;
