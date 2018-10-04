@@ -1,3 +1,21 @@
+import {style} from 'styled-system'
+
+const transformUnit = (unit) => (n) => (isNaN(n) ? n : `${n}${unit}`)
+
+export const letterSpacing = style({
+  prop: 'letterSpacing',
+  cssProperty: 'letterSpacing',
+  key: 'letterSpacing',
+  transformValue: transformUnit('px')
+})
+
+export const buttonHeight = style({
+  prop: 'height',
+  cssProperty: 'height',
+  key: 'buttonHeight',
+  transformValue: transformUnit('px')
+})
+
 const MEASURES = {
   letterSpacing: {
     default: '0.56px'
