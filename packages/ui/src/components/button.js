@@ -1,4 +1,11 @@
-import {fontSize, color} from 'styled-system'
+import {
+  fontSize,
+  color,
+  flex,
+  flexDirection,
+  alignItems,
+  justifyContent
+} from 'styled-system'
 
 import {styleSheet} from '../utils'
 import {letterSpacing, buttonHeight} from '../styles'
@@ -12,6 +19,10 @@ export const container = styleSheet`
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
   ${buttonHeight}
+  ${flex}
+  ${flexDirection}
+  ${alignItems}
+  ${justifyContent}
 `
 
 container.defaultProps = {

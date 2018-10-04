@@ -1,9 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Button, { ButtonText } from "./styles";
+import React from 'react'
+import pick from 'lodash.pick'
 
-export default ({ children, ...props }) => (
+import Button, {ButtonText} from './styles'
+
+export default ({children, ...props}) => (
   <Button {...props}>
-    <ButtonText>{children}</ButtonText>
+    <ButtonText {...pick(props, ['active', 'disabled'])}>{children}</ButtonText>
   </Button>
-);
+)
