@@ -1,11 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import View from './styles'
+import styled from 'styled-components'
+import * as view from '@emcasa/ui/lib/components/view'
 
-export default (props) => (
-  <View {...props}>{props.children}</View>
-)
+const View = styled.div`
+  ${view.container};
+`
 
-View.propTypes = {
-  children: PropTypes.any
-}
+export default View

@@ -1,6 +1,6 @@
-import React from "react";
-import { injectGlobal, ThemeProvider } from "styled-components";
-import theme from "@emcasa/ui";
+import React from 'react'
+import {injectGlobal, ThemeProvider} from 'styled-components'
+import theme from '@emcasa/ui'
 
 injectGlobal`
   @font-face {
@@ -22,10 +22,10 @@ injectGlobal`
   * {
     font-family: 'FaktSoftPro-Normal';
   }
-`;
+`
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({children}) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
-);
+)
 
-export default Wrapper;
+export default Wrapper

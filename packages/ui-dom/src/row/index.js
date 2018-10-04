@@ -1,6 +1,8 @@
-import React from 'react'
-import Row from './styles'
+import styled from 'styled-components'
+import * as row from '@emcasa/ui/lib/components/row'
 
-export default (props) => (
-  <Row {...props}>{props.children}</Row>
-)
+const Row = styled.div`
+  ${row.container};
+`
+
+export default Row

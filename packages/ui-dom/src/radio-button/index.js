@@ -1,38 +1,41 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import {Container, Label, Checked, Unchecked} from './styles'
+import React from 'react'
+import styled from 'styled-components'
+import RadioButton, * as styles from '@emcasa/ui/lib/components/radio-button'
 
-class RadioButton extends Component {
-  render() {
-    const {selectedValue, value, onChange, disabled} = this.props
-    const checked = selectedValue === value
-    const radioComponent = checked ? <Checked {...this.props} /> : <Unchecked {...this.props} />
+const Container = styled.div`
+  ${styles.container};
+`
 
-    return (
-      <Container
-        onClick={() => {if (!disabled) onChange(value)}}
-        disabled={disabled}
-        checked={checked}
-      >
-        {radioComponent}
-        <Label disabled={disabled}>{this.props.label}</Label>
-      </Container>
-    )
-  }
-}
+Container.defaultProps = styles.container.defaultProps
 
-RadioButton.propTypes = {
-  onChange: PropTypes.func,
-  disabled: PropTypes.bool,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string
-}
+const Button = styled.div`
+  ${styles.button};
+`
 
-RadioButton.defaultProps = {
-  onChange: null,
-  disabled: false,
-  label: null,
-  value: null
-}
+Button.defaultProps = styles.button.defaultProps
 
-export default RadioButton
+const CheckMark = styled.div`
+  ${styles.checkMark};
+`
+
+CheckMark.defaultProps = styles.checkMark.defaultProps
+
+const Label = styled.label`
+  ${styles.label};
+`
+
+Label.defaultProps = styles.label.defaultProps
+
+export default RadioButton(({onChange, disabled, checked, label, ...props}) => (
+  <Container
+    onClick={onChange}
+    disabled={disabled}
+    checked={checked}
+    {...props}
+  >
+    <Button checked={checked} disabled={disabled} label={label}>
+      {checked && <CheckMark />}
+    </Button>
+    {label && <Label disabled={disabled}>{label}</Label>}
+  </Container>
+))

@@ -8,12 +8,13 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "lerna exec yarn",
+    "prepare": "lerna run prepublish",
     "start": "concurrently \"yarn watch\" \"yarn dev\"",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
     "watch": "lerna run watch --parallel",
     "dev": "docz dev",
-    "docz": "docz build",
-    "build": "lerna run build"
+    "docz": "docz build"
   },
   "dependencies": {
     "react": "^16.5.2",
@@ -22,11 +23,23 @@
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "babel-preset-react-native": "^5.0.2",
     "concurrently": "^4.0.1",
     "docz": "0.11.2",
     "docz-plugin-css": "0.11.0",
     "jest": "23.6.0",
     "lerna": "^3.4.0"
+  },
+  "optionalDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.6.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "prettier": "^1.14.3"
   }
 }
