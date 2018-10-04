@@ -1,7 +1,25 @@
 import React from 'react'
-import Input from './styles'
+import styled from 'styled-components'
+import * as input from '@emcasa/ui/lib/components/input'
+
 import View from '../view'
 import Text from '../text'
+
+const Input = styled.input`
+  ${input.container};
+  ${input.text};
+  :focus {
+    ${input.container.withProps({focus: true})};
+  }
+  ::placeholder {
+    ${input.placeholder};
+  }
+`
+
+Input.defaultProps = {
+  ...input.container.defaultProps,
+  ...input.text.defaultProps
+}
 
 export default (props) => {
   return (
