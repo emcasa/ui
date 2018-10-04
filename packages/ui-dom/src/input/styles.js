@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import COLORS from "@emcasa/ui/colors";
-import MEASURES from "@emcasa/ui/measures";
+import styled from 'styled-components'
+import COLORS from '@emcasa/ui/lib/colors'
+import MEASURES from '@emcasa/ui/lib/measures'
 
 const Input = styled.input`
   outline: none;
@@ -11,10 +11,10 @@ const Input = styled.input`
 
   border-radius: 4px;
   border: 1px solid;
-  border-color: ${props =>
+  border-color: ${(props) =>
     props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
 
-  color: ${props => (props.disabled ? COLORS.disabled : COLORS.dark)};
+  color: ${(props) => (props.disabled ? COLORS.disabled : COLORS.dark)};
 
   height: ${MEASURES.buttonHeight.tall};
 
@@ -25,6 +25,6 @@ const Input = styled.input`
   ::placeholder {
     color: ${COLORS.disabled};
   }
-`;
+`
 
-export default Input;
+export default Input

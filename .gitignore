@@ -5,11 +5,14 @@ node_modules/
 public/
 
 # Build
-dist/
-components/
+/packages/*/components/
+/packages/*/lib/
 
 # macOS
 .DS_Store
 
 # IDE
 .idea
+
+# Logs
+*.log

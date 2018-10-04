@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import * as button from '@emcasa/ui/components/button'
+import * as button from '@emcasa/ui/lib/components/button'
 
 const Button = styled.button`
   ${button.container}
