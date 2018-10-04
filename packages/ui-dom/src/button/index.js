@@ -1,10 +1,21 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-import Button from './styles'
+import styled from 'styled-components'
+import * as button from '@emcasa/ui/components/button'
 
-export default (props) => <Button {...props}>{props.children}</Button>
+const Button = styled.button`
+  ${button.container}
+  ${button.text}
+  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+`
+
+Button.defaultProps = {
+  ...button.container.defaultProps,
+  ...button.text.defaultProps
+}
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   onClick: PropTypes.func
 }
+
+export default Button
