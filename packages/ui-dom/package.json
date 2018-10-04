@@ -6,6 +6,7 @@
   "main": "components/index.js",
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
+    "clean": "rm -rf components",
     "build": "babel src -d components",
     "watch": "yarn build --watch",
     "test": "jest",

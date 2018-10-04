@@ -6,6 +6,7 @@
   "main": "lib/index.js",
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
+    "clean": "rm -rf lib",
     "build": "babel src -d lib",
     "watch": "yarn build --watch",
     "prepublish": "yarn build"
