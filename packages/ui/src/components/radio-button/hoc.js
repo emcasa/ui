@@ -8,7 +8,7 @@ export default (Target) =>
       disabled: PropTypes.bool,
       checked: PropTypes.bool,
       label: PropTypes.string.isRequired,
-      value: PropTypes.string
+      value: PropTypes.any
     }
 
     static defaultProps = {
@@ -19,23 +19,24 @@ export default (Target) =>
     }
 
     state = {
+      isControlled: false,
       checked: false
     }
 
     static getDerivedStateFromProps(props, state) {
+      const isControlled = typeof props.checked === 'boolean'
       return {
-        checked:
-          typeof props.checked === 'boolean' ? props.checked : state.checked
+        isControlled,
+        checked: isControlled ? props.checked : state.checked
       }
     }
 
-    onChange = (checked = undefined) => {
+    onChange = () => {
       const {onChange, disabled, value} = this.props
       if (disabled) return
-      const nextValue = () =>
-        typeof checked === 'boolean' ? checked : !this.state.checked
-      this.setState({checked: nextValue()}, () => {
-        if (onChange) onChange(this.state.checked ? value : null)
+      this.setState({checked: !this.state.checked}, () => {
+        if (onChange)
+          onChange(this.state.checked || this.state.isControlled ? value : null)
       })
     }
 
