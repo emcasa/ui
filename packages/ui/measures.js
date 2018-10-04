@@ -1,21 +1,25 @@
-import {style} from 'styled-system'
+import {enumeratedStyle} from './utils'
+import {LETTER_SPACING, BUTTON_HEIGHT} from './index'
 
 const transformUnit = (unit) => (n) => (isNaN(n) ? n : `${n}${unit}`)
 
-export const letterSpacing = style({
+export const letterSpacing = enumeratedStyle({
+  enum: LETTER_SPACING,
   prop: 'letterSpacing',
   cssProperty: 'letterSpacing',
   key: 'letterSpacing',
   transformValue: transformUnit('px')
 })
 
-export const buttonHeight = style({
+export const buttonHeight = enumeratedStyle({
+  enum: BUTTON_HEIGHT,
   prop: 'height',
   cssProperty: 'height',
   key: 'buttonHeight',
   transformValue: transformUnit('px')
 })
 
+// TODO - remote this
 const MEASURES = {
   letterSpacing: {
     default: '0.56px'
