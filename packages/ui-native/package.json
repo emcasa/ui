@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "description": "EmCasa's UI library for react-native",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "components/index.js",
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
-    "build": "babel src -d dist",
+    "build": "babel src -d components",
     "watch": "yarn build --watch",
     "prepublish": "yarn build"
   },
