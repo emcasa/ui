@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import * as input from '@emcasa/ui/lib/components/input'
+import * as input from '@emcasa/ui/lib/components/Input'
 
 import View from '../view'
 import Text from '../text'

@@ -6,7 +6,7 @@ import {
   justifyContent
 } from 'styled-system'
 
-import {container as col} from './col'
+import {container as col} from './Col'
 import {styleSheet} from '../utils'
 
 export const container = styleSheet`
