@@ -1,3 +1,4 @@
+import {css} from 'styled-components'
 import {
   color,
   fontSize,
@@ -8,10 +9,9 @@ import {
   textAlign
 } from 'styled-system'
 
-import {styleSheet} from '../utils'
 import {letterSpacing} from '../styles'
 
-export const container = styleSheet`
+export const container = css`
   ${letterSpacing}
   ${color}
   ${fontSize}

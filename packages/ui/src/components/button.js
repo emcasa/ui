@@ -1,9 +1,9 @@
+import {css} from 'styled-components'
 import {fontSize, color} from 'styled-system'
 
-import {styleSheet} from '../utils'
 import {letterSpacing, buttonHeight} from '../styles'
 
-export const container = styleSheet`
+export const container = css`
   padding: 0 20px 0 20px;
   border-radius: 4px;
   border: 1px solid;
@@ -11,14 +11,14 @@ export const container = styleSheet`
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
-  ${buttonHeight}
+  ${buttonHeight};
 `
 
 container.defaultProps = {
   height: 'medium'
 }
 
-export const text = styleSheet`
+export const text = css`
   color: ${({active, disabled, theme: {colors}}) => {
     if (disabled) return colors.disabled
     else if (active) return colors.white

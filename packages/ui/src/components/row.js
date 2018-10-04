@@ -1,3 +1,4 @@
+import {css} from 'styled-components'
 import {
   flexWrap,
   flexBasis,
@@ -7,9 +8,8 @@ import {
 } from 'styled-system'
 
 import {container as col} from './col'
-import {styleSheet} from '../utils'
 
-export const container = styleSheet`
+export const container = css`
   display: flex;
   ${col}
   ${flexWrap}
