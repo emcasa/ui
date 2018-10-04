@@ -12,6 +12,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@emcasa/ui": "^0.1.1",
     "@rebass/grid": "6.0.0-4"
   },

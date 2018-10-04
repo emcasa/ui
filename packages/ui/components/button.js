@@ -1,9 +1,10 @@
-import {themeGet, fontSize, color} from 'styled-system'
+import {fontSize, color} from 'styled-system'
 
+import {styleSheet} from '../utils'
 import {letterSpacing, buttonHeight} from '../measures'
-import {LETTER_SPACING, FONT_SIZE} from '@emcasa/ui'
+import {LETTER_SPACING, FONT_SIZE, BUTTON_HEIGHT} from '../index'
 
-export const container = `
+export const container = styleSheet`
   padding: 0 20px 0 20px;
   border-radius: 4px;
   border: 1px solid;
@@ -11,11 +12,14 @@ export const container = `
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
-  height: ${themeGet('buttonHeight.0')};
   ${buttonHeight}
 `
 
-export const text = `
+container.defaultProps = {
+  height: BUTTON_HEIGHT.medium
+}
+
+export const text = styleSheet`
   color: ${({active, disabled, theme: {colors}}) => {
     if (disabled) return colors.disabled
     else if (active) return colors.white

@@ -1,31 +1,15 @@
-import styled from "styled-components";
-import COLORS from "@emcasa/ui/colors";
-import MEASURES from "@emcasa/ui/measures";
+import styled from 'styled-components'
+import * as button from '@emcasa/ui/components/button'
 
 const Button = styled.button`
-  font-size: ${MEASURES.font.default};
-  letter-spacing: ${MEASURES.defaultLetterSpacing};
+  ${button.container}
+  ${button.text}
+  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+`
 
-  padding: 0 20px 0 20px;
-  border-radius: 4px;
-  border: 1px solid;
-  border-color: ${props =>
-    props.active && !props.disabled ? COLORS.pink : COLORS.lightGrey};
-  background-color: ${props =>
-    props.active && !props.disabled ? COLORS.pink : COLORS.white};
+Button.defaultProps = {
+  ...button.container.defaultProps,
+  ...button.text.defaultProps
+}
 
-  color: ${props => {
-    if (props.disabled) return COLORS.disabled;
-    else if (props.active) return COLORS.white;
-    else return COLORS.dark;
-  }};
-
-  height: ${props =>
-    props.height
-      ? MEASURES.buttonHeight[props.height]
-      : MEASURES.buttonHeight.medium};
-
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-`;
-
-export default Button;
+export default Button
