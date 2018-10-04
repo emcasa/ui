@@ -1,12 +1,18 @@
 language: node_js
 node_js:
   - "node"
-script: yarn build && yarn docz
+install:
+  - yarn
+  - npm install -g lerna
+script:
+  - yarn build
+  - yarn docz
+before_deploy:
+  - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 deploy:
-  - provider: npm
-    email: lucas.tulio@emcasa.com
-    api_key:
-      secure: $NPM_TOKEN
+  - provider: script
+    skip_cleanup: true
+    script: lerna exec --no-private --bail=false -- "npm publish"
     on:
       tags: true
       repo: emcasa/ui
