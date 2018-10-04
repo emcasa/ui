@@ -1,7 +1,7 @@
 import React from 'react'
 import pick from 'lodash.pick'
 import styled from 'styled-components/native'
-import * as button from '@emcasa/ui/components/button'
+import * as button from '@emcasa/ui/lib/components/button'
 
 export const Button = styled.TouchableOpacity`
   ${button.container};

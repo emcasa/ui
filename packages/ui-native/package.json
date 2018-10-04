@@ -18,10 +18,7 @@
     "styled-system": "3.1.6"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "babel-preset-react-native": "^5.0.2"
+    "@babel/cli": "^7.1.2"
   },
   "peerDependencies": {
     "react": "^16.5.2",

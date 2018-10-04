@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import * as button from '@emcasa/ui/components/button'
+import * as button from '@emcasa/ui/lib/components/button'
 
 const Button = styled.TouchableOpacity`
   ${button.container};
