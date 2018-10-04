@@ -12,8 +12,10 @@ export const styleSheet = (styles, ...interpolations) => (props) =>
 export const enumerated = (styleFn) => (Enum, prop) => (props) => {
   const value = props[prop]
   const nextProps = {...props}
-  if (Enum && typeof value == 'string' && value in Enum)
-    nextProps[prop] = Enum[value]
+  if (Enum && typeof value == 'string') {
+    const index = Enum.indexOf(value)
+    if (index !== -1) nextProps[prop] = index
+  }
   return styleFn(nextProps)
 }
 

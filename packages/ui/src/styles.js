@@ -1,10 +1,10 @@
 import {enumeratedStyle} from './utils'
-import {LETTER_SPACING, BUTTON_HEIGHT} from './index'
+import {LETTER_SPACING, BUTTON_HEIGHT} from './theme/measures'
 
 const transformUnit = (unit) => (n) => (isNaN(n) ? n : `${n}${unit}`)
 
 export const letterSpacing = enumeratedStyle({
-  enum: LETTER_SPACING,
+  enum: Array.from(LETTER_SPACING.keys()),
   prop: 'letterSpacing',
   cssProperty: 'letterSpacing',
   key: 'letterSpacing',
@@ -12,31 +12,9 @@ export const letterSpacing = enumeratedStyle({
 })
 
 export const buttonHeight = enumeratedStyle({
-  enum: BUTTON_HEIGHT,
+  enum: Array.from(BUTTON_HEIGHT.keys()),
   prop: 'height',
   cssProperty: 'height',
   key: 'buttonHeight',
   transformValue: transformUnit('px')
 })
-
-// TODO - remote this
-const MEASURES = {
-  letterSpacing: {
-    default: '0.56px'
-  },
-  font: {
-    default: '18px',
-    small: '14px'
-  },
-  buttonHeight: {
-    tall: '60px',
-    medium: '40px'
-  },
-  spacing: {
-    large: '20px',
-    normal: '14px',
-    short: '10px'
-  }
-}
-
-export default MEASURES

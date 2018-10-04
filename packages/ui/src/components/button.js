@@ -1,8 +1,7 @@
 import {fontSize, color} from 'styled-system'
 
 import {styleSheet} from '../utils'
-import {letterSpacing, buttonHeight} from '../measures'
-import {LETTER_SPACING, FONT_SIZE, BUTTON_HEIGHT} from '../index'
+import {letterSpacing, buttonHeight} from '../styles'
 
 export const container = styleSheet`
   padding: 0 20px 0 20px;
@@ -16,7 +15,7 @@ export const container = styleSheet`
 `
 
 container.defaultProps = {
-  height: BUTTON_HEIGHT.medium
+  height: 'medium'
 }
 
 export const text = styleSheet`
@@ -31,6 +30,6 @@ export const text = styleSheet`
 `
 
 text.defaultProps = {
-  fontSize: FONT_SIZE.default,
-  letterSpacing: LETTER_SPACING.default
+  fontSize: 'default',
+  letterSpacing: 'default'
 }
