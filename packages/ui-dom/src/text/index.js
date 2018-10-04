@@ -1,9 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Text from './styles'
+import styled from 'styled-components'
+import * as text from '@emcasa/ui/lib/components/text'
 
-export default (props) => <Text {...props}>{props.children}</Text>
+const Text = styled.p`
+  ${text.container};
+`
 
-Text.propTypes = {
-  children: PropTypes.any
+Text.defaultProps = {
+  ...text.container.defaultProps
 }
+
+export default Text
