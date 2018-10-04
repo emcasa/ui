@@ -1,30 +1,32 @@
 {
-  "name": "@emcasa/ui",
   "version": "0.1.0",
-  "description": "EmCasa's UI library",
   "license": "MIT",
-  "main": "components/",
   "repository": "git@github.com:emcasa/ui.git",
   "author": "EmCasa <dev@emcasa.com>",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "start": "docz dev",
-    "test": "jest",
-    "build": "docz build"
+    "prepare": "lerna exec yarn",
+    "start": "concurrently \"yarn watch\" \"yarn dev\"",
+    "watch": "lerna run watch --parallel",
+    "dev": "docz dev",
+    "docz": "docz build",
+    "build": "lerna run build"
   },
   "dependencies": {
-    "@rebass/grid": "6.0.0-4",
-    "react": "16.5.2",
-    "react-dom": "16.5.2",
-    "styled-components": "3.4.9",
-    "styled-icons": "3.0.0",
-    "styled-system": "3.1.6"
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-react": "^7.0.0",
+    "concurrently": "^4.0.1",
     "docz": "0.11.2",
     "docz-plugin-css": "0.11.0",
-    "jest": "23.6.0"
-  },
-  "publishConfig": {
-    "access": "public"
+    "jest": "23.6.0",
+    "lerna": "^3.4.0"
   }
 }

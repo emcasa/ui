@@ -1,0 +1,27 @@
+{
+  "name": "@emcasa/ui-dom",
+  "version": "0.1.2",
+  "description": "EmCasa's UI library",
+  "license": "MIT",
+  "main": "components/index.js",
+  "author": "EmCasa <dev@emcasa.com>",
+  "scripts": {
+    "build": "babel src -d components",
+    "watch": "yarn build --watch",
+    "test": "jest",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {
+    "@emcasa/ui": "^0.1.2",
+    "@rebass/grid": "6.0.0-4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-react": "^7.0.0",
+    "jest": "23.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

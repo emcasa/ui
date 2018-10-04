@@ -4,6 +4,10 @@ node_modules/
 .docz/
 public/
 
+# Build
+dist/
+components/
+
 # macOS
 .DS_Store
 
