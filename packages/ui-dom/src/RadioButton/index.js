@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import RadioButton, * as styles from '@emcasa/ui/lib/components/radio-button'
+import RadioButton, * as styles from '@emcasa/ui/lib/components/RadioButton'
 
 const Container = styled.div`
   ${styles.container};

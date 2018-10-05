@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import {withProps} from '@emcasa/ui/lib/utils'
-import * as input from '@emcasa/ui/lib/components/input'
+import * as input from '@emcasa/ui/lib/components/Input'
 
-import View from './View'
-import Text from './Text'
+import View from '../View'
+import Text from '../Text'
 
 const focused = withProps({focus: true})
 

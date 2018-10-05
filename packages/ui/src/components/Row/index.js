@@ -7,7 +7,7 @@ import {
   justifyContent
 } from 'styled-system'
 
-import {container as col} from './col'
+import {container as col} from '../Col'
 
 export const container = css`
   display: flex;
