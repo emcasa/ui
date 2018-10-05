@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import * as text from '@emcasa/ui/lib/components/text'
+import * as text from '@emcasa/ui/lib/components/Text'
 
 const Text = styled.p`
   ${text.container};
