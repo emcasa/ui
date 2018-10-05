@@ -8,7 +8,7 @@ import {
   textAlign
 } from 'styled-system'
 
-import {letterSpacing, fontSize} from '../styles'
+import {letterSpacing, fontSize} from '../../styles'
 
 export const container = css`
   ${letterSpacing}
