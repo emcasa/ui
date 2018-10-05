@@ -1,5 +1,4 @@
 import {
-  fontSize,
   color,
   flex,
   flexDirection,
@@ -8,7 +7,7 @@ import {
 } from 'styled-system'
 import {css} from 'styled-components'
 
-import {letterSpacing, buttonHeight} from '../../styles'
+import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
 export const container = css`
   padding: 0 20px 0 20px;
