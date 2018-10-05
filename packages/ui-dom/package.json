@@ -10,7 +10,9 @@
     "build": "babel src -d components",
     "watch": "yarn build --watch",
     "test": "jest",
-    "prepublish": "yarn build"
+    "prepare": "yarn build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@emcasa/ui": "^0.2.2",
@@ -18,7 +20,15 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
-    "jest": "23.6.0"
+    "@babel/core": "^7.1.2",
+    "jest": "23.6.0",
+    "@storybook/react": "^3.4.11",
+    "@storybook/addon-actions": "^3.4.11",
+    "@storybook/addon-links": "^3.4.11",
+    "@storybook/addons": "^3.4.11"
+  },
+  "peerDependencies": {
+    "react-dom": "^16.5.2"
   },
   "publishConfig": {
     "access": "public"

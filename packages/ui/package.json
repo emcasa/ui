@@ -12,8 +12,7 @@
     "prepublish": "yarn build"
   },
   "peerDependencies": {
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react": "^16.5.2"
   },
   "dependencies": {
     "styled-components": "3.4.9",
