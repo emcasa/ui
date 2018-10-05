@@ -21,6 +21,7 @@ injectGlobal`
 
   * {
     font-family: 'FaktSoftPro-Normal';
+    -webkit-font-smoothing: antialiased;
   }
 `
 
