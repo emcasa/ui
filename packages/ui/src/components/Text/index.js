@@ -9,7 +9,7 @@ import {
   textAlign
 } from 'styled-system'
 
-import {letterSpacing} from '../styles'
+import {letterSpacing} from '../../styles'
 
 export const container = css`
   ${letterSpacing}

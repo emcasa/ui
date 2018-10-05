@@ -1,7 +1,7 @@
 import {css} from 'styled-components'
 import {themeGet, color, border, borderColor} from 'styled-system'
 
-import {letterSpacing, buttonHeight} from '../styles'
+import {letterSpacing, buttonHeight} from '../../styles'
 
 export const container = css`
   outline: none;

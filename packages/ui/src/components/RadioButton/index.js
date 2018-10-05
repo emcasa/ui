@@ -1,6 +1,6 @@
 import {css} from 'styled-components'
 
-import {container as text} from '../text'
+import {container as text} from '../Text'
 import {buttonHeight} from '../../styles'
 
 export {default} from './hoc'
