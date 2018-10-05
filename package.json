@@ -11,7 +11,7 @@
     "prepare": "lerna run prepublish",
     "start": "concurrently \"yarn watch\" \"yarn dev\"",
     "build": "lerna run build",
-    "clean": "lerna run clean",
+    "clean": "lerna run clean && rm -rf .docz",
     "watch": "lerna run watch --parallel",
     "dev": "docz dev",
     "docz": "docz build"
