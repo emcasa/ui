@@ -33,6 +33,7 @@ container.defaultProps = {
 }
 
 export const button = css`
+  box-sizing: border-box;
   width: ${BULLET_SIZE}px;
   height: ${BULLET_SIZE}px;
   border-radius: ${BULLET_SIZE}px;
@@ -50,6 +51,7 @@ const checkMarkMargin =
   (BULLET_SIZE - INNER_BULLET_SIZE - BULLET_BORDER * 2) / 2
 
 export const checkMark = css`
+  box-sizing: border-box;
   width: ${INNER_BULLET_SIZE}px;
   height: ${INNER_BULLET_SIZE}px;
   border-radius: ${INNER_BULLET_SIZE}px;
