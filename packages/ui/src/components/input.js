@@ -1,9 +1,9 @@
+import {css} from 'styled-components'
 import {themeGet, color, border, borderColor} from 'styled-system'
 
-import {styleSheet} from '../utils'
 import {letterSpacing, buttonHeight} from '../styles'
 
-export const container = styleSheet`
+export const container = css`
   outline: none;
   padding: 0 14px 0 14px;
   border-radius: 4px;
@@ -24,12 +24,12 @@ container.defaultProps = {
   height: 'tall'
 }
 
-export const text = styleSheet`
+export const text = css`
   color: ${({disabled, theme: {colors}}) =>
     disabled ? colors.disabled : colors.dark};
-  ${color}
+  ${color};
 `
 
-export const placeholder = styleSheet`
-  color: ${themeGet('colors.disabled')}
+export const placeholder = css`
+  color: ${themeGet('colors.disabled')};
 `

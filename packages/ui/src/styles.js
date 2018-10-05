@@ -1,3 +1,5 @@
+import {style} from 'styled-system'
+
 import {enumeratedStyle} from './utils'
 import {LETTER_SPACING, BUTTON_HEIGHT} from './theme/measures'
 

@@ -1,15 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import * as input from '@emcasa/ui/lib/components/Input'
+import {withProps} from '@emcasa/ui/lib/utils'
+import * as input from '@emcasa/ui/lib/components/input'
 
 import View from './View'
 import Text from './Text'
+
+const focused = withProps({focus: true})
 
 const Input = styled.input`
   ${input.container};
   ${input.text};
   :focus {
-    ${input.container.withProps({focus: true})};
+    ${focused(input.container)};
   }
   ::placeholder {
     ${input.placeholder};
