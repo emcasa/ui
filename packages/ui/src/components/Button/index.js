@@ -1,5 +1,5 @@
 import {css} from 'styled-components'
-import {color} from 'styled-system'
+import {color, fontFamily} from 'styled-system'
 
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
@@ -12,6 +12,11 @@ export const container = css`
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
   ${buttonHeight};
+
+  & :hover {
+    background-color: ${({active, disabled, theme: {colors}}) =>
+      active && !disabled ? colors.pink : colors.white};
+  }
 `
 
 container.defaultProps = {
@@ -25,11 +30,13 @@ export const text = css`
     else return colors.dark
   }};
   ${letterSpacing}
+  ${fontFamily}
   ${fontSize}
   ${color}
 `
 
 text.defaultProps = {
+  fontFamily: 'FaktSoftPro-Normal',
   fontSize: 'default',
   letterSpacing: 'default'
 }

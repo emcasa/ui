@@ -1,7 +1,7 @@
 import {css} from 'styled-components'
 
 import {container as text} from '../Text'
-import {buttonHeight} from '../../styles'
+import {buttonHeight, fontSize, letterSpacing, fontFamily} from '../../styles'
 
 export {default} from './hoc'
 
@@ -19,10 +19,16 @@ export const container = css`
   align-items: center;
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   ${buttonHeight};
+  ${fontSize}
+  ${letterSpacing}
+  ${fontFamily}
 `
 
 container.defaultProps = {
-  height: 'tall'
+  height: 'tall',
+  fontSize: 'default',
+  letterSpacing: 'default',
+  fontFamily: 'FaktSoftPro-Normal'
 }
 
 export const button = css`
