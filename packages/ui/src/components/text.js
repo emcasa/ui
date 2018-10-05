@@ -1,7 +1,6 @@
 import {css} from 'styled-components'
 import {
   color,
-  fontSize,
   fontWeight,
   fontFamily,
   fontStyle,
@@ -9,7 +8,7 @@ import {
   textAlign
 } from 'styled-system'
 
-import {letterSpacing} from '../styles'
+import {letterSpacing, fontSize} from '../styles'
 
 export const container = css`
   ${letterSpacing}

@@ -1,7 +1,7 @@
-import {style} from 'styled-system'
+import * as styles from 'styled-system'
 
-import {enumeratedStyle} from './utils'
-import {LETTER_SPACING, BUTTON_HEIGHT} from './theme/measures'
+import {enumeratedStyle, enumerated} from './utils'
+import {LETTER_SPACING, BUTTON_HEIGHT, FONT_SIZE} from './theme/measures'
 
 const transformUnit = (unit) => (n) => (isNaN(n) ? n : `${n}${unit}`)
 
@@ -20,3 +20,5 @@ export const buttonHeight = enumeratedStyle({
   key: 'buttonHeight',
   transformValue: transformUnit('px')
 })
+
+export const fontSize = enumerated(FONT_SIZE, 'fontSize')(styles.fontSize)

@@ -1,6 +1,6 @@
 import {style} from 'styled-system'
 
-export const enumerated = (styleFn) => (Enum, prop) => (props) => {
+export const enumerated = (Enum, prop) => (styleFn) => (props) => {
   const value = props[prop]
   const nextProps = {...props}
   if (Enum && typeof value == 'string') {
@@ -11,7 +11,7 @@ export const enumerated = (styleFn) => (Enum, prop) => (props) => {
 }
 
 export const enumeratedStyle = ({enum: Enum, ...args}) =>
-  enumerated(style(args))(Enum, args.prop)
+  enumerated(Enum, args.prop)(style(args))
 
 export const withProps = (overrideProps) => (css) =>
   css.map(
