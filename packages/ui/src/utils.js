@@ -1,13 +1,4 @@
-import {css} from 'styled-components'
 import {style} from 'styled-system'
-
-export const styleSheet = (styles, ...interpolations) => (props) =>
-  css(
-    styles,
-    ...interpolations.map(
-      (fun) => (typeof fun === 'function' ? fun(props) : fun)
-    )
-  ).join('')
 
 export const enumerated = (styleFn) => (Enum, prop) => (props) => {
   const value = props[prop]
@@ -21,3 +12,11 @@ export const enumerated = (styleFn) => (Enum, prop) => (props) => {
 
 export const enumeratedStyle = ({enum: Enum, ...args}) =>
   enumerated(style(args))(Enum, args.prop)
+
+export const withProps = (overrideProps) => (css) =>
+  css.map(
+    (style) =>
+      typeof style === 'function'
+        ? (props) => style({...props, ...overrideProps})
+        : style
+  )

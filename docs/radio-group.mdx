@@ -3,6 +3,7 @@ name: RadioGroup
 ---
 
 import { Playground, PropsTable } from 'docz'
+import Text from '@emcasa/ui-dom/components/text'
 import RadioGroup from '@emcasa/ui-dom/components/radio-group'
 import RadioButton from '@emcasa/ui-dom/components/radio-button'
 
@@ -13,11 +14,18 @@ Radio Group component.
 ## Basic usage
 
 <Playground>
+  <Text>Uncontrolled radio group</Text>
+  <RadioGroup initialValue="a" onChange={(value) => {}}>
+    <RadioButton label="Option 1" value="a" />
+    <RadioButton label="Option 2" value="b" />
+    <RadioButton label="Option 3" value="c" disabled />
+  </RadioGroup>
+
+  <Text>Controlled radio group</Text>
   <RadioGroup selectedValue="a" onChange={(value) => {}}>
     <RadioButton label="Option 1" value="a" />
     <RadioButton label="Option 2" value="b" />
-    <RadioButton label="Option 3" value="c" />
-    <RadioButton label="Option 4" value="d" disabled />
+    <RadioButton label="Option 3" value="c" disabled />
   </RadioGroup>
 </Playground>
 

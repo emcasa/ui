@@ -6,11 +6,11 @@ import {
   alignItems,
   justifyContent
 } from 'styled-system'
+import {css} from 'styled-components'
 
-import {styleSheet} from '../utils'
 import {letterSpacing, buttonHeight} from '../styles'
 
-export const container = styleSheet`
+export const container = css`
   padding: 0 20px 0 20px;
   border-radius: 4px;
   border: 1px solid;
@@ -29,7 +29,7 @@ container.defaultProps = {
   height: 'medium'
 }
 
-export const text = styleSheet`
+export const text = css`
   color: ${({active, disabled, theme: {colors}}) => {
     if (disabled) return colors.disabled
     else if (active) return colors.white

@@ -10,6 +10,7 @@ EmCasa's UI library.
 # Deploy
 
 This repository has two different deploy jobs:
+
 - Docz
 - npm
 
@@ -19,9 +20,5 @@ In order to deploy the documentation website, simply merge your branch to master
 
 ## Npm deploy
 
-To deploy a new version of the library to npm:
-
-1. Bump the version number in `package.json`.
-1. Commit.
-1. Tag your commit with the same version number.
-1. `git push --tags`.
+To deploy a new version of the library to npm run `lerna version`.
+This bumps the version in each package and pushes it to the repository with a new tag.
