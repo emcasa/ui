@@ -21,4 +21,6 @@ export const buttonHeight = enumeratedStyle({
   transformValue: transformUnit('px')
 })
 
-export const fontSize = enumerated(FONT_SIZE, 'fontSize')(styles.fontSize)
+export const fontSize = enumerated(Array.from(FONT_SIZE.keys()), 'fontSize')(
+  styles.fontSize
+)
