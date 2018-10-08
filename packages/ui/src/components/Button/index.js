@@ -14,6 +14,8 @@ export const container = css`
   ${buttonHeight};
 `
 
+container.propTypes = buttonHeight.propTypes
+
 container.defaultProps = {
   height: 'medium'
 }
@@ -28,6 +30,12 @@ export const text = css`
   ${fontSize}
   ${color}
 `
+
+text.propTypes = {
+  ...letterSpacing.propTypes,
+  ...fontSize.propTypes,
+  ...color.propTypes
+}
 
 text.defaultProps = {
   fontSize: 'default',

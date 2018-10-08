@@ -14,9 +14,12 @@ Button.defaultProps = {
 }
 
 Button.propTypes = {
+  ...button.container.propTypes,
+  ...button.text.propTypes,
   children: PropTypes.string.isRequired,
   onClick: PropTypes.func
 }
 
 Button.displayName = 'Button'
+
 export default Button
