@@ -4,6 +4,7 @@ name: Button
 
 import { Playground, PropsTable } from 'docz'
 import Button from '@emcasa/ui-dom/components/Button'
+import View from '@emcasa/ui-dom/components/View'
 
 # Button
 
@@ -12,16 +13,19 @@ Button component.
 ## Basic usage
 
 <Playground>
-  <p>
-  <Button active onClick={() => {alert('I\'ve been clicked!')}}>Active</Button>
-  <Button>Normal</Button>
-  <Button disabled>Disabled</Button>
-  <Button active disabled>Active and disabled</Button>
-  </p>
-  <p>
+  <View m={4}>
+    <Button active onClick={() => {alert('I\'ve been clicked!')}}>Active</Button>
+    <Button>Normal</Button>
+    <Button disabled>Disabled</Button>
+    <Button active disabled>Active and disabled</Button>
+    <View my={4}>
+      <Button fluid active>This Button takes up all available space</Button>
+    </View>
+  </View>
+  <View m={4}>
     <Button height="tall">Tall</Button>
     <Button height="medium">Medium</Button>
-  </p>
+  </View>
 </Playground>
 
 ## Button Props

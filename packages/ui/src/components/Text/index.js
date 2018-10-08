@@ -3,7 +3,7 @@ import {
   color,
   fontWeight,
   fontFamily,
-  fontStyle,
+  fontStyle,  
   lineHeight,
   textAlign
 } from 'styled-system'
@@ -22,7 +22,7 @@ export const container = css`
 `
 
 container.defaultProps = {
-  fontFamily: 'FaktSoftPro-Normal',
+  fontFamily: 'FaktSoftPro-Blond',
   fontSize: 'default',
   letterSpacing: 'default'
 }

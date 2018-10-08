@@ -13,6 +13,8 @@ export const container = css`
     active && !disabled ? colors.pink : colors.white};
   ${buttonHeight};
 
+  width: ${({fluid}) => fluid ? '100%' : 'auto'};
+
   & :hover {
     background-color: ${({active, disabled, theme: {colors}}) =>
       active && !disabled ? colors.pink : colors.white};
