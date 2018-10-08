@@ -1,5 +1,11 @@
+import {
+  color,
+  flex,
+  flexDirection,
+  alignItems,
+  justifyContent
+} from 'styled-system'
 import {css} from 'styled-components'
-import {color} from 'styled-system'
 
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
@@ -11,7 +17,11 @@ export const container = css`
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
-  ${buttonHeight};
+  ${buttonHeight}
+  ${flex}
+  ${flexDirection}
+  ${alignItems}
+  ${justifyContent}
 `
 
 container.propTypes = buttonHeight.propTypes
