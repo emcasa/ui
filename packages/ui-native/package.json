@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui-native",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "EmCasa's UI library for react-native",
   "license": "MIT",
   "main": "components/index.js",
@@ -8,17 +8,25 @@
   "scripts": {
     "build": "babel src -d components",
     "watch": "yarn build --watch",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "storybook": "start-storybook -p 7007",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "@emcasa/theme": "^0.2.1",
+    "@emcasa/ui": "^0.2.2",
     "lodash.pick": "^4.4.0",
     "styled-components": "3.4.9",
     "styled-icons": "3.0.0",
     "styled-system": "3.1.6"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2"
+    "@babel/cli": "^7.1.2",
+    "@storybook/addon-actions": "^3.4.11",
+    "@storybook/addon-links": "^3.4.11",
+    "@storybook/addons": "^3.4.11",
+    "@storybook/react-native": "^3.4.11",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
     "react": "^16.5.2",

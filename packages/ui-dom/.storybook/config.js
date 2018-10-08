@@ -1,8 +1,9 @@
 import React from 'react'
-import {configure, addDecorator, setAddon} from '@storybook/react'
-import addonInfo from '@storybook/addon-info'
 import {injectGlobal, ThemeProvider} from 'styled-components'
 import theme from '@emcasa/ui'
+
+import {configure, addDecorator, setAddon} from '@storybook/react'
+import addonInfo from '@storybook/addon-info'
 
 injectGlobal`
   @font-face {
@@ -26,11 +27,13 @@ injectGlobal`
     -webkit-font-smoothing: antialiased;
   }
 `
-// automatically import all files ending in *.stories.js
-const req = require.context('../src', true, /.stories.js$/)
 
 addDecorator((story) => <ThemeProvider theme={theme}>{story()}</ThemeProvider>)
+
 setAddon(addonInfo)
+
+// automatically import all files ending in *.stories.js
+const req = require.context('../src', true, /.stories.js$/)
 
 function loadStories() {
   req.keys().forEach((filename) => req(filename))
