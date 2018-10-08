@@ -3,17 +3,36 @@ import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
 import {linkTo} from '@storybook/addon-links'
+import {withInfo} from '@storybook/addon-info'
 
-import {Button} from '@storybook/react/demo'
+import Button from './index'
 
-storiesOf('Button', module)
-  .add('with text', () => (
-    <Button onClick={action('clicked')}>Hello Button</Button>
+const story = storiesOf('Button', module)
+
+story.add(
+  'simple',
+  withInfo('Button component')(() => (
+    <div>
+      <Button onClick={action('clicked')}>This is a button</Button>
+      <p />
+      <Button active onClick={action('clicked')}>
+        I'm active
+      </Button>
+      <p />
+      <Button disabled onClick={action("this won't fire")}>
+        I'm disabled
+      </Button>
+    </div>
   ))
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
+)
+
+story.add(
+  'height',
+  withInfo('Button component')(() => (
+    <div>
+      <Button height="tall">Tall</Button>
+      <p />
+      <Button>Medium</Button>
+    </div>
   ))
+)

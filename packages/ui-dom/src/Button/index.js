@@ -18,4 +18,5 @@ Button.propTypes = {
   onClick: PropTypes.func
 }
 
+Button.displayName = 'Button'
 export default Button
