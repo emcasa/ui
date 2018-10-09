@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "emcasa-ui-native",
+    "name": "EmCasa Storybook",
     "description": "This project is really great.",
-    "slug": "emcasa-ui-native",
+    "slug": "emcasa-storybook-native",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
@@ -17,11 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    }
+    "assetBundlePatterns": ["**/*"],
+    "ignoreNodeModulesValidation": true
   }
 }

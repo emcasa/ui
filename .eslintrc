@@ -48,5 +48,9 @@
     "quotes": ["error", "single"],
     "react/jsx-uses-vars": 1,
     "semi": ["error", "never"]
+  },
+  "globals": {
+    "__dirname": true,
+    "__filename": true
   }
 }
