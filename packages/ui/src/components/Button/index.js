@@ -39,6 +39,5 @@ export const text = css`
 
 text.defaultProps = {
   fontFamily: 'FaktSoftPro-Normal',
-  fontSize: 'default',
-  letterSpacing: 'default'
+  fontSize: 'default'
 }

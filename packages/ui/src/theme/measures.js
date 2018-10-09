@@ -1,6 +1,8 @@
 export const LETTER_SPACING = new Map([
-  ['compact', 0.35],
-  ['default', 0.56]
+  ['xnarrow', -0.82],
+  ['narrow', -0.59],
+  ['default', 0],
+  ['wide', 0.56]
 ])
 
 export const BUTTON_HEIGHT = new Map([
