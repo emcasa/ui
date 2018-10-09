@@ -4,6 +4,7 @@ name: View
 
 import { Playground, PropsTable } from 'docz'
 import View from '@emcasa/ui-dom/components/View'
+import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 
 # View
@@ -14,6 +15,11 @@ The `View` component is a wrapper for an empty and unstyled `div`.
 
 <Playground>
   <View>
-    <Button active>A button inside a view</Button>
+    <View p={4} body>
+      <Text textAlign="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+    </View>
+    <View p={4} bottom>
+      <Button active fluid>Fixed at the bottom</Button>
+    </View>
   </View>
 </Playground>
