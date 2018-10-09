@@ -1,3 +1,10 @@
-const { createReactNativeConfiguration } = require("expo-yarn-workspaces");
+const path = require('path')
+const getConfig = require('metro-bundler-config-yarn-workspaces')
 
-module.exports = createReactNativeConfiguration(__dirname);
+const nodeModules = path.resolve(__dirname, '../../')
+
+const config = getConfig(__dirname, {nodeModules})
+
+config.extraNodeModules['@storybook'] = path.join(nodeModules, '@storybook')
+
+module.exports = config

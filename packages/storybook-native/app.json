@@ -18,6 +18,9 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "ignoreNodeModulesValidation": true
+    "ignoreNodeModulesValidation": true,
+    "packagerOpts": {
+      "config": "rn-cli.config.js"
+    }
   }
 }
