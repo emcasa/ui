@@ -14,3 +14,7 @@ export const FONT_SIZE = new Map([
   ['large', 24],
   ['xlarge', 32]
 ])
+
+export const ICON_SIZE = new Map([
+  ['default', 20]
+])

@@ -10646,7 +10646,7 @@ styled-components@3.4.9:
     stylis-rule-sheet "^0.0.10"
     supports-color "^3.2.3"
 
-styled-icons@3.0.0:
+styled-icons@3.0.0, styled-icons@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/styled-icons/-/styled-icons-3.0.0.tgz#2140f7bfc08cfeb98981e29fabd4d7c2ac1ed876"
 
