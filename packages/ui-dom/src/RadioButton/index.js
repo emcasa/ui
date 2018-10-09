@@ -26,7 +26,6 @@ const Label = styled.label`
 
 Label.defaultProps = styles.label.defaultProps
 
-/** @component */
 export default RadioButton(({onChange, disabled, checked, label, ...props}) => (
   <Container
     onClick={onChange}
@@ -37,6 +36,10 @@ export default RadioButton(({onChange, disabled, checked, label, ...props}) => (
     <Button checked={checked} disabled={disabled} label={label}>
       {checked && <CheckMark />}
     </Button>
-    {label && <Label disabled={disabled}>{label}</Label>}
+    {label && (
+      <Label disabled={disabled} {...props}>
+        {label}
+      </Label>
+    )}
   </Container>
 ))

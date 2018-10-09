@@ -1,7 +1,12 @@
 import {css} from 'styled-components'
 import {themeGet, color, border, borderColor, fontFamily} from 'styled-system'
 
-import {letterSpacing, buttonHeight, fontSize} from '../../styles'
+import {
+  letterSpacing,
+  buttonHeight,
+  fontSize,
+  defaultFontFamily
+} from '../../styles'
 
 export const container = css`
   outline: none;
@@ -34,6 +39,7 @@ container.defaultProps = {
 export const text = css`
   color: ${({disabled, theme: {colors}}) =>
     disabled ? colors.disabled : colors.dark};
+  ${defaultFontFamily};
   ${color};
   ${fontSize};
   ${letterSpacing};
@@ -48,7 +54,6 @@ text.propTypes = {
 }
 
 text.defaultProps = {
-  fontFamily: 'FaktSoftPro-Normal',
   fontSize: 'default',
   letterSpacing: 'default'
 }

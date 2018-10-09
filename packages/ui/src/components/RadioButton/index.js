@@ -1,7 +1,13 @@
 import {css} from 'styled-components'
+import {fontFamily} from 'styled-system'
 
 import {container as text} from '../Text'
-import {buttonHeight, fontSize, letterSpacing, fontFamily} from '../../styles'
+import {
+  buttonHeight,
+  fontSize,
+  letterSpacing,
+  defaultFontFamily
+} from '../../styles'
 
 export {default} from './hoc'
 
@@ -20,9 +26,6 @@ export const container = css`
   align-items: center;
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   ${buttonHeight};
-  ${fontSize}
-  ${letterSpacing}
-  ${fontFamily}
 `
 
 container.propTypes = {
@@ -32,8 +35,7 @@ container.propTypes = {
 container.defaultProps = {
   height: 'tall',
   fontSize: 'default',
-  letterSpacing: 'default',
-  fontFamily: 'FaktSoftPro-Normal'
+  letterSpacing: 'default'
 }
 
 export const button = css`
@@ -72,6 +74,14 @@ export const label = css`
     disabled ? colors.disabled : colors.dark};
   ${text};
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+  ${defaultFontFamily};
+  ${fontSize};
+  ${letterSpacing};
+  ${fontFamily};
 `
 
-label.propTypes = {}
+label.propTypes = {
+  ...fontSize.propTypes,
+  ...letterSpacing.propTypes,
+  ...fontFamily.propTypes
+}

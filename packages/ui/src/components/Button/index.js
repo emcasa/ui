@@ -9,7 +9,12 @@ import {
 } from 'styled-system'
 import {css} from 'styled-components'
 
-import {letterSpacing, buttonHeight, fontSize} from '../../styles'
+import {
+  letterSpacing,
+  buttonHeight,
+  fontSize,
+  defaultFontFamily
+} from '../../styles'
 
 export const container = css`
   padding: 0 20px 0 20px;
@@ -47,6 +52,7 @@ export const text = css`
     else if (active) return colors.white
     else return colors.dark
   }};
+  ${defaultFontFamily}
   ${letterSpacing}
   ${fontFamily}
   ${fontSize}
@@ -61,6 +67,5 @@ text.propTypes = {
 }
 
 text.defaultProps = {
-  fontFamily: 'FaktSoftPro-Normal',
   fontSize: 'default'
 }

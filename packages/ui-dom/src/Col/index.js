@@ -7,5 +7,4 @@ const Col = styled.div`
 
 Col.propTypes = col.container.propTypes
 
-/** @component */
 export default Col
