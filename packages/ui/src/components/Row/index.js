@@ -18,3 +18,12 @@ export const container = css`
   ${alignItems}
   ${justifyContent}
 `
+
+container.propTypes = {
+  ...col.propTypes,
+  ...flexWrap.propTypes,
+  ...flexBasis.propTypes,
+  ...flexDirection.propTypes,
+  ...alignItems.propTypes,
+  ...justifyContent.propTypes
+}

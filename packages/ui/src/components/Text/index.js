@@ -3,7 +3,7 @@ import {
   color,
   fontWeight,
   fontFamily,
-  fontStyle,  
+  fontStyle,
   lineHeight,
   textAlign
 } from 'styled-system'
@@ -20,6 +20,17 @@ export const container = css`
   ${lineHeight}
   ${textAlign}
 `
+
+container.propTypes = {
+  ...letterSpacing.propTypes,
+  ...color.propTypes,
+  ...fontSize.propTypes,
+  ...fontWeight.propTypes,
+  ...fontFamily.propTypes,
+  ...fontStyle.propTypes,
+  ...lineHeight.propTypes,
+  ...textAlign.propTypes
+}
 
 container.defaultProps = {
   fontFamily: 'FaktSoftPro-Blond',

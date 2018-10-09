@@ -26,6 +26,7 @@ const Label = styled.label`
 
 Label.defaultProps = styles.label.defaultProps
 
+/** @component */
 export default RadioButton(({onChange, disabled, checked, label, ...props}) => (
   <Container
     onClick={onChange}

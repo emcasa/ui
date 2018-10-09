@@ -1,5 +1,13 @@
+import {
+  color,
+  space,
+  fontFamily,
+  flex,
+  flexDirection,
+  alignItems,
+  justifyContent
+} from 'styled-system'
 import {css} from 'styled-components'
-import {color, fontFamily} from 'styled-system'
 
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
@@ -12,14 +20,23 @@ export const container = css`
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
   ${buttonHeight};
-
-  width: ${({fluid}) => fluid ? '100%' : 'auto'};
-
-  & :hover {
-    background-color: ${({active, disabled, theme: {colors}}) =>
-      active && !disabled ? colors.pink : colors.white};
-  }
+  width: ${({fluid}) => (fluid ? '100%' : 'auto')};
+  ${buttonHeight}
+  ${space}
+  ${flex}
+  ${flexDirection}
+  ${alignItems}
+  ${justifyContent}
 `
+
+container.propTypes = {
+  ...buttonHeight.propTypes,
+  ...space.propTypes,
+  ...flex.propTypes,
+  ...flexDirection.propTypes,
+  ...alignItems.propTypes,
+  ...justifyContent.propTypes
+}
 
 container.defaultProps = {
   height: 'medium'
@@ -36,6 +53,13 @@ export const text = css`
   ${fontSize}
   ${color}
 `
+
+text.propTypes = {
+  ...letterSpacing.propTypes,
+  ...fontFamily.propTypes,
+  ...fontSize.propTypes,
+  ...color.propTypes
+}
 
 text.defaultProps = {
   fontFamily: 'FaktSoftPro-Normal',

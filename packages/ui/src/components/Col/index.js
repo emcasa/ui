@@ -10,3 +10,11 @@ export const container = css`
   ${alignSelf}
   ${justifySelf}
 `
+
+container.propTypes = {
+  ...view.propTypes,
+  ...flex.propTypes,
+  ...order.propTypes,
+  ...alignSelf.propTypes,
+  ...justifySelf.propTypes
+}
