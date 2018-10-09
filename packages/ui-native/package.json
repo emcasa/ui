@@ -7,6 +7,7 @@
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
     "build": "babel src -d components",
+    "clean": "rm -rf components",
     "watch": "yarn build --watch",
     "prepublish": "yarn build",
     "storybook": "start-storybook -p 7007",
