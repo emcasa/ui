@@ -14,7 +14,8 @@
       "**/expo",
       "**/expo/**",
       "**/metro",
-      "**/metro/**"
+      "**/metro/**",
+      "**/metro-bundler-config-yarn-workspaces"
     ]
   },
   "scripts": {
