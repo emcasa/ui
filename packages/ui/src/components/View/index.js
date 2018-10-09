@@ -9,3 +9,16 @@ export const container = css`
   ${flex}
   ${alignSelf}
 `
+
+container.propTypes = {
+  ...space.propTypes,
+  ...width.propTypes,
+  ...flex.propTypes,
+  ...order.propTypes,
+  ...alignSelf.propTypes
+}
+
+container.defaultProps = {
+  body: false,
+  bottom: false
+}

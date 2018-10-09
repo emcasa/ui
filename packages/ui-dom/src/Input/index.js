@@ -19,11 +19,17 @@ const Input = styled.input`
   }
 `
 
+Input.propTypes = {
+  ...input.container.propTypes,
+  ...input.text.propTypes
+}
+
 Input.defaultProps = {
   ...input.container.defaultProps,
   ...input.text.defaultProps
 }
 
+/** @component */
 export default (props) => {
   return (
     <View>

@@ -1,5 +1,5 @@
 import {css} from 'styled-components'
-import {themeGet, color, border, borderColor} from 'styled-system'
+import {themeGet, color, border, borderColor, fontFamily} from 'styled-system'
 
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
@@ -19,6 +19,13 @@ export const container = css`
   ${borderColor}
 `
 
+container.propTypes = {
+  ...letterSpacing.propTypes,
+  ...buttonHeight.propTypes,
+  ...border.propTypes,
+  ...borderColor.propTypes
+}
+
 container.defaultProps = {
   letterSpacing: 'default',
   height: 'tall'
@@ -29,8 +36,25 @@ export const text = css`
     disabled ? colors.disabled : colors.dark};
   ${color};
   ${fontSize};
+  ${letterSpacing};
+  ${fontFamily};
 `
+
+text.propTypes = {
+  ...color.propTypes,
+  ...fontSize.propTypes,
+  ...letterSpacing.propTypes,
+  ...fontFamily.propTypes
+}
+
+text.defaultProps = {
+  fontFamily: 'FaktSoftPro-Normal',
+  fontSize: 'default',
+  letterSpacing: 'default'
+}
 
 export const placeholder = css`
   color: ${themeGet('colors.disabled')};
 `
+
+placeholder.propTypes = {}

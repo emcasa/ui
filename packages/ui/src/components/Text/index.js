@@ -21,8 +21,18 @@ export const container = css`
   ${textAlign}
 `
 
+container.propTypes = {
+  ...letterSpacing.propTypes,
+  ...color.propTypes,
+  ...fontSize.propTypes,
+  ...fontWeight.propTypes,
+  ...fontFamily.propTypes,
+  ...fontStyle.propTypes,
+  ...lineHeight.propTypes,
+  ...textAlign.propTypes
+}
+
 container.defaultProps = {
-  fontFamily: 'FaktSoftPro-Normal',
-  fontSize: 'default',
-  letterSpacing: 'default'
+  fontFamily: 'FaktSoftPro-Blond',
+  fontSize: 'default'
 }

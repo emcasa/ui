@@ -1,5 +1,7 @@
 import {
   color,
+  space,
+  fontFamily,
   flex,
   flexDirection,
   alignItems,
@@ -17,14 +19,23 @@ export const container = css`
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
+  width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   ${buttonHeight}
+  ${space}
   ${flex}
   ${flexDirection}
   ${alignItems}
   ${justifyContent}
 `
 
-container.propTypes = buttonHeight.propTypes
+container.propTypes = {
+  ...buttonHeight.propTypes,
+  ...space.propTypes,
+  ...flex.propTypes,
+  ...flexDirection.propTypes,
+  ...alignItems.propTypes,
+  ...justifyContent.propTypes
+}
 
 container.defaultProps = {
   height: 'medium'
@@ -37,17 +48,19 @@ export const text = css`
     else return colors.dark
   }};
   ${letterSpacing}
+  ${fontFamily}
   ${fontSize}
   ${color}
 `
 
 text.propTypes = {
   ...letterSpacing.propTypes,
+  ...fontFamily.propTypes,
   ...fontSize.propTypes,
   ...color.propTypes
 }
 
 text.defaultProps = {
-  fontSize: 'default',
-  letterSpacing: 'default'
+  fontFamily: 'FaktSoftPro-Normal',
+  fontSize: 'default'
 }
