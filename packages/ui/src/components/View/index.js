@@ -11,7 +11,7 @@ export const container = css`
 
   @media only screen and (max-device-width: 600px) {
     ${({body}) => (body && css`
-      margin-bottom: ${({theme: {space}}) => space[5]};
+      margin-bottom: ${({theme: {space}}) => space[5]}px;
     `)}
 
     ${({bottom}) => (bottom && css`
