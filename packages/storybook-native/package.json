@@ -12,11 +12,13 @@
     "storybook": "storybook start -p 7007"
   },
   "dependencies": {
-    "@emcasa/storybook": "0.2.2",
+    "@emcasa/ui": "0.2.2",
     "@emcasa/ui-native": "0.2.2",
     "expo": "^30.0.1",
     "react": "16.3.1",
     "react-native": "0.55.4",
+    "styled-components": "^3.4.10",
+    "styled-system": "^3.1.6",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
@@ -28,7 +30,6 @@
     "babel-runtime": "^6.26.0",
     "concurrently": "^4.0.1",
     "metro-bundler-config-yarn-workspaces": "^1.0.3",
-    "react-dom": "^16.5.2",
-    "metro": "0.30.1"
+    "react-dom": "^16.5.2"
   }
 }
