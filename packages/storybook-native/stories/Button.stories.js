@@ -6,11 +6,9 @@ import {action} from '@storybook/addon-actions'
 
 import {Button} from '@emcasa/ui-native'
 
-console.log(Button)
-
 const story = storiesOf('Button', module)
 
-story.add('simple', () => (
+story.add('basic', () => (
   <View style={{flexDirection: 'column'}}>
     <Button onClick={action('clicked')}>This is a button</Button>
     <Button active onClick={action('clicked')}>

@@ -4,7 +4,7 @@
   "version": "0.2.2",
   "private": true,
   "scripts": {
-    "start": "concurrently \"yarn expo --clear\" \"yarn storybook\"",
+    "start": "concurrently \"yarn expo\" \"yarn storybook\"",
     "expo": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
