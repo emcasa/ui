@@ -23,6 +23,5 @@ export const container = css`
 
 container.defaultProps = {
   fontFamily: 'FaktSoftPro-Blond',
-  fontSize: 'default',
-  letterSpacing: 'default'
+  fontSize: 'default'
 }
