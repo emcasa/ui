@@ -4,8 +4,8 @@ import { color } from 'styled-system'
 import { iconSize } from '@emcasa/ui/lib/styles'
 import { ICON_SIZE } from '@emcasa/ui/lib/theme/measures'
 
-import {ChevronCircleRight} from 'styled-icons/fa-solid/ChevronCircleRight'
-import {CheckCircle} from 'styled-icons/fa-solid/CheckCircle'
+import {ChevronCircleRight} from 'styled-icons/fa-solid/ChevronCircleRight.cjs'
+import {CheckCircle} from 'styled-icons/fa-solid/CheckCircle.cjs'
 
 const IconType = (type) => {
   switch (type) {
