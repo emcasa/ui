@@ -7,4 +7,6 @@ const Col = styled.View`
 
 Col.propTypes = col.container.propTypes
 
+Col.displayName = 'Col'
+
 export default Col

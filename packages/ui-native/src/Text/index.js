@@ -14,4 +14,6 @@ Text.defaultProps = {
   ...text.container.defaultProps
 }
 
+Text.displayName = 'Text'
+
 export default Text

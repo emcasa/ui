@@ -1,32 +1,31 @@
 import React from 'react'
-import pick from 'lodash.pick'
 import styled from 'styled-components/native'
 import * as button from '@emcasa/ui/lib/components/Button'
 
-export const Button = styled.TouchableOpacity`
+export const ButtonView = styled.TouchableOpacity`
   ${button.container};
 `
-
-Button.propTypes = {
-  ...button.container.propTypes
-}
-
-Button.defaultProps = {
-  ...button.container.defaultProps,
-  alignItems: 'center',
-  justifyContent: 'center'
-}
 
 export const ButtonText = styled.Text`
   ${button.text};
 `
 
-ButtonText.defaultProps = {
-  ...button.text.defaultProps
+export default function Button({children, ...props}) {
+  return (
+    <ButtonView {...props}>
+      <ButtonText {...props}>{children}</ButtonText>
+    </ButtonView>
+  )
 }
 
-export default ({children, ...props}) => (
-  <Button {...props}>
-    <ButtonText {...pick(props, ['active', 'disabled'])}>{children}</ButtonText>
-  </Button>
-)
+Button.propTypes = {
+  ...button.container.propTypes,
+  ...button.text.propTypes
+}
+
+Button.defaultProps = {
+  ...button.container.defaultProps,
+  ...button.text.defaultProps,
+  alignItems: 'center',
+  justifyContent: 'center'
+}
