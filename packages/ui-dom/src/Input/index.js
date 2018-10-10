@@ -8,7 +8,11 @@ import Text from '../Text'
 
 const focused = withProps({focus: true})
 
-const Input = styled.input`
+const Input = styled((props) => {
+  const domProps = Object.assign({}, props)
+  delete domProps.area
+  return props.area ? <textarea {...domProps}></textarea> : <input {...domProps}/>
+})`
   ${input.container};
   ${input.text};
   :focus {
