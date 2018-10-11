@@ -18,6 +18,10 @@
       "**/metro-bundler-config-yarn-workspaces"
     ]
   },
+  "engines": {
+    "yarn": ">=1.5.1",
+    "node": ">=9.11.0"
+  },
   "scripts": {
     "prepare": "lerna run postinstall && lerna run prepublish",
     "start": "concurrently \"yarn watch\" \"yarn dev\"",
