@@ -1,8 +1,11 @@
 import React, {Component} from 'react'
 import {AppRegistry} from 'react-native'
-import {getStorybookUI, configure} from '@storybook/react-native'
+import {getStorybookUI, addDecorator, configure} from '@storybook/react-native'
 
+import Container from './StoryContainer'
 import Theme from './ThemeWrapper'
+
+addDecorator((story) => <Container story={story} />)
 
 // import stories
 configure(() => require('../stories'), module)
