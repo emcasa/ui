@@ -2,30 +2,29 @@ import React from 'react'
 import styled from 'styled-components'
 import RadioButton, * as styles from '@emcasa/ui/lib/components/RadioButton'
 
-const Container = styled.div`
-  box-sizing: border-box;
-  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+import {safe} from '../utils'
+
+const Container = styled(safe.TouchableOpacity)`
+  flex-direction: row;
+  align-items: center;
   ${styles.container};
 `
 
 Container.defaultProps = styles.container.defaultProps
 
-const Button = styled.div`
-  box-sizing: border-box;
+const Button = styled(safe.View)`
   ${styles.button};
 `
 
 Button.defaultProps = styles.button.defaultProps
 
-const CheckMark = styled.div`
-  box-sizing: border-box;
+const CheckMark = styled(safe.View)`
   ${styles.checkMark};
 `
 
 CheckMark.defaultProps = styles.checkMark.defaultProps
 
-const Label = styled.label`
-  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+const Label = styled(safe.Text)`
   ${styles.label};
 `
 
@@ -33,7 +32,7 @@ Label.defaultProps = styles.label.defaultProps
 
 export default RadioButton(({onChange, disabled, checked, label, ...props}) => (
   <Container
-    onClick={onChange}
+    onPress={onChange}
     disabled={disabled}
     checked={checked}
     {...props}
