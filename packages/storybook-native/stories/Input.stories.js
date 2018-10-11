@@ -12,7 +12,7 @@ story.add('simple', () => (
   </View>
 ))
 
-story.add('withb label', () => (
+story.add('with label', () => (
   <View>
     <Input label="Label" placeholder="Input with label" />
   </View>
