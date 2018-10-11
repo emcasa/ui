@@ -32,12 +32,15 @@ export default (Target) =>
     }
 
     onChange = () => {
-      const {onChange, disabled, value} = this.props
+      const {disabled, value} = this.props
       if (disabled) return
-      this.setState({checked: !this.state.checked}, () => {
-        if (onChange)
-          onChange(this.state.checked || this.state.isControlled ? value : null)
-      })
+      const checked = !this.state.checked
+      const onChange = () => {
+        if (this.props.onChange)
+          this.props.onChange(checked || this.state.isControlled ? value : null)
+      }
+      if (this.state.isControlled) onChange()
+      else this.setState({checked}, onChange)
     }
 
     render() {
