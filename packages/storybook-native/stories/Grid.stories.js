@@ -7,18 +7,24 @@ import {Row, Col, Text} from '@emcasa/ui-native'
 
 const story = storiesOf('Grid', module)
 
+const colStyle = {
+  borderColor: 'gray',
+  borderWidth: 0.5,
+  paddingVertical: 5
+}
+
 story.add('simple', () => (
   <View style={{flexDirection: 'column'}}>
-    <Col>
-      <Text>Full width column (12/12)</Text>
+    <Col style={colStyle}>
+      <Text textAlign="center">Full width column (12/12)</Text>
     </Col>
     {[...Array(11)].map((_, i) => (
       <Row key={i}>
-        <Col width={(i + 1) / 12}>
-          <Text>{i}</Text>
+        <Col width={(i + 1) / 12} style={colStyle}>
+          <Text textAlign="center">{i + 1}</Text>
         </Col>
-        <Col width={(12 - i) / 12}>
-          <Text>{12 - i}</Text>
+        <Col width={1 - (i + 1) / 12} style={colStyle}>
+          <Text textAlign="center">{12 - i - 1}</Text>
         </Col>
       </Row>
     ))}
