@@ -2,7 +2,9 @@ import React from 'react'
 import styled from 'styled-components/native'
 import * as text from '@emcasa/ui/lib/components/Text'
 
-const Text = styled.Text`
+import {safe} from '../utils'
+
+const Text = styled(safe.Text)`
   ${text.container};
 `
 

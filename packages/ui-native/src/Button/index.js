@@ -2,11 +2,13 @@ import React from 'react'
 import styled from 'styled-components/native'
 import * as button from '@emcasa/ui/lib/components/Button'
 
-export const ButtonView = styled.TouchableOpacity`
+import {safe} from '../utils'
+
+export const ButtonView = styled(safe.TouchableOpacity)`
   ${button.container};
 `
 
-export const ButtonText = styled.Text`
+export const ButtonText = styled(safe.Text)`
   ${button.text};
 `
 

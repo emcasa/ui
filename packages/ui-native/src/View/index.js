@@ -1,7 +1,9 @@
 import styled from 'styled-components/native'
 import * as view from '@emcasa/ui/lib/components/View'
 
-const View = styled.View`
+import {safe} from '../utils'
+
+const View = styled(safe.View)`
   ${view.container};
 `
 
