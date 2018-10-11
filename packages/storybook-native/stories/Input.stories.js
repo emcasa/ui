@@ -17,3 +17,9 @@ story.add('with label', () => (
     <Input label="Label" placeholder="Input with label" />
   </View>
 ))
+
+story.add('textarea', () => (
+  <View>
+    <Input area height={120} placeholder="A textarea" />
+  </View>
+))

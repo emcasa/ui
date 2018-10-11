@@ -8,7 +8,9 @@ import Text from '../Text'
 
 const focused = withProps({focus: true})
 
-const Input = styled.input`
+const Input = styled(
+  ({area, ...props}) => (area ? <textarea {...props} /> : <input {...props} />)
+)`
   outline: none;
   :focus {
     ${focused(input.container)};
@@ -30,7 +32,6 @@ Input.defaultProps = {
   ...input.text.defaultProps
 }
 
-/** @component */
 export default (props) => {
   return (
     <View>

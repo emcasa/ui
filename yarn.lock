@@ -1217,22 +1217,6 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@emcasa/ui@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui/-/ui-0.2.2.tgz#4daced8d9ac0103242b2feafeb5224869e943f40"
-  dependencies:
-    styled-components "3.4.9"
-    styled-icons "3.0.0"
-    styled-system "3.1.6"
-
-"@emcasa/ui@^0.2.2":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@emcasa/ui/-/ui-0.2.6.tgz#b2f0c5e3060f6cc96c640009841bc87a8fc39211"
-  dependencies:
-    styled-components "3.4.9"
-    styled-icons "3.0.0"
-    styled-system "3.1.6"
-
 "@emotion/babel-utils@^0.6.4":
   version "0.6.10"
   resolved "https://registry.yarnpkg.com/@emotion/babel-utils/-/babel-utils-0.6.10.tgz#83dbf3dfa933fae9fc566e54fbb45f14674c6ccc"

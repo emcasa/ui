@@ -11,38 +11,39 @@ const TextInput = styled(safe.TextInput)`
   ${input.text};
 `
 
-export default withTheme(
-  class Input extends PureComponent {
-    static propTypes = {
-      ...input.container.propTypes,
-      ...input.text.propTypes
-    }
-
-    static defaultProps = {
-      ...input.container.defaultProps,
-      ...input.text.defaultProps
-    }
-
-    state = {focus: false}
-
-    onFocus = () => this.setState({focus: true}, this.props.onFocus)
-
-    onBlur = () => this.setState({focus: false}, this.props.onBlur)
-
-    render() {
-      const {theme, ...props} = this.props
-      return (
-        <View>
-          {props.label && <Text>{props.label}</Text>}
-          <TextInput
-            placeholderTextColor={theme.colors.disabled}
-            {...props}
-            {...this.state}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-          />
-        </View>
-      )
-    }
+class Input extends PureComponent {
+  static propTypes = {
+    ...input.container.propTypes,
+    ...input.text.propTypes
   }
-)
+
+  static defaultProps = {
+    ...input.container.defaultProps,
+    ...input.text.defaultProps
+  }
+
+  state = {focus: false}
+
+  onFocus = () => this.setState({focus: true}, this.props.onFocus)
+
+  onBlur = () => this.setState({focus: false}, this.props.onBlur)
+
+  render() {
+    const {theme, ...props} = this.props
+    return (
+      <View>
+        {props.label && <Text>{props.label}</Text>}
+        <TextInput
+          placeholderTextColor={theme.colors.disabled}
+          multiline={props.area}
+          {...props}
+          {...this.state}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+        />
+      </View>
+    )
+  }
+}
+
+export default withTheme(Input)

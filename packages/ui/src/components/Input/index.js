@@ -9,7 +9,6 @@ import {
 } from '../../styles'
 
 export const container = css`
-  padding: 0 14px 0 14px;
   border-radius: 4px;
   border: 1px solid;
   border-color: ${({active, disabled, focus, theme: {colors}}) => {
@@ -17,9 +16,13 @@ export const container = css`
     else if (active && !disabled) return colors.pink
     else return colors.lightGrey
   }};
-  ${buttonHeight}
-  ${border}
-  ${borderColor}
+  padding: ${({area, theme: {space}}) =>
+    area
+      ? `${space[2]}px ${space[2]}px ${space[2]}px ${space[2]}px`
+      : `${space[0]}px ${space[2]}px ${space[0]}px ${space[2]}px`};
+  ${buttonHeight};
+  ${border};
+  ${borderColor};
 `
 
 container.propTypes = {
