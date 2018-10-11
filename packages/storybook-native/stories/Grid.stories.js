@@ -13,7 +13,7 @@ const colStyle = {
   paddingVertical: 5
 }
 
-story.add('simple', () => (
+story.add('basic', () => (
   <View style={{flexDirection: 'column'}}>
     <Col style={colStyle}>
       <Text textAlign="center">Full width column (12/12)</Text>

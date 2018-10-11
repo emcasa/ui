@@ -6,7 +6,7 @@ import {View, Text} from '@emcasa/ui-native'
 
 const story = storiesOf('View', module)
 
-story.add('simple', () => (
+story.add('basic', () => (
   <View p={4}>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

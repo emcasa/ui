@@ -7,7 +7,7 @@ import {Text} from '@emcasa/ui-native'
 
 const story = storiesOf('Text', module)
 
-story.add('simple', () => (
+story.add('basic', () => (
   <View style={{flexDirection: 'column'}}>
     <Text>This is a paragraph.</Text>
     <Text fontWeight="bold" color="pink">

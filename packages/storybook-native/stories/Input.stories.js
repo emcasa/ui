@@ -6,7 +6,7 @@ import {View, Input} from '@emcasa/ui-native'
 
 const story = storiesOf('Input', module)
 
-story.add('simple', () => (
+story.add('basic', () => (
   <View>
     <Input placeholder="Just an input" />
   </View>
