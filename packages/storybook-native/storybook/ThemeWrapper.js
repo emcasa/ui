@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react'
-import {Platform} from 'react-native'
 import {Font} from 'expo'
 import {ThemeProvider} from 'styled-components'
 import theme from '@emcasa/ui'

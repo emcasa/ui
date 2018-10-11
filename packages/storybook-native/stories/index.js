@@ -1,4 +1,5 @@
 import './Button.stories'
 import './Grid.stories'
+import './Input.stories'
 import './Text.stories'
 import './View.stories'

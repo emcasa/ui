@@ -9,7 +9,6 @@ import {
 } from '../../styles'
 
 export const container = css`
-  outline: none;
   padding: 0 14px 0 14px;
   border-radius: 4px;
   border: 1px solid;
@@ -18,21 +17,18 @@ export const container = css`
     else if (active && !disabled) return colors.pink
     else return colors.lightGrey
   }};
-  ${letterSpacing}
   ${buttonHeight}
   ${border}
   ${borderColor}
 `
 
 container.propTypes = {
-  ...letterSpacing.propTypes,
   ...buttonHeight.propTypes,
   ...border.propTypes,
   ...borderColor.propTypes
 }
 
 container.defaultProps = {
-  letterSpacing: 'default',
   height: 'tall'
 }
 

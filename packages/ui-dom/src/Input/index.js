@@ -9,14 +9,15 @@ import Text from '../Text'
 const focused = withProps({focus: true})
 
 const Input = styled.input`
-  ${input.container};
-  ${input.text};
+  outline: none;
   :focus {
     ${focused(input.container)};
   }
   ::placeholder {
     ${input.placeholder};
   }
+  ${input.container};
+  ${input.text};
 `
 
 Input.propTypes = {
