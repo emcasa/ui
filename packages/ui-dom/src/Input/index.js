@@ -2,8 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import {withProps} from '@emcasa/ui/lib/utils'
 import * as input from '@emcasa/ui/lib/components/Input'
-
-import View from '../View'
 import Text from '../Text'
 
 const focused = withProps({focus: true})
@@ -31,9 +29,9 @@ Input.defaultProps = {
 
 export default (props) => {
   return (
-    <View>
+    <>
       {props.label && <Text inline fontSize="small">{props.label}</Text>}
       <Input {...props} />
-    </View>
+    </>
   )
 }
