@@ -1,5 +1,5 @@
 {
-  "vendors.js": "/static/js/vendors.9c3098f9.js",
+  "vendors.js": "/static/js/vendors.054ca49e.js",
   "app.js": "/static/js/app.e5ce30d6.js",
   "docs-button.js": "/static/js/docs-button.1e5e9f0a.js",
   "docs-grid.js": "/static/js/docs-grid.5870191a.js",
@@ -10,6 +10,6 @@
   "docs-radio-group.js": "/static/js/docs-radio-group.f0d05118.js",
   "docs-text.js": "/static/js/docs-text.fe00bd95.js",
   "docs-view.js": "/static/js/docs-view.ab55d1ee.js",
-  "runtime~app.js": "/static/js/runtime~app.5901c2e6a7b93092c5d8.js",
+  "runtime~app.js": "/static/js/runtime~app.f1d35a08f5b3594cd40d.js",
   "index.html": "/index.html"
 }
