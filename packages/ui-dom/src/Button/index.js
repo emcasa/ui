@@ -3,9 +3,14 @@ import styled from 'styled-components'
 import * as button from '@emcasa/ui/lib/components/Button'
 
 const Button = styled.button`
-  ${button.container}
-  ${button.text}
+  ${(props) => props.fluid && 'display: block'};
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
+  & :hover {
+    background-color: ${({active, disabled, theme: {colors}}) =>
+      active && !disabled ? colors.pink : colors.white};
+  }
+  ${button.container};
+  ${button.text};
 `
 
 Button.defaultProps = {

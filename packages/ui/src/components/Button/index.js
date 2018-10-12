@@ -43,7 +43,8 @@ container.propTypes = {
 }
 
 container.defaultProps = {
-  height: 'medium'
+  height: 'medium',
+  fluid: false
 }
 
 export const text = css`

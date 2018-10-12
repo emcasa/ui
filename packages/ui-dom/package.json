@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui-dom",
-  "version": "0.3.4",
+  "version": "0.3.6",
   "description": "EmCasa's UI library",
   "license": "MIT",
   "main": "components/index.js",
@@ -15,7 +15,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "@emcasa/ui": "^0.3.4",
+    "@emcasa/ui": "^0.3.5",
     "@rebass/grid": "6.0.0-4",
     "styled-icons": "^3.0.0",
     "styled-system": "3.1.6"

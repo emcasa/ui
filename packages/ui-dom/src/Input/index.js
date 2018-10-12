@@ -2,15 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import {withProps} from '@emcasa/ui/lib/utils'
 import * as input from '@emcasa/ui/lib/components/Input'
-
-import View from '../View'
 import Text from '../Text'
 
 const focused = withProps({focus: true})
 
-const Input = styled(
+const TextInput = styled(
   ({area, ...props}) => (area ? <textarea {...props} /> : <input {...props} />)
 )`
+  display: block;
+  width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   outline: none;
   :focus {
     ${focused(input.container)};
@@ -22,6 +22,19 @@ const Input = styled(
   ${input.text};
 `
 
+export default function Input(props) {
+  return (
+    <div>
+      {props.label && (
+        <Text inline fontSize="small">
+          {props.label}
+        </Text>
+      )}
+      <TextInput {...props} />
+    </div>
+  )
+}
+
 Input.propTypes = {
   ...input.container.propTypes,
   ...input.text.propTypes
@@ -30,13 +43,4 @@ Input.propTypes = {
 Input.defaultProps = {
   ...input.container.defaultProps,
   ...input.text.defaultProps
-}
-
-export default (props) => {
-  return (
-    <View>
-      {props.label && <Text>{props.label}</Text>}
-      <Input {...props} />
-    </View>
-  )
 }
