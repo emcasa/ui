@@ -9,9 +9,7 @@
     "build": "babel src -d components",
     "clean": "rm -rf components",
     "watch": "yarn build --watch",
-    "prepublish": "yarn build",
-    "storybook": "start-storybook -p 7007",
-    "build-storybook": "build-storybook"
+    "prepublish": "yarn build"
   },
   "dependencies": {
     "@emcasa/ui": "^0.3.4",
