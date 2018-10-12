@@ -6,12 +6,9 @@ import Text from '../Text'
 
 const focused = withProps({focus: true})
 
-const Input = styled((props) => {
-  const domProps = Object.assign({}, props)
-  delete domProps.area
-  delete domProps.fluid
-  return props.area ? <textarea {...domProps}></textarea> : <input {...domProps}/>
-})`
+const TextInput = styled(
+  ({area, ...props}) => (area ? <textarea {...props} /> : <input {...props} />)
+)`
   ${input.container};
   ${input.text};
   :focus {
@@ -22,16 +19,25 @@ const Input = styled((props) => {
   }
 `
 
+export default function Input(props) {
+  return (
+    <div>
+      {props.label && (
+        <Text inline fontSize="small">
+          {props.label}
+        </Text>
+      )}
+      <TextInput {...props} />
+    </div>
+  )
+}
+
+Input.propTypes = {
+  ...input.container.propTypes,
+  ...input.text.propTypes
+}
+
 Input.defaultProps = {
   ...input.container.defaultProps,
   ...input.text.defaultProps
-}
-
-export default (props) => {
-  return (
-    <>
-      {props.label && <Text inline fontSize="small">{props.label}</Text>}
-      <Input {...props} />
-    </>
-  )
 }
