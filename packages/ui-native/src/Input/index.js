@@ -32,7 +32,7 @@ class Input extends PureComponent {
     const {theme, ...props} = this.props
     return (
       <View>
-        {props.label && <Text>{props.label}</Text>}
+        {props.label && <Text fontSize="small">{props.label}</Text>}
         <TextInput
           placeholderTextColor={theme.colors.disabled}
           multiline={props.area}
