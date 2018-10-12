@@ -4,6 +4,10 @@ import {color, fontFamily} from 'styled-system'
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
 export const container = css`
+  ${(props) => props.fluid && css`display: block;`}
+  width: ${({fluid}) => fluid ? '100%' : 'auto'};
+  ${buttonHeight};
+
   padding: 0 20px 0 20px;
   border-radius: 4px;
   border: 1px solid;
@@ -11,9 +15,6 @@ export const container = css`
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
-  ${buttonHeight};
-
-  width: ${({fluid}) => fluid ? '100%' : 'auto'};
 
   & :hover {
     background-color: ${({active, disabled, theme: {colors}}) =>
@@ -22,7 +23,8 @@ export const container = css`
 `
 
 container.defaultProps = {
-  height: 'medium'
+  height: 'medium',
+  fluid: false
 }
 
 export const text = css`

@@ -11,6 +11,7 @@ const focused = withProps({focus: true})
 const Input = styled((props) => {
   const domProps = Object.assign({}, props)
   delete domProps.area
+  delete domProps.fluid
   return props.area ? <textarea {...domProps}></textarea> : <input {...domProps}/>
 })`
   ${input.container};
@@ -31,7 +32,7 @@ Input.defaultProps = {
 export default (props) => {
   return (
     <View>
-      {props.label && <Text>{props.label}</Text>}
+      {props.label && <Text inline fontSize="small">{props.label}</Text>}
       <Input {...props} />
     </View>
   )

@@ -10,6 +10,8 @@ import {
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
 export const container = css`
+  display: block;
+  width: ${({fluid}) => fluid ? '100%' : 'auto'};
   outline: none;
   border-radius: 4px;
   border: 1px solid;
@@ -32,7 +34,8 @@ export const container = css`
 
 container.defaultProps = {
   letterSpacing: 'default',
-  height: 'tall'
+  height: 'tall',
+  fluid: true
 }
 
 export const text = css`
