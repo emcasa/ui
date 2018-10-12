@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui-dom",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "EmCasa's UI library",
   "license": "MIT",
   "main": "components/index.js",
