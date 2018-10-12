@@ -1,11 +1,18 @@
 import {css} from 'styled-components'
-import {themeGet, color, border, borderColor, fontFamily} from 'styled-system'
+import {
+  themeGet,
+  color,
+  border,
+  borderColor,
+  fontFamily
+} from 'styled-system'
 
 import {letterSpacing, buttonHeight, fontSize} from '../../styles'
 
 export const container = css`
+  display: block;
+  width: ${({fluid}) => fluid ? '100%' : 'auto'};
   outline: none;
-  padding: 0 14px 0 14px;
   border-radius: 4px;
   border: 1px solid;
   border-color: ${({active, disabled, focus, theme: {colors}}) => {
@@ -13,6 +20,12 @@ export const container = css`
     else if (active && !disabled) return colors.pink
     else return colors.lightGrey
   }};
+  padding: ${(props) => {
+    const {area, theme: {space}} = props
+    return (
+      area ? css`${space[2]}px ${space[2]}px ${space[2]}px ${space[2]}px`
+           : css`${space[0]}px ${space[2]}px ${space[0]}px ${space[2]}px`)
+  }}
   ${letterSpacing}
   ${buttonHeight}
   ${border}
@@ -28,7 +41,8 @@ container.propTypes = {
 
 container.defaultProps = {
   letterSpacing: 'default',
-  height: 'tall'
+  height: 'tall',
+  fluid: true
 }
 
 export const text = css`

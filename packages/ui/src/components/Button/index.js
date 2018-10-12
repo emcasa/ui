@@ -19,7 +19,6 @@ export const container = css`
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
-  ${buttonHeight};
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   ${buttonHeight}
   ${space}
@@ -39,7 +38,8 @@ container.propTypes = {
 }
 
 container.defaultProps = {
-  height: 'medium'
+  height: 'medium',
+  fluid: false
 }
 
 export const text = css`
