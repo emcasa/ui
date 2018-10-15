@@ -1,7 +1,17 @@
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
+import {
+  ThemeProvider,
+  injectGlobal as styledInjectGlobal
+} from 'styled-components'
 import injectGlobal from '@emcasa/ui-dom/src/global-styles'
 import theme from '@emcasa/ui'
+
+styledInjectGlobal`
+  * {
+    font-family: 'FaktSoftPro-Normal';
+    -webkit-font-smoothing: antialiased;
+  }
+`
 
 /**
  * Docz Wrapper.
