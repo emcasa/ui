@@ -24,11 +24,6 @@ injectGlobal`
         url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.woff2") format('woff2'),
         url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.ttf") format('ttf');
   }
-
-  * {
-    font-family: 'FaktSoftPro-Normal';
-    -webkit-font-smoothing: antialiased;
-  }
 `
 
 export default injectGlobal
