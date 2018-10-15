@@ -9,6 +9,7 @@ const Text = styled((props) => {
   delete domProps.textAlign
   return (props.inline ? <span {...domProps} /> : <p {...domProps} />)
 })`
+  -webkit-font-smoothing: antialiased;
   ${text.container};
 `
 

@@ -25,6 +25,7 @@ const CheckMark = styled.div`
 CheckMark.defaultProps = styles.checkMark.defaultProps
 
 const Label = styled.label`
+  -webkit-font-smoothing: antialiased;
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   ${styles.label};
 `

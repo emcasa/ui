@@ -10,6 +10,7 @@ const TextInput = styled(
   ({area, fluid, ...props}) =>
     area ? <textarea {...props} /> : <input {...props} />
 )`
+  -webkit-font-smoothing: antialiased;
   display: block;
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   outline: none;

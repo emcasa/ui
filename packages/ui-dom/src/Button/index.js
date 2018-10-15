@@ -11,6 +11,7 @@ const Button = styled.button`
   }
   ${button.container};
   ${button.text};
+  -webkit-font-smoothing: antialiased;
 `
 
 Button.defaultProps = {
