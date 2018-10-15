@@ -5,4 +5,7 @@ const Col = styled.div`
   ${col.container};
 `
 
+Col.propTypes = col.container.propTypes
+
+/** @component */
 export default Col

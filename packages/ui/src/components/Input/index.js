@@ -32,6 +32,13 @@ export const container = css`
   ${borderColor}
 `
 
+container.propTypes = {
+  ...letterSpacing.propTypes,
+  ...buttonHeight.propTypes,
+  ...border.propTypes,
+  ...borderColor.propTypes
+}
+
 container.defaultProps = {
   letterSpacing: 'default',
   height: 'tall',
@@ -43,9 +50,16 @@ export const text = css`
     disabled ? colors.disabled : colors.dark};
   ${color};
   ${fontSize};
-  ${letterSpacing}
-  ${fontFamily}
+  ${letterSpacing};
+  ${fontFamily};
 `
+
+text.propTypes = {
+  ...color.propTypes,
+  ...fontSize.propTypes,
+  ...letterSpacing.propTypes,
+  ...fontFamily.propTypes
+}
 
 text.defaultProps = {
   fontFamily: 'FaktSoftPro-Normal',
@@ -56,3 +70,5 @@ text.defaultProps = {
 export const placeholder = css`
   color: ${themeGet('colors.disabled')};
 `
+
+placeholder.propTypes = {}

@@ -25,6 +25,10 @@ export const container = css`
   ${fontFamily}
 `
 
+container.propTypes = {
+  ...buttonHeight.propTypes
+}
+
 container.defaultProps = {
   height: 'tall',
   fontSize: 'default',
@@ -47,6 +51,8 @@ export const button = css`
   margin-right: 14px;
 `
 
+button.propTypes = {}
+
 const checkMarkMargin =
   (BULLET_SIZE - INNER_BULLET_SIZE - BULLET_BORDER * 2) / 2
 
@@ -59,9 +65,13 @@ export const checkMark = css`
   background-color: white;
 `
 
+checkMark.propTypes = {}
+
 export const label = css`
   color: ${({disabled, theme: {colors}}) =>
     disabled ? colors.disabled : colors.dark};
   ${text};
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
 `
+
+label.propTypes = {}
