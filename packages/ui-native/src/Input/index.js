@@ -9,6 +9,7 @@ import Text from '../Text'
 const TextInput = styled(safe.TextInput)`
   ${input.container};
   ${input.text};
+  text-align-vertical: top;
 `
 
 class Input extends PureComponent {
