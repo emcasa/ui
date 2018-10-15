@@ -7,7 +7,8 @@ import Text from '../Text'
 const focused = withProps({focus: true})
 
 const TextInput = styled(
-  ({area, ...props}) => (area ? <textarea {...props} /> : <input {...props} />)
+  ({area, fluid, ...props}) =>
+    area ? <textarea {...props} /> : <input {...props} />
 )`
   display: block;
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
