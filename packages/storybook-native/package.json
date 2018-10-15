@@ -1,0 +1,35 @@
+{
+  "name": "@emcasa/storybook-native",
+  "main": "node_modules/expo/AppEntry.js",
+  "version": "0.3.4",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"yarn expo\" \"yarn storybook\"",
+    "expo": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "storybook": "storybook start -p 7007"
+  },
+  "dependencies": {
+    "@emcasa/ui": "^0.3.4",
+    "@emcasa/ui-native": "^0.3.4",
+    "expo": "^30.0.1",
+    "react": "16.5.2",
+    "react-native": "0.55.4",
+    "styled-components": "^3.4.10",
+    "styled-system": "^3.1.6",
+    "whatwg-fetch": "^2.0.4"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^3.4.11",
+    "@storybook/addon-links": "^3.4.11",
+    "@storybook/addons": "^3.4.11",
+    "@storybook/react-native": "^3.4.11",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0",
+    "concurrently": "^4.0.1",
+    "metro-bundler-config-yarn-workspaces": "^1.0.3",
+    "react-dom": "^16.5.2"
+  }
+}

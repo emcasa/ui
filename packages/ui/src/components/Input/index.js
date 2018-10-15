@@ -1,18 +1,14 @@
 import {css} from 'styled-components'
-import {
-  themeGet,
-  color,
-  border,
-  borderColor,
-  fontFamily
-} from 'styled-system'
+import {themeGet, color, border, borderColor, fontFamily} from 'styled-system'
 
-import {letterSpacing, buttonHeight, fontSize} from '../../styles'
+import {
+  letterSpacing,
+  buttonHeight,
+  fontSize,
+  defaultFontFamily
+} from '../../styles'
 
 export const container = css`
-  display: block;
-  width: ${({fluid}) => fluid ? '100%' : 'auto'};
-  outline: none;
   border-radius: 4px;
   border: 1px solid;
   border-color: ${({active, disabled, focus, theme: {colors}}) => {
@@ -20,20 +16,16 @@ export const container = css`
     else if (active && !disabled) return colors.pink
     else return colors.lightGrey
   }};
-  padding: ${(props) => {
-    const {area, theme: {space}} = props
-    return (
-      area ? css`${space[2]}px ${space[2]}px ${space[2]}px ${space[2]}px`
-           : css`${space[0]}px ${space[2]}px ${space[0]}px ${space[2]}px`)
-  }}
-  ${letterSpacing}
-  ${buttonHeight}
-  ${border}
-  ${borderColor}
+  padding: ${({area, theme: {space}}) =>
+    area
+      ? `${space[2]}px ${space[2]}px ${space[2]}px ${space[2]}px`
+      : `${space[0]}px ${space[2]}px ${space[0]}px ${space[2]}px`};
+  ${buttonHeight};
+  ${border};
+  ${borderColor};
 `
 
 container.propTypes = {
-  ...letterSpacing.propTypes,
   ...buttonHeight.propTypes,
   ...border.propTypes,
   ...borderColor.propTypes
@@ -48,6 +40,7 @@ container.defaultProps = {
 export const text = css`
   color: ${({disabled, theme: {colors}}) =>
     disabled ? colors.disabled : colors.dark};
+  ${defaultFontFamily};
   ${color};
   ${fontSize};
   ${letterSpacing};
@@ -62,7 +55,6 @@ text.propTypes = {
 }
 
 text.defaultProps = {
-  fontFamily: 'FaktSoftPro-Normal',
   fontSize: 'default',
   letterSpacing: 'default'
 }

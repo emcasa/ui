@@ -1,7 +1,12 @@
 import * as styles from 'styled-system'
 
 import {enumeratedStyle, enumerated} from './utils'
-import {LETTER_SPACING, BUTTON_HEIGHT, FONT_SIZE, ICON_SIZE} from './theme/measures'
+import {
+  LETTER_SPACING,
+  BUTTON_HEIGHT,
+  FONT_SIZE,
+  ICON_SIZE
+} from './theme/measures'
 
 const transformUnit = (unit) => (n) => (isNaN(n) ? n : `${n}${unit}`)
 
@@ -32,3 +37,6 @@ export const iconSize = enumeratedStyle({
 export const fontSize = enumerated(Array.from(FONT_SIZE.keys()), 'fontSize')(
   styles.fontSize
 )
+
+export const defaultFontFamily = ({theme: {fontFamily}}) =>
+  fontFamily ? `font-family: ${fontFamily};` : null

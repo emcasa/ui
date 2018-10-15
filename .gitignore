@@ -16,3 +16,4 @@ public/
 
 # Logs
 *.log
+tmp/

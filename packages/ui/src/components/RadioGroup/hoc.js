@@ -17,6 +17,7 @@ export default (Target) =>
     static getDerivedStateFromProps(props, state) {
       const isControlled = typeof props.selectedValue !== 'undefined'
       return {
+        isControlled,
         selectedValue: isControlled
           ? props.selectedValue
           : state.selectedValue || props.initialValue
@@ -24,11 +25,14 @@ export default (Target) =>
     }
 
     onChange = (value) => {
-      const {onChange, disabled} = this.props
+      const {disabled} = this.props
       if (disabled) return
-      this.setState({selectedValue: value}, () => {
-        if (onChange) onChange(this.state.selectedValue)
-      })
+      const selectedValue = value
+      const onChange = () => {
+        if (this.props.onChange) this.props.onChange(selectedValue)
+      }
+      if (this.state.isControlled) onChange()
+      else this.setState({selectedValue}, onChange)
     }
 
     get buttonProps() {

@@ -8,9 +8,10 @@ import {
   textAlign
 } from 'styled-system'
 
-import {letterSpacing, fontSize} from '../../styles'
+import {letterSpacing, fontSize, defaultFontFamily} from '../../styles'
 
 export const container = css`
+  ${defaultFontFamily}
   ${letterSpacing}
   ${color}
   ${fontSize}
@@ -33,6 +34,5 @@ container.propTypes = {
 }
 
 container.defaultProps = {
-  fontFamily: 'FaktSoftPro-Blond',
   fontSize: 'default'
 }

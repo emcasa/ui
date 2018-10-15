@@ -9,14 +9,17 @@ const focused = withProps({focus: true})
 const TextInput = styled(
   ({area, ...props}) => (area ? <textarea {...props} /> : <input {...props} />)
 )`
-  ${input.container};
-  ${input.text};
+  display: block;
+  width: ${({fluid}) => (fluid ? '100%' : 'auto')};
+  outline: none;
   :focus {
     ${focused(input.container)};
   }
   ::placeholder {
     ${input.placeholder};
   }
+  ${input.container};
+  ${input.text};
 `
 
 export default function Input(props) {
