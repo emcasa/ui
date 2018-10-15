@@ -1,30 +1,36 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { color, space } from 'styled-system'
-import { iconSize } from '@emcasa/ui/lib/styles'
-import { ICON_SIZE } from '@emcasa/ui/lib/theme/measures'
 
-import {ChevronCircleRight} from 'styled-icons/fa-solid/ChevronCircleRight.cjs'
-import {CheckCircle} from 'styled-icons/fa-solid/CheckCircle.cjs'
+import Icon, * as styles from '@emcasa/ui/lib/components/Icon'
 
-const IconType = (type) => {
-  switch (type) {
-    case 'circle-right': return ChevronCircleRight;
-    case 'check-circle': return CheckCircle;
-  }
-}
-
-const Icon = styled((props) => {
-  const CustomIcon = IconType(props.type)
-  return <CustomIcon {...props} width={ICON_SIZE[props.size]} height={ICON_SIZE[props.size]} />
-})`
-  ${space}
-  ${color}
-  ${iconSize}
+const IconComponent = styled(
+  Icon(({icon, size, color, style, className, id, innerRef, ...props}) => (
+    <div style={style} className={className} id={id}>
+      <svg
+        ref={innerRef}
+        height={size}
+        version="1.1"
+        viewBox={`0 0 ${icon.width} ${icon.height}`}
+        x={0}
+        y={0}
+      >
+        <path d={icon.path} fill={color} {...props} />
+      </svg>
+    </div>
+  ))
+)`
+  ${styles.container};
 `
 
-Icon.defaultProps = {
-  size: 'default'
+IconComponent.displayName = 'Icon'
+
+IconComponent.propTypes = {
+  ...styles.container.propTypes
 }
 
-export default Icon
+IconComponent.defaultProps = {
+  ...styles.container.defaultProps
+}
+
+export default IconComponent
