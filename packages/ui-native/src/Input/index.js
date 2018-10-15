@@ -36,6 +36,7 @@ class Input extends PureComponent {
         <TextInput
           placeholderTextColor={theme.colors.disabled}
           multiline={props.area}
+          underlineColorAndroid="rgba(0,0,0,0)"
           {...props}
           {...this.state}
           onFocus={this.onFocus}
