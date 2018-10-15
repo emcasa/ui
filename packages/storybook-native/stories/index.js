@@ -1,5 +1,6 @@
 import './Button.stories'
 import './Grid.stories'
+import './Icon.stories'
 import './Input.stories'
 import './RadioButton.stories'
 import './RadioGroup.stories'
