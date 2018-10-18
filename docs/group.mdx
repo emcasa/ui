@@ -75,8 +75,8 @@ use `OptionWrapper` to render components around each child.
     initialValue="b"
     onChange={(values) => console.log('selected', values)}
     strategy={{
-      isSelected: (selectedValue, value) => console.log(1, selectedValue, value) || selectedValue === value,
-      update: (selectedValue, value) => console.log(2, selectedValue, value) || (selectedValue === value ? undefined : value)
+      isSelected: (selectedValue, value) => selectedValue === value,
+      update: (selectedValue, value) => (selectedValue === value ? undefined : value)
     }}>
     <Button value="a">Button A</Button>
     <Button value="b">Button B</Button>
