@@ -21,7 +21,7 @@ story.add('button group', () => (
     <Button value="b">Button B</Button>
     <Button value="c">Button C</Button>
   </SelectGroup>
-))
+)) 
 
 story.add('multi select group', () => (
   <SelectGroup multi initialValue={['a', 'b']} onChange={action('selected')}>

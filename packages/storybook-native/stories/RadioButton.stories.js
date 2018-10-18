@@ -14,7 +14,17 @@ story.add('basic', () => (
       value="a"
       onChange={action('changed')}
     />
-    <RadioButton label="Controlled RadioButton" value="a" checked />
-    <RadioButton label="Disabled RadioButton" value="b" disabled />
+    <RadioButton label="Controlled RadioButton" value="b" checked />
+    <RadioButton label="Disabled RadioButton" value="c" disabled />
+  </View>
+))
+
+story.add('grouped', () => (
+  <View>
+    <RadioButton.Group onChange={action('changed')}>
+      <RadioButton label="Option A" value="a" />
+      <RadioButton label="Option B" value="B" />
+      <RadioButton label="Option C" value="C" />
+    </RadioButton.Group>
   </View>
 ))
