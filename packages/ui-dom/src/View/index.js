@@ -7,7 +7,7 @@ const View = styled.div`
     ${({body}) =>
       body &&
       css`
-        margin-bottom: ${themeGet('space.5')}px;
+        margin-bottom: ${themeGet('space.6')}px;
       `};
     ${({bottom}) =>
       bottom &&
