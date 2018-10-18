@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import * as button from '@emcasa/ui/lib/components/Button'
+import Group from '@emcasa/ui/lib/components/Group'
 
+import View from '../View'
 import {safe} from '../utils'
 
 export const ButtonView = styled(safe.TouchableOpacity)`
@@ -31,3 +33,9 @@ Button.defaultProps = {
   alignItems: 'center',
   justifyContent: 'center'
 }
+
+Button.Group = Group(({onSelect, selected, disabled}, node) => ({
+  disabled,
+  onPress: () => onSelect(node.props.value),
+  active: selected
+}))(View)

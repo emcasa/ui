@@ -27,3 +27,13 @@ story.add('height', () => (
     <Button>Medium</Button>
   </View>
 ))
+
+story.add('grouped', () => (
+  <View>
+    <Button.Group onChange={action('changed')}>
+      <Button value="a">Button A</Button>
+      <Button value="B">Button B</Button>
+      <Button value="C">Button C</Button>
+    </Button.Group>
+  </View>
+))

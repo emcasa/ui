@@ -1,0 +1,85 @@
+---
+name: Group
+---
+
+import { Playground, PropsTable } from 'docz'
+import View from '@emcasa/ui-dom/components/View'
+import Text from '@emcasa/ui-dom/components/Text'
+import Button from '@emcasa/ui-dom/components/Button'
+import RadioButton from '@emcasa/ui-dom/components/RadioButton'
+
+# Group
+
+## Basic usage
+
+<Playground>
+  <Text>Uncontrolled radio group</Text>
+  <RadioButton.Group initialValue="a" onChange={(value) => console.log('selected', value)}>
+    <RadioButton label="Option 1" value="a" />
+    <RadioButton label="Option 2" value="b" />
+    <RadioButton label="Option 3" value="c" disabled />
+  </RadioButton.Group>
+
+  <Text>Controlled radio group</Text>
+  <RadioButton.Group selectedValue="a" onChange={(value) => console.log('selected', value)}>
+    <RadioButton label="Option 1" value="a" />
+    <RadioButton label="Option 2" value="b" />
+    <RadioButton label="Option 3" value="c" disabled />
+  </RadioButton.Group>
+</Playground>
+
+## OptionWrapper
+
+All children on a Group must be an instance of it's base component, or at least work with the same props.
+use `OptionWrapper` to render components around each child.
+
+<Playground>
+  <Text>With option wrapper</Text>
+  <Button.Group
+    initialValue="b"
+    onChange={(values) => console.log('selected', values)}
+    OptionWrapper={({children}) => <View m={4}>{children}</View>}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
+</Playground>
+
+
+## Select Strategies
+
+<Playground>
+  <Text>Pre-defined strategies:</Text>
+  <Text fontSize="small">simple</Text>
+  <Button.Group
+    strategy="simple"
+    initialValue="b"
+    onChange={(value) => console.log('selected', value)}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
+
+  <Text fontSize="small">multi:</Text>
+  <Button.Group
+    strategy="multi"
+    initialValue={["a", "b"]}
+    onChange={(value) => console.log('selected', value)}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
+
+  <Text>Custom strategy</Text>
+  <Button.Group
+    initialValue="b"
+    onChange={(values) => console.log('selected', values)}
+    strategy={{
+      isSelected: (selectedValue, value) => console.log(1, selectedValue, value) || selectedValue === value,
+      update: (selectedValue, value) => console.log(2, selectedValue, value) || (selectedValue === value ? undefined : value)
+    }}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
+</Playground>

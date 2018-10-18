@@ -11,8 +11,22 @@ Radio Button component. Notice these RadioButtons are not part of a RadioGroup, 
 
 ## Basic usage
 
+Basic radio buttons
+
 <Playground>
   <RadioButton label="Uncontrolled RadioButton" value="a" />
   <RadioButton label="Controlled RadioButton" value="b" checked />
   <RadioButton label="Disabled RadioButton" value="d" disabled />
+</Playground>
+
+# RadioButton.Group
+
+Grouped radio buttons
+
+<Playground>
+  <RadioButton.Group onChange={(value) => console.log('selected', value)}>
+    <RadioButton label="Option A" value="a" />
+    <RadioButton label="Option B" value="b" />
+    <RadioButton label="Option C" value="c" />
+  </RadioButton.Group>
 </Playground>

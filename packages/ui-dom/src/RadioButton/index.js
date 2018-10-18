@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import RadioButton, * as styles from '@emcasa/ui/lib/components/RadioButton'
+import Group from '@emcasa/ui/lib/components/Group'
+
+import View from '../View'
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -32,20 +35,32 @@ const Label = styled.label`
 
 Label.defaultProps = styles.label.defaultProps
 
-export default RadioButton(({onChange, disabled, checked, label, ...props}) => (
-  <Container
-    onClick={onChange}
-    disabled={disabled}
-    checked={checked}
-    {...props}
-  >
-    <Button checked={checked} disabled={disabled} label={label}>
-      {checked && <CheckMark />}
-    </Button>
-    {label && (
-      <Label disabled={disabled} {...props}>
-        {label}
-      </Label>
-    )}
-  </Container>
-))
+const RadioButtonComponent = RadioButton(
+  ({onChange, disabled, checked, label, ...props}) => (
+    <Container
+      onClick={onChange}
+      disabled={disabled}
+      checked={checked}
+      {...props}
+    >
+      <Button checked={checked} disabled={disabled} label={label}>
+        {checked && <CheckMark />}
+      </Button>
+      {label && (
+        <Label disabled={disabled} {...props}>
+          {label}
+        </Label>
+      )}
+    </Container>
+  )
+)
+
+RadioButtonComponent.Group = Group(({onSelect, selected, disabled}) => ({
+  disabled,
+  onChange: onSelect,
+  checked: selected
+}))(View)
+
+RadioButtonComponent.Group.displayName = 'RadioGroup'
+
+export default RadioButtonComponent

@@ -4,6 +4,7 @@ name: Button
 
 import { Playground, PropsTable } from 'docz'
 import Button from '@emcasa/ui-dom/components/Button'
+import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
 
 # Button
@@ -26,4 +27,16 @@ Button component.
     <Button height="tall">Tall</Button>
     <Button height="medium">Medium</Button>
   </View>
+</Playground>
+
+# Button.Group
+
+Selectable group of buttons
+
+<Playground>
+  <Button.Group onChange={(value) => console.log('selected', value)}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
 </Playground>
