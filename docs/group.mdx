@@ -3,6 +3,7 @@ name: Group
 ---
 
 import { Playground, PropsTable } from 'docz'
+import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Group from '@emcasa/ui/lib/components/Group'
 import Button from '@emcasa/ui-dom/components/Button'
@@ -29,6 +30,17 @@ import RadioButton from '@emcasa/ui-dom/components/RadioButton'
 
   <Text>Multi select group</Text>
   <Button.Group multi initialValue={["a", "b"]} onChange={(values) => console.log('selected', values)}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
+
+  <Text>With option wrapper</Text>
+  <Button.Group
+    initialValue="b"
+    onChange={(values) => console.log('selected', values)}
+    OptionWrapper={({children}) => <View m={4}>{children}</View>}
+    >
     <Button value="a">Button A</Button>
     <Button value="b">Button B</Button>
     <Button value="c">Button C</Button>

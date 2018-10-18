@@ -28,22 +28,21 @@ const Group = (parseProps) => (Target) =>
       }
     }
 
-    select(value) {
+    isSelected(value) {
       const {multi} = this.props
-      let {selectedValue} = this.state
-      if (!multi) selectedValue = value
-      else if (selectedValue.indexOf(value) === -1) selectedValue.push(value)
-      this.setState({selectedValue})
+      const {selectedValue} = this.state
+      if (!multi) return selectedValue === value
+      else return selectedValue.indexOf(value) !== -1
     }
 
-    descelect(value) {
+    _select(value) {
       const {multi} = this.props
-      let {selectedValue} = this.state
-      let index
-      if (!multi && selectedValue == value) selectedValue = undefined
-      else if (multi && (index = selectedValue.indexOf(value)) !== -1)
-        selectedValue.splice(index, 1)
-      this.setState({selectedValue})
+      const selectedValue = this.state.selectedValue.slice(0)
+      let index = multi && selectedValue.indexOf(value)
+      if (!multi) return value
+      else if (index === -1) selectedValue.push(value)
+      else selectedValue.splice(index, 1)
+      return selectedValue
     }
 
     clear() {
@@ -54,7 +53,7 @@ const Group = (parseProps) => (Target) =>
     onChange = (value) => {
       const {disabled} = this.props
       if (disabled) return
-      const selectedValue = value
+      const selectedValue = this._select(value)
       const onChange = () => {
         if (this.props.onChange) this.props.onChange(selectedValue)
       }
@@ -71,7 +70,7 @@ const Group = (parseProps) => (Target) =>
           {
             ...this.props,
             onSelect: this.onChange,
-            selected: child.props.value === this.state.selectedValue
+            selected: this.isSelected(child.props.value)
           },
           child
         )
