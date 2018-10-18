@@ -34,5 +34,6 @@ container.propTypes = {
 }
 
 container.defaultProps = {
-  fontSize: 'default'
+  fontSize: 'default',
+  color: 'dark'
 }
