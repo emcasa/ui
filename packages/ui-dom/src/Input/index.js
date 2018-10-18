@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import {themeGet} from 'styled-system'
 import {withProps} from '@emcasa/ui/lib/utils'
 import * as input from '@emcasa/ui/lib/components/Input'
+import View from '../View'
 import Text from '../Text'
 
 const focused = withProps({focus: true})
@@ -24,16 +26,20 @@ const TextInput = styled(
   ${input.text};
 `
 
+const LabelView = styled(View)`
+  height: ${themeGet('space.5')}px;
+`
+
 export default function Input(props) {
   return (
-    <div>
-      {props.label && (
+    <View>
+      <LabelView>
         <Text inline fontSize="small">
           {props.label}
         </Text>
-      )}
+      </LabelView>
       <TextInput {...props} />
-    </div>
+    </View>
   )
 }
 
