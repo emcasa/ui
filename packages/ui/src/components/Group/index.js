@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import toArray from 'lodash.toarray'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 
@@ -18,7 +18,7 @@ export const Strategies = {
    * Multi-select strategy
    */
   multi: {
-    parseInitialValue: (initialValue) => _.toArray(initialValue),
+    getInitialValue: toArray,
     isSelected(selectedValue, value) {
       return selectedValue.indexOf(value) !== -1
     },
