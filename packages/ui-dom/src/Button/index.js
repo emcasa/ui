@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import * as button from '@emcasa/ui/lib/components/Button'
+import Group from '@emcasa/ui/lib/components/Group'
+
+import View from '../View'
 
 const Button = styled.button`
   ${(props) => props.fluid && 'display: block'};
@@ -27,5 +30,11 @@ Button.propTypes = {
 }
 
 Button.displayName = 'Button'
+
+Button.Group = Group(({onSelect, selected, disabled}, node) => ({
+  disabled,
+  onClick: () => onSelect(node.props.value),
+  active: selected
+}))(View)
 
 export default Button

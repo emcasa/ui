@@ -1,0 +1,36 @@
+---
+name: Group
+---
+
+import { Playground, PropsTable } from 'docz'
+import Text from '@emcasa/ui-dom/components/Text'
+import Group from '@emcasa/ui/lib/components/Group'
+import Button from '@emcasa/ui-dom/components/Button'
+import RadioButton from '@emcasa/ui-dom/components/RadioButton'
+
+# Group
+
+## Basic usage
+
+<Playground>
+  <Text>Uncontrolled radio group</Text>
+  <RadioButton.Group initialValue="a" onChange={(value) => console.log('selected', value)}>
+    <RadioButton label="Option 1" value="a" />
+    <RadioButton label="Option 2" value="b" />
+    <RadioButton label="Option 3" value="c" disabled />
+  </RadioButton.Group>
+
+  <Text>Controlled radio group</Text>
+  <RadioButton.Group selectedValue="a" onChange={(value) => console.log('selected', value)}>
+    <RadioButton label="Option 1" value="a" />
+    <RadioButton label="Option 2" value="b" />
+    <RadioButton label="Option 3" value="c" disabled />
+  </RadioButton.Group>
+
+  <Text>Multi select group</Text>
+  <Button.Group multi initialValue={["a", "b"]} onChange={(values) => console.log('selected', values)}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
+</Playground>

@@ -3,6 +3,7 @@ name: RadioButton
 ---
 
 import { Playground, PropsTable } from 'docz'
+import Text from '@emcasa/ui-dom/components/Text'
 import RadioButton from '@emcasa/ui-dom/components/RadioButton'
 
 # RadioButton
@@ -12,7 +13,15 @@ Radio Button component. Notice these RadioButtons are not part of a RadioGroup, 
 ## Basic usage
 
 <Playground>
+  <Text>Basic radio buttons</Text>
   <RadioButton label="Uncontrolled RadioButton" value="a" />
   <RadioButton label="Controlled RadioButton" value="b" checked />
   <RadioButton label="Disabled RadioButton" value="d" disabled />
+
+  <Text>Grouped radio buttons</Text>
+  <RadioButton.Group onChange={(value) => console.log('selected', value)}>
+    <RadioButton label="Option A" value="a" />
+    <RadioButton label="Option B" value="b" />
+    <RadioButton label="Option C" value="c" />
+  </RadioButton.Group>
 </Playground>
