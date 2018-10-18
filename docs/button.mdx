@@ -27,12 +27,16 @@ Button component.
     <Button height="tall">Tall</Button>
     <Button height="medium">Medium</Button>
   </View>
-  <View m={4}>
-    <Text>Grouped buttons</Text>
-    <Button.Group onChange={(value) => console.log('selected', value)}>
-      <Button value="a">Button A</Button>
-      <Button value="b">Button B</Button>
-      <Button value="c">Button C</Button>
-    </Button.Group>
-  </View>
+</Playground>
+
+# Button.Group
+
+Selectable group of buttons
+
+<Playground>
+  <Button.Group onChange={(value) => console.log('selected', value)}>
+    <Button value="a">Button A</Button>
+    <Button value="b">Button B</Button>
+    <Button value="c">Button C</Button>
+  </Button.Group>
 </Playground>
