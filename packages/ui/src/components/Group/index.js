@@ -2,9 +2,63 @@ import _ from 'lodash'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 
+export const Strategies = {
+  /**
+   * Simple select strategy - selects one value at a time
+   */
+  simple: {
+    isSelected(selectedValue, value) {
+      return selectedValue === value
+    },
+    update(_, value) {
+      return value
+    }
+  },
+  /**
+   * Multi-select strategy
+   */
+  multi: {
+    parseInitialValue: (initialValue) => _.toArray(initialValue),
+    isSelected(selectedValue, value) {
+      return selectedValue.indexOf(value) !== -1
+    },
+    update([...selectedValue], value) {
+      const index = selectedValue.indexOf(value)
+      if (index === -1) selectedValue.push(value)
+      else selectedValue.splice(index, 1)
+      return selectedValue
+    }
+  }
+}
+
 const Group = (parseProps) => (Target) =>
   class SelectGroup extends PureComponent {
     static propTypes = {
+      strategy: PropTypes.oneOfType([
+        PropTypes.oneOf(Object.keys(Strategies)),
+        PropTypes.shape({
+          /**
+           * Get default initial value
+           * @param {any} initialValue
+           * @returns {any}
+           */
+          getInitialValue: PropTypes.func,
+          /**
+           * Test if a value is selected
+           * @param {any} selectedValue Selected value
+           * @param {any} value Value to check against
+           * @returns {Boolean}
+           */
+          isSelected: PropTypes.func.isRequired,
+          /**
+           * Update the selected value
+           * @param {any} selectedValue Selected value
+           * @param {any} value Value to select
+           * @returns {any} New value
+           */
+          update: PropTypes.func.isRequired
+        })
+      ]).isRequired,
       children: PropTypes.node.isRequired,
       selectedValue: PropTypes.any,
       disabled: PropTypes.bool,
@@ -12,48 +66,45 @@ const Group = (parseProps) => (Target) =>
       OptionWrapper: PropTypes.any
     }
 
-    state = {
-      selectedValue: false
+    static defaultProps = {
+      strategy: Strategies.simple
     }
+
+    state = {}
 
     static getDerivedStateFromProps(props, state) {
       const isControlled = typeof props.selectedValue !== 'undefined'
+      let strategy = state.strategy || props.strategy
       let initialValue = props.initialValue
-      if (props.multi) initialValue = _.toArray(initialValue)
+      if (typeof strategy === 'string' && strategy in Strategies)
+        strategy = Strategies[strategy]
+      if (strategy.getInitialValue)
+        initialValue = strategy.getInitialValue(initialValue)
       return {
         isControlled,
+        strategy,
         selectedValue: isControlled
           ? props.selectedValue
-          : state.selectedValue || initialValue
+          : 'selectedValue' in state
+            ? state.selectedValue
+            : initialValue
       }
     }
 
-    isSelected(value) {
-      const {multi} = this.props
-      const {selectedValue} = this.state
-      if (!multi) return selectedValue === value
-      else return selectedValue.indexOf(value) !== -1
-    }
+    isSelected = (value) =>
+      this.state.strategy.isSelected(this.state.selectedValue, value)
 
-    _select(value) {
-      const {multi} = this.props
-      const selectedValue = this.state.selectedValue.slice(0)
-      let index = multi && selectedValue.indexOf(value)
-      if (!multi) return value
-      else if (index === -1) selectedValue.push(value)
-      else selectedValue.splice(index, 1)
-      return selectedValue
-    }
+    update = (value) =>
+      this.state.strategy.update(this.state.selectedValue, value)
 
-    clear() {
-      const {initialValue} = this.state
-      this.setState({selectedValue: initialValue})
+    setValue(value) {
+      this.setState({selectedValue: value})
     }
 
     onChange = (value) => {
       const {disabled} = this.props
       if (disabled) return
-      const selectedValue = this._select(value)
+      const selectedValue = this.update(value)
       const onChange = () => {
         if (this.props.onChange) this.props.onChange(selectedValue)
       }
@@ -89,5 +140,7 @@ const Group = (parseProps) => (Target) =>
       )
     }
   }
+
+Group.Strategies = Strategies
 
 export default Group
