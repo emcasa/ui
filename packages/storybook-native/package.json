@@ -1,7 +1,7 @@
 {
   "name": "@emcasa/storybook-native",
   "main": "node_modules/expo/AppEntry.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "scripts": {
     "dev": "concurrently \"yarn expo\" \"yarn storybook\"",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@emcasa/ui": "^0.5.0",
-    "@emcasa/ui-native": "^0.5.0",
+    "@emcasa/ui-native": "^0.5.1",
     "expo": "^30.0.1",
     "react": "16.5.2",
     "react-native": "0.55.4",
