@@ -63,7 +63,7 @@ const Group = (parseProps) => (Target) =>
       selectedValue: PropTypes.any,
       disabled: PropTypes.bool,
       onChange: PropTypes.func,
-      OptionWrapper: PropTypes.any
+      renderOption: PropTypes.func
     }
 
     static defaultProps = {
@@ -113,7 +113,7 @@ const Group = (parseProps) => (Target) =>
     }
 
     renderChild(child) {
-      const {OptionWrapper} = this.props
+      const {renderOption} = this.props
       if (!child) return
       const component = React.cloneElement(
         child,
@@ -126,7 +126,7 @@ const Group = (parseProps) => (Target) =>
           child
         )
       )
-      if (OptionWrapper) return <OptionWrapper>{component}</OptionWrapper>
+      if (renderOption) return renderOption(component, this.props)
       return component
     }
 
