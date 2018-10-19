@@ -1,4 +1,5 @@
 import React from 'react'
+import pick from 'lodash.pick'
 import styled from 'styled-components/native'
 import * as button from '@emcasa/ui/lib/components/Button'
 import Group from '@emcasa/ui/lib/components/Group'
@@ -14,10 +15,12 @@ export const ButtonText = styled(safe.Text)`
   ${button.text};
 `
 
+const textProps = Object.keys(button.text.propTypes)
+
 export default function Button({children, ...props}) {
   return (
     <ButtonView {...props}>
-      <ButtonText {...props}>{children}</ButtonText>
+      <ButtonText {...pick(props, textProps)}>{children}</ButtonText>
     </ButtonView>
   )
 }
