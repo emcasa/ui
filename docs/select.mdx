@@ -1,0 +1,20 @@
+---
+name: Select
+---
+
+import { Playground, PropsTable } from 'docz'
+import Select from '@emcasa/ui-dom/components/Select'
+
+# Select
+
+Select component.
+
+## Basic usage
+
+<Playground>
+  <Select defaultValue="_placeholder" onChange={({target: {value}}) => {console.log('selected:', value)}}>
+    <option value="_placeholder" disabled>Placeholder option</option>
+    <option value="first">Fist option</option>
+    <option value="second">Second option</option>
+  </Select>
+</Playground>
