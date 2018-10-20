@@ -7,6 +7,7 @@ import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
 import RadioButton from '@emcasa/ui-dom/components/RadioButton'
+import Col from '@emcasa/ui-dom/components/Col'
 
 # Group
 
@@ -38,10 +39,10 @@ use `renderOption` to render components around each child.
   <Button.Group
     initialValue="b"
     onChange={(values) => console.log('selected', values)}
-    renderOption={(option, props) => <View m={4}>{option}</View>}>
-    <Button value="a">Button A</Button>
-    <Button value="b">Button B</Button>
-    <Button value="c">Button C</Button>
+    renderOption={(option, props) => <Col width={1/4} m={4}>{option}</Col>}>
+    <Button fluid value="a">Button A</Button>
+    <Button fluid value="b">Button B</Button>
+    <Button fluid value="c">Button C</Button>
   </Button.Group>
 </Playground>
 

@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import * as button from '@emcasa/ui/lib/components/Button'
 import Group from '@emcasa/ui/lib/components/Group'
 
-import View from '../View'
+import Row from '../Row'
 
 const Button = styled.button`
+  outline: none;
   ${(props) => props.fluid && 'display: block'};
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   & :hover {
@@ -15,6 +16,7 @@ const Button = styled.button`
   ${button.container};
   ${button.text};
   -webkit-font-smoothing: antialiased;
+  border-color: ${({selected, theme: {colors}}) => selected ? colors.pink : colors.lightGrey}
 `
 
 Button.defaultProps = {
@@ -34,7 +36,7 @@ Button.displayName = 'Button'
 Button.Group = Group(({onSelect, selected, disabled}, node) => ({
   disabled,
   onClick: () => onSelect(node.props.value),
-  active: selected
-}))(View)
+  selected
+}))(Row)
 
 export default Button
