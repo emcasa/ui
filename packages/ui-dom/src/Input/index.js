@@ -27,21 +27,20 @@ const TextInput = styled(
   ${input.text};
 `
 
-const LabelView = styled(View)`
+const SupportingView = styled(View)`
   height: ${themeGet('space.5')}px;
+`
+
+const ErrorText = styled(Text)`
+  ${input.error};
 `
 
 export default function Input(props) {
   return (
     <View>
-      {!props.hideLabel &&
-        <LabelView>
-          <Text inline fontSize="small">
-            {props.label}
-          </Text>
-        </LabelView>
-      }
+      {!props.hideLabelView && <SupportingView><Text inline fontSize="small">{props.label}</Text></SupportingView>}
       <TextInput {...props} />
+      {!props.hideErrorView && <SupportingView><ErrorText inline fontSize="small">{props.error}</ErrorText></SupportingView>}
     </View>
   )
 }
@@ -49,11 +48,13 @@ export default function Input(props) {
 Input.propTypes = {
   ...input.container.propTypes,
   ...input.text.propTypes,
-  hideLabel: PropTypes.bool
+  hideLabelView: PropTypes.bool,
+  hideErrorView: PropTypes.bool,
 }
 
 Input.defaultProps = {
   ...input.container.defaultProps,
   ...input.text.defaultProps,
-  hideLabel: false
+  hideLabelView: false,
+  hideErrorView: false
 }

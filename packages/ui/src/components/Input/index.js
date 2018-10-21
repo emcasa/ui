@@ -59,6 +59,24 @@ text.defaultProps = {
   letterSpacing: 'default'
 }
 
+export const error = css`
+  display: inline;
+  color: ${themeGet('colors.red')};
+  ${defaultFontFamily};
+  ${fontSize};
+  ${letterSpacing};
+`
+
+error.propTypes = {
+  ...fontSize.propTypes,
+  ...letterSpacing.propTypes
+}
+
+error.defaultProps = {
+  fontSize: 'small',
+  letterSpacing: 'default'
+}
+
 export const placeholder = css`
   color: ${themeGet('colors.disabled')};
 `
