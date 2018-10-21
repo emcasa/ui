@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
 import {withProps} from '@emcasa/ui/lib/utils'
@@ -33,11 +34,13 @@ const LabelView = styled(View)`
 export default function Input(props) {
   return (
     <View>
-      <LabelView>
-        <Text inline fontSize="small">
-          {props.label}
-        </Text>
-      </LabelView>
+      {!props.hideLabel &&
+        <LabelView>
+          <Text inline fontSize="small">
+            {props.label}
+          </Text>
+        </LabelView>
+      }
       <TextInput {...props} />
     </View>
   )
@@ -45,10 +48,12 @@ export default function Input(props) {
 
 Input.propTypes = {
   ...input.container.propTypes,
-  ...input.text.propTypes
+  ...input.text.propTypes,
+  hideLabel: PropTypes.bool
 }
 
 Input.defaultProps = {
   ...input.container.defaultProps,
-  ...input.text.defaultProps
+  ...input.text.defaultProps,
+  hideLabel: false
 }
