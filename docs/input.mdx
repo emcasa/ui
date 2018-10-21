@@ -18,7 +18,10 @@ Text input.
     <Input label="Label" placeholder="Input with label" />
   </Col>
   <Col mb={2}>
-    <Input placeholder="Input without label" />
+    <Input placeholder="Error" error="Invalid input!" />
+  </Col>
+  <Col mb={2}>
+    <Input hideLabelView hideErrorView placeholder="Input without label or error views" />
   </Col>
   <Col mb={2}>
     <Input fluid={false} label="This input is not fluid" placeholder="Placeholder text" />
