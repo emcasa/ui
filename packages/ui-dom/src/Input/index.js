@@ -9,10 +9,11 @@ import Text from '../Text'
 
 const focused = withProps({focus: true})
 
-const TextInput = styled(
-  ({area, fluid, ...props}) =>
-    area ? <textarea {...props} /> : <input {...props} />
-)`
+const ForwardedInput = React.forwardRef((props, ref) =>
+  props.area ? <textarea ref={ref} {...props} /> : <input ref={ref} {...props} />
+)
+
+const TextInput = styled(ForwardedInput)`
   -webkit-font-smoothing: antialiased;
   display: block;
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
@@ -35,15 +36,15 @@ const ErrorText = styled(Text)`
   ${input.error};
 `
 
-export default function Input(props) {
+const Input = React.forwardRef((props, ref) => {
   return (
     <View>
       {!props.hideLabelView && <SupportingView><Text inline fontSize="small">{props.label}</Text></SupportingView>}
-      <TextInput {...props} />
+      <TextInput {...props} innerRef={ref} />
       {!props.hideErrorView && <SupportingView><ErrorText inline fontSize="small">{props.error}</ErrorText></SupportingView>}
     </View>
   )
-}
+})
 
 Input.propTypes = {
   ...input.container.propTypes,
@@ -58,3 +59,5 @@ Input.defaultProps = {
   hideLabelView: false,
   hideErrorView: false
 }
+
+export default Input
