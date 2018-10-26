@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import {
   color,
   space,
@@ -15,6 +16,12 @@ import {
   fontSize,
   defaultFontFamily
 } from '../../styles'
+
+const buttonProps = {
+  active: PropTypes.bool,
+  disabled: PropTypes.bool,
+  fluid: PropTypes.bool
+}
 
 export const container = css`
   padding: 0 20px 0 20px;
@@ -34,6 +41,7 @@ export const container = css`
 `
 
 container.propTypes = {
+  ...buttonProps,
   ...buttonHeight.propTypes,
   ...space.propTypes,
   ...flex.propTypes,
@@ -61,6 +69,7 @@ export const text = css`
 `
 
 text.propTypes = {
+  ...buttonProps,
   ...letterSpacing.propTypes,
   ...fontFamily.propTypes,
   ...fontSize.propTypes,
