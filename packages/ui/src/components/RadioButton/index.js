@@ -41,7 +41,7 @@ export const button = css`
   height: ${BULLET_SIZE}px;
   border-radius: ${BULLET_SIZE}px;
   border: ${BULLET_BORDER}px solid
-    ${({disabled, theme: {colors}}) => (disabled ? colors.grey : colors.pink)};
+    ${({checked, theme: {colors}}) => (checked ? colors.pink : colors.grey)};
   background-color: ${({checked, disabled, theme: {colors}}) => {
     if (!checked) return 'transparent'
     else if (disabled) return colors.grey
