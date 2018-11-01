@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui-native",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "EmCasa's UI library for react-native",
   "license": "MIT",
   "main": "components/index.js",
