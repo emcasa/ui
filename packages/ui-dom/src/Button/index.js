@@ -16,7 +16,8 @@ const Button = styled.button`
   ${button.container};
   ${button.text};
   -webkit-font-smoothing: antialiased;
-  border-color: ${({selected, theme: {colors}}) => selected ? colors.pink : colors.lightGrey}
+  border-color: ${({selected, theme: {colors}}) =>
+    selected ? colors.pink : colors.lightGrey};
 `
 
 Button.defaultProps = {
@@ -33,9 +34,9 @@ Button.propTypes = {
 
 Button.displayName = 'Button'
 
-Button.Group = Group(({onSelect, selected, disabled}, node) => ({
+Button.Group = Group(({onSelect, selected, disabled}) => ({
   disabled,
-  onClick: () => onSelect(node.props.value),
+  onClick: onSelect,
   selected
 }))(Row)
 
