@@ -1,5 +1,6 @@
-import colors from './theme/colors'
 import {fas} from '@fortawesome/free-solid-svg-icons'
+import colors from './theme/colors'
+import shadows, {shadowOpacity} from './theme/shadows'
 import {
   LETTER_SPACING,
   BUTTON_HEIGHT,
@@ -17,5 +18,7 @@ export default {
   iconSize: Array.from(ICON_SIZE.values()),
   icons: {default: fas},
   defaultIcon: 'question-circle',
+  shadowOpacity,
+  shadows,
   colors
 }

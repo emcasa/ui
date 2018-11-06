@@ -2,7 +2,7 @@ import React from 'react'
 
 import {storiesOf} from '@storybook/react-native'
 
-import {View, Text} from '@emcasa/ui-native'
+import {View, Row, Col, Text} from '@emcasa/ui-native'
 
 const story = storiesOf('View', module)
 
@@ -18,4 +18,18 @@ story.add('basic', () => (
       est laborum.
     </Text>
   </View>
+))
+
+story.add('elevations', () => (
+  <Row flexWrap="wrap">
+    {[...Array(24)].map((_, i) => (
+      <Col key={i} p={2} width={1 / 3}>
+        <View elevation={i} bg="lightGrey" pt={10} pb={10}>
+          <Text size="large" textAlign="center" fontWeight="bold">
+            {i}
+          </Text>
+        </View>
+      </Col>
+    ))}
+  </Row>
 ))
