@@ -1,4 +1,5 @@
 import toArray from 'lodash.toarray'
+import omit from 'lodash.omit'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 
@@ -112,20 +113,22 @@ const Group = (parseProps) => (Target) =>
       else this.setState({selectedValue}, onChange)
     }
 
+    _childProps = (node) => {
+      const nextProps = parseProps(
+        {
+          ...this.props,
+          onSelect: this.onChange,
+          selected: this.isSelected(node.props.value)
+        },
+        node
+      )
+      return omit(nextProps, Object.keys(node.props))
+    }
+
     renderChild(child) {
       const {renderOption} = this.props
       if (!child) return
-      const component = React.cloneElement(
-        child,
-        parseProps(
-          {
-            ...this.props,
-            onSelect: this.onChange,
-            selected: this.isSelected(child.props.value)
-          },
-          child
-        )
-      )
+      const component = React.cloneElement(child, this._childProps(child))
       if (renderOption) return renderOption(component, this.props)
       return component
     }
