@@ -64,11 +64,13 @@ const Group = (parseProps) => (Target) =>
       selectedValue: PropTypes.any,
       disabled: PropTypes.bool,
       onChange: PropTypes.func,
-      renderOption: PropTypes.func
+      renderOption: PropTypes.func,
+      ...(Target.propTypes || {})
     }
 
     static defaultProps = {
-      strategy: Strategies.simple
+      strategy: Strategies.simple,
+      ...(Target.defaultProps || {})
     }
 
     state = {}
@@ -135,7 +137,7 @@ const Group = (parseProps) => (Target) =>
 
     render() {
       return (
-        <Target {...this.props} {...this.state}>
+        <Target {...this.props} {...this.state} onChange={this.onChange}>
           {React.Children.map(this.props.children, (child) =>
             this.renderChild(child)
           )}
