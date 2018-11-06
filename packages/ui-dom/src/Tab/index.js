@@ -82,8 +82,6 @@ Tab.Group = Group(
       )
     }
 
-    renderTab = (node, index) => React.cloneElement(node, {value: index})
-
     render() {
       const {children, barHeight, ...props} = this.props
       return (
@@ -91,7 +89,7 @@ Tab.Group = Group(
           <TabBar height={barHeight}>
             {React.Children.map(children, this.renderTabBar)}
           </TabBar>
-          {React.Children.map(children, this.renderTab)}
+          {children}
         </Col>
       )
     }
