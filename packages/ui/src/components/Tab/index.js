@@ -3,6 +3,13 @@ import PropTypes from 'prop-types'
 
 import {container as col} from '../Col'
 import {container as text} from '../Text'
+import {buttonHeight} from '../../styles'
+
+export const defaultProps = {
+  color: 'grey',
+  borderColor: 'pink',
+  barHeight: 'medium'
+}
 
 export const container = css`
   display: ${({selected}) => (selected ? 'flex' : 'none')};
@@ -21,24 +28,35 @@ export const tabBar = css`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex-basis: 45px;
+  margin-bottom: 15px;
+  ${(props) => {
+    const value = buttonHeight(props)
+    if (value) return {height: value.height, flexBasis: value.height}
+  }};
   width: 100%;
 `
 
-tabBar.propTypes = {}
+tabBar.propTypes = {
+  ...buttonHeight.propTypes
+}
 
 export const tabBarButton = css`
   flex: 1;
+  height: 100%;
   margin-left: 2.5px;
   margin-right: 2.5px;
+  background-color: white;
+  border-width: 0;
   border-bottom-width: 3px;
-  ${({color, selected, theme}) => ({
-    borderColor: selected ? theme.colors[color] || color : 'transparent'
+  ${({borderColor, selected, theme}) => ({
+    borderColor: selected
+      ? theme.colors[borderColor] || borderColor
+      : 'transparent'
   })};
 `
 
 tabBarButton.propTypes = {
-  color: PropTypes.string,
+  borderColor: PropTypes.string,
   selected: PropTypes.bool.isRequired
 }
 

@@ -5,13 +5,12 @@ import styled from 'styled-components'
 import Group from '@emcasa/ui/lib/components/Group'
 import * as tab from '@emcasa/ui/lib/components/Tab'
 
-import {safe} from '../utils'
 import Col from '../Col'
 
 /**
  * TabBar
  */
-const TabBar = styled(safe.View)`
+const TabBar = styled.div`
   ${tab.tabBar};
 `
 
@@ -22,31 +21,27 @@ TabBar.propTypes = tab.tabBar.propTypes
 /**
  * TabBarButton
  */
-const TabBarButton = styled(safe.TouchableOpacity)`
+const TabBarButton = styled.button`
+  outline: none;
+  cursor: pointer;
   ${tab.tabBarButton};
+  ${tab.tabBarText};
 `
 
 TabBarButton.displayName = 'TabBarButton'
 
-TabBarButton.propTypes = tab.tabBarButton.propTypes
+TabBarButton.propTypes = {
+  ...tab.tabBarButton.propTypes,
+  ...tab.tabBarText.propTypes
+}
 
-/**
- * TabBarText
- */
-const TabBarText = styled(safe.Text)`
-  ${tab.tabBarText};
-`
-
-TabBarText.displayName = 'TabBarText'
-
-TabBarText.propTypes = tab.tabBarText.propTypes
-
-TabBarText.getProps = (props) => pick(props, Object.keys(TabBarText.propTypes))
+TabBarButton.getProps = (props) =>
+  pick(props, Object.keys(TabBarButton.propTypes))
 
 /**
  * TabBar
  */
-const Tab = styled(safe.View)`
+const Tab = styled.div`
   ${tab.container};
 `
 
@@ -66,7 +61,7 @@ Tab.Group = Group(
   class TabGroup extends PureComponent {
     static propTypes = {
       color: PropTypes.string,
-      activeColor: PropTypes.string
+      borderColor: PropTypes.string
     }
 
     static defaultProps = {
@@ -75,16 +70,14 @@ Tab.Group = Group(
     }
 
     renderTabBar = (node, index) => {
-      const {onSelect, borderColor, ...props} = this.props
+      const {onSelect} = this.props
       return (
         <TabBarButton
-          borderColor={borderColor}
           selected={node.props.selected}
-          onPress={() => onSelect(index)}
+          onClick={() => onSelect(index)}
+          {...TabBarButton.getProps(this.props)}
         >
-          <TabBarText {...TabBarText.getProps(props)}>
-            {node.props.label}
-          </TabBarText>
+          {node.props.label}
         </TabBarButton>
       )
     }
