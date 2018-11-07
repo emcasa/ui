@@ -1,6 +1,6 @@
 {
-  "vendors.js": "/static/js/vendors.7834948f.js",
-  "app.js": "/static/js/app.e1768a49.js",
+  "vendors.js": "/static/js/vendors.d473456c.js",
+  "app.js": "/static/js/app.ad45f68e.js",
   "docs-button.js": "/static/js/docs-button.486c0e7c.js",
   "docs-grid.js": "/static/js/docs-grid.976a26b6.js",
   "docs-group.js": "/static/js/docs-group.0eb7340a.js",
@@ -8,9 +8,10 @@
   "docs-icon.js": "/static/js/docs-icon.4f0a1868.js",
   "docs-input.js": "/static/js/docs-input.f6310f67.js",
   "docs-radio-button.js": "/static/js/docs-radio-button.aa2c3faa.js",
-  "docs-select.js": "/static/js/docs-select.9572a2fe.js",
-  "docs-text.js": "/static/js/docs-text.e1d49978.js",
-  "docs-view.js": "/static/js/docs-view.702cfa1b.js",
-  "runtime~app.js": "/static/js/runtime~app.ca7fdb2a57f2015ca2fc.js",
+  "docs-select.js": "/static/js/docs-select.15ee0eb9.js",
+  "docs-tab.js": "/static/js/docs-tab.3c25bf04.js",
+  "docs-text.js": "/static/js/docs-text.b9a8121d.js",
+  "docs-view.js": "/static/js/docs-view.310219ac.js",
+  "runtime~app.js": "/static/js/runtime~app.9c269f31db611b852695.js",
   "index.html": "/index.html"
 }
