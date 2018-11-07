@@ -37,8 +37,8 @@ Button.defaultProps = {
   justifyContent: 'center'
 }
 
-Button.Group = Group(({onSelect, selected, disabled}, node) => ({
+Button.Group = Group(({onSelect, selected, disabled}) => ({
   disabled,
-  onPress: () => onSelect(node.props.value),
+  onPress: onSelect,
   active: selected
 }))(View)

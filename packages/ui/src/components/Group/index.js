@@ -32,7 +32,9 @@ export const Strategies = {
   }
 }
 
-const Group = (parseProps) => (Target) =>
+const defaultGetValue = ({value}) => value
+
+const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
   class SelectGroup extends PureComponent {
     static propTypes = {
       strategy: PropTypes.oneOfType([
@@ -64,11 +66,13 @@ const Group = (parseProps) => (Target) =>
       selectedValue: PropTypes.any,
       disabled: PropTypes.bool,
       onChange: PropTypes.func,
-      renderOption: PropTypes.func
+      renderOption: PropTypes.func,
+      ...(Target.propTypes || {})
     }
 
     static defaultProps = {
-      strategy: Strategies.simple
+      strategy: Strategies.simple,
+      ...(Target.defaultProps || {})
     }
 
     state = {}
@@ -113,32 +117,34 @@ const Group = (parseProps) => (Target) =>
       else this.setState({selectedValue}, onChange)
     }
 
-    _childProps = (node) => {
+    _childProps = (node, index) => {
+      const value = getValue(node, index)
       const nextProps = parseProps(
         {
           ...this.props,
-          onSelect: this.onChange,
-          selected: this.isSelected(node.props.value)
+          onSelect: () => this.onChange(value),
+          selected: this.isSelected(value)
         },
         node
       )
       return omit(nextProps, Object.keys(node.props))
     }
 
-    renderChild(child) {
+    renderChild = (child, index) => {
       const {renderOption} = this.props
       if (!child) return
-      const component = React.cloneElement(child, this._childProps(child))
+      const component = React.cloneElement(
+        child,
+        this._childProps(child, index)
+      )
       if (renderOption) return renderOption(component, this.props)
       return component
     }
 
     render() {
       return (
-        <Target {...this.props} {...this.state}>
-          {React.Children.map(this.props.children, (child) =>
-            this.renderChild(child)
-          )}
+        <Target {...this.props} {...this.state} onSelect={this.onChange}>
+          {React.Children.map(this.props.children, this.renderChild)}
         </Target>
       )
     }
