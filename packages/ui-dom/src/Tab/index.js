@@ -50,6 +50,6 @@ export default Tab
 
 Tab.displayName = 'Tab'
 
-Tab.propTypes = tab.container.propType
+Tab.propTypes = tab.container.propTypes
 
 Tab.Group = TabGroup({TabBarButton, TabBar})(Col)

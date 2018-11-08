@@ -18,7 +18,7 @@ export const container = css`
 `
 
 container.propTypes = {
-  selected: PropTypes.bool.isRequired,
+  selected: PropTypes.bool,
   ...col.propTypes
 }
 
@@ -59,7 +59,7 @@ export const tabBarButton = css`
 tabBarButton.propTypes = {
   borderColor: PropTypes.string,
   borderWidth: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
-  selected: PropTypes.bool.isRequired
+  selected: PropTypes.bool
 }
 
 export const tabBarText = css`
