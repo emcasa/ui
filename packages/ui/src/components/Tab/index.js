@@ -53,12 +53,12 @@ export const tabBarButton = css`
       ? theme.colors[borderColor] || borderColor
       : 'transparent'
   })};
-  ${({borderHeight}) => ({borderBottomHeight: borderHeight})};
+  ${({borderWidth}) => ({borderBottomWeight: borderWidth})};
 `
 
 tabBarButton.propTypes = {
   borderColor: PropTypes.string,
-  borderHeight: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
+  borderWidth: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
   selected: PropTypes.bool.isRequired
 }
 
