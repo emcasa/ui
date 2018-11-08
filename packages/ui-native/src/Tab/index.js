@@ -1,8 +1,10 @@
 import pick from 'lodash.pick'
 import React, {PureComponent} from 'react'
+import {TouchableOpacity} from 'react-native'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Group from '@emcasa/ui/lib/components/Group'
+import TabGroup from '@emcasa/ui/lib/components/Tab/Group'
 import * as tab from '@emcasa/ui/lib/components/Tab'
 
 import {safe} from '../utils'
@@ -22,7 +24,11 @@ TabBar.propTypes = tab.tabBar.propTypes
 /**
  * TabBarButton
  */
-const TabBarButton = styled(safe.TouchableOpacity)`
+const TabBarButton = styled(({children, onSelect, ...props}) => (
+  <TouchableOpacity onPress={onSelect}>
+    <TabBarText {...props}>{children}</TabBarText>
+  </TouchableOpacity>
+))`
   ${tab.tabBarButton};
 `
 
@@ -41,8 +47,6 @@ TabBarText.displayName = 'TabBarText'
 
 TabBarText.propTypes = tab.tabBarText.propTypes
 
-TabBarText.getProps = (props) => pick(props, Object.keys(TabBarText.propTypes))
-
 /**
  * TabBar
  */
@@ -56,49 +60,7 @@ Tab.displayName = 'Tab'
 
 Tab.propTypes = tab.container.propType
 
-Tab.Group = Group(
-  ({...props}) => {
-    delete props.onSelect
-    return props
-  },
-  (_, index) => index
-)(
-  class TabGroup extends PureComponent {
-    static propTypes = {
-      color: PropTypes.string,
-      activeColor: PropTypes.string
-    }
-
-    static defaultProps = {
-      initialValue: 0,
-      ...tab.defaultProps
-    }
-
-    renderTabBar = (node, index) => {
-      const {onSelect, borderColor, ...props} = this.props
-      return (
-        <TabBarButton
-          borderColor={borderColor}
-          selected={node.props.selected}
-          onPress={() => onSelect(index)}
-        >
-          <TabBarText {...TabBarText.getProps(props)}>
-            {node.props.label}
-          </TabBarText>
-        </TabBarButton>
-      )
-    }
-
-    render() {
-      const {children, barHeight, ...props} = this.props
-      return (
-        <Col flex={1} {...props}>
-          <TabBar height={barHeight}>
-            {React.Children.map(children, this.renderTabBar)}
-          </TabBar>
-          {children}
-        </Col>
-      )
-    }
-  }
-)
+Tab.Group = TabGroup({
+  TabBarButton,
+  TabBar
+})(Col)
