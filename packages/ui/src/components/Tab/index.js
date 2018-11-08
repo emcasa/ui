@@ -1,4 +1,5 @@
 import {css} from 'styled-components'
+import {space, bgColor, justifyContent, alignItems} from 'styled-system'
 import PropTypes from 'prop-types'
 
 import {container as col} from '../Col'
@@ -28,15 +29,23 @@ export const tabBar = css`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 100%;
   ${(props) => {
     const value = buttonHeight(props)
     if (value) return {height: value.height, flexBasis: value.height}
   }};
-  width: 100%;
+  ${space};
+  ${bgColor};
+  ${justifyContent};
+  ${alignItems};
 `
 
 tabBar.propTypes = {
-  ...buttonHeight.propTypes
+  ...buttonHeight.propTypes,
+  ...space.propTypes,
+  ...bgColor.propTypes,
+  ...justifyContent.proptypes,
+  ...alignItems.propTypes
 }
 
 export const tabBarButton = css`
