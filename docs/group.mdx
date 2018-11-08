@@ -29,17 +29,17 @@ import Col from '@emcasa/ui-dom/components/Col'
   </RadioButton.Group>
 </Playground>
 
-## renderOption
+## renderItem
 
 All children on a Group must be an instance of it's base component, or at least work with the same props.
-use `renderOption` to render components around each child.
+use `renderItem` to render components around each child.
 
 <Playground>
   <Text>With option wrapper</Text>
   <Button.Group
     initialValue="b"
     onChange={(values) => console.log('selected', values)}
-    renderOption={(option, props) => <Col width={1/4} m={4}>{option}</Col>}>
+    renderItem={(option, props) => <Col width={1/4} m={4}>{option}</Col>}>
     <Button fluid value="a">Button A</Button>
     <Button fluid value="b">Button B</Button>
     <Button fluid value="c">Button C</Button>

@@ -66,7 +66,7 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       selectedValue: PropTypes.any,
       disabled: PropTypes.bool,
       onChange: PropTypes.func,
-      renderOption: PropTypes.func,
+      renderItem: PropTypes.func,
       ...(Target.propTypes || {})
     }
 
@@ -131,13 +131,13 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
     }
 
     renderChild = (child, index) => {
-      const {renderOption} = this.props
+      const {renderItem} = this.props
       if (!child) return
       const component = React.cloneElement(
         child,
         this._childProps(child, index)
       )
-      if (renderOption) return renderOption(component, this.props)
+      if (renderItem) return renderItem(component, this.props)
       return component
     }
 
