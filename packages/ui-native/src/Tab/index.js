@@ -24,8 +24,8 @@ TabBar.propTypes = tab.tabBar.propTypes
 /**
  * TabBarButton
  */
-const TabBarButton = styled(({children, onSelect, ...props}) => (
-  <TouchableOpacity onPress={onSelect}>
+const TabBarButton = styled(({children, style, onSelect, ...props}) => (
+  <TouchableOpacity style={style} onPress={onSelect}>
     <TabBarText {...props}>{children}</TabBarText>
   </TouchableOpacity>
 ))`
@@ -63,4 +63,9 @@ Tab.propTypes = tab.container.propType
 Tab.Group = TabGroup({
   TabBarButton,
   TabBar
-})(Col)
+})(
+  styled(Col)`
+    width: 100%;
+    flex: 1;
+  `
+)

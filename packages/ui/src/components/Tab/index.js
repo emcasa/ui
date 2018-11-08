@@ -28,7 +28,6 @@ export const tabBar = css`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
   ${(props) => {
     const value = buttonHeight(props)
     if (value) return {height: value.height, flexBasis: value.height}
@@ -43,25 +42,28 @@ tabBar.propTypes = {
 export const tabBarButton = css`
   flex: 1;
   height: 100%;
+  justify-content: center;
   margin-left: 2.5px;
   margin-right: 2.5px;
   background-color: white;
   border-width: 0;
-  border-bottom-width: 3px;
+  border-bottom-width: 1px;
   ${({borderColor, selected, theme}) => ({
     borderColor: selected
       ? theme.colors[borderColor] || borderColor
       : 'transparent'
   })};
+  ${({borderHeight}) => ({borderBottomHeight: borderHeight})};
 `
 
 tabBarButton.propTypes = {
   borderColor: PropTypes.string,
+  borderHeight: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
   selected: PropTypes.bool.isRequired
 }
 
 export const tabBarText = css`
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   ${text};
 `
