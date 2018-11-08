@@ -18,15 +18,18 @@ export default ({TabBar, TabBarButton}) => (Target) =>
         activeColor: PropTypes.string,
         tabBarProps: PropTypes.shape(tabBar.propTypes),
         tabBarButtonProps: PropTypes.shape({
-          ...tabBarButton.propTpes,
+          ...tabBarButton.propTypes,
           ...tabBarText.propTypes
-        })
+        }),
+        ...(Target.propTypes || {})
       }
 
       static defaultProps = {
         initialValue: 0,
         color: 'grey',
-        borderColor: 'pink'
+        borderColor: 'pink',
+        tabBarProps: {},
+        tabBarButtonProps: {}
       }
 
       renderTabBar = (node, index) => {
