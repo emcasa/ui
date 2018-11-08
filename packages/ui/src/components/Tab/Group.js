@@ -44,6 +44,8 @@ export default ({TabBar, TabBarButton}) => (Target) =>
         )
       }
 
+      renderTab = (node) => (node.props.selected ? node : null)
+
       render() {
         const {children, tabBarProps, ...props} = this.props
         return (
@@ -51,7 +53,7 @@ export default ({TabBar, TabBarButton}) => (Target) =>
             <TabBar height="medium" {...tabBarProps}>
               {React.Children.map(children, this.renderTabBar)}
             </TabBar>
-            {children}
+            {React.Children.map(children, this.renderTab)}
           </Target>
         )
       }
