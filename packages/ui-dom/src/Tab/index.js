@@ -1,8 +1,7 @@
 import pick from 'lodash.pick'
-import React, {PureComponent} from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
-import Group from '@emcasa/ui/lib/components/Group'
+import TabGroup from '@emcasa/ui/lib/components/Tab/Group'
 import * as tab from '@emcasa/ui/lib/components/Tab'
 
 import Col from '../Col'
@@ -21,7 +20,9 @@ TabBar.propTypes = tab.tabBar.propTypes
 /**
  * TabBarButton
  */
-const TabBarButton = styled.button`
+const TabBarButton = styled(({onSelect, ...props}) => (
+  <button onClick={onSelect} {...props} />
+))`
   outline: none;
   cursor: pointer;
   ${tab.tabBarButton};
@@ -39,7 +40,7 @@ TabBarButton.getProps = (props) =>
   pick(props, Object.keys(TabBarButton.propTypes))
 
 /**
- * TabBar
+ * Tab
  */
 const Tab = styled.div`
   ${tab.container};
@@ -49,49 +50,6 @@ export default Tab
 
 Tab.displayName = 'Tab'
 
-Tab.propTypes = tab.container.propType
+Tab.propTypes = tab.container.propTypes
 
-Tab.Group = Group(
-  ({...props}) => {
-    delete props.onSelect
-    return props
-  },
-  (_, index) => index
-)(
-  class TabGroup extends PureComponent {
-    static propTypes = {
-      color: PropTypes.string,
-      borderColor: PropTypes.string
-    }
-
-    static defaultProps = {
-      initialValue: 0,
-      ...tab.defaultProps
-    }
-
-    renderTabBar = (node, index) => {
-      const {onSelect} = this.props
-      return (
-        <TabBarButton
-          selected={node.props.selected}
-          onClick={() => onSelect(index)}
-          {...TabBarButton.getProps(this.props)}
-        >
-          {node.props.label}
-        </TabBarButton>
-      )
-    }
-
-    render() {
-      const {children, barHeight, ...props} = this.props
-      return (
-        <Col flex={1} {...props}>
-          <TabBar height={barHeight}>
-            {React.Children.map(children, this.renderTabBar)}
-          </TabBar>
-          {children}
-        </Col>
-      )
-    }
-  }
-)
+Tab.Group = TabGroup({TabBarButton, TabBar})(Col)
