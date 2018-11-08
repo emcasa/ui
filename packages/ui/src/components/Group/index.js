@@ -1,3 +1,4 @@
+import {Fragment} from 'react'
 import toArray from 'lodash.toarray'
 import omit from 'lodash.omit'
 import React, {PureComponent} from 'react'
@@ -34,6 +35,12 @@ export const Strategies = {
 
 const defaultGetValue = ({value}) => value
 
+class GroupItem extends PureComponent {
+  render() {
+    return <Fragment>{this.props.children}</Fragment>
+  }
+}
+
 const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
   class SelectGroup extends PureComponent {
     static propTypes = {
@@ -66,7 +73,7 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       selectedValue: PropTypes.any,
       disabled: PropTypes.bool,
       onChange: PropTypes.func,
-      renderOption: PropTypes.func,
+      renderItem: PropTypes.func,
       ...(Target.propTypes || {})
     }
 
@@ -130,21 +137,26 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       return omit(nextProps, Object.keys(node.props))
     }
 
-    renderChild = (child, index) => {
-      const {renderOption} = this.props
+    renderItem = (child, index) => {
+      const {renderItem} = this.props
       if (!child) return
       const component = React.cloneElement(
         child,
         this._childProps(child, index)
       )
-      if (renderOption) return renderOption(component, this.props)
-      return component
+      // Wrap item to ensure the Target component has access to child props
+      // when `renderItem` is passed
+      return (
+        <GroupItem {...component.props}>
+          {renderItem ? renderItem(component, this.props) : component}
+        </GroupItem>
+      )
     }
 
     render() {
       return (
         <Target {...this.props} {...this.state} onSelect={this.onChange}>
-          {React.Children.map(this.props.children, this.renderChild)}
+          {React.Children.map(this.props.children, this.renderItem)}
         </Target>
       )
     }
