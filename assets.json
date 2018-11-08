@@ -1,9 +1,9 @@
 {
-  "vendors.js": "/static/js/vendors.d473456c.js",
-  "app.js": "/static/js/app.ad45f68e.js",
+  "vendors.js": "/static/js/vendors.23fc17b6.js",
+  "app.js": "/static/js/app.272338f3.js",
   "docs-button.js": "/static/js/docs-button.486c0e7c.js",
   "docs-grid.js": "/static/js/docs-grid.976a26b6.js",
-  "docs-group.js": "/static/js/docs-group.0eb7340a.js",
+  "docs-group.js": "/static/js/docs-group.5649eccf.js",
   "docs-home.js": "/static/js/docs-home.dba0f816.js",
   "docs-icon.js": "/static/js/docs-icon.4f0a1868.js",
   "docs-input.js": "/static/js/docs-input.f6310f67.js",
@@ -12,6 +12,6 @@
   "docs-tab.js": "/static/js/docs-tab.3c25bf04.js",
   "docs-text.js": "/static/js/docs-text.b9a8121d.js",
   "docs-view.js": "/static/js/docs-view.310219ac.js",
-  "runtime~app.js": "/static/js/runtime~app.9c269f31db611b852695.js",
+  "runtime~app.js": "/static/js/runtime~app.90a896ed761c0800c346.js",
   "index.html": "/index.html"
 }
