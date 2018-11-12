@@ -9,7 +9,7 @@ import Text from '../Text'
 const TextInput = styled(safe.TextInput)`
   ${input.container};
   ${input.text};
-  text-align-vertical: top;
+  text-align-vertical: ${({area}) => (area ? 'top' : 'center')};
 `
 
 class Input extends PureComponent {
@@ -38,6 +38,7 @@ class Input extends PureComponent {
           placeholderTextColor={theme.colors.disabled}
           multiline={props.area}
           underlineColorAndroid="rgba(0,0,0,0)"
+          selectionColor="rgba(31, 182, 255, 0.3)"
           {...props}
           {...this.state}
           onFocus={this.onFocus}
