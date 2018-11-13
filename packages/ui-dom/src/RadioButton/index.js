@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import RadioButton, * as styles from '@emcasa/ui/lib/components/RadioButton'
+import * as styles from '@emcasa/ui/lib/components/RadioButton'
 import Group from '@emcasa/ui/lib/components/Group'
 
 import View from '../View'
@@ -35,8 +35,8 @@ const Label = styled.label`
 
 Label.defaultProps = styles.label.defaultProps
 
-const RadioButtonComponent = RadioButton(
-  ({onChange, disabled, checked, label, ...props}) => (
+function RadioButtonComponent({onChange, disabled, checked, label, ...props}) {
+  return (
     <Container
       onClick={onChange}
       disabled={disabled}
@@ -53,7 +53,7 @@ const RadioButtonComponent = RadioButton(
       )}
     </Container>
   )
-)
+}
 
 RadioButtonComponent.Group = Group(({onSelect, selected, disabled}) => ({
   disabled,

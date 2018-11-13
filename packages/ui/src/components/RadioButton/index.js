@@ -9,8 +9,6 @@ import {
   defaultFontFamily
 } from '../../styles'
 
-export {default} from './hoc'
-
 export const BULLET_SIZE = 18
 export const BULLET_BORDER = 2
 export const INNER_BULLET_SIZE = 6
