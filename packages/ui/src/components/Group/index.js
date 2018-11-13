@@ -33,7 +33,7 @@ export const Strategies = {
   }
 }
 
-const defaultGetValue = ({value}) => value
+const defaultGetValue = (node) => node.props.value
 
 class GroupItem extends PureComponent {
   render() {
