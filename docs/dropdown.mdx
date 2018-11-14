@@ -83,8 +83,7 @@ You can use the `icon` and `iconProps` props on the `Dropdown` component to styl
       label={(
         <ItunesSearch.Input
           value={search}
-          onChange={(e) => onChange(e.target.value)}
-          style={{border: 'none'}} />
+          onChange={(e) => onChange(e.target.value)} />
       )}>
       {results.length ? (
         results.map(({collectionId, artworkUrl60, artistName, collectionName}) => (

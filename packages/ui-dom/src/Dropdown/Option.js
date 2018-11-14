@@ -21,6 +21,9 @@ const DropdownOption = styled(({children, id, className, style, onSelect}) => {
   cursor: pointer;
   ${option};
   ${option.text};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   &:hover,
   &:focus {
     ${option.hover};

@@ -57,6 +57,7 @@ export const button = css`
   border: 1px solid
     ${({focused, theme}) =>
       focused ? theme.colors.blue : theme.colors.lightGrey};
+  background-color: white;
   ${width};
   ${buttonHeight};
   ${row};
@@ -84,10 +85,10 @@ export const option = css`
   border-radius: 4px;
   background-color: transparent;
   ${row};
+  flex: 1 0 100%;
 `
 
 option.text = css`
-  flex: 1;
   text-align: left;
 `
 

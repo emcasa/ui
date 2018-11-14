@@ -55,6 +55,7 @@ export default styled(
   top: 100%;
   width: 100%;
   margin-top: -4px;
+  overflow-y: auto;
   ${container};
   padding-top: 10px;
 `
