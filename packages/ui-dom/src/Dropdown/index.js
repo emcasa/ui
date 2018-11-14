@@ -17,7 +17,8 @@ const DropdownOption = styled(({onSelect, ...props}) => {
   cursor: pointer;
   ${dropdown.option};
   ${dropdown.option.text};
-  &:hover {
+  &:hover,
+  &:focus {
     ${dropdown.option.hover};
   }
 `

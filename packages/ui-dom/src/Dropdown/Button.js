@@ -15,7 +15,7 @@ const DropdownButton = styled(
         id={id}
         className={className}
         style={style}
-        onClick={onClick}
+        onMouseDown={onClick}
       >
         <Icon
           name={icon ? icon : focused ? 'caret-up' : 'caret-down'}

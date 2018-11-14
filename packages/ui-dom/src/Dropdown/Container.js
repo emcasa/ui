@@ -7,26 +7,37 @@ export default styled(
   class DropdownContainer extends PureComponent {
     static propTypes = container.propTypes
 
+    get targetDOMNode() {
+      return this.props.target
+        ? ReactDOM.findDOMNode(this.props.target)
+        : undefined
+    }
+
     componentDidMount() {
       document.addEventListener('click', this.onDocumentClick, false)
       document.addEventListener('touchend', this.onDocumentClick, false)
+      document.addEventListener('focus', this.onDocumentFocus, true)
     }
 
     componentWillUnmount() {
       document.removeEventListener('click', this.onDocumentClick, false)
       document.removeEventListener('touchend', this.onDocumentClick, false)
+      document.removeEventListener('focus', this.onDocumentFocus, true)
     }
 
     onDocumentClick = (e) => {
-      const {target, focused, onDropdownBlur} = this.props
-      if (
-        focused &&
-        target &&
-        onDropdownBlur &&
-        !ReactDOM.findDOMNode(target).contains(e.target)
-      ) {
+      const {focused, onDropdownBlur} = this.props
+      const target = this.targetDOMNode
+      if (focused && target && onDropdownBlur && !target.contains(e.target)) {
         onDropdownBlur()
       }
+    }
+
+    onDocumentFocus = (e) => {
+      const {focused, onDropdownBlur, onDropdownFocus} = this.props
+      const target = this.targetDOMNode
+      if (focused && !target.contains(e.target)) onDropdownBlur()
+      else if (!focused && target.contains(e.target)) onDropdownFocus()
     }
 
     render() {

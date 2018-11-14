@@ -46,7 +46,8 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
           ...containerProps,
           focused,
           target,
-          onDropdownBlur: this.onBlur
+          onDropdownBlur: this.onBlur,
+          onDropdownFocus: this.onFocus
         }
       }
 
