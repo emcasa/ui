@@ -4,6 +4,7 @@ name: Dropdown
 
 import { Playground, PropsTable } from 'docz'
 import Dropdown from '@emcasa/ui-dom/components/Dropdown'
+import View from '@emcasa/ui-dom/components/View'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
@@ -20,6 +21,27 @@ Dropdown component.
     <Dropdown.Option value="b">Option B</Dropdown.Option>
     <Dropdown.Option value="c">Option C</Dropdown.Option>
   </Dropdown>
+</Playground>
+
+## Button placeholder
+
+<Playground>
+  <View mb="10px">
+    <Text>Dropdown with placeholder</Text>
+    <Dropdown placeholder="Placeholder">
+      <Dropdown.Option value="a">Option A</Dropdown.Option>
+      <Dropdown.Option value="b">Option B</Dropdown.Option>
+      <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
+    </Dropdown>
+  </View>
+  <View mb="10px">
+    <Text>Dropdown fixed label</Text>
+    <Dropdown label="Fixed label">
+      <Dropdown.Option value="a">Option A</Dropdown.Option>
+      <Dropdown.Option value="b">Option B</Dropdown.Option>
+      <Dropdown.Option value="c">Option C</Dropdown.Option>
+    </Dropdown>
+  </View>
 </Playground>
 
 ## Basic usage
