@@ -8,6 +8,7 @@ import View from '@emcasa/ui-dom/components/View'
 import Row from '@emcasa/ui-dom/components/Row'
 import Text from '@emcasa/ui-dom/components/Text'
 import Icon from '@emcasa/ui-dom/components/Icon'
+import ItunesSearch from './search'
 
 # Dropdown
 
@@ -70,16 +71,41 @@ You can use the `icon` and `iconProps` props on the `Dropdown` component to styl
 </Playground>
 
 
-## Basic usage
+## Advanced usage
 
 <Playground style={{minHeight: "250px"}}>
-  <Dropdown
-    icon="search"
-    height="tall"
-    label={<input style={{border: 'none'}} />}>
-    <Dropdown.Option value="a">Option A</Dropdown.Option>
-    <Dropdown.Option value="b">Option B</Dropdown.Option>
-    <Dropdown.Option value="c" label="Label C">Option C</Dropdown.Option>
-  </Dropdown>
+  <ItunesSearch>
+  {({search, results, onChange}) => (
+    <Dropdown
+      icon="search"
+      height="tall"
+      containerProps={{maxHeight: "150px"}}
+      label={(
+        <ItunesSearch.Input
+          value={search}
+          onChange={(e) => onChange(e.target.value)}
+          style={{border: 'none'}} />
+      )}>
+      {results.length ? (
+        results.map(({collectionId, artworkUrl60, artistName, collectionName}) => (
+          <Dropdown.Option key={collectionId} value={collectionId}>
+            <View mr="15px">
+              <img src={artworkUrl60} height="30px" width="30px" />
+            </View>
+            {artistName} - {collectionName}
+          </Dropdown.Option>
+        ))
+      ) : search.length ? (
+        <View mr="15px" ml="15px">
+          <Text>No results for "{search}"</Text>
+        </View>
+      ) : (
+        <View mr="15px" ml="15px">
+          <Text>Start typing to search albums</Text>
+        </View>
+      )}
+    </Dropdown>
+  )}
+  </ItunesSearch>
 </Playground>
 
