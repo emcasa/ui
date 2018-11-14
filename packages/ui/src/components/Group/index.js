@@ -36,8 +36,10 @@ export const Strategies = {
 const defaultGetValue = (node) => node.props.value
 
 class GroupItem extends PureComponent {
+  static childrenProp = '$$groupItem'
+
   render() {
-    return <Fragment>{this.props.children}</Fragment>
+    return <Fragment>{this.props[GroupItem.childrenProp]}</Fragment>
   }
 }
 
@@ -147,9 +149,14 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       // Wrap item to ensure the Target component has access to child props
       // when `renderItem` is passed
       return (
-        <GroupItem {...component.props}>
-          {renderItem ? renderItem(component, this.props) : component}
-        </GroupItem>
+        <GroupItem
+          {...component.props}
+          {...{
+            [GroupItem.childrenProp]: renderItem
+              ? renderItem(component, this.props)
+              : component
+          }}
+        />
       )
     }
 
