@@ -1,0 +1,37 @@
+---
+name: Dropdown
+---
+
+import { Playground, PropsTable } from 'docz'
+import Dropdown from '@emcasa/ui-dom/components/Dropdown'
+import Row from '@emcasa/ui-dom/components/Row'
+import Text from '@emcasa/ui-dom/components/Text'
+import Icon from '@emcasa/ui-dom/components/Icon'
+
+# Dropdown
+
+Dropdown component.
+
+## Basic usage
+
+<Playground>
+  <Dropdown onChange={(value) => console.log('selected', value)}>
+    <Dropdown.Option value="a">Option A</Dropdown.Option>
+    <Dropdown.Option value="b">Option B</Dropdown.Option>
+    <Dropdown.Option value="c">Option C</Dropdown.Option>
+  </Dropdown>
+</Playground>
+
+## Basic usage
+
+<Playground>
+  <Dropdown
+    icon="search"
+    height="tall"
+    label={<input style={{border: 'none'}} />}>
+    <Dropdown.Option value="a">Option A</Dropdown.Option>
+    <Dropdown.Option value="b">Option B</Dropdown.Option>
+    <Dropdown.Option value="c" label="Label C">Option C</Dropdown.Option>
+  </Dropdown>
+</Playground>
+
