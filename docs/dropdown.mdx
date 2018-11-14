@@ -15,7 +15,7 @@ Dropdown component.
 
 ## Basic usage
 
-<Playground>
+<Playground style={{minHeight: "250px"}}>
   <Dropdown onChange={(value) => console.log('selected', value)}>
     <Dropdown.Option value="a">Option A</Dropdown.Option>
     <Dropdown.Option value="b">Option B</Dropdown.Option>
@@ -23,9 +23,9 @@ Dropdown component.
   </Dropdown>
 </Playground>
 
-## Button placeholder
+## Placeholder and labels
 
-<Playground>
+<Playground style={{minHeight: "250px"}}>
   <View mb="10px">
     <Text>Dropdown with placeholder</Text>
     <Dropdown placeholder="Placeholder">
@@ -44,9 +44,35 @@ Dropdown component.
   </View>
 </Playground>
 
+## Icons
+
+You can use the `icon` and `iconProps` props on the `Dropdown` component to style the button icon.
+
+<Playground style={{minHeight: "250px"}}>
+  <Dropdown icon="heart" iconProps={{color: 'red'}} placeholder="What's your favorite animal?">
+    <Dropdown.Option value="cat" label="Cat">
+      <Icon name="cat" color="dark" mr="15px" />
+      <Text inline>Cat</Text>
+    </Dropdown.Option>
+    <Dropdown.Option value="dog" label="Dog">
+      <Icon name="dog" color="dark" mr="15px" />
+      <Text inline>Dog</Text>
+    </Dropdown.Option>
+    <Dropdown.Option value="kiwi" label="Kiwi">
+      <Icon name="kiwi-bird" color="dark" mr="15px" />
+      <Text inline>Kiwi</Text>
+    </Dropdown.Option>
+    <Dropdown.Option value="dragon" label="Dragon">
+      <Icon name="dragon" color="dark" mr="15px" />
+      <Text inline>Dragon</Text>
+    </Dropdown.Option>
+  </Dropdown>
+</Playground>
+
+
 ## Basic usage
 
-<Playground>
+<Playground style={{minHeight: "250px"}}>
   <Dropdown
     icon="search"
     height="tall"

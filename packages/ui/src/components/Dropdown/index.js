@@ -76,11 +76,19 @@ button.propTypes = {
 }
 
 export const option = css`
+  align-items: center;
   margin: 0 5px 5px;
   height: ${themeGet('buttonHeight.1')}px;
   border: 1px solid
     ${({selected, theme}) => (selected ? theme.colors.pink : 'transparent')};
   border-radius: 4px;
+  background-color: transparent;
+  ${row};
+`
+
+option.text = css`
+  flex: 1;
+  text-align: left;
 `
 
 option.hover = css`
@@ -88,6 +96,5 @@ option.hover = css`
 `
 
 export const propTypes = {
-  buttonProps: PropTypes.shape(button.propTypes),
-  ...space.propTypes
+  buttonProps: PropTypes.shape(button.propTypes)
 }

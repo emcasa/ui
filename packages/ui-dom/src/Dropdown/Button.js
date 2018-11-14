@@ -8,7 +8,17 @@ import Icon from '../Icon'
  * DropdownButton
  */
 const DropdownButton = styled(
-  ({children, id, className, style, onClick, focused, icon, type}) => {
+  ({
+    children,
+    id,
+    className,
+    style,
+    onClick,
+    focused,
+    icon,
+    type,
+    iconProps = {}
+  }) => {
     return (
       <div
         tabIndex={0}
@@ -23,7 +33,8 @@ const DropdownButton = styled(
           color="dark"
           size={18}
           mt="5px"
-          mr="5px"
+          mr="10px"
+          {...iconProps}
         />
         {children}
       </div>
