@@ -11,7 +11,8 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       static propTypes = propTypes
 
       static defaultProps = {
-        buttonProps: {}
+        height: 'medium',
+        containerProps: {}
       }
 
       state = {focused: false}
@@ -39,12 +40,12 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
 
       get _containerProps() {
         const {width, containerProps} = this.props
-        const {focused} = this.state
+        const {focused, target} = this.state
         return {
           width,
           ...containerProps,
           focused,
-          target: this.target && this.target.current,
+          target,
           onDropdownBlur: this.onBlur
         }
       }
@@ -57,16 +58,18 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         const {renderButton} = this.props
         if (renderButton) return renderButton(this._buttonProps)
         return (
-          <DropdownButton height="medium" {...this._buttonProps}>
-            {this.label}
-          </DropdownButton>
+          <DropdownButton {...this._buttonProps}>{this.label}</DropdownButton>
         )
       }
 
       render() {
-        const {children} = this.props
+        const {children, ...props} = this.props
         return (
-          <Target ref={this.target}>
+          <Target
+            ref={(target) => this.setState({target})}
+            {...props}
+            focused={this.state.focused}
+          >
             {this.renderButton()}
             <DropdownContainer {...this._containerProps}>
               {children}

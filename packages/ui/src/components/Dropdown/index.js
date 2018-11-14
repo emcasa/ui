@@ -35,7 +35,7 @@ export const container = css`
   border: 1px solid ${themeGet('colors.lightGrey')};
   border-top-width: 0px;
   padding-top: 5px;
-  ${space};
+  background-color: white;
   ${maxHeight};
   ${col};
   display: ${({focused}) => (focused ? 'flex' : 'none')};
