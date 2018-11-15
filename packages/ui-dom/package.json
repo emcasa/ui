@@ -10,7 +10,7 @@
     "build": "babel src -d components",
     "watch": "yarn build --watch",
     "test": "jest",
-    "prepare": "yarn build"
+    "prepublish": "yarn build"
   },
   "dependencies": {
     "@emcasa/ui": "^0.6.12",
