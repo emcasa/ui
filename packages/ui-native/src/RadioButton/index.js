@@ -32,8 +32,8 @@ const Label = styled(safe.Text)`
 
 Label.defaultProps = styles.label.defaultProps
 
-const RadioButtonComponent = RadioButton(
-  ({onChange, disabled, checked, label, ...props}) => (
+function RadioButtonComponent({onChange, disabled, checked, label, ...props}) {
+  return (
     <Container
       onPress={onChange}
       disabled={disabled}
@@ -50,7 +50,7 @@ const RadioButtonComponent = RadioButton(
       )}
     </Container>
   )
-)
+}
 
 RadioButtonComponent.Group = Group(({onSelect, selected, disabled}) => ({
   disabled,
