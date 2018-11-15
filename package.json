@@ -11,6 +11,8 @@
     "nohoist": [
       "**/react-native",
       "**/react-native/**",
+      "**/react-native-svg",
+      "**/react-native-svg/**",
       "**/expo",
       "**/expo/**",
       "**/metro",

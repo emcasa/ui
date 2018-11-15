@@ -12534,9 +12534,9 @@ react-native-svg@6.2.2:
     lodash "^4.16.6"
     pegjs "^0.10.0"
 
-react-native-svg@^8.0.8:
-  version "8.0.8"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-8.0.8.tgz#5d4c636751d9db2d98a9b3cfc4ef45c4eac65d60"
+react-native-svg@^7.1.2:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-7.2.0.tgz#4a43e843938eb5edcb6a7ec34f0387d301533315"
   dependencies:
     color "^2.0.1"
     lodash "^4.16.6"
