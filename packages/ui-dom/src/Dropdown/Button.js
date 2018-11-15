@@ -22,7 +22,7 @@ const DropdownButton = styled(
         id={id}
         className={className}
         style={style}
-        onMouseDown={onFocusChange}
+        onMouseDown={() => setTimeout(onFocusChange, 0)}
       >
         <Icon
           name={icon ? icon : focused ? 'caret-up' : 'caret-down'}
