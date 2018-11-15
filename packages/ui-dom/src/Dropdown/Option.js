@@ -2,8 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import {option} from '@emcasa/ui/lib/components/Dropdown'
 
-import Icon from '../Icon'
-
 const DropdownOption = styled(({children, id, className, style, onSelect}) => {
   return (
     <button

@@ -1,13 +1,5 @@
 import {css} from 'styled-components'
-import {
-  themeGet,
-  space,
-  width,
-  maxHeight,
-  flex,
-  alignSelf,
-  bgColor
-} from 'styled-system'
+import {themeGet, color, width, maxHeight} from 'styled-system'
 import PropTypes from 'prop-types'
 
 import {buttonHeight, fontSize} from '../../styles'
@@ -17,13 +9,13 @@ import {container as col} from '../Col'
 /**
  * Dropdown component structure:
  *
- * <>
+ * <target>
  *   <button></button>
  *   <container>
  *     <option />
  *     <option />
  *   </container>
- * <>
+ * <target>
  */
 
 export const container = css`
@@ -42,11 +34,18 @@ export const container = css`
 `
 
 container.propTypes = {
-  ...space.propTypes,
+  focused: PropTypes.bool,
+  /**
+   * Target element ref
+   */
+  target: PropTypes.element,
+  /**
+   * Triggers dropdown focus
+   */
+  onDropdownFocus: PropTypes.func,
+  onDropdownBlur: PropTypes.func,
   ...width.propTypes,
-  ...flex.propTypes,
-  ...alignSelf.propTypes,
-  ...bgColor.propTypes
+  ...col.propTypes
 }
 
 export const button = css`
@@ -66,13 +65,16 @@ export const button = css`
 button.text = css`
   color: ${themeGet('colors.dark')};
   ${fontSize};
+  ${color};
 `
 
 button.propTypes = {
-  focus: PropTypes.bool,
+  focused: PropTypes.bool,
+  onFocusChange: PropTypes.func,
   ...width.propTypes,
   ...buttonHeight.propTypes,
   ...fontSize.propTypes,
+  ...color.propTypes,
   ...row.propTypes
 }
 
@@ -90,12 +92,23 @@ export const option = css`
 
 option.text = css`
   text-align: left;
+  ${fontSize};
+  ${color};
 `
 
 option.hover = css`
   border-color: ${themeGet('colors.pink')};
 `
 
+option.propTypes = {
+  selected: PropTypes.bool,
+  onSelect: PropTypes.func,
+  ...fontSize.propTypes,
+  ...color.propTypes,
+  ...row.propTypes
+}
+
 export const propTypes = {
-  buttonProps: PropTypes.shape(button.propTypes)
+  containerProps: PropTypes.shape(container.propTypes),
+  ...button.propTypes
 }

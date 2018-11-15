@@ -150,8 +150,8 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       // when `renderItem` is passed
       return (
         <GroupItem
-          {...component.props}
           {...{
+            ...component.props,
             [GroupItem.childrenProp]: renderItem
               ? renderItem(component, this.props)
               : component

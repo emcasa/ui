@@ -34,7 +34,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         return {
           ...props,
           focused,
-          onClick: focused ? this.onBlur : this.onFocus
+          onFocusChange: focused ? this.onBlur : this.onFocus
         }
       }
 
@@ -64,11 +64,10 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       render() {
-        const {children, ...props} = this.props
+        const {children} = this.props
         return (
           <Target
             ref={(target) => this.setState({target})}
-            {...props}
             focused={this.state.focused}
           >
             {this.renderButton()}

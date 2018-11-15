@@ -4,16 +4,13 @@ import {button} from '@emcasa/ui/lib/components/Dropdown'
 
 import Icon from '../Icon'
 
-/**
- * DropdownButton
- */
 const DropdownButton = styled(
   ({
     children,
     id,
     className,
     style,
-    onClick,
+    onFocusChange,
     focused,
     icon,
     type,
@@ -25,7 +22,7 @@ const DropdownButton = styled(
         id={id}
         className={className}
         style={style}
-        onMouseDown={onClick}
+        onMouseDown={onFocusChange}
       >
         <Icon
           name={icon ? icon : focused ? 'caret-up' : 'caret-down'}
