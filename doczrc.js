@@ -4,6 +4,7 @@ export default {
   base: '/',
   hashRouter: true,
   wrapper: 'wrapper.js',
+  files: './docs/**/*.mdx',
   themeConfig: {
     logo: {
       src: 'https://s3.amazonaws.com/emcasa-ui/logo/symbol.svg',
