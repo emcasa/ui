@@ -4,12 +4,9 @@
     "description": "",
     "slug": "storybook-native",
     "privacy": "public",
-    "sdkVersion": "30.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "1.0.0",
+    "sdkVersion": "31.0.0",
+    "platforms": ["ios", "android"],
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,12 +17,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ignoreNodeModulesValidation": true,
     "packagerOpts": {
-      "config": "rn-cli.config.js"
+      "config": "metro.config.js"
     },
     "githubUrl": "https://github.com/emcasa/ui/"
   }

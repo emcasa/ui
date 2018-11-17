@@ -15,7 +15,7 @@ configure(() => require('../stories'), module)
 const StorybookUIRoot = getStorybookUI({
   port: 7007,
   onDeviceUI: true,
-  disableWebsockets: process.env.NODE_ENV === 'production'
+  disableWebsockets: !__DEV__
 })
 
 // react-native hot module loader must take in a Class - https://github.com/facebook/react-native/issues/10991

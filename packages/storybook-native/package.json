@@ -9,15 +9,16 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "storybook": "storybook start -p 7007"
+    "storybook": "storybook start -p 7007",
+    "version": "sed -i.bak -E \"s/(\\\"version\\\":) \\\"(.*)\\\"/\\1 \\\"$(project-version)\\\"/\" app.json"
   },
   "dependencies": {
     "@emcasa/ui": "^0.6.12",
     "@emcasa/ui-native": "^0.6.12",
-    "expo": "^30.0.1",
+    "expo": "31.0.5",
     "react": "16.5.2",
-    "react-native": "0.55.4",
-    "react-native-svg": "^7.1.2",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-svg": "^8.0.8",
     "styled-components": "^3.4.10",
     "styled-system": "^3.1.6",
     "whatwg-fetch": "^2.0.4"
@@ -27,10 +28,10 @@
     "@storybook/addon-links": "^4.0.7",
     "@storybook/addons": "^4.0.7",
     "@storybook/react-native": "^4.0.7",
-    "babel-core": "^6.26.3",
-    "babel-runtime": "^6.26.0",
+    "babel-preset-expo": "^5.0.0",
     "concurrently": "^4.0.1",
-    "metro-bundler-config-yarn-workspaces": "^1.0.3",
+    "get-yarn-workspaces": "^1.0.2",
+    "project-version": "^1.2.0",
     "react-dom": "^16.5.2"
   }
 }
