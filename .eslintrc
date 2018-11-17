@@ -50,6 +50,7 @@
     "semi": ["error", "never"]
   },
   "globals": {
+    "process": true,
     "__dirname": true,
     "__filename": true
   }
