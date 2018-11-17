@@ -1,12 +1,14 @@
 import React, {PureComponent} from 'react'
-import {View} from 'react-native'
+import {View, TextInput as RCTTextInput} from 'react-native'
 import styled, {withTheme} from 'styled-components/native'
 import * as input from '@emcasa/ui/lib/components/Input'
 
-import {safe} from '../utils'
 import Text from '../Text'
+import omitProps, {layoutProps, textStyleProps} from '../utils/omitProps'
 
-const TextInput = styled(safe.TextInput)`
+const TextInput = styled(
+  omitProps(...layoutProps, ...textStyleProps)(RCTTextInput)
+)`
   ${input.container};
   ${input.text};
   text-align-vertical: ${({area}) => (area ? 'top' : 'center')};

@@ -1,9 +1,10 @@
+import {View} from 'react-native'
 import styled from 'styled-components/native'
 import * as col from '@emcasa/ui/lib/components/Col'
 
-import {safe} from '../utils'
+import {omitLayoutProps} from '../utils/omitProps'
 
-const Col = styled(safe.View)`
+const Col = styled(omitLayoutProps(View))`
   ${col.container};
 `
 

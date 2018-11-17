@@ -1,12 +1,12 @@
 import React from 'react'
+import {View, Text, TouchableOpacity} from 'react-native'
 import styled from 'styled-components'
-import RadioButton, * as styles from '@emcasa/ui/lib/components/RadioButton'
+import * as styles from '@emcasa/ui/lib/components/RadioButton'
 import Group from '@emcasa/ui/lib/components/Group'
 
-import View from '../View'
-import {safe} from '../utils'
+import {omitLayoutProps} from '../utils/omitProps'
 
-const Container = styled(safe.TouchableOpacity)`
+const Container = styled(omitLayoutProps(TouchableOpacity))`
   flex-direction: row;
   align-items: center;
   ${styles.container};
@@ -14,19 +14,19 @@ const Container = styled(safe.TouchableOpacity)`
 
 Container.defaultProps = styles.container.defaultProps
 
-const Button = styled(safe.View)`
+const Button = styled(View)`
   ${styles.button};
 `
 
 Button.defaultProps = styles.button.defaultProps
 
-const CheckMark = styled(safe.View)`
+const CheckMark = styled(View)`
   ${styles.checkMark};
 `
 
 CheckMark.defaultProps = styles.checkMark.defaultProps
 
-const Label = styled(safe.Text)`
+const Label = styled(Text)`
   ${styles.label};
 `
 

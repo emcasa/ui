@@ -1,9 +1,10 @@
+import {View} from 'react-native'
 import styled from 'styled-components/native'
 import * as row from '@emcasa/ui/lib/components/Row'
 
-import {safe} from '../utils'
+import {omitLayoutProps} from '../utils/omitProps'
 
-const Row = styled(safe.View)`
+const Row = styled(omitLayoutProps(View))`
   ${row.container};
 `
 
