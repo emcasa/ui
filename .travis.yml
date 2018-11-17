@@ -17,6 +17,7 @@ script:
   - yarn docz
 
 before_deploy:
+  - export GH_STATUS_TOKEN="$GITHUB_TOKEN"
   - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 
 deploy:
@@ -28,9 +29,7 @@ deploy:
       repo: emcasa/ui
   - provider: script
     skip_cleanup: true
-    script:
-      - export GH_STATUS_TOKEN=$GITHUB_TOKEN
-      - lerna run publish-expo --scope @emcasa/storybook-native --stream
+    script: lerna run publish-expo --scope @emcasa/storybook-native --stream
     on:
       all_branches: true
   - provider: pages

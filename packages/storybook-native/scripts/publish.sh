@@ -1,7 +1,8 @@
 # Start PR check
 
-set -e
+set -ex
 
+PATH="$PATH:$PWD/node_modules"
 EXP_CHANNEL="${EXP_CHANNEL:-${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}}"
 
 appJson() {
@@ -13,6 +14,7 @@ handleError() {
   commit-status failure deploy/expo "Failed to publish expo project." $TRAVIS_JOB_WEB_URL
   exit $errorCode
 }
+
 handleExit() {
   expoUrl="https://exp.host/@${EXP_USERNAME}/$(appJson slug)?release-channel=${EXP_CHANNEL}"
   commit-status success deploy/expo "QR Code is ready." $expoUrl

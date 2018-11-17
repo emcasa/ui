@@ -32,6 +32,7 @@
     "babel-preset-expo": "^5.0.0",
     "commit-status": "^4.3.0",
     "concurrently": "^4.0.1",
+    "expo-cli": "^2.4.0",
     "get-yarn-workspaces": "^1.0.2",
     "project-version": "^1.2.0",
     "react-dom": "^16.5.2"
