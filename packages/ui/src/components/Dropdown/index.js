@@ -24,7 +24,8 @@ export const container = css`
   align-items: stretch;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  border: 1px solid ${themeGet('colors.lightGrey')};
+  border-width: 1px;
+  border-color: ${themeGet('colors.lightGrey')};
   border-top-width: 0px;
   padding-top: 5px;
   background-color: white;
@@ -49,17 +50,18 @@ container.propTypes = {
 }
 
 export const button = css`
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   padding: 0 10px;
   border-radius: 4px;
-  border: 1px solid
-    ${({focused, theme}) =>
-      focused ? theme.colors.blue : theme.colors.lightGrey};
+  border-width: 1px;
+  border-color: ${({focused, theme}) =>
+    focused ? theme.colors.blue : theme.colors.lightGrey};
   background-color: white;
+  ${row};
   ${width};
   ${buttonHeight};
-  ${row};
 `
 
 button.textContainer = css`
@@ -90,12 +92,15 @@ export const option = css`
   align-items: center;
   margin: 0 5px 5px;
   height: ${themeGet('buttonHeight.1')}px;
-  border: 1px solid
-    ${({selected, theme}) => (selected ? theme.colors.pink : 'transparent')};
+  border-width: 1px;
+  border-color: ${({selected, theme}) =>
+    selected ? theme.colors.pink : 'transparent'};
   border-radius: 4px;
   background-color: transparent;
   ${row};
-  flex: 1 0 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 100%;
 `
 
 option.text = css`

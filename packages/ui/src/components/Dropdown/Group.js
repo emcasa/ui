@@ -17,8 +17,6 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
 
       state = {focused: false}
 
-      target = React.createRef()
-
       get label() {
         const {label, placeholder, children, selectedValue} = this.props
         if (label) return label
