@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react'
+import {StatusBar} from 'react-native'
 import {Font} from 'expo'
 import {ThemeProvider} from 'styled-components'
 import theme from '@emcasa/ui'
@@ -18,7 +19,10 @@ export default class ThemeWrapper extends PureComponent {
 
   render() {
     return (
-      <ThemeProvider theme={this.state}>{this.props.children}</ThemeProvider>
+      <ThemeProvider theme={this.state}>
+        <StatusBar translucent hidden />
+        {this.props.children}
+      </ThemeProvider>
     )
   }
 }
