@@ -10,7 +10,8 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "storybook": "storybook start -p 7007",
-    "version": "sed -i.bak -E \"s/(\\\"version\\\":) \\\"(.*)\\\"/\\1 \\\"$(project-version)\\\"/\" app.json"
+    "version": "sed -i.bak -E \"s/(\\\"version\\\":) \\\"(.*)\\\"/\\1 \\\"$(project-version)\\\"/\" app.json",
+    "publish-expo": "./scripts/publish.sh"
   },
   "dependencies": {
     "@emcasa/ui": "^0.6.12",
@@ -29,6 +30,7 @@
     "@storybook/addons": "^4.0.7",
     "@storybook/react-native": "^4.0.7",
     "babel-preset-expo": "^5.0.0",
+    "commit-status": "^4.3.0",
     "concurrently": "^4.0.1",
     "get-yarn-workspaces": "^1.0.2",
     "project-version": "^1.2.0",
