@@ -1,34 +1,28 @@
-# Start PR check
+#!/usr/bin/env bash
 
-set -ex
+set -e
 
 PATH="$PATH:$PWD/node_modules"
-EXP_CHANNEL="${EXP_CHANNEL:-${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}}"
+GH_STATUS_TOKEN="$GITHUB_TOKEN"
 
-appJson() {
-  node -e "console.log(require('./app.json').expo['$1'])"
-}
-
-handleError() {
-  errorCode="${3:-1}"
-  commit-status failure deploy/expo "Failed to publish expo project." $TRAVIS_JOB_WEB_URL
-  exit $errorCode
-}
-
+appJson() { node -e "console.log(require('./app.json').expo['$1'])"; }
+cleanup() { rm -f $tmpConfig; }
+handleError() { commit-status failure deploy/expo "Failed to publish expo project." $TRAVIS_JOB_WEB_URL; }
 handleExit() {
   expoUrl="https://exp.host/@${EXP_USERNAME}/$(appJson slug)?release-channel=${EXP_CHANNEL}"
-  commit-status success deploy/expo "QR Code is ready." $expoUrl
+  commit-status success deploy/expo "Expo QR Code is ready." $expoUrl
 }
 
-if [[ "$CI" || "$CONTINUOUS_INTEGRATION" ]]; then
-  trap hadleExit 0
-  trap hadleError ERR
+if [ "$GIT_STATUS" == "true" ]; then
+  trap 'handleExit; cleanup; exit $?' EXIT
+  trap 'handleError; cleanup; exit $?' ERR
+else
+  trap 'cleanup; exit $?' EXIT ERR
 fi
 
 tmpConfig=$PWD/.app.json.tmp
-
-sed -E 's/(\"privacy\":) \"(.*)\"/\1 \"unlisted\"/' app.json > $tmpConfig
+publishArgs=(--config $tmpConfig)
+if [ "$EXP_CHANNEL" ]; then publishArgs+=(--release-channel $EXP_CHANNEL); fi
+sed -E "s/(\\\"privacy\\\":) \\\"(.*)\\\"/\1 \\\"${EXP_PRIVACY:-public}\\\"/" app.json > $tmpConfig
 expo whoami || expo login -u $EXP_USERNAME -p $EXP_PASSWORD
-expo publish --release-channel $EXP_CHANNEL --config $tmpConfig
-
-rm -f $tmpConfig
+expo publish ${publishArgs[@]}
