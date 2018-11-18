@@ -18,9 +18,9 @@ script:
   - >
     if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
       echo "Publishing expo preview...";
-      EXP_PRIVACY=unlisted
-      EXP_CHANNEL=$TRAVIS_PULL_REQUEST_BRANCH
-      GIT_STATUS=true
+      export EXP_PRIVACY=unlisted;
+      export EXP_CHANNEL=$TRAVIS_PULL_REQUEST_BRANCH;
+      export GIT_STATUS=true;
       lerna run publish-expo --scope @emcasa/storybook-native --stream;
     fi
 
