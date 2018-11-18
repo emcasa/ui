@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+set -eE
 
 PATH="$PATH:$PWD/node_modules"
-GH_STATUS_TOKEN="$GITHUB_TOKEN"
+export GH_STATUS_TOKEN="${GITHUB_TOKEN:-$GH_TOKEN}"
 
 appJson() { node -e "console.log(require('./app.json').expo['$1'])"; }
 cleanup() { rm -f $tmpConfig; }
@@ -14,10 +14,9 @@ handleExit() {
 }
 
 if [ "$GIT_STATUS" == "true" ]; then
-  trap 'handleExit; cleanup; exit $?' EXIT
-  trap 'handleError; cleanup; exit $?' ERR
+  trap 'exitCode=$?; cleanup; [ "$exitCode" == "0" ] && handleExit || handleError;' EXIT
 else
-  trap 'cleanup; exit $?' EXIT ERR
+  trap 'cleanup;' EXIT
 fi
 
 tmpConfig=$PWD/.app.json.tmp
