@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import {TouchableHighlight} from 'react-native'
+import {TouchableOpacity} from 'react-native'
 import styled from 'styled-components'
 import {option} from '@emcasa/ui/lib/components/Dropdown'
 
@@ -11,13 +11,13 @@ const OptionText = styled(Text)`
 
 const DropdownOption = styled(({children, style, onSelect, ...props}) => {
   return (
-    <TouchableHighlight style={style} onPress={onSelect}>
+    <TouchableOpacity style={style} onPress={onSelect} activeOpacity={0.85}>
       {React.isValidElement(children) ? (
         <Fragment>{children}</Fragment>
       ) : (
         <OptionText {...props}>{children}</OptionText>
       )}
-    </TouchableHighlight>
+    </TouchableOpacity>
   )
 })`
   ${option};

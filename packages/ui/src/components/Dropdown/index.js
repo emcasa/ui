@@ -19,9 +19,6 @@ import {container as col} from '../Col'
  */
 
 export const container = css`
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   border-width: 1px;
@@ -30,8 +27,13 @@ export const container = css`
   padding-top: 5px;
   background-color: white;
   ${maxHeight};
+`
+
+container.contentContainer = css`
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   ${col};
-  display: ${({focused}) => (focused ? 'flex' : 'none')};
 `
 
 container.propTypes = {
@@ -39,7 +41,7 @@ container.propTypes = {
   /**
    * Target element ref
    */
-  target: PropTypes.element,
+  target: PropTypes.object,
   /**
    * Triggers dropdown focus
    */
@@ -89,8 +91,10 @@ button.propTypes = {
 }
 
 export const option = css`
+  flex-direction: row;
   align-items: center;
   margin: 0 5px 5px;
+  padding: 0 10px;
   height: ${themeGet('buttonHeight.1')}px;
   border-width: 1px;
   border-color: ${({selected, theme}) =>

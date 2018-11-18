@@ -57,5 +57,7 @@ export default styled(
   margin-top: -4px;
   overflow-y: auto;
   ${container};
+  ${container.contentContainer};
+  display: ${({focused}) => (focused ? 'flex' : 'none')};
   padding-top: 10px;
 `
