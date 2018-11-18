@@ -16,3 +16,31 @@ story.add('basic', () => (
     </Dropdown>
   </View>
 ))
+
+story.add('icons', () => (
+  <View flexDirection="column">
+    <Dropdown
+      icon="heart"
+      iconProps={{color: 'red'}}
+      placeholder="What's your favorite snack?"
+      onChange={action('selected')}
+    >
+      <Dropdown.Option value="apple" label="Apple">
+        <Icon name="apple-alt" mr="10px" />
+        <Text>Apple</Text>
+      </Dropdown.Option>
+      <Dropdown.Option value="lemon" label="Lemon">
+        <Icon name="lemon" mr="10px" />
+        <Text>Lemon</Text>
+      </Dropdown.Option>
+      <Dropdown.Option value="cookie" label="Cookie">
+        <Icon name="cookie" mr="10px" />
+        <Text>Cookie</Text>
+      </Dropdown.Option>
+      <Dropdown.Option value="stroopwafel" label="Stroopwafel">
+        <Icon name="stroopwafel" mr="10px" />
+        <Text>Stroopwafel</Text>
+      </Dropdown.Option>
+    </Dropdown>
+  </View>
+))

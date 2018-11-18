@@ -3,6 +3,7 @@ import {TouchableOpacity} from 'react-native'
 import styled from 'styled-components'
 import {option} from '@emcasa/ui/lib/components/Dropdown'
 
+import isValidTextElement from '../utils/isValidTextElement'
 import Text from '../Text'
 
 const OptionText = styled(Text)`
@@ -12,10 +13,10 @@ const OptionText = styled(Text)`
 const DropdownOption = styled(({children, style, onSelect, ...props}) => {
   return (
     <TouchableOpacity style={style} onPress={onSelect} activeOpacity={0.85}>
-      {React.isValidElement(children) ? (
-        <Fragment>{children}</Fragment>
-      ) : (
+      {isValidTextElement(children) ? (
         <OptionText {...props}>{children}</OptionText>
+      ) : (
+        <Fragment>{children}</Fragment>
       )}
     </TouchableOpacity>
   )

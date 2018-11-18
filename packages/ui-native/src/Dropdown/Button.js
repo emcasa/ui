@@ -3,6 +3,7 @@ import {TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components'
 import {button} from '@emcasa/ui/lib/components/Dropdown'
 
+import isValidTextElement from '../utils/isValidTextElement'
 import Row from '../Row'
 import Icon from '../Icon'
 import Text from '../Text'
@@ -28,10 +29,10 @@ const DropdownButton = styled(
             {...iconProps}
           />
           <Row alignItems="center">
-            {React.isValidElement(children) ? (
-              children
-            ) : (
+            {isValidTextElement(children) ? (
               <ButtonText {...props}>{children}</ButtonText>
+            ) : (
+              children
             )}
           </Row>
         </Row>
