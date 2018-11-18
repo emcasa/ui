@@ -22,6 +22,7 @@ export const container = css`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   border-width: 1px;
+  border-style: solid;
   border-color: ${themeGet('colors.lightGrey')};
   border-top-width: 0px;
   padding-top: 5px;
@@ -52,12 +53,14 @@ container.propTypes = {
 }
 
 export const button = css`
+  position: relative;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   padding: 0 10px;
   border-radius: 4px;
   border-width: 1px;
+  border-style: solid;
   border-color: ${({focused, theme}) =>
     focused ? theme.colors.blue : theme.colors.lightGrey};
   background-color: white;
@@ -79,6 +82,23 @@ button.text = css`
   ${color};
 `
 
+button.pseudoBackground = css`
+  z-index: -1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 10px;
+  background-color: white;
+  border-top-width: 0;
+  border-bottom-width: 0;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-style: solid;
+  border-color: ${themeGet('colors.lightGrey')};
+`
+
 button.propTypes = {
   focused: PropTypes.bool,
   onFocusChange: PropTypes.func,
@@ -97,6 +117,7 @@ export const option = css`
   padding: 0 10px;
   height: ${themeGet('buttonHeight.1')}px;
   border-width: 1px;
+  border-style: solid;
   border-color: ${({selected, theme}) =>
     selected ? theme.colors.pink : 'transparent'};
   border-radius: 4px;

@@ -9,6 +9,9 @@ const ButtonText = styled.div`
   ${button.text};
 `
 
+const ButtonBackground = styled.div`
+  ${button.pseudoBackground};
+`
 const DropdownButton = styled(
   ({
     children,
@@ -23,22 +26,25 @@ const DropdownButton = styled(
     ...props
   }) => {
     return (
-      <div
-        tabIndex={0}
-        id={id}
-        className={className}
-        style={style}
-        onMouseDown={() => setTimeout(onFocusChange, 0)}
-      >
-        <Icon
-          name={icon ? icon : focused ? 'caret-up' : 'caret-down'}
-          type={type}
-          color="dark"
-          size={18}
-          mt="5px"
-          {...iconProps}
-        />
-        <ButtonText {...props}>{children}</ButtonText>
+      <div>
+        <div
+          tabIndex={0}
+          id={id}
+          className={className}
+          style={style}
+          onMouseDown={() => setTimeout(onFocusChange, 0)}
+        >
+          <Icon
+            name={icon ? icon : focused ? 'caret-up' : 'caret-down'}
+            type={type}
+            color="dark"
+            size={18}
+            mt="5px"
+            {...iconProps}
+          />
+          <ButtonText {...props}>{children}</ButtonText>
+        </div>
+        {focused && <ButtonBackground />}
       </div>
     )
   }

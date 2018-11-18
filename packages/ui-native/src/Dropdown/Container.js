@@ -18,7 +18,6 @@ const Container = compose(styledProp('contentContainerStyle')`
     position: absolute;
     ${({layout}) => layout};
     ${container};
-    padding-top: 10px;
   `
 )
 
