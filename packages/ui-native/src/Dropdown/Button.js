@@ -31,7 +31,7 @@ const DropdownButton = styled(
               type={type}
               color="dark"
               size={18}
-              mr="10px"
+              mr="5px"
               {...iconProps}
             />
             <Row alignItems="center">
