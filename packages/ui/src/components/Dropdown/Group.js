@@ -32,6 +32,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         return {
           ...props,
           focused,
+          isPlaceholder: Boolean(!props.label && !props.selectedValue),
           onFocusChange: focused ? this.onBlur : this.onFocus
         }
       }

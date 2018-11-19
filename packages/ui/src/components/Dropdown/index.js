@@ -76,8 +76,8 @@ button.textContainer = css`
 `
 
 button.text = css`
-  color: ${themeGet('colors.dark')};
-  ${textAlign};
+  color: ${({isPlaceholder, theme}) =>
+    isPlaceholder ? theme.colors.disabled : theme.colors.dark};
   ${fontSize};
   ${color};
 `
