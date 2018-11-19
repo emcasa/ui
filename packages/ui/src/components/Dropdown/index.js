@@ -28,6 +28,7 @@ export const container = css`
   padding-top: 5px;
   background-color: white;
   ${maxHeight};
+  ${({layout}) => layout};
 `
 
 container.contentContainer = css`
@@ -38,6 +39,7 @@ container.contentContainer = css`
 `
 
 container.propTypes = {
+  layout: PropTypes.object,
   focused: PropTypes.bool,
   /**
    * Target element ref
@@ -102,6 +104,7 @@ button.pseudoBackground = css`
 button.propTypes = {
   focused: PropTypes.bool,
   onFocusChange: PropTypes.func,
+  onLayout: PropTypes.func,
   ...width.propTypes,
   ...buttonHeight.propTypes,
   ...textAlign.propTypes,

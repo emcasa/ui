@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 import styled from 'styled-components'
+import {themeGet} from 'styled-system'
 import compose from 'recompose/compose'
 import {container} from '@emcasa/ui/lib/components/Dropdown'
 
@@ -16,61 +17,39 @@ const Container = compose(styledProp('contentContainerStyle')`
 `)(
   styled(View.withComponent(RCTFlatList))`
     position: absolute;
-    ${({layout}) => layout};
     ${container};
   `
 )
 
-export default class DropdownContainer extends PureComponent {
-  static propTypes = container.propTypes
-
-  static defaultProps = {
-    bounces: false
+export default styled(
+  class DropdownContainer extends PureComponent {
+    render() {
+      const {children, style, onDropdownBlur, ...props} = this.props
+      return (
+        <Modal
+          transparent
+          presentationStyle="overFullScreen"
+          visible={props.focused}
+          onDismiss={onDropdownBlur}
+          onRequestClose={onDropdownBlur}
+        >
+          <TouchableWithoutFeedback onPress={onDropdownBlur}>
+            <View style={style}>
+              {props.layout && (
+                <Container
+                  {...props}
+                  data={children}
+                  renderItem={({item}) => item}
+                />
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      )
+    }
   }
-
-  state = {
-    layout: undefined
-  }
-
-  updateLayout() {
-    const {target} = this.props
-    if (!target) return
-    target.measureInWindow((x, y, width, height) =>
-      this.setState({
-        layout: {top: y + height, left: x, width}
-      })
-    )
-  }
-
-  componentDidUpdate(prevProps) {
-    const {focused} = this.props
-    if (prevProps.focused !== focused && focused) this.updateLayout()
-  }
-
-  render() {
-    const {children, onDropdownBlur, ...props} = this.props
-    const {layout} = this.state
-    return (
-      <Modal
-        transparent
-        presentationStyle="overFullScreen"
-        visible={props.focused}
-        onDismiss={onDropdownBlur}
-        onRequestClose={onDropdownBlur}
-      >
-        <TouchableWithoutFeedback onPress={onDropdownBlur}>
-          <View width="100%" height="100%">
-            {layout && (
-              <Container
-                layout={layout}
-                {...props}
-                data={children}
-                renderItem={({item}) => item}
-              />
-            )}
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-    )
-  }
-}
+)`
+  width: 100%;
+  height: 100%;
+  margin-top: ${themeGet('Dropdown.offset.top', 0)};
+`

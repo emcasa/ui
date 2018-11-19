@@ -16,7 +16,10 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         containerProps: {}
       }
 
-      state = {focused: false}
+      state = {
+        layout: undefined,
+        focused: false
+      }
 
       get label() {
         const {label, placeholder, children, selectedValue} = this.props
@@ -34,22 +37,26 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
           ...props,
           focused,
           isPlaceholder: Boolean(!props.label && !props.selectedValue),
-          onFocusChange: focused ? this.onBlur : this.onFocus
+          onFocusChange: focused ? this.onBlur : this.onFocus,
+          onLayout: this.onLayout
         }
       }
 
       get _containerProps() {
         const {width, containerProps} = this.props
-        const {focused, target} = this.state
+        const {focused, target, layout} = this.state
         return {
           width,
           ...containerProps,
           focused,
           target,
+          layout,
           onDropdownBlur: this.onBlur,
           onDropdownFocus: this.onFocus
         }
       }
+
+      onLayout = (layout) => this.setState({layout})
 
       onFocus = () => this.setState({focused: true}, this.props.onFocus)
 
