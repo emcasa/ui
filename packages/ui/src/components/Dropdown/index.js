@@ -148,5 +148,6 @@ option.propTypes = {
 
 export const propTypes = {
   containerProps: PropTypes.shape(container.propTypes),
+  blurOnChange: PropTypes.bool,
   ...button.propTypes
 }

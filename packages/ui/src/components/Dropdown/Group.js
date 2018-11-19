@@ -11,6 +11,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       static propTypes = propTypes
 
       static defaultProps = {
+        blurOnChange: true,
         height: 'tall',
         containerProps: {}
       }
@@ -54,6 +55,14 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
 
       onBlur = () => this.setState({focused: false}, this.props.onBlur)
 
+      renderItem = (node) =>
+        React.cloneElement(node, {
+          onSelect: () => {
+            node.props.onSelect()
+            if (this.props.blurOnChange) setTimeout(() => this.onBlur(), 0)
+          }
+        })
+
       renderButton() {
         const {renderButton} = this.props
         if (renderButton) return renderButton(this._buttonProps)
@@ -71,7 +80,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
           >
             {this.renderButton()}
             <DropdownContainer {...this._containerProps}>
-              {children}
+              {React.Children.map(children, this.renderItem)}
             </DropdownContainer>
           </Target>
         )
