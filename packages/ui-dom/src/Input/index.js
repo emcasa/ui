@@ -21,6 +21,7 @@ const ForwardedInput = React.forwardRef(({area, ...props}, ref) => {
 const TextInput = styled(ForwardedInput)`
   -webkit-font-smoothing: antialiased;
   display: block;
+  box-sizing: border-box;
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   outline: none;
   :focus {
