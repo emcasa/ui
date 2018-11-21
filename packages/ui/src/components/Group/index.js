@@ -1,7 +1,6 @@
-import {Fragment} from 'react'
+import React, {PureComponent} from 'react'
 import toArray from 'lodash.toarray'
 import omit from 'lodash.omit'
-import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 
 export const Strategies = {
@@ -36,8 +35,10 @@ export const Strategies = {
 const defaultGetValue = (node) => node.props.value
 
 class GroupItem extends PureComponent {
+  static childrenProp = '$$groupItem'
+
   render() {
-    return <Fragment>{this.props.children}</Fragment>
+    return <>{this.props[GroupItem.childrenProp]}</>
   }
 }
 
@@ -147,15 +148,20 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       // Wrap item to ensure the Target component has access to child props
       // when `renderItem` is passed
       return (
-        <GroupItem {...component.props}>
-          {renderItem ? renderItem(component, this.props) : component}
-        </GroupItem>
+        <GroupItem
+          {...{
+            ...component.props,
+            [GroupItem.childrenProp]: renderItem
+              ? renderItem(component, this.props)
+              : component
+          }}
+        />
       )
     }
 
     render() {
       return (
-        <Target {...this.props} {...this.state} onSelect={this.onChange}>
+        <Target {...this.props} {...this.state} onChange={this.onChange}>
           {React.Children.map(this.props.children, this.renderItem)}
         </Target>
       )

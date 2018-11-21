@@ -9,9 +9,14 @@ import Text from '../Text'
 
 const focused = withProps({focus: true})
 
-const ForwardedInput = React.forwardRef((props, ref) =>
-  props.area ? <textarea ref={ref} {...props} /> : <input ref={ref} {...props} />
-)
+const ForwardedInput = React.forwardRef(({area, ...props}, ref) => {
+  delete props.fluid
+  return area ? (
+    <textarea ref={ref} {...props} />
+  ) : (
+    <input ref={ref} {...props} />
+  )
+})
 
 const TextInput = styled(ForwardedInput)`
   -webkit-font-smoothing: antialiased;
@@ -36,21 +41,35 @@ const ErrorText = styled(Text)`
   ${input.error};
 `
 
-const Input = React.forwardRef((props, ref) => {
-  return (
-    <View>
-      {!props.hideLabelView && <SupportingView><Text inline fontSize="small">{props.label}</Text></SupportingView>}
-      <TextInput {...props} innerRef={ref} />
-      {!props.hideErrorView && <SupportingView><ErrorText inline fontSize="small">{props.error}</ErrorText></SupportingView>}
-    </View>
-  )
-})
+const Input = React.forwardRef(
+  ({hideLabelView, hideErrorView, label, error, ...props}, ref) => {
+    return (
+      <View>
+        {!hideLabelView && (
+          <SupportingView>
+            <Text inline fontSize="small">
+              {label}
+            </Text>
+          </SupportingView>
+        )}
+        <TextInput {...props} innerRef={ref} />
+        {!hideErrorView && (
+          <SupportingView>
+            <ErrorText inline fontSize="small">
+              {error}
+            </ErrorText>
+          </SupportingView>
+        )}
+      </View>
+    )
+  }
+)
 
 Input.propTypes = {
   ...input.container.propTypes,
   ...input.text.propTypes,
   hideLabelView: PropTypes.bool,
-  hideErrorView: PropTypes.bool,
+  hideErrorView: PropTypes.bool
 }
 
 Input.defaultProps = {

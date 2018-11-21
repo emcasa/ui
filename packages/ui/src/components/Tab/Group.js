@@ -33,13 +33,13 @@ export default ({TabBar, TabBarButton}) => (Target) =>
       }
 
       renderTabBar = (node, index) => {
-        const {onSelect, tabBarButtonProps, color, borderColor} = this.props
+        const {onChange, tabBarButtonProps, color, borderColor} = this.props
         return (
           <TabBarButton
             color={color}
             borderColor={borderColor}
             selected={node.props.selected}
-            onSelect={() => onSelect(index)}
+            onSelect={() => onChange(index)}
             {...tabBarButtonProps}
           >
             {node.props.label}
