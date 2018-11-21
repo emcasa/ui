@@ -19,26 +19,32 @@ import {container as col} from '../Col'
  */
 
 export const container = css`
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  border: 1px solid ${themeGet('colors.lightGrey')};
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${themeGet('colors.lightGrey')};
   border-top-width: 0px;
   padding-top: 5px;
   background-color: white;
   ${maxHeight};
+  ${({layout}) => layout};
+`
+
+container.contentContainer = css`
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   ${col};
-  display: ${({focused}) => (focused ? 'flex' : 'none')};
 `
 
 container.propTypes = {
+  layout: PropTypes.object,
   focused: PropTypes.bool,
   /**
    * Target element ref
    */
-  target: PropTypes.element,
+  target: PropTypes.object,
   /**
    * Triggers dropdown focus
    */
@@ -49,17 +55,20 @@ container.propTypes = {
 }
 
 export const button = css`
+  position: relative;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   padding: 0 10px;
   border-radius: 4px;
-  border: 1px solid
-    ${({focused, theme}) =>
-      focused ? theme.colors.blue : theme.colors.lightGrey};
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${({focused, theme}) =>
+    focused ? theme.colors.blue : theme.colors.lightGrey};
   background-color: white;
+  ${row};
   ${width};
   ${buttonHeight};
-  ${row};
 `
 
 button.textContainer = css`
@@ -69,15 +78,33 @@ button.textContainer = css`
 `
 
 button.text = css`
-  color: ${themeGet('colors.dark')};
-  ${textAlign};
+  color: ${({isPlaceholder, theme}) =>
+    isPlaceholder ? theme.colors.disabled : theme.colors.dark};
   ${fontSize};
   ${color};
+`
+
+button.pseudoBackground = css`
+  z-index: -1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 10px;
+  background-color: white;
+  border-top-width: 0;
+  border-bottom-width: 0;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-style: solid;
+  border-color: ${themeGet('colors.lightGrey')};
 `
 
 button.propTypes = {
   focused: PropTypes.bool,
   onFocusChange: PropTypes.func,
+  onLayout: PropTypes.func,
   ...width.propTypes,
   ...buttonHeight.propTypes,
   ...textAlign.propTypes,
@@ -87,15 +114,21 @@ button.propTypes = {
 }
 
 export const option = css`
+  flex-direction: row;
   align-items: center;
   margin: 0 5px 5px;
+  padding: 0 10px;
   height: ${themeGet('buttonHeight.1')}px;
-  border: 1px solid
-    ${({selected, theme}) => (selected ? theme.colors.pink : 'transparent')};
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${({selected, theme}) =>
+    selected ? theme.colors.pink : 'transparent'};
   border-radius: 4px;
   background-color: transparent;
   ${row};
-  flex: 1 0 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 100%;
 `
 
 option.text = css`
@@ -118,5 +151,6 @@ option.propTypes = {
 
 export const propTypes = {
   containerProps: PropTypes.shape(container.propTypes),
+  blurOnChange: PropTypes.bool,
   ...button.propTypes
 }

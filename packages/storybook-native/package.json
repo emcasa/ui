@@ -4,7 +4,7 @@
   "version": "0.6.12",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"yarn expo\" \"yarn storybook\"",
+    "dev": "bash -c 'concurrently \"yarn expo --dev --no-minify\" \"yarn storybook\"'",
     "expo": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -17,7 +17,8 @@
     "@emcasa/ui": "^0.6.12",
     "@emcasa/ui-native": "^0.6.12",
     "expo": "31.0.5",
-    "react": "16.5.2",
+    "schedule": "0.4.0",
+    "react": "16.6.0-alpha.8af6728",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-svg": "^8.0.8",
     "styled-components": "^3.4.10",

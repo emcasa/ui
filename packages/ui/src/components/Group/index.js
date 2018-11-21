@@ -110,10 +110,6 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
     update = (value) =>
       this.state.strategy.update(this.state.selectedValue, value)
 
-    setValue(value) {
-      this.setState({selectedValue: value})
-    }
-
     onChange = (value) => {
       const {disabled} = this.props
       if (disabled) return
@@ -145,15 +141,14 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
         child,
         this._childProps(child, index)
       )
+      if (!renderItem) return component
       // Wrap item to ensure the Target component has access to child props
       // when `renderItem` is passed
       return (
         <GroupItem
           {...{
             ...component.props,
-            [GroupItem.childrenProp]: renderItem
-              ? renderItem(component, this.props)
-              : component
+            [GroupItem.childrenProp]: renderItem(component, this.props)
           }}
         />
       )
