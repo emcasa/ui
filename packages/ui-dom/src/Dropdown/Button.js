@@ -4,6 +4,11 @@ import {button} from '@emcasa/ui/lib/components/Dropdown'
 
 import Icon from '../Icon'
 
+const ButtonText = styled.div`
+  ${button.textContainer};
+  ${button.text};
+`
+
 const DropdownButton = styled(
   ({
     children,
@@ -14,7 +19,8 @@ const DropdownButton = styled(
     focused,
     icon,
     type,
-    iconProps = {}
+    iconProps = {},
+    ...props
   }) => {
     return (
       <div
@@ -30,10 +36,9 @@ const DropdownButton = styled(
           color="dark"
           size={18}
           mt="5px"
-          mr="10px"
           {...iconProps}
         />
-        {children}
+        <ButtonText {...props}>{children}</ButtonText>
       </div>
     )
   }
@@ -42,7 +47,6 @@ const DropdownButton = styled(
   outline: none;
   cursor: pointer;
   ${button};
-  ${button.text};
 `
 
 DropdownButton.displayName = 'DropdownButton'

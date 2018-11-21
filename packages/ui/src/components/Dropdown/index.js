@@ -1,5 +1,5 @@
 import {css} from 'styled-components'
-import {themeGet, color, width, maxHeight} from 'styled-system'
+import {themeGet, color, width, maxHeight, textAlign} from 'styled-system'
 import PropTypes from 'prop-types'
 
 import {buttonHeight, fontSize} from '../../styles'
@@ -62,8 +62,15 @@ export const button = css`
   ${row};
 `
 
+button.textContainer = css`
+  flex: 1;
+  margin-right: 10px;
+  margin-left: 10px;
+`
+
 button.text = css`
   color: ${themeGet('colors.dark')};
+  ${textAlign};
   ${fontSize};
   ${color};
 `
@@ -73,6 +80,7 @@ button.propTypes = {
   onFocusChange: PropTypes.func,
   ...width.propTypes,
   ...buttonHeight.propTypes,
+  ...textAlign.propTypes,
   ...fontSize.propTypes,
   ...color.propTypes,
   ...row.propTypes

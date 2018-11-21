@@ -36,7 +36,7 @@ Dropdown component.
     </Dropdown>
   </View>
   <View mb="10px">
-    <Text>Dropdown fixed label</Text>
+    <Text>Dropdown with fixed label</Text>
     <Dropdown label="Fixed label">
       <Dropdown.Option value="a">Option A</Dropdown.Option>
       <Dropdown.Option value="b">Option B</Dropdown.Option>
@@ -70,6 +70,24 @@ You can use the `icon` and `iconProps` props on the `Dropdown` component to styl
   </Dropdown>
 </Playground>
 
+Use `flexDirection` to position the dropdown icon and `textAlign` to position the dropdown text.
+
+<Playground style={{minHeight: "250px"}}>
+  <View mb="10px">
+    <Dropdown flexDirection="row-reverse" placeholder="Select an option">
+      <Dropdown.Option value="a">Option A</Dropdown.Option>
+      <Dropdown.Option value="b">Option B</Dropdown.Option>
+      <Dropdown.Option value="c">Option C</Dropdown.Option>
+    </Dropdown>
+  </View>
+  <View mb="10px">
+    <Dropdown flexDirection="row-reverse" textAlign="right" placeholder="Select an option">
+      <Dropdown.Option value="a">Option A</Dropdown.Option>
+      <Dropdown.Option value="b">Option B</Dropdown.Option>
+      <Dropdown.Option value="c">Option C</Dropdown.Option>
+    </Dropdown>
+  </View>
+</Playground>
 
 ## Advanced usage
 
