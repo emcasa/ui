@@ -1,7 +1,6 @@
-import {Fragment} from 'react'
+import React, {PureComponent} from 'react'
 import toArray from 'lodash.toarray'
 import omit from 'lodash.omit'
-import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 
 export const Strategies = {
@@ -39,7 +38,7 @@ class GroupItem extends PureComponent {
   static childrenProp = '$$groupItem'
 
   render() {
-    return <Fragment>{this.props[GroupItem.childrenProp]}</Fragment>
+    return <>{this.props[GroupItem.childrenProp]}</>
   }
 }
 
