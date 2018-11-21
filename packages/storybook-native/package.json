@@ -1,7 +1,7 @@
 {
   "name": "@emcasa/storybook-native",
   "main": "node_modules/expo/AppEntry.js",
-  "version": "0.6.12",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "dev": "bash -c 'concurrently \"yarn expo --dev --no-minify\" \"yarn storybook\"'",
@@ -14,13 +14,13 @@
     "publish-expo": "./scripts/publish.sh"
   },
   "dependencies": {
-    "@emcasa/ui": "^0.6.12",
-    "@emcasa/ui-native": "^0.6.12",
+    "@emcasa/ui": "^0.7.0",
+    "@emcasa/ui-native": "^0.7.0",
     "expo": "31.0.5",
-    "schedule": "0.4.0",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-svg": "^8.0.8",
+    "schedule": "0.4.0",
     "styled-components": "^3.4.10",
     "styled-system": "^3.1.6",
     "whatwg-fetch": "^2.0.4"
