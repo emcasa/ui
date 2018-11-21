@@ -11,7 +11,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       static propTypes = propTypes
 
       static defaultProps = {
-        height: 'medium',
+        height: 'tall',
         containerProps: {}
       }
 
