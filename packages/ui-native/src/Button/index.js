@@ -1,26 +1,24 @@
 import React from 'react'
-import pick from 'lodash.pick'
+import {Text, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 import * as button from '@emcasa/ui/lib/components/Button'
 import Group from '@emcasa/ui/lib/components/Group'
 
 import View from '../View'
-import {safe} from '../utils'
+import {omitLayoutProps, omitTextStyleProps} from '../utils/omitProps'
 
-export const ButtonView = styled(safe.TouchableOpacity)`
+export const ButtonView = styled(omitLayoutProps(TouchableOpacity))`
   ${button.container};
 `
 
-export const ButtonText = styled(safe.Text)`
+export const ButtonText = styled(omitTextStyleProps(Text))`
   ${button.text};
 `
-
-const textProps = Object.keys(button.text.propTypes)
 
 export default function Button({children, ...props}) {
   return (
     <ButtonView {...props}>
-      <ButtonText {...pick(props, textProps)}>{children}</ButtonText>
+      <ButtonText {...props}>{children}</ButtonText>
     </ButtonView>
   )
 }

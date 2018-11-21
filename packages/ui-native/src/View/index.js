@@ -1,9 +1,10 @@
+import {View as RCTView} from 'react-native'
 import styled from 'styled-components/native'
 import * as view from '@emcasa/ui/lib/components/View'
 
-import {safe} from '../utils'
+import {omitLayoutProps} from '../utils/omitProps'
 
-const View = styled(safe.View)`
+const View = styled(omitLayoutProps(RCTView))`
   ${view.container};
 `
 

@@ -5,6 +5,10 @@ const nodeModules = path.resolve(__dirname, '../../')
 
 const config = getConfig(__dirname, {nodeModules})
 
-config.extraNodeModules['@storybook'] = path.join(nodeModules, '@storybook')
+Object.assign(config.extraNodeModules, {
+  '@storybook': path.join(nodeModules, '@storybook'),
+  'react-native': path.join(__dirname, 'node_modules/react-native'),
+  'react-native-svg': path.join(__dirname, 'node_modules/react-native-svg')
+})
 
 module.exports = config

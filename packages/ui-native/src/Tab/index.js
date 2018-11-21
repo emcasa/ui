@@ -1,19 +1,16 @@
-import pick from 'lodash.pick'
-import React, {PureComponent} from 'react'
-import {TouchableOpacity} from 'react-native'
-import PropTypes from 'prop-types'
+import React from 'react'
+import {View, Text, TouchableOpacity} from 'react-native'
 import styled from 'styled-components'
-import Group from '@emcasa/ui/lib/components/Group'
 import TabGroup from '@emcasa/ui/lib/components/Tab/Group'
 import * as tab from '@emcasa/ui/lib/components/Tab'
 
-import {safe} from '../utils'
+import {omitLayoutProps, omitTextStyleProps} from '../utils/omitProps'
 import Col from '../Col'
 
 /**
  * TabBar
  */
-const TabBar = styled(safe.View)`
+const TabBar = styled(omitLayoutProps(View))`
   ${tab.tabBar};
 `
 
@@ -39,7 +36,7 @@ TabBarButton.propTypes = tab.tabBarButton.propTypes
 /**
  * TabBarText
  */
-const TabBarText = styled(safe.Text)`
+const TabBarText = styled(omitTextStyleProps(Text))`
   ${tab.tabBarText};
 `
 
@@ -50,7 +47,7 @@ TabBarText.propTypes = tab.tabBarText.propTypes
 /**
  * TabBar
  */
-const Tab = styled(safe.View)`
+const Tab = styled(omitLayoutProps(View))`
   ${tab.container};
 `
 
