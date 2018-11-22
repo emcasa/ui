@@ -5,13 +5,7 @@ import Group from '../Group'
 import {tabBar, tabBarButton, tabBarText} from './index'
 
 export default ({TabBar, TabBarButton}) => (Target) =>
-  Group(
-    ({...props}) => {
-      delete props.onSelect
-      return props
-    },
-    (_, index) => index
-  )(
+  Group(({selected}) => ({selected}), (_, index) => index)(
     class TabGroup extends PureComponent {
       static propTypes = {
         color: PropTypes.string,
@@ -51,6 +45,7 @@ export default ({TabBar, TabBarButton}) => (Target) =>
 
       render() {
         const {children, tabBarProps, ...props} = this.props
+        delete props.onChange
         return (
           <Target {...props}>
             <TabBar height="medium" {...tabBarProps}>
