@@ -10,7 +10,7 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "storybook": "storybook start -p 7007",
-    "version": "sed -i.bak -E \"s/(\\\"version\\\":) \\\"(.*)\\\"/\\1 \\\"$(project-version)\\\"/\" app.json",
+    "update-version": "sed -i.bak -E \"s/(\\\"version\\\":) \\\"(.*)\\\"/\\1 \\\"$(project-version)\\\"/\" app.json",
     "publish-expo": "./scripts/publish.sh"
   },
   "dependencies": {
