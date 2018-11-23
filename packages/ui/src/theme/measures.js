@@ -1,7 +1,7 @@
 export const LETTER_SPACING = new Map([
   ['xnarrow', -0.82],
   ['narrow', -0.59],
-  ['default', 0],
+  ['default', '0px'],
   ['wide', 0.56]
 ])
 
