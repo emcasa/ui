@@ -10,7 +10,7 @@ import {
 
 export default {
   fontFamily: 'FaktSoftPro-Normal',
-  breakpoints: ['640px'],
+  breakpoints: ['780px'],
   space: [0, 4, 10, 14, 20, 25, 80],
   fontSizes: Array.from(FONT_SIZE.values()),
   letterSpacing: Array.from(LETTER_SPACING.values()),
