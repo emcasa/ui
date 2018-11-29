@@ -15,6 +15,10 @@ export default (Target) =>
   class extends PureComponent {
     static displayName = `Slider(${Target.displayName || Target.name})`
 
+    static defaultProps = {
+      initialValue: 0
+    }
+
     state = {
       markers: undefined,
       layout: undefined
@@ -24,7 +28,12 @@ export default (Target) =>
       const {initialValue} = this.props
       const outputRange = this.props.range || [0, layout.width]
       const markers = this._reduceMarkers((state, marker, prevMarker) => {
-        const value = clamp(initialValue[marker.key], ...outputRange)
+        const value = clamp(
+          typeof initialValue === 'object'
+            ? initialValue[marker.key]
+            : initialValue,
+          ...outputRange
+        )
         const prevMarkerState = prevMarker ? state[prevMarker.key] : undefined
         const currentMarkerState = {
           value,

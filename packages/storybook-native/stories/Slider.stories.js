@@ -21,3 +21,34 @@ story.add('basic', () => (
     </Slider>
   </View>
 ))
+
+story.add('multiple markers', () => (
+  <View flexDirection="column">
+    <View mb="25px">
+      <Slider onChange={action('slider changed')} range={[0, 1]}>
+        <Slider.Marker />
+      </Slider>
+    </View>
+    <View mb="25px">
+      <Slider
+        onChange={action('slider changed')}
+        range={[0, 1]}
+        initialValue={[0, 1]}
+      >
+        <Slider.Marker />
+        <Slider.Marker />
+      </Slider>
+    </View>
+    <View mb="25px">
+      <Slider
+        onChange={action('slider changed')}
+        range={[0, 1]}
+        initialValue={[0, 0.5, 1]}
+      >
+        <Slider.Marker />
+        <Slider.Marker />
+        <Slider.Marker />
+      </Slider>
+    </View>
+  </View>
+))
