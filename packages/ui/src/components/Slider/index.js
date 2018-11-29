@@ -15,7 +15,6 @@ export {default} from './hoc'
 export const container = css``
 
 export const marker = css`
-  position: absolute;
   width: ${({size}) => size}px;
   height: ${({size}) => size}px;
   border-radius: ${({size}) => size}px;

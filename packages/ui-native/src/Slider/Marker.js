@@ -19,7 +19,7 @@ export default class MarkerContainer extends PureComponent {
     hitSlop: 15
   }
 
-  offset = 0
+  state = {}
 
   position = new Animated.Value(0)
 
@@ -49,6 +49,8 @@ export default class MarkerContainer extends PureComponent {
     }
   }
 
+  onLayout = ({nativeEvent: {layout}}) => this.setState({layout})
+
   onHandlerStateChange = (event) => {
     const {bounds, onSlideStop} = this.props
     if (event.nativeEvent.oldState === State.ACTIVE) {
@@ -61,7 +63,11 @@ export default class MarkerContainer extends PureComponent {
 
   render() {
     const {children, bounds, ...props} = this.props
+    const {layout} = this.state
     delete props.hitSlop
+    const offset = layout
+      ? {x: -layout.width / 2, y: -layout.height / 2}
+      : {x: 0, y: 0}
     return (
       <PanGestureHandler
         enabled={bounds.right - bounds.left !== 0}
@@ -71,9 +77,13 @@ export default class MarkerContainer extends PureComponent {
         <Animated.View
           useNativeDriver
           hitSlop={this.hitSlop}
+          onLayout={this.onLayout}
           style={{
             position: 'absolute',
+            opacity: layout ? 1 : 0,
             transform: [
+              {translateY: offset.y},
+              {translateX: offset.x},
               {
                 translateX: Animated.diffClamp(
                   this.position,
@@ -84,7 +94,7 @@ export default class MarkerContainer extends PureComponent {
             ]
           }}
         >
-          {children || <Marker {...props} />}
+          {children || <Marker />}
         </Animated.View>
       </PanGestureHandler>
     )
