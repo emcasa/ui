@@ -15,6 +15,10 @@ Marker.displayName = 'SliderMarker'
 Marker.defaultProps = slider.marker.defaultProps
 
 export default class MarkerContainer extends PureComponent {
+  static defaultProps = {
+    hitSlop: 15
+  }
+
   offset = 0
 
   position = new Animated.Value(0)
@@ -34,6 +38,17 @@ export default class MarkerContainer extends PureComponent {
     })
   }
 
+  get hitSlop() {
+    const {hitSlop, bounds} = this.props
+    if (isNaN(hitSlop)) return hitSlop
+    return {
+      top: hitSlop,
+      bottom: hitSlop,
+      left: Math.min(bounds.left / 2, hitSlop),
+      right: Math.min(bounds.right / 2, hitSlop)
+    }
+  }
+
   onHandlerStateChange = (event) => {
     const {bounds, onSlideStop} = this.props
     if (event.nativeEvent.oldState === State.ACTIVE) {
@@ -46,6 +61,7 @@ export default class MarkerContainer extends PureComponent {
 
   render() {
     const {children, bounds, ...props} = this.props
+    delete props.hitSlop
     return (
       <PanGestureHandler
         enabled={bounds.right - bounds.left !== 0}
@@ -54,6 +70,7 @@ export default class MarkerContainer extends PureComponent {
       >
         <Animated.View
           useNativeDriver
+          hitSlop={this.hitSlop}
           style={{
             position: 'absolute',
             transform: [
