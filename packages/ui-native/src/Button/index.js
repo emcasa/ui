@@ -21,6 +21,8 @@ const buttonTextProps = `color letterSpacing
 fontFamily fontSize adjustsFontSizeToFit minimumFontScale
 textBreakStrategy ellipsizeMode numberOfLines`.split(/\s+/)
 
+const commonProps = 'active disabled'.split(/\s+/)
+
 export default function Button({children, ...props}) {
   return (
     <ButtonView {...omit(props, buttonTextProps)}>
@@ -28,6 +30,7 @@ export default function Button({children, ...props}) {
         selectable={false}
         suppressHighlighting
         {...pick(props, buttonTextProps)}
+        {...pick(props, commonProps)}
       >
         {children}
       </ButtonText>
