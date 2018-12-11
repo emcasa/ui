@@ -15,9 +15,11 @@ Button component.
 
 <Playground>
   <View m={4}>
-    <Button active onClick={() => {alert('I\'ve been clicked!')}}>Active</Button>
+    <Button active>Active</Button>
     <Button>Normal</Button>
     <Button disabled>Disabled</Button>
+    <Button link>Link</Button>
+    <Button link disabled>Disabled link</Button>
     <Button active disabled>Active and disabled</Button>
     <View my={4}>
       <Button fluid active>This Button takes up all available space</Button>

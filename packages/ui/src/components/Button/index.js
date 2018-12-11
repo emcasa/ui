@@ -20,17 +20,17 @@ import {
 const buttonProps = {
   active: PropTypes.bool,
   disabled: PropTypes.bool,
-  fluid: PropTypes.bool
+  fluid: PropTypes.bool,
+  link: PropTypes.bool
 }
 
 export const container = css`
   padding: 0 20px 0 20px;
-  border-radius: 4px;
-  border: 1px solid;
   border-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
+  ${({link}) => link ? 'border: none;' : 'border-radius: 4px; border: 1px solid;'}
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   ${buttonHeight}
   ${space}
@@ -56,9 +56,10 @@ container.defaultProps = {
 }
 
 export const text = css`
-  color: ${({active, disabled, theme: {colors}}) => {
+  color: ${({active, disabled, link, theme: {colors}}) => {
     if (disabled) return colors.disabled
     else if (active) return colors.white
+    else if (link) return colors.pink
     else return colors.dark
   }};
   ${defaultFontFamily}
