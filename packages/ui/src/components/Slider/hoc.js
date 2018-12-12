@@ -3,7 +3,7 @@ import interpolate from 'interpolate-range'
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
 
-const getMarkerBounds = (prevMarker, layout) => ({
+const getMarkerBounds = (layout, prevMarker) => ({
   left: prevMarker ? prevMarker.position : 0,
   right: layout.width,
   clamp(value) {
@@ -11,12 +11,22 @@ const getMarkerBounds = (prevMarker, layout) => ({
   }
 })
 
-export default ({MarkerHandler}) => (Target) =>
+const updateMarkerBounds = ({layout, distance}, marker, prevMarker) => {
+  marker.bounds = getMarkerBounds(layout, prevMarker)
+  if (prevMarker) {
+    marker.bounds.left += distance
+    prevMarker.bounds.right = marker.position + distance
+  }
+}
+
+export default ({MarkerHandler, SliderTrack}) => (Target) =>
   class extends PureComponent {
     static displayName = `Slider(${Target.displayName || Target.name})`
 
     static defaultProps = {
-      initialValue: 0
+      initialValue: 0,
+      minDistance: 1,
+      trackProps: {}
     }
 
     state = {
@@ -25,7 +35,7 @@ export default ({MarkerHandler}) => (Target) =>
     }
 
     _getInitialMarkerState(layout) {
-      const {initialValue} = this.props
+      const {initialValue, minDistance} = this.props
       const outputRange = this.props.range || [0, layout.width]
       const markers = this._reduceMarkers((state, marker, prevMarker) => {
         const value = clamp(
@@ -39,11 +49,13 @@ export default ({MarkerHandler}) => (Target) =>
           value,
           index: marker.index,
           ref: React.createRef(),
-          bounds: getMarkerBounds(prevMarkerState, layout),
           position: this._getPositionFromValue(value, layout)
         }
-        if (prevMarker)
-          prevMarkerState.bounds.right = currentMarkerState.position
+        updateMarkerBounds(
+          {layout, distance: minDistance},
+          currentMarkerState,
+          prevMarkerState
+        )
         return {...state, [marker.key]: currentMarkerState}
       })
       return markers
@@ -110,10 +122,12 @@ export default ({MarkerHandler}) => (Target) =>
       this.setState(({markers, layout}) => ({
         markers: this._reduceMarkers(
           (result, marker, prevMarker = {}) => {
-            const bounds = getMarkerBounds(result[prevMarker.key], layout)
-            result[marker.key] = {...result[marker.key], bounds}
-            if (prevMarker.key)
-              result[prevMarker.key].bounds.right = result[marker.key].position
+            result[marker.key] = {...result[marker.key]}
+            updateMarkerBounds(
+              {layout, distance: this.props.minDistance},
+              result[marker.key],
+              prevMarker && result[prevMarker.key]
+            )
             return result
           },
           {...markers}
@@ -126,12 +140,14 @@ export default ({MarkerHandler}) => (Target) =>
     }
 
     renderMarker = (element, index) => {
-      const key = element.props.name || index
       if (!element) return
+      const key = element.props.name || index
       return (
         <MarkerHandler
           {...this.state.markers[key]}
-          trackProps={element.props.trackProps || {}}
+          key={key}
+          name={key}
+          trackProps={element.props.trackProps}
           onSlide={this.onSlide({key, index})}
           onSlideStop={this.onSlideStop}
           sliderLayout={this.state.layout}
@@ -142,11 +158,18 @@ export default ({MarkerHandler}) => (Target) =>
     }
 
     render() {
-      const {children, ...props} = this.props
-      const {markers} = this.state
+      const {children, trackProps, ...props} = this.props
+      const {markers, layout} = this.state
+      const markerContainers =
+        Boolean(markers) && React.Children.map(children, this.renderMarker)
       return (
         <Target onLayout={this.onLayout} {...props}>
-          {Boolean(markers) && React.Children.map(children, this.renderMarker)}
+          {markerContainers}
+          <SliderTrack
+            markers={markerContainers}
+            sliderLayout={layout}
+            {...trackProps}
+          />
         </Target>
       )
     }

@@ -16,6 +16,11 @@ export default class MarkerContainer extends Component {
 
   position = new Animated.Value(0)
 
+  get computedPosition() {
+    const {bounds} = this.props
+    return Animated.diffClamp(this.position, bounds.left, bounds.right)
+  }
+
   constructor(props) {
     super(props)
     this.offset = props.position
@@ -48,13 +53,13 @@ export default class MarkerContainer extends Component {
     return {
       top: hitSlop,
       bottom: hitSlop,
-      left: Math.min((position - bounds.left) / 2, hitSlop),
+      left: Math.min(Math.abs(position - bounds.left) / 2, hitSlop),
       right: Math.min(bounds.right / 2, hitSlop)
     }
   }
 
   get handlerStyle() {
-    const {bounds, zIndex, index} = this.props
+    const {zIndex, index} = this.props
     const {layout} = this.state
     if (!layout) return {opacity: 0}
     return {
@@ -64,7 +69,7 @@ export default class MarkerContainer extends Component {
       transform: [
         {
           translateX: Animated.add(
-            Animated.diffClamp(this.position, bounds.left, bounds.right),
+            this.computedPosition,
             new Animated.Value(-layout.width / 2)
           )
         }

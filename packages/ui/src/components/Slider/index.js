@@ -1,6 +1,8 @@
 import {css} from 'styled-components'
-import {width, height, bgColor} from 'styled-system'
+import {width, height, bgColor, zIndex} from 'styled-system'
+
 import {buttonHeight} from '../../styles'
+import {container as row} from '../Row'
 
 export {default} from './hoc'
 
@@ -14,6 +16,9 @@ export {default} from './hoc'
  */
 
 export const container = css`
+  width: 100%;
+  justify-content: center;
+  ${row};
   ${width};
   ${buttonHeight};
 `
@@ -40,6 +45,7 @@ export const track = css`
   height: 2px;
   ${height};
   ${bgColor};
+  ${zIndex};
 `
 
 track.defaultProps = {
