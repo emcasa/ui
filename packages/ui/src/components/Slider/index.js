@@ -1,5 +1,6 @@
 import {css} from 'styled-components'
-import {width, bgColor} from 'styled-system'
+import {width, height, bgColor} from 'styled-system'
+import {buttonHeight} from '../../styles'
 
 export {default} from './hoc'
 
@@ -12,7 +13,14 @@ export {default} from './hoc'
  * </container>
  */
 
-export const container = css``
+export const container = css`
+  ${buttonHeight};
+`
+
+container.defaultProps = {
+  height: 'tall',
+  trackProps: {}
+}
 
 export const marker = css`
   width: ${({size}) => size}px;
@@ -31,6 +39,7 @@ export const track = css`
   height: 2px;
   border-radius: 2px;
   ${width};
+  ${height};
   ${bgColor};
 `
 

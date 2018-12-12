@@ -6,10 +6,7 @@ import omit from 'lodash.omit'
  * @param  {...String} propsToOmit
  */
 export default function omitProps(...propsToOmit) {
-  return (Target) =>
-    React.forwardRef((props, ref) => (
-      <Target ref={ref} {...omit(props, propsToOmit)} />
-    ))
+  return (Target) => (props) => <Target {...omit(props, propsToOmit)} />
 }
 
 export const layoutProps = `alignContent alignItems alignSelf

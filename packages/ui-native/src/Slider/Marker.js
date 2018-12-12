@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import {Animated} from 'react-native'
 import styled from 'styled-components/native'
 import {PanGestureHandler, State} from 'react-native-gesture-handler'
@@ -14,19 +14,19 @@ Marker.displayName = 'SliderMarker'
 
 Marker.defaultProps = slider.marker.defaultProps
 
-export default class MarkerContainer extends PureComponent {
+export default class MarkerContainer extends Component {
   static defaultProps = {
-    hitSlop: 15
+    zIndex: 100,
+    hitSlop: 15,
+    useNativeDriver: true
   }
 
-  state = {}
+  state = {
+    layout: undefined,
+    sliderState: State.UNDETERMINED
+  }
 
   position = new Animated.Value(0)
-
-  onGestureEvent = Animated.event(
-    [{nativeEvent: {translationX: this.position}}],
-    {useNativeDriver: true}
-  )
 
   constructor(props) {
     super(props)
@@ -34,40 +34,81 @@ export default class MarkerContainer extends PureComponent {
     this.position.setOffset(this.offset)
     this.position.addListener(({value}) => {
       const {onSlide, bounds} = this.props
-      if (onSlide) onSlide(bounds.clamp(value))
+      const {sliderState} = this.state
+      if (onSlide && sliderState === State.ACTIVE) {
+        onSlide(bounds.clamp(value - this.offset))
+      }
     })
+    this.onGestureEvent = Animated.event(
+      [{nativeEvent: {translationX: this.position}}],
+      {useNativeDriver: props.useNativeDriver}
+    )
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.state.sliderState !== State.ACTIVE &&
+      (nextProps.position !== this.props.position ||
+        nextProps.bounds !== this.props.bounds ||
+        nextState.layout !== this.state.layout)
+    )
   }
 
   get hitSlop() {
-    const {hitSlop, bounds} = this.props
+    const {hitSlop, bounds, position} = this.props
     if (isNaN(hitSlop)) return hitSlop
     return {
       top: hitSlop,
       bottom: hitSlop,
-      left: Math.min(bounds.left / 2, hitSlop),
+      left: Math.min((position - bounds.left) / 2, hitSlop),
       right: Math.min(bounds.right / 2, hitSlop)
     }
   }
 
-  onLayout = ({nativeEvent: {layout}}) => this.setState({layout})
+  get handlerStyle() {
+    const {bounds, zIndex, index} = this.props
+    const {layout} = this.state
+    if (!layout) return {opacity: 0}
+    return {
+      position: 'absolute',
+      zIndex: index + zIndex,
+      opacity: 1,
+      transform: [
+        {
+          translateX: Animated.add(
+            Animated.diffClamp(this.position, bounds.left, bounds.right),
+            new Animated.Value(-layout.width / 2)
+          )
+        }
+      ]
+    }
+  }
 
-  onHandlerStateChange = (event) => {
-    const {bounds, onSlideStop} = this.props
-    if (event.nativeEvent.oldState === State.ACTIVE) {
-      this.offset += event.nativeEvent.translationX
-      this.position.setOffset(bounds.clamp(this.offset))
-      this.position.setValue(0)
-      if (onSlideStop) onSlideStop()
+  onLayout = ({
+    nativeEvent: {
+      layout: {width, height}
+    }
+  }) => this.setState({layout: {width, height}})
+
+  onHandlerStateChange = ({nativeEvent}) => {
+    const {bounds, onSlide, onSlideStop} = this.props
+    if (nativeEvent.oldState === State.ACTIVE) {
+      this.offset += nativeEvent.translationX
+      const value = bounds.clamp(this.offset)
+      if (onSlide) onSlide(value)
+      this.setState({sliderState: nativeEvent.state}, () => {
+        this.position.setOffset(value)
+        this.position.setValue(0)
+        if (onSlideStop) onSlideStop()
+      })
+    } else if (nativeEvent.state !== this.state.sliderState) {
+      this.setState({sliderState: nativeEvent.state})
     }
   }
 
   render() {
-    const {children, bounds, ...props} = this.props
-    const {layout} = this.state
+    const {children, bounds, useNativeDriver, ...props} = this.props
     delete props.hitSlop
-    const offset = layout
-      ? {x: -layout.width / 2, y: -layout.height / 2}
-      : {x: 0, y: 0}
     return (
       <PanGestureHandler
         enabled={bounds.right - bounds.left !== 0}
@@ -75,24 +116,11 @@ export default class MarkerContainer extends PureComponent {
         onHandlerStateChange={this.onHandlerStateChange}
       >
         <Animated.View
-          useNativeDriver
+          collapsable={false}
+          useNativeDriver={useNativeDriver}
           hitSlop={this.hitSlop}
           onLayout={this.onLayout}
-          style={{
-            position: 'absolute',
-            opacity: layout ? 1 : 0,
-            transform: [
-              {translateY: offset.y},
-              {translateX: offset.x},
-              {
-                translateX: Animated.diffClamp(
-                  this.position,
-                  bounds.left,
-                  bounds.right
-                )
-              }
-            ]
-          }}
+          style={this.handlerStyle}
         >
           {children || <Marker />}
         </Animated.View>
