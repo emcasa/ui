@@ -4,8 +4,8 @@ import interpolate from 'interpolate-range'
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
 
 const getMarkerBounds = (layout, prevMarker) => ({
-  left: prevMarker ? prevMarker.position : 0,
-  right: layout.width,
+  left: prevMarker ? prevMarker.position : 0.01,
+  right: layout.width - 0.01,
   clamp(value) {
     return clamp(value, this.left, this.right)
   }
@@ -26,7 +26,8 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
     static defaultProps = {
       initialValue: 0,
       minDistance: 1,
-      trackProps: {}
+      trackProps: {},
+      useNativeDriver: true
     }
 
     state = {
@@ -34,14 +35,29 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
       layout: undefined
     }
 
+    componentDidUpdate(prevProps) {
+      if (
+        prevProps.children &&
+        this.props.children &&
+        prevProps.children.length !== this.props.children.length
+      )
+        throw new Error('Changing Slider children on the fly is not supported.')
+    }
+
+    _getInitialMarkerValue(key) {
+      const {initialValue} = this.props
+      if (!isNaN(initialValue)) return initialValue || 0
+      if (!(key in initialValue))
+        throw new Error(`Undefined initial value for slider marker "${key}".`)
+      return initialValue[key]
+    }
+
     _getInitialMarkerState(layout) {
-      const {initialValue, minDistance} = this.props
+      const {minDistance} = this.props
       const outputRange = this.props.range || [0, layout.width]
       const markers = this._reduceMarkers((state, marker, prevMarker) => {
         const value = clamp(
-          typeof initialValue === 'object'
-            ? initialValue[marker.key]
-            : initialValue,
+          this._getInitialMarkerValue(marker.key),
           ...outputRange
         )
         const prevMarkerState = prevMarker ? state[prevMarker.key] : undefined
@@ -148,6 +164,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
           key={key}
           name={key}
           trackProps={element.props.trackProps}
+          useNativeDriver={this.props.useNativeDriver}
           onSlide={this.onSlide({key, index})}
           onSlideStop={this.onSlideStop}
           sliderLayout={this.state.layout}
@@ -168,6 +185,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
           <SliderTrack
             markers={markerContainers}
             sliderLayout={layout}
+            useNativeDriver={this.props.useNativeDriver}
             {...trackProps}
           />
         </Target>

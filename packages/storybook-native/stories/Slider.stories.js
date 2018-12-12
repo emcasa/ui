@@ -22,17 +22,41 @@ story.add('basic', () => (
   </View>
 ))
 
-story.add('track styles', () => (
+story.add('track and marker styles', () => (
   <View flexDirection="column">
-    <Slider
-      onChange={action('slider changed')}
-      range={[0, 1]}
-      initialValue={[0.5, 1]}
-      trackProps={{bg: 'lightGrey'}}
-    >
-      <Slider.Marker trackProps={{bg: 'blue'}} />
-      <Slider.Marker trackProps={{height: 4}} />
-    </Slider>
+    <View mb="25px">
+      <Slider
+        onChange={action('slider changed')}
+        range={[0, 1]}
+        initialValue={1 / 2}
+        trackProps={{bg: 'lightGrey'}}
+      >
+        <Slider.Marker trackProps={{height: 4, bg: 'pink'}} />
+      </Slider>
+    </View>
+    <View mb="25px">
+      <Slider
+        onChange={action('slider changed')}
+        range={[0, 1]}
+        initialValue={[1 / 4, 3 / 4]}
+        trackProps={{bg: 'lightGrey'}}
+      >
+        <View
+          bg="pink"
+          width={25}
+          height={25}
+          borderRadius={5}
+          trackProps={{bg: 'pink'}}
+        />
+        <View
+          bg="blue"
+          width={25}
+          height={25}
+          borderRadius={5}
+          trackProps={{bg: 'blue', height: 4}}
+        />
+      </Slider>
+    </View>
   </View>
 ))
 

@@ -11,12 +11,14 @@ export {default} from './hoc'
  * <container>
  *   <markerContainer><marker /></markerContainer>
  *   <markerContainer><marker /></markerContainer>
- *   <track />
+ *   <track>
+ *     <markerTrack />
+ *     <markerTrack />
+ *   </track>
  * </container>
  */
 
 export const container = css`
-  width: 100%;
   justify-content: center;
   ${row};
   ${width};
@@ -24,8 +26,8 @@ export const container = css`
 `
 
 container.defaultProps = {
-  height: 'tall',
-  trackProps: {}
+  width: '100%',
+  height: 'tall'
 }
 
 export const marker = css`

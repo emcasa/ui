@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import {Animated, StyleSheet} from 'react-native'
 import styled from 'styled-components/native'
 import * as slider from '@emcasa/ui/lib/components/Slider'
 
-import Row from '../Row'
+import View from '../Row'
 
 const Track = styled(function SliderTrack({style, ...props}) {
   const {height} = StyleSheet.flatten(style)
@@ -16,11 +16,8 @@ Track.displayName = 'SliderTrack'
 
 Track.defaultProps = slider.track.defaultProps
 
-export default class SliderTrackContainer extends Component {
-  constructor(props) {
-    super(props)
-    this.sliderWidth = new Animated.Value(1)
-  }
+export default class SliderTrackContainer extends PureComponent {
+  sliderWidth = new Animated.Value(1)
 
   componentDidUpdate(prevProps) {
     if (this.props.sliderLayout !== prevProps.sliderLayout)
@@ -53,13 +50,16 @@ export default class SliderTrackContainer extends Component {
       <Track
         key={element.key}
         zIndex={index + 1}
+        useNativeDriver={this.props.useNativeDriver}
         style={{
           position: 'absolute',
           left: 0,
           right: 0,
           transform: [...this.getMarkerAnimation(element, prevElement)]
         }}
+        {...this.props}
         {...trackProps}
+        markers={undefined}
       />
     )
   }
@@ -79,10 +79,10 @@ export default class SliderTrackContainer extends Component {
   render() {
     const {markers, ...props} = this.props
     return (
-      <Row width="100%" justifyContent="center">
+      <View width="100%" height="1px">
         {Boolean(markers) && this.renderTrack()}
         <Track zIndex={0} {...props} />
-      </Row>
+      </View>
     )
   }
 }

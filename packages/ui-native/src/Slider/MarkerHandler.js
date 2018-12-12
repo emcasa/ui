@@ -5,8 +5,7 @@ import {PanGestureHandler, State} from 'react-native-gesture-handler'
 export default class MarkerContainer extends Component {
   static defaultProps = {
     zIndex: 100,
-    hitSlop: 15,
-    useNativeDriver: true
+    hitSlop: 15
   }
 
   state = {
@@ -63,7 +62,6 @@ export default class MarkerContainer extends Component {
     const {layout} = this.state
     if (!layout) return {opacity: 0}
     return {
-      position: 'absolute',
       zIndex: index + zIndex,
       opacity: 1,
       transform: [
@@ -109,13 +107,11 @@ export default class MarkerContainer extends Component {
         onHandlerStateChange={this.onHandlerStateChange}
       >
         <Animated.View
-          collapsable={false}
           useNativeDriver={useNativeDriver}
           hitSlop={this.hitSlop}
-          onLayout={this.onLayout}
-          style={this.handlerStyle}
+          style={[{position: 'absolute'}, this.handlerStyle]}
         >
-          {children}
+          {React.cloneElement(children, {onLayout: this.onLayout})}
         </Animated.View>
       </PanGestureHandler>
     )
