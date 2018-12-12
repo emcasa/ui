@@ -14,6 +14,7 @@ export {default} from './hoc'
  */
 
 export const container = css`
+  ${width};
   ${buttonHeight};
 `
 
@@ -37,8 +38,6 @@ marker.defaultProps = {
 export const track = css`
   position: relative;
   height: 2px;
-  border-radius: 2px;
-  ${width};
   ${height};
   ${bgColor};
 `

@@ -11,7 +11,7 @@ const getMarkerBounds = (prevMarker, layout) => ({
   }
 })
 
-export default (Target) =>
+export default ({MarkerHandler}) => (Target) =>
   class extends PureComponent {
     static displayName = `Slider(${Target.displayName || Target.name})`
 
@@ -38,6 +38,7 @@ export default (Target) =>
         const currentMarkerState = {
           value,
           index: marker.index,
+          ref: React.createRef(),
           bounds: getMarkerBounds(prevMarkerState, layout),
           position: this._getPositionFromValue(value, layout)
         }
@@ -126,12 +127,18 @@ export default (Target) =>
 
     renderMarker = (element, index) => {
       const key = element.props.name || index
-      return React.cloneElement(element, {
-        ...this.state.markers[key],
-        onSlide: this.onSlide({key, index}),
-        onSlideStop: this.onSlideStop,
-        sliderLayout: this.state.layout
-      })
+      if (!element) return
+      return (
+        <MarkerHandler
+          {...this.state.markers[key]}
+          trackProps={element.props.trackProps || {}}
+          onSlide={this.onSlide({key, index})}
+          onSlideStop={this.onSlideStop}
+          sliderLayout={this.state.layout}
+        >
+          {element}
+        </MarkerHandler>
+      )
     }
 
     render() {

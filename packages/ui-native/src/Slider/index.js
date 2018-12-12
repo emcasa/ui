@@ -1,11 +1,18 @@
 import React from 'react'
-import {TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components/native'
 import Slider, * as slider from '@emcasa/ui/lib/components/Slider'
 
-import Marker from './Marker'
+import MarkerHandler from './MarkerHandler'
 import View from '../View'
 import Row from '../View'
+
+const Marker = styled(View)`
+  ${slider.marker};
+`
+
+Marker.displayName = 'SliderMarker'
+
+Marker.defaultProps = slider.marker.defaultProps
 
 const Track = styled(View)`
   ${slider.track};
@@ -22,14 +29,14 @@ const Container = styled(function SliderContainer({
   ...props
 }) {
   return (
-    <Row height={50} width="100%" justifyContent="center" {...props}>
+    <Row height={50} justifyContent="center" {...props}>
       {children}
-      <View
+      <Row
         width="100%"
         onLayout={({nativeEvent: {layout}}) => onLayout(layout)}
       >
         <Track {...trackProps} />
-      </View>
+      </Row>
     </Row>
   )
 })`
@@ -38,7 +45,7 @@ const Container = styled(function SliderContainer({
 
 Container.defaultProps = slider.container.defaultProps
 
-const SliderComponent = Slider(Container)
+const SliderComponent = Slider({MarkerHandler})(Container)
 
 SliderComponent.Marker = Marker
 

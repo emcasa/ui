@@ -1,18 +1,6 @@
 import React, {Component} from 'react'
 import {Animated} from 'react-native'
-import styled from 'styled-components/native'
 import {PanGestureHandler, State} from 'react-native-gesture-handler'
-import * as slider from '@emcasa/ui/lib/components/Slider'
-
-import View from '../View'
-
-const Marker = styled(View)`
-  ${slider.marker};
-`
-
-Marker.displayName = 'SliderMarker'
-
-Marker.defaultProps = slider.marker.defaultProps
 
 export default class MarkerContainer extends Component {
   static defaultProps = {
@@ -122,7 +110,7 @@ export default class MarkerContainer extends Component {
           onLayout={this.onLayout}
           style={this.handlerStyle}
         >
-          {children || <Marker />}
+          {children}
         </Animated.View>
       </PanGestureHandler>
     )
