@@ -14,15 +14,15 @@ MarkerLabel.displayName = 'SliderMarkerLabel'
 
 const Marker = styled(function SliderMarker({
   style,
-  marker,
   size,
+  markerState,
   renderLabel,
   ...props
 }) {
   return (
     <View style={style} {...props}>
       {renderLabel && (
-        <MarkerLabel size={size}>{renderLabel(marker)}</MarkerLabel>
+        <MarkerLabel size={size}>{renderLabel(markerState)}</MarkerLabel>
       )}
     </View>
   )

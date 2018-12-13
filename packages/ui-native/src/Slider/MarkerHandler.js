@@ -35,12 +35,12 @@ export default class MarkerHandler extends Component {
   }
 
   get computedPosition() {
-    const {bounds, sliderLayout} = this.props
+    const {bounds} = this.props
     const min = bounds.left + 1
     const max = bounds.right - 1
     return this.position.interpolate({
-      inputRange: [-100, bounds.left, bounds.right, sliderLayout.width + 100],
-      outputRange: [min, min, max, max],
+      inputRange: [bounds.left, bounds.right],
+      outputRange: [min, max],
       extrapolate: 'clamp'
     })
   }
@@ -154,7 +154,7 @@ export default class MarkerHandler extends Component {
         >
           <View style={{flex: 0}} onLayout={this.onLayout}>
             {React.cloneElement(children, {
-              marker: {position, value}
+              markerState: {position, value, bounds}
             })}
           </View>
         </Animated.View>

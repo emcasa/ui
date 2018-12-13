@@ -74,7 +74,7 @@ story.add('track and marker styles', () => (
           width={25}
           height={25}
           borderRadius={5}
-          trackProps={{bg: 'blue', height: 4}}
+          trackProps={{bg: 'blue'}}
         />
       </Slider>
     </View>
