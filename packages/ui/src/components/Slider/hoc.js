@@ -4,8 +4,8 @@ import interpolate from 'interpolate-range'
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
 
 const getMarkerBounds = (layout, prevMarker) => ({
-  left: prevMarker ? prevMarker.position : 0.01,
-  right: layout.width - 0.01,
+  left: prevMarker ? prevMarker.position : 0,
+  right: layout.width,
   clamp(value) {
     return clamp(value, this.left, this.right)
   }
@@ -26,7 +26,6 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
     static defaultProps = {
       initialValue: 0,
       minDistance: 1,
-      trackProps: {},
       useNativeDriver: true
     }
 
@@ -118,6 +117,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
     }
 
     onSlide = (marker) => (position) => {
+      if (this.state.markers[marker.key].position === position) return
       this.setState(
         (state) => ({
           markers: {

@@ -17,6 +17,11 @@ Track.displayName = 'SliderTrack'
 Track.defaultProps = slider.track.defaultProps
 
 export default class SliderTrackContainer extends PureComponent {
+  static defaultProps = {
+    markers: [],
+    sliderLayout: {}
+  }
+
   sliderWidth = new Animated.Value(1)
 
   componentDidUpdate(prevProps) {
@@ -80,7 +85,7 @@ export default class SliderTrackContainer extends PureComponent {
     const {markers, ...props} = this.props
     return (
       <View width="100%" height="1px">
-        {Boolean(markers) && this.renderTrack()}
+        {markers.length && this.renderTrack()}
         <Track zIndex={0} {...props} />
       </View>
     )
