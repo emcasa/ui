@@ -10,10 +10,18 @@ const MarkerLabel = styled(View)`
   ${slider.marker.label};
 `
 
-const Marker = styled(function SliderMarker({style, onLayout, size, label}) {
+const Marker = styled(function SliderMarker({
+  style,
+  marker,
+  size,
+  renderLabel,
+  ...props
+}) {
   return (
-    <View style={style} onLayout={onLayout}>
-      {label && <MarkerLabel size={size}>{label}</MarkerLabel>}
+    <View style={style} {...props}>
+      {renderLabel && (
+        <MarkerLabel size={size}>{renderLabel(marker)}</MarkerLabel>
+      )}
     </View>
   )
 })`

@@ -6,28 +6,9 @@ import {View, Row, Slider, Text} from '@emcasa/ui-native'
 
 const story = storiesOf('Slider', module)
 
-class ControlledSlider extends PureComponent {
-  state = {value: {}}
-
-  constructor(props){
-    super(props)
-    this.state.value=props.initialValue
-  }
-
-  onChange = (value) => this.setState({value})
-
-  render() {
-    const {children, ...props} = this.props
-    return (
-      <Slider onChange={this.onChange} {...props}>
-        {children(this.state)}
-      </Slider>
-    )
-  }
-}
-
 const MarkerLabel = ({children}) => (
   <Row
+    bg="white"
     width={60}
     height={30}
     justifyContent="center"
@@ -102,12 +83,14 @@ story.add('track and marker styles', () => (
 
 story.add('marker labels', () => (
   <View flexDirection="column">
-    <ControlledSlider range={[0, 100]} initialValue={[0, 100]}>
-      {({value}) => [
-        <Slider.Marker key={0} label={<MarkerLabel>{value[0].toFixed(2)}</MarkerLabel>} />,
-        <Slider.Marker key={1} label={<MarkerLabel>{value[1].toFixed(2)}</MarkerLabel>} />
-      ]}
-    </ControlledSlider>
+    <Slider range={[0, 100]} initialValue={[0, 100]}>
+      <Slider.Marker
+        renderLabel={({value}) => <MarkerLabel>{value.toFixed(2)}</MarkerLabel>}
+      />
+      <Slider.Marker
+        renderLabel={({value}) => <MarkerLabel>{value.toFixed(2)}</MarkerLabel>}
+      />
+    </Slider>
   </View>
 ))
 
