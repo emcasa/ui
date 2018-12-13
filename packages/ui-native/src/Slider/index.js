@@ -10,6 +10,8 @@ const MarkerLabel = styled(View)`
   ${slider.marker.label};
 `
 
+MarkerLabel.displayName = 'SliderMarkerLabel'
+
 const Marker = styled(function SliderMarker({
   style,
   marker,
