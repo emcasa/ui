@@ -37,6 +37,12 @@ export const marker = css`
   ${bgColor};
 `
 
+marker.label = css`
+  position: absolute;
+  bottom: ${({size}) => size}px;
+  left: ${({size}) => parseInt(size) / 2}px;
+`
+
 marker.defaultProps = {
   size: 16,
   bg: 'pink'

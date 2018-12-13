@@ -6,7 +6,17 @@ import MarkerHandler from './MarkerHandler'
 import SliderTrack from './SliderTrack'
 import View from '../View'
 
-const Marker = styled(View)`
+const MarkerLabel = styled(View)`
+  ${slider.marker.label};
+`
+
+const Marker = styled(function SliderMarker({style, onLayout, size, label}) {
+  return (
+    <View style={style} onLayout={onLayout}>
+      {label && <MarkerLabel size={size}>{label}</MarkerLabel>}
+    </View>
+  )
+})`
   ${slider.marker};
 `
 
