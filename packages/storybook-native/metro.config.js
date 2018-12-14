@@ -20,7 +20,11 @@ module.exports = {
     ),
     extraNodeModules: {
       'react-native': path.join(__dirname, 'node_modules/react-native'),
-      'react-native-svg': path.join(__dirname, 'node_modules/react-native-svg')
+      'react-native-svg': path.join(__dirname, 'node_modules/react-native-svg'),
+      'react-native-gesture-handler': path.join(
+        __dirname,
+        'node_modules/react-native-gesture-handler'
+      )
     }
   }
 }
