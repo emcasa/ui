@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import interpolate from 'interpolate-range'
+import interpolate from 'everpolate'
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
 
@@ -95,7 +95,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
       if (outputRange && layout) {
         let inputRange = [0, layout.width]
         if (swap) inputRange = [outputRange, (outputRange = inputRange)][0]
-        return interpolate({inputRange, outputRange})(position)
+        return interpolate.linear(position, inputRange, outputRange)[0]
       } else {
         return position
       }
