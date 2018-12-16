@@ -20,10 +20,11 @@ export default class MarkerHandler extends Component {
     this.offset = props.position
     this.position.setOffset(this.offset)
     this.position.addListener(({value}) => {
-      const {onSlide, bounds} = this.props
+      const {name, onSlide, bounds} = this.props
       const {sliderState} = this.state
       if (onSlide && sliderState === State.ACTIVE) {
         onSlide(
+          name,
           bounds.clamp(value - Platform.select({android: this.offset, ios: 0}))
         )
       }
@@ -68,7 +69,7 @@ export default class MarkerHandler extends Component {
   }) => this.setState({layout: {width, height}})
 
   onHandlerStateChange = ({nativeEvent}) => {
-    const {bounds, onSlide, onSlideStop} = this.props
+    const {bounds, name, onSlide, onSlideStop} = this.props
     if (nativeEvent.oldState === State.ACTIVE) {
       const offset = this.offset + nativeEvent.translationX
       const value = bounds.clamp(offset)
@@ -76,7 +77,7 @@ export default class MarkerHandler extends Component {
         this.offset = value
         this.position.setOffset(offset)
         this.position.setValue(0)
-        if (onSlide) onSlide(value)
+        if (onSlide) onSlide(name, value)
         if (onSlideStop) onSlideStop()
       })
     } else if (nativeEvent.state !== this.state.sliderState) {

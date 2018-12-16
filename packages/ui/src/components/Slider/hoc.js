@@ -1,3 +1,4 @@
+import throttle from 'lodash.throttle'
 import React, {PureComponent} from 'react'
 import interpolate from 'everpolate'
 
@@ -26,7 +27,8 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
     static defaultProps = {
       initialValue: 0,
       minDistance: 1,
-      useNativeDriver: true
+      useNativeDriver: true,
+      slideEventThrottle: 50
     }
 
     state = {
@@ -116,25 +118,30 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
       onChange(markerValues)
     }
 
-    onSlide = (marker) => (position) => {
-      if (this.state.markers[marker.key].position === position) return
-      this.setState(
-        (state) => ({
-          markers: {
-            ...state.markers,
-            [marker.key]: {
-              ...state.markers[marker.key],
-              position,
-              value: this._getValueFromPosition(position)
+    onSlide = throttle(
+      (key, position) => {
+        if (this.state.markers[key].position === position) return
+        this.setState(
+          (state) => ({
+            markers: {
+              ...state.markers,
+              [key]: {
+                ...state.markers[key],
+                position,
+                value: this._getValueFromPosition(position)
+              }
             }
-          }
-        }),
-        this._onChangeCallback
-      )
-    }
+          }),
+          this._onChangeCallback
+        )
+      },
+      this.props.slideEventThrottle,
+      {leading: false, trailing: true}
+    )
 
     // Update marker bounds
-    onSlideStop = () =>
+    onSlideStop = () => {
+      this.onSlide.flush()
       this.setState(({markers, layout}) => ({
         markers: this._reduceMarkers(
           (result, marker, prevMarker = {}) => {
@@ -149,6 +156,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
           {...markers}
         )
       }))
+    }
 
     onLayout = (layout) => {
       const markers = this.state.markers || this._getInitialMarkerState(layout)
@@ -165,7 +173,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
           name={key}
           trackProps={element.props.trackProps}
           useNativeDriver={this.props.useNativeDriver}
-          onSlide={this.onSlide({key, index})}
+          onSlide={this.onSlide}
           onSlideStop={this.onSlideStop}
           sliderLayout={this.state.layout}
         >
