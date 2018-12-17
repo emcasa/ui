@@ -1,5 +1,6 @@
 import throttle from 'lodash.throttle'
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import interpolate from 'everpolate'
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
@@ -28,7 +29,19 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
       initialValue: 0,
       minDistance: 1,
       useNativeDriver: true,
-      slideEventThrottle: 50
+      slideEventThrottle: 50,
+      ...(Target.defaultProps || {})
+    }
+
+    static propTypes = {
+      initialValue: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.array,
+        PropTypes.object
+      ]).isRequired,
+      minDistance: PropTypes.number.isRequired,
+      slideEventThrottle: PropTypes.number.isRequired,
+      ...(Target.propTypes || {})
     }
 
     state = {
