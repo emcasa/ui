@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react'
 import {View, TextInput as RCTTextInput} from 'react-native'
 import styled, {withTheme} from 'styled-components/native'
+import {themeGet} from 'styled-system'
 import * as input from '@emcasa/ui/lib/components/Input'
 
-import Text from '../Text'
 import omitProps, {layoutProps, textStyleProps} from '../utils/omitProps'
 
 const TextInput = styled(
@@ -15,7 +15,15 @@ const TextInput = styled(
 `
 
 const ErrorText = styled.Text`
-  margin-top: 2.5px ${input.error};
+  min-height: ${themeGet('space.5')}px;
+  line-height: ${themeGet('space.5')}px;
+  ${input.error};
+`
+
+const LabelText = styled.Text`
+  min-height: ${themeGet('space.4')}px;
+  line-height: ${themeGet('space.4')}px;
+  font-size: ${themeGet('fontSizes.1')}px;
 `
 
 class Input extends PureComponent {
@@ -36,10 +44,17 @@ class Input extends PureComponent {
   onBlur = () => this.setState({focus: false}, this.props.onBlur)
 
   render() {
-    const {theme, ...props} = this.props
+    const {
+      theme,
+      hideErrorView,
+      hideLabelView,
+      error,
+      label,
+      ...props
+    } = this.props
     return (
-      <View>
-        {Boolean(props.label) && <Text fontSize="small">{props.label}</Text>}
+      <View mb="2.5px">
+        {!hideLabelView && <LabelText>{label}</LabelText>}
         <TextInput
           placeholderTextColor={theme.colors.disabled}
           multiline={props.area}
@@ -50,7 +65,7 @@ class Input extends PureComponent {
           onFocus={this.onFocus}
           onBlur={this.onBlur}
         />
-        {Boolean(props.error) && <ErrorText>{props.error}</ErrorText>}
+        {!hideErrorView && <ErrorText>{error}</ErrorText>}
       </View>
     )
   }
