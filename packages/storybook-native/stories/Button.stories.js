@@ -18,6 +18,10 @@ story.add('basic', () => (
     <Button disabled onClick={action("this won't fire")}>
       I'm disabled
     </Button>
+    <Button link>Link</Button>
+    <Button link disabled>
+      Disabled link
+    </Button>
   </View>
 ))
 

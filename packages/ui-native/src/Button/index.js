@@ -21,7 +21,7 @@ const buttonTextProps = `color letterSpacing
 fontFamily fontSize adjustsFontSizeToFit minimumFontScale
 textBreakStrategy ellipsizeMode numberOfLines`.split(/\s+/)
 
-const commonProps = 'active disabled'.split(/\s+/)
+const commonProps = 'link active disabled'.split(/\s+/)
 
 export default function Button({children, ...props}) {
   return (

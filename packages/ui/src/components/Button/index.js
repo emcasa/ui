@@ -31,7 +31,9 @@ export const container = css`
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
   ${({link}) =>
-    link ? {border: 'none'} : {borderRadius: '4px', borderWidth: '1px'}}
+    link
+      ? {borderRadius: 0, borderWidth: 0}
+      : {borderRadius: '4px', borderWidth: '1px'}}
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   ${buttonHeight}
   ${space}
