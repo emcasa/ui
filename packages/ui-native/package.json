@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui-native",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "EmCasa's UI library for react-native",
   "license": "MIT",
   "main": "components/index.js",
@@ -12,7 +12,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@emcasa/ui": "^0.8.2",
+    "@emcasa/ui": "^0.8.3",
     "lodash.omit": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "recompose": "^0.30.0"
