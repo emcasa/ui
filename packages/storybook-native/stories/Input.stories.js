@@ -12,9 +12,14 @@ story.add('basic', () => (
   </View>
 ))
 
-story.add('with label', () => (
+story.add('labels and errors', () => (
   <View>
-    <Input label="Label" placeholder="Input with label" />
+    <View mb="20px">
+      <Input label="Label" placeholder="Input with label" />
+    </View>
+    <View mb="20px">
+      <Input error="Error text" placeholder="Input with error" />
+    </View>
   </View>
 ))
 

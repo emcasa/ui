@@ -60,7 +60,6 @@ text.defaultProps = {
 }
 
 export const error = css`
-  display: inline;
   color: ${themeGet('colors.red')};
   ${defaultFontFamily};
   ${fontSize};

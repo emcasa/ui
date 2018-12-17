@@ -14,6 +14,10 @@ const TextInput = styled(
   text-align-vertical: ${({area}) => (area ? 'top' : 'center')};
 `
 
+const ErrorText = styled.Text`
+  margin-top: 2.5px ${input.error};
+`
+
 class Input extends PureComponent {
   static propTypes = {
     ...input.container.propTypes,
@@ -35,7 +39,7 @@ class Input extends PureComponent {
     const {theme, ...props} = this.props
     return (
       <View>
-        {props.label && <Text fontSize="small">{props.label}</Text>}
+        {Boolean(props.label) && <Text fontSize="small">{props.label}</Text>}
         <TextInput
           placeholderTextColor={theme.colors.disabled}
           multiline={props.area}
@@ -46,6 +50,7 @@ class Input extends PureComponent {
           onFocus={this.onFocus}
           onBlur={this.onBlur}
         />
+        {Boolean(props.error) && <ErrorText>{props.error}</ErrorText>}
       </View>
     )
   }
