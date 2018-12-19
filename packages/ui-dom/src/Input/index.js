@@ -11,6 +11,7 @@ const focused = withProps({focus: true})
 
 const ForwardedInput = React.forwardRef(({area, ...props}, ref) => {
   delete props.fluid
+  delete props.innerRef
   return area ? (
     <textarea ref={ref} {...props} />
   ) : (
@@ -44,6 +45,7 @@ const ErrorText = styled(Text)`
 
 const Input = React.forwardRef(
   ({hideLabelView, hideErrorView, label, error, ...props}, ref) => {
+    delete props.innerRef
     return (
       <View>
         {!hideLabelView && (

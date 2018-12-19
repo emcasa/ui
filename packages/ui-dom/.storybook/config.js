@@ -1,11 +1,11 @@
 import React from 'react'
-import {injectGlobal, ThemeProvider} from 'styled-components'
+import {createGlobalStyle, ThemeProvider} from 'styled-components'
 import theme from '@emcasa/ui'
 
 import {configure, addDecorator, setAddon} from '@storybook/react'
 import addonInfo from '@storybook/addon-info'
 
-injectGlobal`
+createGlobalStyle`
   @font-face {
     font-family: "FaktSoftPro-Normal";
     src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.eot");

@@ -1,6 +1,6 @@
-import { injectGlobal } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: "FaktSoftPro-Normal";
     src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.eot");
@@ -26,4 +26,4 @@ injectGlobal`
   }
 `
 
-export default injectGlobal
+export default GlobalStyle

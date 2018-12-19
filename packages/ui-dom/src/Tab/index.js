@@ -20,9 +20,10 @@ TabBar.propTypes = tab.tabBar.propTypes
 /**
  * TabBarButton
  */
-const TabBarButton = styled(({onSelect, ...props}) => (
-  <button onClick={onSelect} {...props} />
-))`
+const TabBarButton = styled(({onSelect, ...props}) => {
+  delete props.borderColor
+  return <button onClick={onSelect} {...props} />
+})`
   outline: none;
   cursor: pointer;
   ${tab.tabBarButton};
