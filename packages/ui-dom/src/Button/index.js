@@ -16,8 +16,7 @@ const Button = styled.button`
   ${button.container};
   ${button.text};
   -webkit-font-smoothing: antialiased;
-  border-color: ${({selected, theme: {colors}}) =>
-    selected ? colors.pink : colors.lightGrey};
+  border-style: solid;
 `
 
 Button.defaultProps = {
