@@ -7,7 +7,8 @@ export const LETTER_SPACING = new Map([
 
 export const BUTTON_HEIGHT = new Map([
   ['tall', 60],
-  ['medium', 40]
+  ['medium', 40],
+  ['short', 32]
 ])
 
 export const FONT_SIZE = new Map([
