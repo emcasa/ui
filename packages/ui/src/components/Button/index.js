@@ -26,8 +26,8 @@ const buttonProps = {
 
 export const container = css`
   padding: 0 20px 0 20px;
-  border-color: ${({active, disabled, theme: {colors}}) =>
-    active && !disabled ? colors.pink : colors.lightGrey};
+  border-color: ${({active, selected, disabled, theme: {colors}}) =>
+    (active || selected) && !disabled ? colors.pink : colors.lightGrey};
   background-color: ${({active, disabled, theme: {colors}}) =>
     active && !disabled ? colors.pink : colors.white};
   ${({link}) =>
