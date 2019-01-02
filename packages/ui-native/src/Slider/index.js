@@ -44,7 +44,7 @@ const Container = styled(function SliderContainer({onLayout, ...props}) {
 
 Container.defaultProps = slider.container.defaultProps
 
-const SliderComponent = Slider({MarkerHandler, SliderTrack})(Container)
+const SliderComponent = Slider({MarkerHandler, Marker, SliderTrack})(Container)
 
 SliderComponent.Marker = Marker
 

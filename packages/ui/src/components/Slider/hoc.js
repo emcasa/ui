@@ -21,7 +21,7 @@ const updateMarkerBounds = ({layout, distance}, marker, prevMarker) => {
   }
 }
 
-export default ({MarkerHandler, SliderTrack}) => (Target) =>
+export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
   class extends PureComponent {
     static displayName = `Slider(${Target.displayName || Target.name})`
 
@@ -39,6 +39,7 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
         PropTypes.array,
         PropTypes.object
       ]).isRequired,
+      getMarkerLayout: PropTypes.func,
       minDistance: PropTypes.number.isRequired,
       slideEventThrottle: PropTypes.number.isRequired,
       ...(Target.propTypes || {})
@@ -56,6 +57,19 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
         prevProps.children.length !== this.props.children.length
       )
         throw new Error('Changing Slider children on the fly is not supported.')
+    }
+
+    _getMarkerLayout(data) {
+      const {getMarkerLayout} = this.props
+      if (getMarkerLayout) return getMarkerLayout(data)
+      else if (
+        React.isValidElement(data.element) &&
+        data.element.type === Marker
+      ) {
+        const size = data.element.props.size
+        return {width: size, height: size}
+      }
+      return undefined
     }
 
     _getInitialMarkerValue(key) {
@@ -79,7 +93,8 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
           value,
           index: marker.index,
           ref: React.createRef(),
-          position: this._getPositionFromValue(value, layout)
+          position: this._getPositionFromValue(value, layout),
+          markerLayout: this._getMarkerLayout(marker)
         }
         updateMarkerBounds(
           {layout, distance: minDistance},
@@ -184,11 +199,11 @@ export default ({MarkerHandler, SliderTrack}) => (Target) =>
           {...this.state.markers[key]}
           key={key}
           name={key}
-          trackProps={element.props.trackProps}
           useNativeDriver={this.props.useNativeDriver}
           onSlide={this.onSlide}
           onSlideStop={this.onSlideStop}
           sliderLayout={this.state.layout}
+          trackProps={element.props.trackProps}
         >
           {element}
         </MarkerHandler>

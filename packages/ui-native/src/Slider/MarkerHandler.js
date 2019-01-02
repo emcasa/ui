@@ -35,6 +35,11 @@ export default class MarkerHandler extends Component {
     )
   }
 
+  static getDerivedStateFromProps(props) {
+    if (props.markerLayout) return {layout: props.markerLayout}
+    return null
+  }
+
   get computedPosition() {
     const {bounds} = this.props
     const min = bounds.left + 1
@@ -132,6 +137,7 @@ export default class MarkerHandler extends Component {
       bounds,
       position,
       value,
+      markerLayout,
       ...props
     } = this.props
     delete props.hitSlop
@@ -153,7 +159,10 @@ export default class MarkerHandler extends Component {
             Platform.OS === 'android' && this.paddingAndroid
           ]}
         >
-          <View style={{flex: 0}} onLayout={this.onLayout}>
+          <View
+            style={{flex: 0}}
+            onLayout={markerLayout ? undefined : this.onLayout}
+          >
             {React.cloneElement(children, {
               markerState: {position, value, bounds}
             })}
