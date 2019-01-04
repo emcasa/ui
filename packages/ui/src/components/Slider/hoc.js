@@ -17,7 +17,7 @@ const updateMarkerBounds = ({layout, distance}, marker, prevMarker) => {
   marker.bounds = getMarkerBounds(layout, prevMarker)
   if (prevMarker) {
     marker.bounds.left += distance
-    prevMarker.bounds.right = marker.position + distance
+    prevMarker.bounds.right = Math.min(marker.position - distance, layout.width)
   }
 }
 
@@ -222,7 +222,7 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
             markers={markerContainers}
             sliderLayout={layout}
             useNativeDriver={this.props.useNativeDriver}
-            {...trackProps}
+            trackProps={trackProps}
           />
         </Target>
       )

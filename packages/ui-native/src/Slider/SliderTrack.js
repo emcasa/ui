@@ -16,10 +16,45 @@ Track.displayName = 'SliderTrack'
 
 Track.defaultProps = slider.track.defaultProps
 
+class MarkerTrack extends PureComponent {
+  get animation() {
+    const {position, offset, sliderWidth} = this.props
+    const width = Animated.add(position, Animated.multiply(offset, -1))
+    const scale = Animated.divide(width, sliderWidth)
+    const scaleOffset = Animated.multiply(
+      Animated.divide(
+        Animated.add(sliderWidth, Animated.multiply(width, -1)),
+        2
+      ),
+      -1
+    )
+    return [{translateX: Animated.add(offset, scaleOffset)}, {scaleX: scale}]
+  }
+
+  render() {
+    const {...props} = this.props
+    delete props.position
+    delete props.offset
+    return (
+      <Track
+        useNativeDriver={this.props.useNativeDriver}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          transform: this.animation
+        }}
+        {...props}
+      />
+    )
+  }
+}
+
 export default class SliderTrackContainer extends PureComponent {
   static defaultProps = {
     markers: [],
-    sliderLayout: {}
+    sliderLayout: {},
+    trackProps: {}
   }
 
   sliderWidth = new Animated.Value(1)
@@ -29,42 +64,23 @@ export default class SliderTrackContainer extends PureComponent {
       this.sliderWidth.setValue(this.props.sliderLayout.width)
   }
 
-  getMarkerAnimation(element, prevElement) {
+  renderMarkerTrack = (element, prevElement, index) => {
+    const {trackProps} = element.props
+    if (!trackProps) return
     const position = element.ref.current.computedPosition
     const offset = prevElement
       ? prevElement.ref.current.computedPosition
       : new Animated.Value(0)
-    const width = prevElement
-      ? Animated.add(position, Animated.multiply(offset, -1))
-      : position
-    const scale = Animated.divide(width, this.sliderWidth)
-    const scaleOffset = Animated.multiply(
-      Animated.divide(
-        Animated.add(this.sliderWidth, Animated.multiply(width, -1)),
-        2
-      ),
-      -1
-    )
-    return [{translateX: Animated.add(offset, scaleOffset)}, {scaleX: scale}]
-  }
-
-  renderMarkerTrack = (element, prevElement, index) => {
-    const {trackProps} = element.props
-    if (!trackProps) return
     return (
-      <Track
+      <MarkerTrack
         key={element.key}
         zIndex={index + 1}
+        position={position}
+        offset={offset}
+        sliderWidth={this.sliderWidth}
         useNativeDriver={this.props.useNativeDriver}
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          transform: [...this.getMarkerAnimation(element, prevElement)]
-        }}
-        {...this.props}
+        {...this.props.trackProps}
         {...trackProps}
-        markers={undefined}
       />
     )
   }
@@ -82,11 +98,11 @@ export default class SliderTrackContainer extends PureComponent {
   }
 
   render() {
-    const {markers, ...props} = this.props
+    const {markers, trackProps} = this.props
     return (
       <View width="100%" height="1px">
         {markers.length && this.renderTrack()}
-        <Track zIndex={0} {...props} />
+        <Track zIndex={0} {...trackProps} />
       </View>
     )
   }
