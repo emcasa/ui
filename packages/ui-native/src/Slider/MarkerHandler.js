@@ -23,8 +23,8 @@ class MarkerAnimation extends PureComponent {
   static getDerivedStateFromProps(props, state) {
     if (props.bounds !== state.bounds) {
       const bounds = props.bounds
-      const min = bounds.left
-      const max = bounds.right
+      const min = bounds.left + 1
+      const max = bounds.right - 1
       const computedPosition = state.position.interpolate({
         inputRange: [bounds.left, bounds.right],
         outputRange: [min, max],
