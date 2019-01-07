@@ -1,88 +1,42 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import {View, Animated, Platform} from 'react-native'
 import {PanGestureHandler, State} from 'react-native-gesture-handler'
 
-export default class MarkerHandler extends Component {
-  static defaultProps = {
-    zIndex: 100,
-    hitSlop: 15
-  }
-
+class MarkerAnimation extends PureComponent {
   state = {
-    layout: undefined,
-    sliderState: State.UNDETERMINED
+    position: new Animated.Value(0)
   }
 
-  position = new Animated.Value(0)
+  offset = 0
 
   constructor(props) {
     super(props)
-    this.offset = props.position
-    this.position.setOffset(this.offset)
-    this.position.addListener(({value}) => {
-      const {name, onSlide, bounds} = this.props
-      const {sliderState} = this.state
-      if (onSlide && sliderState === State.ACTIVE) {
-        onSlide(
-          name,
-          bounds.clamp(value - Platform.select({android: this.offset, ios: 0}))
-        )
-      }
-    })
+    this.offset = props.initialPosition
+    this.state.position.setOffset(this.offset)
+    if (props.onChange) this.state.position.addListener(props.onChange)
     this.onGestureEvent = Animated.event(
-      [{nativeEvent: {translationX: this.position}}],
+      [{nativeEvent: {translationX: this.state.position}}],
       {useNativeDriver: props.useNativeDriver}
     )
   }
 
-  get computedPosition() {
-    const {bounds} = this.props
-    const min = bounds.left + 1
-    const max = bounds.right - 1
-    return this.position.interpolate({
-      inputRange: [bounds.left, bounds.right],
-      outputRange: [min, max],
-      extrapolate: 'clamp'
-    })
+  static getDerivedStateFromProps(props, state) {
+    if (props.bounds !== state.bounds) {
+      const bounds = props.bounds
+      const min = bounds.left + 1
+      const max = bounds.right - 1
+      const computedPosition = state.position.interpolate({
+        inputRange: [bounds.left, bounds.right],
+        outputRange: [min, max],
+        extrapolate: 'clamp'
+      })
+      return {bounds, computedPosition}
+    }
+    return null
   }
 
   componentWillUnmount() {
-    this.position.removeAllListeners()
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextProps.position !== this.props.position ||
-      nextProps.bounds !== this.props.bounds ||
-      nextState.layout !== this.state.layout ||
-      Object.keys(nextProps.children.props).findIndex(
-        (key) =>
-          nextProps.children.props[key] !== this.props.children.props[key]
-      ) !== -1
-    )
-  }
-
-  onLayout = ({
-    nativeEvent: {
-      layout: {width, height}
-    }
-  }) => this.setState({layout: {width, height}})
-
-  onHandlerStateChange = ({nativeEvent}) => {
-    const {bounds, name, onSlide, onSlideStop} = this.props
-    if (nativeEvent.oldState === State.ACTIVE) {
-      const offset = this.offset + nativeEvent.translationX
-      const value = bounds.clamp(offset)
-      this.setState({sliderState: nativeEvent.state}, () => {
-        this.offset = value
-        this.position.setOffset(offset)
-        this.position.setValue(0)
-        if (onSlide) onSlide(name, value)
-        if (onSlideStop) onSlideStop()
-      })
-    } else if (nativeEvent.state !== this.state.sliderState) {
-      this.setState({sliderState: nativeEvent.state})
-    }
+    this.state.position.removeAllListeners()
   }
 
   get hitSlop() {
@@ -108,20 +62,128 @@ export default class MarkerHandler extends Component {
   }
 
   get handlerStyle() {
-    const {zIndex, index} = this.props
-    const {layout} = this.state
+    const {zIndex, index, layout} = this.props
     if (!layout) return {opacity: 0}
+    const offset = -layout.width / 2
+    const translateX = Animated.add(
+      this.state.computedPosition,
+      new Animated.Value(offset)
+    )
     return {
       zIndex: index + zIndex,
       opacity: 1,
-      transform: [
-        {
-          translateX: Animated.add(
-            this.computedPosition,
-            new Animated.Value(-layout.width / 2)
-          )
-        }
-      ]
+      transform: [{translateX}]
+    }
+  }
+
+  render() {
+    const {children, ...props} = this.props
+    delete props.hitSlop
+    delete props.bounds
+    delete props.layout
+    return (
+      <PanGestureHandler
+        minDist={0}
+        minOffsetX={0}
+        activeOffsetX={0}
+        onGestureEvent={this.onGestureEvent}
+        {...props}
+      >
+        <Animated.View
+          useNativeDriver={props.useNativeDriver}
+          hitSlop={this.hitSlop}
+          style={[
+            {position: 'absolute'},
+            this.handlerStyle,
+            Platform.OS === 'android' && this.paddingAndroid
+          ]}
+        >
+          {children}
+        </Animated.View>
+      </PanGestureHandler>
+    )
+  }
+}
+
+export default class MarkerHandler extends PureComponent {
+  static defaultProps = {
+    zIndex: 100,
+    hitSlop: 15
+  }
+
+  state = {
+    layout: undefined,
+    sliderState: State.UNDETERMINED
+  }
+
+  animationRef = React.createRef()
+
+  static getDerivedStateFromProps(props, state) {
+    const nextState = {}
+    if (props.markerLayout) nextState.layout = props.markerLayout
+    if (typeof state.initialPosition === 'undefined')
+      nextState.initialPosition = props.position
+    return nextState
+  }
+
+  get offset() {
+    return this.animationRef.current.offset
+  }
+
+  set offset(value) {
+    this.animationRef.current.offset = value
+  }
+
+  get position() {
+    return this.animationRef.current.state.position
+  }
+
+  get computedPosition() {
+    return this.animationRef.current.state.computedPosition
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.bounds !== this.props.bounds &&
+      this.state.sliderState !== State.ACTIVE
+    ) {
+      this.offset = this.props.position
+      this.position.setOffset(this.props.position)
+      this.position.setValue(0)
+    }
+  }
+
+  onLayout = ({
+    nativeEvent: {
+      layout: {width, height}
+    }
+  }) => this.setState({layout: {width, height}})
+
+  onChange = ({value}) => {
+    const {name, onSlide, bounds} = this.props
+    const {sliderState} = this.state
+    if (onSlide && sliderState === State.ACTIVE) {
+      onSlide(
+        name,
+        bounds.clamp(value - Platform.select({android: this.offset, ios: 0}))
+      )
+    }
+  }
+
+  onHandlerStateChange = ({nativeEvent}) => {
+    const {bounds, name, onSlide, onSlideStop} = this.props
+    if (nativeEvent.oldState === State.ACTIVE) {
+      const offset = this.offset + nativeEvent.translationX
+      const value = bounds.clamp(offset)
+      this.setState({sliderState: nativeEvent.state}, () => {
+        this.offset = value
+        this.position.setOffset(offset)
+        this.position.setValue(0)
+        if (onSlide) onSlide(name, value)
+        if (onSlideStop) onSlideStop()
+      })
+    } else if (nativeEvent.state !== this.state.sliderState) {
+      this.setState({sliderState: nativeEvent.state})
     }
   }
 
@@ -130,36 +192,37 @@ export default class MarkerHandler extends Component {
       children,
       useNativeDriver,
       bounds,
+      hitSlop,
       position,
       value,
-      ...props
+      markerLayout,
+      index,
+      zIndex
     } = this.props
-    delete props.hitSlop
+    const {layout, initialPosition} = this.state
     return (
-      <PanGestureHandler
+      <MarkerAnimation
+        ref={this.animationRef}
+        zIndex={zIndex}
+        index={index}
+        bounds={bounds}
+        hitSlop={hitSlop}
+        initialPosition={initialPosition}
+        layout={layout}
         enabled={bounds.right - bounds.left !== 0}
-        minDist={0}
-        minOffsetX={0}
-        activeOffsetX={0}
-        onGestureEvent={this.onGestureEvent}
+        useNativeDriver={useNativeDriver}
+        onChange={this.onChange}
         onHandlerStateChange={this.onHandlerStateChange}
       >
-        <Animated.View
-          useNativeDriver={useNativeDriver}
-          hitSlop={this.hitSlop}
-          style={[
-            {position: 'absolute'},
-            this.handlerStyle,
-            Platform.OS === 'android' && this.paddingAndroid
-          ]}
+        <View
+          style={{flex: 0}}
+          onLayout={markerLayout ? undefined : this.onLayout}
         >
-          <View style={{flex: 0}} onLayout={this.onLayout}>
-            {React.cloneElement(children, {
-              markerState: {position, value, bounds}
-            })}
-          </View>
-        </Animated.View>
-      </PanGestureHandler>
+          {React.cloneElement(children, {
+            markerState: {position, value, bounds}
+          })}
+        </View>
+      </MarkerAnimation>
     )
   }
 }
