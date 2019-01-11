@@ -1,0 +1,45 @@
+---
+name: Field
+---
+
+import { Playground, PropsTable } from 'docz'
+import Col from '@emcasa/ui-dom/components/Col'
+import Text from '@emcasa/ui-dom/components/Text'
+import Field from '@emcasa/ui-dom/components/Field'
+import Dropdown from '@emcasa/ui-dom/components/Dropdown'
+
+# Field
+
+Form field wrapper extracted from Input component.
+
+## Basic usage
+
+<Playground>
+  <Col mb={2}>
+    <Field label="Label">
+      <Dropdown>
+        <Dropdown.Option value="a">Option A</Dropdown.Option>
+        <Dropdown.Option value="b">Option B</Dropdown.Option>
+        <Dropdown.Option value="c">Option C</Dropdown.Option>
+      </Dropdown>
+    </Field>
+  </Col>
+  <Col mb={2}>
+    <Field error="Invalid input!">
+      <Dropdown>
+        <Dropdown.Option value="a">Option A</Dropdown.Option>
+        <Dropdown.Option value="b">Option B</Dropdown.Option>
+        <Dropdown.Option value="c">Option C</Dropdown.Option>
+      </Dropdown>
+    </Field>
+  </Col>
+  <Col mb={2}>
+    <Field hideLabelView hideErrorView>
+      <Dropdown>
+        <Dropdown.Option value="a">Option A</Dropdown.Option>
+        <Dropdown.Option value="b">Option B</Dropdown.Option>
+        <Dropdown.Option value="c">Option C</Dropdown.Option>
+      </Dropdown>
+    </Field>
+  </Col>
+</Playground>
