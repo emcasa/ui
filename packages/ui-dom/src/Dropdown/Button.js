@@ -5,7 +5,11 @@ import {button} from '@emcasa/ui/lib/components/Dropdown'
 import Icon from '../Icon'
 import Text from '../Text'
 
-const ButtonText = styled(Text)`
+const ButtonText = styled(({id, className, style, children}) => (
+  <Text inline id={id} className={className} style={style}>
+    {children}
+  </Text>
+))`
   ${button.textContainer};
   ${button.text};
 `

@@ -81,6 +81,7 @@ button.text = css`
   color: ${({isPlaceholder, theme}) =>
     isPlaceholder ? theme.colors.disabled : theme.colors.dark};
   ${fontSize};
+  ${textAlign};
   ${color};
 `
 

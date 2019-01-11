@@ -32,7 +32,10 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       get _buttonProps() {
         const {...props} = this.props
         const {focused} = this.state
-        delete props.renderButton, props.renderItem, props.onChange
+        delete props.renderButton
+        delete props.renderItem
+        delete props.onChange
+        delete props.initialValue
         return {
           ...props,
           focused,
