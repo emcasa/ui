@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import {button} from '@emcasa/ui/lib/components/Dropdown'
 
 import Icon from '../Icon'
+import Text from '../Text'
 
-const ButtonText = styled.div`
+const ButtonText = styled(Text)`
   ${button.textContainer};
   ${button.text};
 `
@@ -12,6 +13,7 @@ const ButtonText = styled.div`
 const ButtonBackground = styled.div`
   ${button.pseudoBackground};
 `
+
 const DropdownButton = styled(
   ({
     children,
