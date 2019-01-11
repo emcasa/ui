@@ -12,6 +12,7 @@ const ButtonText = styled(Text)`
 
 const ButtonBackground = styled.div`
   ${button.pseudoBackground};
+  box-sizing: border-box;
 `
 
 const DropdownButton = styled(

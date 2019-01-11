@@ -58,4 +58,5 @@ export default styled(
   ${container};
   ${container.contentContainer};
   display: ${({focused}) => (focused ? 'flex' : 'none')};
+  box-sizing: border-box;
 `
