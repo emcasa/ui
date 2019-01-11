@@ -1,17 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
+import {themeGet} from 'styled-system'
 import * as field from '@emcasa/ui/lib/components/Field'
 import View from '../View'
 import Text from '../Text'
 
 const LabelText = styled(Text).attrs({inline: true})`
-  display: block;
+  line-height: ${themeGet('space.5')}px;
   ${field.textContainer};
   ${field.label};
 `
 
 const ErrorText = styled(Text).attrs({inline: true})`
-  display: block;
+  line-height: ${themeGet('space.5')}px;
   ${field.textContainer};
   ${field.error};
 `

@@ -17,8 +17,7 @@ export const container = {
 }
 
 export const textContainer = css`
-  display: block;
-  height: ${themeGet('space.5')}px;
+  min-height: ${themeGet('space.5')}px;
 `
 
 export const label = css`
