@@ -32,4 +32,6 @@ DropdownOption.displayName = 'DropdownOption'
 
 DropdownOption.propTypes = option.propTypes
 
+DropdownOption.defaultProps = option.defaultProps
+
 export default DropdownOption

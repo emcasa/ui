@@ -149,6 +149,10 @@ option.propTypes = {
   ...row.propTypes
 }
 
+option.defaultProps = {
+  fontSize: 'default'
+}
+
 export const propTypes = {
   containerProps: PropTypes.shape(container.propTypes),
   blurOnChange: PropTypes.bool,
