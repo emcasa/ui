@@ -34,6 +34,6 @@ function Field({
 
 Field.propTypes = field.container.propTypes
 
-Field.defaultProps = field.container.defaultPropTypes
+Field.defaultProps = field.container.defaultProps
 
 export default Field

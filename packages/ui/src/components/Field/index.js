@@ -10,7 +10,7 @@ export const container = {
     hideLabelView: PropTypes.bool,
     hideErrorView: PropTypes.bool
   },
-  defaultPropTypes: {
+  defaultProps: {
     hideLabelView: false,
     hideErrorView: false
   }
