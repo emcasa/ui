@@ -13,8 +13,6 @@
   },
   "dependencies": {
     "@emcasa/ui": "^0.8.9",
-    "lodash.omit": "^4.5.0",
-    "lodash.pick": "^4.4.0",
     "recompose": "^0.30.0"
   },
   "devDependencies": {
