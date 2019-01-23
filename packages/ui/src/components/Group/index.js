@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import toArray from 'lodash/toarray'
+import toArray from 'lodash/toArray'
 import omit from 'lodash/omit'
 import PropTypes from 'prop-types'
 
