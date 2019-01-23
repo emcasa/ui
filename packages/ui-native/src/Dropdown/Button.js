@@ -1,4 +1,3 @@
-import throttle from 'lodash.throttle'
 import React, {PureComponent} from 'react'
 import {
   View as RCTView,

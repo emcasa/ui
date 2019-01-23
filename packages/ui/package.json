@@ -12,14 +12,12 @@
     "prepublish": "yarn build"
   },
   "peerDependencies": {
+    "lodash": "^4.17.11",
     "react": "^16.5.2"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^5.4.1",
     "everpolate": "^0.0.3",
-    "lodash.omit": "^4.5.0",
-    "lodash.throttle": "^4.1.1",
-    "lodash.toarray": "^4.4.0",
     "styled-components": "^3.4.9",
     "styled-system": "^3.1.6"
   },

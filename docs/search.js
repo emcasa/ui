@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import styled from 'styled-components'
 import {View, Input} from '@emcasa/ui-dom'
-import throttle from 'lodash.throttle'
+import throttle from 'lodash/throttle'
 
 export default class SearchResults extends PureComponent {
   state = {
