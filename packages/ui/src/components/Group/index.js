@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
-import toArray from 'lodash.toarray'
-import omit from 'lodash.omit'
+import toArray from 'lodash/toarray'
+import omit from 'lodash/omit'
 import PropTypes from 'prop-types'
 
 export const Strategies = {

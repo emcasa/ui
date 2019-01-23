@@ -1,5 +1,5 @@
-import pick from 'lodash.pick'
-import omit from 'lodash.omit'
+import pick from 'lodash/pick'
+import omit from 'lodash/omit'
 import React from 'react'
 import {Text, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'

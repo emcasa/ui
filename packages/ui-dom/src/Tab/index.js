@@ -1,4 +1,4 @@
-import pick from 'lodash.pick'
+import pick from 'lodash/pick'
 import React from 'react'
 import styled from 'styled-components'
 import TabGroup from '@emcasa/ui/lib/components/Tab/Group'
