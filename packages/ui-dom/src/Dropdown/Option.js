@@ -5,6 +5,7 @@ import {option} from '@emcasa/ui/lib/components/Dropdown'
 const DropdownOption = styled(({children, id, className, style, onSelect}) => {
   return (
     <button
+      type="button"
       tabIndex={0}
       id={id}
       className={className}
