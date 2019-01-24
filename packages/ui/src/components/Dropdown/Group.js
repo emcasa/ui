@@ -24,8 +24,8 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       get label() {
         const {label, placeholder, children, selectedValue} = this.props
         if (label) return label
-        if (selectedValue === undefined) return placeholder
         const selectedNode = children.find((node) => node.props.selected)
+        if (selectedValue === undefined || !selectedNode) return placeholder
         return selectedNode.props.label || selectedNode.props.children
       }
 
