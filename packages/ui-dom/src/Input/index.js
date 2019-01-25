@@ -31,7 +31,8 @@ const TextInput = styled(ForwardedInput)`
   ${input.text};
 `
 
-const Input = React.forwardRef((props, ref) => {
+const Input = React.forwardRef(({...props}, ref) => {
+  delete props.focus
   return <Field Component={TextInput} innerRef={ref} {...props} />
 })
 
