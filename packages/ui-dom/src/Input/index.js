@@ -8,6 +8,7 @@ const focused = withProps({focus: true})
 
 const ForwardedInput = React.forwardRef(({area, ...props}, ref) => {
   delete props.fluid
+  delete props.focus
   return area ? (
     <textarea ref={ref} {...props} />
   ) : (
@@ -32,7 +33,6 @@ const TextInput = styled(ForwardedInput)`
 `
 
 const Input = React.forwardRef(({...props}, ref) => {
-  delete props.focus
   return <Field Component={TextInput} innerRef={ref} {...props} />
 })
 
