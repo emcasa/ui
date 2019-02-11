@@ -1,5 +1,5 @@
 {
-  "vendors.js": "/static/js/vendors.5b234878.js",
+  "vendors.js": "/static/js/vendors.4753467c.js",
   "app.js": "/static/js/app.58daef9a.js",
   "docs-button.js": "/static/js/docs-button.a7dab6e1.js",
   "docs-dropdown.js": "/static/js/docs-dropdown.5ad45745.js",
@@ -14,6 +14,6 @@
   "docs-tab.js": "/static/js/docs-tab.16305246.js",
   "docs-text.js": "/static/js/docs-text.4cc5ab76.js",
   "docs-view.js": "/static/js/docs-view.2b5df1fc.js",
-  "runtime~app.js": "/static/js/runtime~app.0c2fa9e619614f62a935.js",
+  "runtime~app.js": "/static/js/runtime~app.fff90ad493fe2ed0c7f9.js",
   "index.html": "/index.html"
 }
