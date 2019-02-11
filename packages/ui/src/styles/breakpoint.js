@@ -29,7 +29,7 @@ export const only = (name) => ({theme}) => {
   const minWidth = parseInt(theme.breakpoints[index])
   const maxWidth = parseInt(theme.breakpoints[index + 1])
   if (!isNaN(maxWidth))
-    return `(min-width: ${minWidth}px) and (max-width: ${maxWidth - 1}px`
+    return `(min-width: ${minWidth}px) and (max-width: ${maxWidth - 1}px)`
   else return `(min-width: ${minWidth}px)`
 }
 
