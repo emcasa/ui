@@ -10,9 +10,9 @@ const MarkerWrapper = styled(
       x: ({position}) => position
     },
     draggable: 'x',
-    dragBounds: ({bounds, sliderLayout}) => ({
+    dragBounds: ({bounds}) => ({
       left: bounds.left,
-      right: sliderLayout.width
+      right: bounds.right
     })
   })
 )`

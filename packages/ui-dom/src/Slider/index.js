@@ -9,6 +9,9 @@ import View from '../View'
 
 const MarkerLabel = styled(View)`
   ${slider.marker.label};
+  margin-bottom: 50%;
+  margin-left: -50%;
+  left: ${({size}) => size}px;
 `
 
 MarkerLabel.displayName = 'SliderMarkerLabel'
