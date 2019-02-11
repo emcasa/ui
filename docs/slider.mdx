@@ -1,0 +1,29 @@
+---
+name: Slider
+---
+
+import { Playground, PropsTable } from 'docz'
+import Slider from '@emcasa/ui-dom/components/Slider'
+import View from '@emcasa/ui-dom/components/View'
+
+# Slider
+
+Slider component.
+
+## Basic usage
+
+<Playground>
+  <View m={4}>
+    <Slider
+      onChange={console.log}
+      range={[0, 1]}
+      initialValue={{
+        min: 0,
+        max: 1
+      }}
+    >
+      <Slider.Marker name="min" />
+      <Slider.Marker name="max" />
+    </Slider>
+  </View>
+</Playground>

@@ -2,7 +2,7 @@ import {css} from 'styled-components'
 import {width, height, bgColor, zIndex} from 'styled-system'
 
 import {buttonHeight} from '../../styles'
-import {container as row} from '../Row'
+import {container as col} from '../Col'
 
 export {default} from './hoc'
 
@@ -19,8 +19,10 @@ export {default} from './hoc'
  */
 
 export const container = css`
+  display: flex;
   justify-content: center;
-  ${row};
+  flex-direction: column;
+  ${col};
   ${width};
   ${buttonHeight};
 `
