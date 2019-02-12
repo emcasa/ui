@@ -32,6 +32,7 @@ export default ({
   MarkerHandler,
   Marker,
   SliderTrack,
+  getDerivedState,
   getInitialMarkerState = () => ({})
 }) => (Target) =>
   class extends PureComponent {
@@ -58,6 +59,8 @@ export default ({
     }
 
     state = this._getInitialState()
+
+    static getDerivedStateFromProps = getDerivedState
 
     componentDidUpdate(prevProps) {
       if (

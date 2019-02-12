@@ -112,8 +112,11 @@ class SliderTrackContainer extends PureComponent {
   }
 }
 
-export default withSliderContext(({markers, markerStates, layout}) => ({
-  markers,
-  markerStates,
-  sliderLayout: layout
-}))(SliderTrackContainer)
+export default withSliderContext(
+  ({markers, markerStates, layout, useNativeDriver}) => ({
+    markers,
+    markerStates,
+    sliderLayout: layout,
+    useNativeDriver
+  })
+)(SliderTrackContainer)
