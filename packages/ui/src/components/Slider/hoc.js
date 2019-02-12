@@ -41,7 +41,6 @@ export default ({
     static defaultProps = {
       initialValue: 0,
       minDistance: 1,
-      useNativeDriver: true,
       slideEventThrottle: 50,
       ...(Target.defaultProps || {})
     }
@@ -228,7 +227,6 @@ export default ({
           {...this.state.markerStates[key]}
           key={key}
           name={key}
-          useNativeDriver={this.props.useNativeDriver}
           onSlide={this.onSlide}
           onSlideStop={this.onSlideStop}
           sliderLayout={this.state.layout}
@@ -246,7 +244,6 @@ export default ({
           <Target onLayout={this.onLayout} {...props}>
             {markerStates && markers.map(this.renderMarker)}
             <SliderTrack
-              useNativeDriver={this.props.useNativeDriver}
               trackProps={trackProps}
             />
           </Target>

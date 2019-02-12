@@ -43,14 +43,23 @@ const Container = styled(function SliderContainer({onLayout, ...props}) {
   ${slider.container};
 `
 
-Container.defaultProps = slider.container.defaultProps
+Container.defaultProps = {
+  ...slider.container.defaultProps,
+  useNativeDriver: true
+}
+
+const getInitialAnimatedValue = (position) => {
+  const value = new Animated.Value(0)
+  value.setOffset(position)
+  return value
+}
 
 const SliderComponent = Slider({
   MarkerHandler,
   Marker,
   SliderTrack,
-  getInitialMarkerState: () => ({
-    animatedValue: new Animated.Value(0),
+  getInitialMarkerState: ({position}) => ({
+    animatedValue: getInitialAnimatedValue(position),
     getComputedPosition() {
       const {animatedValue, bounds} = this
       const min = bounds.left + 1
