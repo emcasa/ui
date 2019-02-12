@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle'
+import identity from 'lodash/identity'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import interpolate from 'everpolate'
@@ -20,6 +21,11 @@ const updateMarkerBounds = ({layout, distance}, marker, prevMarker) => {
     prevMarker.bounds.right = Math.min(marker.position - distance, layout.width)
   }
 }
+
+const getLayoutRange = ({width}) => [0, width]
+
+const interpolatePosition = (inputRange, outputRange) => (position) =>
+  interpolate.linear(position, inputRange, outputRange)[0]
 
 export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
   class extends PureComponent {
@@ -83,6 +89,10 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
     _getInitialMarkerState(layout) {
       const {minDistance} = this.props
       const outputRange = this.props.range || [0, layout.width]
+      const getPosition = interpolatePosition(
+        outputRange,
+        getLayoutRange(layout)
+      )
       const markers = this._reduceMarkers((state, marker, prevMarker) => {
         const value = clamp(
           this._getInitialMarkerValue(marker.key),
@@ -93,7 +103,7 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
           value,
           index: marker.index,
           ref: React.createRef(),
-          position: this._getPositionFromValue(value, layout),
+          position: getPosition(value),
           markerLayout: this._getMarkerLayout(marker)
         }
         updateMarkerBounds(
@@ -120,20 +130,13 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
       return value
     }
 
-    _interpolate = (swap = false) => (position, layout = this.state.layout) => {
-      let outputRange = this.props.range
-      if (outputRange && layout) {
-        let inputRange = [0, layout.width]
-        if (swap) inputRange = [outputRange, (outputRange = inputRange)][0]
-        return interpolate.linear(position, inputRange, outputRange)[0]
-      } else {
-        return position
-      }
+    get _getValueFromPosition() {
+      if (!this.state.layout || !this.props.range) return identity
+      return interpolatePosition(
+        getLayoutRange(this.state.layout),
+        this.props.range
+      )
     }
-
-    _getValueFromPosition = this._interpolate()
-
-    _getPositionFromValue = this._interpolate(true)
 
     _onChangeCallback = () => {
       const {onChange} = this.props
