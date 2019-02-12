@@ -87,7 +87,12 @@ class MarkerHandler extends PureComponent {
     ) {
       this.position.setOffset(this.props.position)
       this.position.setValue(0)
-    } else if (prevState.layout == this.state.layout) return
+    }
+    if (
+      prevProps.bounds !== this.props.bounds ||
+      prevProps.sliderLayout !== this.props.sliderLayout ||
+      prevState.layout !== this.state.layout
+    )
     this.setState({
       styles: getStyles(this.props, this.state)
     })
@@ -100,25 +105,25 @@ class MarkerHandler extends PureComponent {
   }) => this.setState({layout: {width, height}})
 
   onChange = ({value}) => {
-    const {name, onSlide, bounds} = this.props
+    const {index, onSlide, bounds} = this.props
     const {sliderState} = this.state
     if (onSlide && sliderState === State.ACTIVE) {
       onSlide(
-        name,
+        index,
         bounds.clamp(value - Platform.select({android: this.offset, ios: 0}))
       )
     }
   }
 
   onHandlerStateChange = ({nativeEvent}) => {
-    const {bounds, name, onSlide, onSlideStop} = this.props
+    const {bounds, index, onSlide, onSlideStop} = this.props
     if (nativeEvent.oldState === State.ACTIVE) {
       const offset = this.offset + nativeEvent.translationX
       const value = bounds.clamp(offset)
       this.setState({sliderState: nativeEvent.state}, () => {
         this.position.setOffset(offset)
         this.position.setValue(0)
-        if (onSlide) onSlide(name, value)
+        if (onSlide) onSlide(index, value)
         if (onSlideStop) onSlideStop()
       })
     } else if (nativeEvent.state !== this.state.sliderState) {

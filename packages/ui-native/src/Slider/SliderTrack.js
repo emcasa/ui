@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isEmpty'
 import React, {PureComponent} from 'react'
 import {Animated, StyleSheet} from 'react-native'
 import styled from 'styled-components/native'
@@ -69,16 +68,17 @@ class SliderTrackContainer extends PureComponent {
       this.sliderWidth.setValue(this.props.sliderLayout.width)
   }
 
-  renderMarkerTrack = (marker, prevMarker, index) => {
-    const {name, trackProps} = marker.props
+  renderMarkerTrack = (marker, index) => {
+    const {trackProps} = marker.element.props
     if (!trackProps) return
-    const position = this.props.markerStates[name].getComputedPosition()
+    const prevMarker = index > 0 && this.props.markers[index - 1]
+    const position = marker.state.getComputedPosition()
     const offset = prevMarker
-      ? this.props.markerStates[prevMarker.props.name].getComputedPosition()
+      ? prevMarker.state.getComputedPosition()
       : undefined
     return (
       <MarkerTrack
-        key={name}
+        key={marker.key}
         zIndex={index + 1}
         position={position}
         offset={offset}
@@ -90,33 +90,19 @@ class SliderTrackContainer extends PureComponent {
     )
   }
 
-  renderTrack() {
-    const {markers} = this.props
-    const children = []
-    let prevMarker = undefined
-    markers.forEach((element, index) => {
-      children.push(this.renderMarkerTrack(element, prevMarker, index))
-      prevMarker = element
-    })
-    return children
-  }
-
   render() {
-    const {markerStates, trackProps} = this.props
+    const {markers, trackProps} = this.props
     return (
       <View width="100%" height="1px">
-        {!isEmpty(markerStates) ? this.renderTrack() : null}
+        {markers && markers.map(this.renderMarkerTrack)}
         <Track zIndex={0} {...trackProps} />
       </View>
     )
   }
 }
 
-export default withSliderContext(
-  ({markers, markerStates, layout, useNativeDriver}) => ({
-    markers,
-    markerStates,
-    sliderLayout: layout,
-    useNativeDriver
-  })
-)(SliderTrackContainer)
+export default withSliderContext(({markers, layout, useNativeDriver}) => ({
+  markers,
+  sliderLayout: layout,
+  useNativeDriver
+}))(SliderTrackContainer)
