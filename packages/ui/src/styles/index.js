@@ -42,3 +42,4 @@ export const defaultFontFamily = ({theme: {fontFamily}}) =>
   fontFamily ? `font-family: ${fontFamily};` : null
 
 export {default as elevation} from './elevation'
+export {default as breakpoint} from './breakpoint'

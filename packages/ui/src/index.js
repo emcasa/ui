@@ -5,12 +5,13 @@ import {
   LETTER_SPACING,
   BUTTON_HEIGHT,
   FONT_SIZE,
-  ICON_SIZE
+  ICON_SIZE,
+  BREAKPOINTS
 } from './theme/measures'
 
 export default {
   fontFamily: 'FaktSoftPro-Normal',
-  breakpoints: ['780px'],
+  breakpoints: Array.from(BREAKPOINTS.values()),
   space: [0, 4, 10, 14, 20, 25, 80],
   fontSizes: Array.from(FONT_SIZE.values()),
   letterSpacing: Array.from(LETTER_SPACING.values()),
