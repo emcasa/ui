@@ -3,6 +3,7 @@ import identity from 'lodash/identity'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import interpolate from 'everpolate'
+import {Provider} from './Context'
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
 
@@ -27,7 +28,12 @@ const getLayoutRange = ({width}) => [0, width]
 const interpolatePosition = (inputRange, outputRange) => (position) =>
   interpolate.linear(position, inputRange, outputRange)[0]
 
-export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
+export default ({
+  MarkerHandler,
+  Marker,
+  SliderTrack,
+  getInitialMarkerState = () => ({})
+}) => (Target) =>
   class extends PureComponent {
     static displayName = `Slider(${Target.displayName || Target.name})`
 
@@ -51,10 +57,7 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
       ...(Target.propTypes || {})
     }
 
-    state = {
-      markers: undefined,
-      layout: undefined
-    }
+    state = this._getInitialState()
 
     componentDidUpdate(prevProps) {
       if (
@@ -86,7 +89,22 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
       return initialValue[key]
     }
 
-    _getInitialMarkerState(layout) {
+    _getInitialState() {
+      return {
+        markers: React.Children.map(
+          this.props.children,
+          (element, index) =>
+            React.isValidElement(element) &&
+            React.cloneElement(element, {
+              name: element.props.name || index
+            })
+        ).filter(identity),
+        markerStates: undefined,
+        layout: undefined
+      }
+    }
+
+    _getInitialMarkerStates(layout) {
       const {minDistance} = this.props
       const outputRange = this.props.range || [0, layout.width]
       const getPosition = interpolatePosition(
@@ -102,26 +120,31 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
         const currentMarkerState = {
           value,
           index: marker.index,
-          ref: React.createRef(),
           position: getPosition(value),
-          markerLayout: this._getMarkerLayout(marker)
+          layout: this._getMarkerLayout(marker)
         }
         updateMarkerBounds(
           {layout, distance: minDistance},
           currentMarkerState,
           prevMarkerState
         )
-        return {...state, [marker.key]: currentMarkerState}
+        return {
+          ...state,
+          [marker.key]: {
+            ...currentMarkerState,
+            ...getInitialMarkerState(currentMarkerState)
+          }
+        }
       })
       return markers
     }
 
     _reduceMarkers = (fun, initialValue = {}) => {
-      const {children} = this.props
+      const {markers} = this.state
       let value = initialValue
       let index = 0
       let previous
-      React.Children.forEach(children, (element) => {
+      markers.forEach((element) => {
         const current = {element, index, key: element.props.name || index}
         value = fun(value, current, previous)
         previous = current
@@ -141,9 +164,9 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
     _onChangeCallback = () => {
       const {onChange} = this.props
       if (!onChange) return
-      const {markers} = this.state
-      const markerValues = Object.keys(markers).reduce(
-        (values, key) => ({...values, [key]: markers[key].value}),
+      const {markerStates} = this.state
+      const markerValues = Object.keys(markerStates).reduce(
+        (values, key) => ({...values, [key]: markerStates[key].value}),
         {}
       )
       onChange(markerValues)
@@ -151,13 +174,13 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
 
     onSlide = throttle(
       (key, position) => {
-        if (this.state.markers[key].position === position) return
+        if (this.state.markerStates[key].position === position) return
         this.setState(
           (state) => ({
-            markers: {
-              ...state.markers,
+            markerStates: {
+              ...state.markerStates,
               [key]: {
-                ...state.markers[key],
+                ...state.markerStates[key],
                 position,
                 value: this._getValueFromPosition(position)
               }
@@ -173,8 +196,8 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
     // Update marker bounds
     onSlideStop = () => {
       this.onSlide.flush()
-      this.setState(({markers, layout}) => ({
-        markers: this._reduceMarkers(
+      this.setState(({markerStates, layout}) => ({
+        markerStates: this._reduceMarkers(
           (result, marker, prevMarker = {}) => {
             result[marker.key] = {...result[marker.key]}
             updateMarkerBounds(
@@ -184,29 +207,28 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
             )
             return result
           },
-          {...markers}
+          {...markerStates}
         )
       }))
     }
 
     onLayout = (layout) => {
-      const markers = this.state.markers || this._getInitialMarkerState(layout)
-      this.setState({layout, markers})
+      const markerStates =
+        this.state.markerStates || this._getInitialMarkerStates(layout)
+      this.setState({layout, markerStates})
     }
 
-    renderMarker = (element, index) => {
-      if (!element) return
-      const key = element.props.name || index
+    renderMarker = (element) => {
+      const key = element.props.name
       return (
         <MarkerHandler
-          {...this.state.markers[key]}
+          {...this.state.markerStates[key]}
           key={key}
           name={key}
           useNativeDriver={this.props.useNativeDriver}
           onSlide={this.onSlide}
           onSlideStop={this.onSlideStop}
           sliderLayout={this.state.layout}
-          trackProps={element.props.trackProps}
         >
           {element}
         </MarkerHandler>
@@ -214,20 +236,18 @@ export default ({MarkerHandler, Marker, SliderTrack}) => (Target) =>
     }
 
     render() {
-      const {children, trackProps, ...props} = this.props
-      const {markers, layout} = this.state
-      const markerContainers =
-        Boolean(markers) && React.Children.map(children, this.renderMarker)
+      const {trackProps, ...props} = this.props
+      const {markers, markerStates} = this.state
       return (
-        <Target onLayout={this.onLayout} {...props}>
-          {markerContainers}
-          <SliderTrack
-            markers={markerContainers}
-            sliderLayout={layout}
-            useNativeDriver={this.props.useNativeDriver}
-            trackProps={trackProps}
-          />
-        </Target>
+        <Provider value={this.state}>
+          <Target onLayout={this.onLayout} {...props}>
+            {markerStates && markers.map(this.renderMarker)}
+            <SliderTrack
+              useNativeDriver={this.props.useNativeDriver}
+              trackProps={trackProps}
+            />
+          </Target>
+        </Provider>
       )
     }
   }

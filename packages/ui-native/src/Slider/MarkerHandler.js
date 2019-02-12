@@ -3,40 +3,22 @@ import {View, Animated, Platform} from 'react-native'
 import {PanGestureHandler, State} from 'react-native-gesture-handler'
 
 class MarkerAnimation extends PureComponent {
-  state = {
-    position: new Animated.Value(0)
-  }
 
   offset = 0
 
   constructor(props) {
     super(props)
     this.offset = props.initialPosition
-    this.state.position.setOffset(this.offset)
-    if (props.onChange) this.state.position.addListener(props.onChange)
+    this.props.animatedValue.setOffset(this.offset)
+    if (props.onChange) this.props.animatedValue.addListener(props.onChange)
     this.onGestureEvent = Animated.event(
-      [{nativeEvent: {translationX: this.state.position}}],
+      [{nativeEvent: {translationX: this.props.animatedValue}}],
       {useNativeDriver: props.useNativeDriver}
     )
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.bounds !== state.bounds) {
-      const bounds = props.bounds
-      const min = bounds.left + 1
-      const max = bounds.right - 1
-      const computedPosition = state.position.interpolate({
-        inputRange: [bounds.left, bounds.right],
-        outputRange: [min, max],
-        extrapolate: 'clamp'
-      })
-      return {bounds, computedPosition}
-    }
-    return null
-  }
-
   componentWillUnmount() {
-    this.state.position.removeAllListeners()
+    this.props.animatedValue.removeAllListeners()
   }
 
   get hitSlop() {
@@ -66,7 +48,7 @@ class MarkerAnimation extends PureComponent {
     if (!layout) return {opacity: 0}
     const offset = -layout.width / 2
     const translateX = Animated.add(
-      this.state.computedPosition,
+      this.props.getComputedPosition(),
       new Animated.Value(offset)
     )
     return {
@@ -81,6 +63,7 @@ class MarkerAnimation extends PureComponent {
     delete props.hitSlop
     delete props.bounds
     delete props.layout
+    delete props.getComputedPosition
     return (
       <PanGestureHandler
         minDist={0}
@@ -120,7 +103,7 @@ export default class MarkerHandler extends PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     const nextState = {}
-    if (props.markerLayout) nextState.layout = props.markerLayout
+    if (props.layout) nextState.layout = props.layout
     if (typeof state.initialPosition === 'undefined')
       nextState.initialPosition = props.position
     return nextState
@@ -135,11 +118,7 @@ export default class MarkerHandler extends PureComponent {
   }
 
   get position() {
-    return this.animationRef.current.state.position
-  }
-
-  get computedPosition() {
-    return this.animationRef.current.state.computedPosition
+    return this.props.animatedValue
   }
 
   componentDidUpdate(prevProps) {
@@ -195,9 +174,10 @@ export default class MarkerHandler extends PureComponent {
       hitSlop,
       position,
       value,
-      markerLayout,
       index,
-      zIndex
+      zIndex,
+      animatedValue,
+      getComputedPosition
     } = this.props
     const {layout, initialPosition} = this.state
     return (
@@ -213,10 +193,12 @@ export default class MarkerHandler extends PureComponent {
         useNativeDriver={useNativeDriver}
         onChange={this.onChange}
         onHandlerStateChange={this.onHandlerStateChange}
+        getComputedPosition={getComputedPosition}
+        animatedValue={animatedValue}
       >
         <View
           style={{flex: 0}}
-          onLayout={markerLayout ? undefined : this.onLayout}
+          onLayout={this.props.layout ? undefined : this.onLayout}
         >
           {React.cloneElement(children, {
             markerState: {position, value, bounds}

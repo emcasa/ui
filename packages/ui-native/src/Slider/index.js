@@ -1,4 +1,5 @@
 import React from 'react'
+import {Animated} from 'react-native'
 import styled from 'styled-components/native'
 import Slider, * as slider from '@emcasa/ui/lib/components/Slider'
 
@@ -44,7 +45,24 @@ const Container = styled(function SliderContainer({onLayout, ...props}) {
 
 Container.defaultProps = slider.container.defaultProps
 
-const SliderComponent = Slider({MarkerHandler, Marker, SliderTrack})(Container)
+const SliderComponent = Slider({
+  MarkerHandler,
+  Marker,
+  SliderTrack,
+  getInitialMarkerState: () => ({
+    animatedValue: new Animated.Value(0),
+    getComputedPosition() {
+      const {animatedValue, bounds} = this
+      const min = bounds.left + 1
+      const max = bounds.right - 1
+      return animatedValue.interpolate({
+        inputRange: [bounds.left, bounds.right],
+        outputRange: [min, max],
+        extrapolate: 'clamp'
+      })
+    }
+  })
+})(Container)
 
 SliderComponent.Marker = Marker
 
