@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {value} from 'popmotion'
 import Measure from 'react-measure'
 import Slider, * as slider from '@emcasa/ui/lib/components/Slider'
 
@@ -58,7 +59,14 @@ const Container = styled(function SliderContainer({onLayout, ...props}) {
 
 Container.defaultProps = slider.container.defaultProps
 
-const SliderComponent = Slider({MarkerHandler, Marker, SliderTrack})(Container)
+const SliderComponent = Slider({
+  MarkerHandler,
+  Marker,
+  SliderTrack,
+  getInitialMarkerState: ({position}) => ({
+    animatedValues: {x: value(position)}
+  })
+})(Container)
 
 SliderComponent.Marker = Marker
 

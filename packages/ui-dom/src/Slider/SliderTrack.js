@@ -1,12 +1,19 @@
 import React, {PureComponent} from 'react'
 import styled from 'styled-components'
+import posed from 'react-pose'
+import {withSliderContext} from '@emcasa/ui/lib/components/Slider/Context'
 import * as slider from '@emcasa/ui/lib/components/Slider'
+import Row from '../Row'
 
-import View from '../Row'
+const Container = styled(Row)`
+  position: relative;
+  width: 100%;
+  height: 2px;
+`
 
 const Track = styled.div`
   width: 100%;
-  top: -50%;
+  border-radius: 4px;
   ${slider.track};
 `
 
@@ -14,63 +21,50 @@ Track.displayName = 'SliderTrack'
 
 Track.defaultProps = slider.track.defaultProps
 
-class MarkerTrack extends PureComponent {
-  render() {
-    const {...props} = this.props
-    delete props.position
-    delete props.offset
-    return (
-      <Track
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0
-        }}
-        {...props}
-      />
-    )
-  }
-}
+const MarkerTrack = styled(
+  posed(React.forwardRef((props, ref) => <Track innerRef={ref} {...props} />))({
+    passive: {
+      width: ['x', (x) => x, true]
+    }
+  })
+)`
+  position: absolute;
+  margin-top: ${({height}) => -((parseInt(height) || 2) - 2) / 2}px;
+`
 
-export default class SliderTrackContainer extends PureComponent {
+class SliderTrackContainer extends PureComponent {
   static defaultProps = {
     markers: [],
     sliderLayout: {},
     trackProps: {}
   }
 
-  renderMarkerTrack = (element, prevElement, index) => {
-    const {trackProps} = element.props
+  renderMarkerTrack = (marker, index) => {
+    const {trackProps} = marker.element.props
     if (!trackProps) return
     return (
       <MarkerTrack
-        key={element.key}
-        zIndex={index + 1}
+        key={marker.key}
+        zIndex={this.props.markers.length - index + 1}
+        parentValues={marker.state.animatedValues}
         {...this.props.trackProps}
         {...trackProps}
       />
     )
   }
 
-  renderTrack() {
-    const {markers} = this.props
-    const children = []
-    let prevMarker = undefined
-    React.Children.forEach(markers, (element, index) => {
-      if (!element.ref.current) return
-      children.push(this.renderMarkerTrack(element, prevMarker, index))
-      prevMarker = element
-    })
-    return children
-  }
-
   render() {
     const {markers, trackProps} = this.props
     return (
-      <View width="100%" height="1px">
-        {/* markers.length && this.renderTrack() */}
+      <Container>
+        {markers && markers.map(this.renderMarkerTrack)}
         <Track zIndex={0} {...trackProps} />
-      </View>
+      </Container>
     )
   }
 }
+
+export default withSliderContext(({markers, layout}) => ({
+  markers,
+  sliderLayout: layout
+}))(SliderTrackContainer)

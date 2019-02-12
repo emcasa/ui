@@ -1,14 +1,11 @@
 import React, {PureComponent} from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
-import {themeGet, zIndex} from 'styled-system'
 import Measure from 'react-measure'
+import {themeGet, zIndex} from 'styled-system'
 
 const MarkerWrapper = styled(
   posed.div({
-    default: {
-      x: ({position}) => position
-    },
     draggable: 'x',
     dragBounds: ({bounds}) => ({
       left: bounds.left,
@@ -67,9 +64,9 @@ export default class MarkerHandler extends PureComponent {
     this.setState({layout: {width: entry.width, height: entry.height}})
 
   onChange = (x) => {
-    const {name, onSlide} = this.props
+    const {index, onSlide} = this.props
     if (onSlide) {
-      onSlide(name, x)
+      onSlide(index, x)
     }
   }
 
@@ -87,16 +84,15 @@ export default class MarkerHandler extends PureComponent {
       value,
       sliderLayout,
       index,
-      zIndex
+      zIndex,
+      animatedValues
     } = this.props
-    const {layout, initialPosition} = this.state
+    const {layout} = this.state
     return (
       <Measure onResize={this.onResize}>
         {({measureRef}) => (
           <MarkerWrapper
             innerRef={measureRef}
-            pose="default"
-            position={initialPosition}
             bounds={bounds}
             tabIndex={0}
             zIndex={index + zIndex}
@@ -105,6 +101,7 @@ export default class MarkerHandler extends PureComponent {
             sliderLayout={sliderLayout}
             onValueChange={{x: this.onChange}}
             onDragEnd={this.onDragEnd}
+            values={animatedValues}
           >
             {React.cloneElement(children, {
               markerState: {position, value, bounds}
