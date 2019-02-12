@@ -58,6 +58,9 @@ const SliderComponent = Slider({
   MarkerHandler,
   Marker,
   SliderTrack,
+  getDerivedState: ({useNativeDriver}) => ({
+    useNativeDriver
+  }),
   getInitialMarkerState: ({position}) => ({
     animatedValue: getInitialAnimatedValue(position),
     getComputedPosition() {

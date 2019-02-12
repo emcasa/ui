@@ -1,47 +1,8 @@
 import React, {PureComponent} from 'react'
-import {View, Animated, Platform} from 'react-native'
-import {PanGestureHandler, State} from 'react-native-gesture-handler'
+import {View, Platform} from 'react-native'
+import {State} from 'react-native-gesture-handler'
 import {withSliderContext} from '@emcasa/ui/lib/components/Slider/Context'
-
-const getHandlerStyle = ({zIndex, index, ...props}, {layout}) => {
-  if (!layout) return {opacity: 0}
-  const offset = -layout.width / 2
-  const translateX = Animated.add(
-    props.getComputedPosition(),
-    new Animated.Value(offset)
-  )
-  return {
-    zIndex: index + zIndex,
-    opacity: 1,
-    transform: [{translateX}]
-  }
-}
-
-const getPaddingAndroid = ({hitSlop}) => {
-  const style = {}
-  Object.keys(hitSlop).forEach((key) => {
-    style[`padding${key[0].toUpperCase()}${key.slice(1)}`] = hitSlop[key]
-  })
-  style.marginTop = -hitSlop.top
-  style.marginLeft = -hitSlop.left
-  return style
-}
-
-const getStyles = (props, state) => [
-  {position: 'absolute'},
-  getHandlerStyle(props, state),
-  Platform.OS === 'android' ? getPaddingAndroid(props, state) : undefined
-]
-
-const getHitSlop = ({bounds, hitSlop, animatedValue}) => {
-  if (isNaN(hitSlop)) return hitSlop
-  return {
-    top: hitSlop,
-    bottom: hitSlop,
-    left: Math.min(Math.abs(animatedValue._offset - bounds.left) / 2, hitSlop),
-    right: Math.min(bounds.right / 2, hitSlop)
-  }
-}
+import PanHandler from './PanHandler'
 
 class MarkerHandler extends PureComponent {
   static defaultProps = {
@@ -49,15 +10,8 @@ class MarkerHandler extends PureComponent {
     hitSlop: 15
   }
 
-  state = this._getInitialState()
-
-  constructor(props) {
-    super(props)
-    props.animatedValue.addListener(this.onChange)
-    this.onGestureEvent = Animated.event(
-      [{nativeEvent: {translationX: props.animatedValue}}],
-      {useNativeDriver: props.useNativeDriver}
-    )
+  state = {
+    sliderState: State.UNDETERMINED
   }
 
   static getDerivedStateFromProps(props) {
@@ -66,21 +20,7 @@ class MarkerHandler extends PureComponent {
     return nextState
   }
 
-  _getInitialState() {
-    const state = {
-      hitSlop: getHitSlop(this.props),
-      layout: this.props.layout,
-      sliderState: State.UNDETERMINED
-    }
-    state.styles = getStyles(this.props, state)
-    return state
-  }
-
-  componentWillUnmount() {
-    this.props.animatedValue.removeAllListeners()
-  }
-
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       prevProps.bounds !== this.props.bounds &&
       this.state.sliderState !== State.ACTIVE
@@ -88,14 +28,6 @@ class MarkerHandler extends PureComponent {
       this.position.setOffset(this.props.position)
       this.position.setValue(0)
     }
-    if (
-      prevProps.bounds !== this.props.bounds ||
-      prevProps.sliderLayout !== this.props.sliderLayout ||
-      prevState.layout !== this.state.layout
-    )
-    this.setState({
-      styles: getStyles(this.props, this.state)
-    })
   }
 
   onLayout = ({
@@ -140,33 +72,43 @@ class MarkerHandler extends PureComponent {
   }
 
   render() {
-    const {children, useNativeDriver, bounds, position, value} = this.props
-    const {styles, hitSlop} = this.state
+    const {
+      children,
+      useNativeDriver,
+      bounds,
+      position,
+      value,
+      index,
+      zIndex,
+      sliderLayout,
+      animatedValue,
+      hitSlop,
+      getComputedPosition
+    } = this.props
+    const {layout} = this.state
     return (
-      <PanGestureHandler
-        minDist={0}
-        minOffsetX={0}
-        activeOffsetX={0}
+      <PanHandler
+        zIndex={zIndex + index}
+        bounds={bounds}
+        hitSlop={hitSlop}
+        layout={layout}
+        sliderLayout={sliderLayout}
         enabled={bounds.right - bounds.left !== 0}
         useNativeDriver={useNativeDriver}
-        onGestureEvent={this.onGestureEvent}
+        onChange={this.onChange}
         onHandlerStateChange={this.onHandlerStateChange}
+        getComputedPosition={getComputedPosition}
+        animatedValue={animatedValue}
       >
-        <Animated.View
-          useNativeDriver={useNativeDriver}
-          hitSlop={hitSlop}
-          style={styles}
+        <View
+          style={{flex: 0}}
+          onLayout={this.props.layout ? undefined : this.onLayout}
         >
-          <View
-            style={{flex: 0}}
-            onLayout={this.props.layout ? undefined : this.onLayout}
-          >
-            {React.cloneElement(children, {
-              markerState: {position, value, bounds}
-            })}
-          </View>
-        </Animated.View>
-      </PanGestureHandler>
+          {React.cloneElement(children, {
+            markerState: {position, value, bounds}
+          })}
+        </View>
+      </PanHandler>
     )
   }
 }
