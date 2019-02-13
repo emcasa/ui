@@ -27,10 +27,18 @@ const MarkerWrapper = styled(
   ${zIndex};
 `
 
+const ARROW_RIGHT = 37
+const ARROW_UP = 38
+const ARROW_LEFT = 39
+const ARROW_DOWN = 40
+
 export default class MarkerHandler extends PureComponent {
   static defaultProps = {
     zIndex: 100,
-    hitSlop: 15
+    hitSlop: 15,
+    step: 1,
+    incrementKeys: [ARROW_RIGHT, ARROW_UP],
+    decrementKeys: [ARROW_LEFT, ARROW_DOWN]
   }
 
   state = {
@@ -51,6 +59,26 @@ export default class MarkerHandler extends PureComponent {
     ) {
       this.props.animatedValues.x.update(this.props.position)
     }
+    if (prevProps.disabled !== this.props.disabled) {
+      if (this.props.disabled) this._unregisterListeners()
+      else this._registerListeners()
+    }
+  }
+
+  _registerListeners() {
+    document.addEventListener('keydown', this.onKeyPress)
+  }
+
+  _unregisterListeners() {
+    document.removeEventListener('keydown', this.onKeyPress)
+  }
+
+  componentDidMount() {
+    if (!this.props.disabled) this._registerListeners()
+  }
+
+  componentWillUnmount() {
+    if (!this.props.disabled) this._unregisterListeners()
   }
 
   onResize = ({entry}) =>
@@ -71,6 +99,23 @@ export default class MarkerHandler extends PureComponent {
   onFocus = () => this.setState({focus: true})
 
   onBlur = () => this.setState({focus: false})
+
+  onKeyPress = (e) => {
+    const {
+      step,
+      bounds,
+      animatedValues,
+      incrementKeys,
+      decrementKeys
+    } = this.props
+    if (!this.state.focus) return
+    let value = animatedValues.x.get()
+    if (incrementKeys.indexOf(e.keyCode) !== -1) value += step
+    else if (decrementKeys.indexOf(e.keyCode) !== -1) value -= step
+    else return
+    e.preventDefault()
+    animatedValues.x.update(bounds.clamp(value))
+  }
 
   render() {
     const {
