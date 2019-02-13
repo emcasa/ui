@@ -26,6 +26,12 @@ const FilterGroup = Group(
       }
     }
 
+    componentDidUpdate(prevProps) {
+      if (prevProps.isMobile !== this.props.isMobile) {
+        requestAnimationFrame(() => this.props.measure())
+      }
+    }
+
     render() {
       const {
         children,

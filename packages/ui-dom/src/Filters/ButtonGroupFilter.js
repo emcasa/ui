@@ -8,6 +8,7 @@ export const ButtonGroup = styled(function ButtonGroup({
   children,
   style,
   className,
+  strategy,
   currentValue,
   onChange
 }) {
@@ -15,6 +16,7 @@ export const ButtonGroup = styled(function ButtonGroup({
     <Button.Group
       style={style}
       className={className}
+      strategy={strategy}
       selectedValue={currentValue}
       onChange={onChange}
     >
