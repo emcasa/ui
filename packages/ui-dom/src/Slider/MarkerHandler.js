@@ -27,9 +27,9 @@ const MarkerWrapper = styled(
   ${zIndex};
 `
 
-const ARROW_RIGHT = 37
+const ARROW_RIGHT = 39
 const ARROW_UP = 38
-const ARROW_LEFT = 39
+const ARROW_LEFT = 37
 const ARROW_DOWN = 40
 
 export default class MarkerHandler extends PureComponent {
