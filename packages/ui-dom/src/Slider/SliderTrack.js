@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react'
 import styled from 'styled-components'
-import posed from 'react-pose'
 import {withSliderContext} from '@emcasa/ui/lib/components/Slider/Context'
-import * as slider from '@emcasa/ui/lib/components/Slider'
 import Row from '../Row'
+import Track from './Track'
+import MarkerTrack from './MarkerTrack'
+import {value} from 'popmotion'
 
 const Container = styled(Row)`
   position: relative;
@@ -11,26 +12,7 @@ const Container = styled(Row)`
   height: 2px;
 `
 
-const Track = styled.div`
-  width: 100%;
-  border-radius: 4px;
-  ${slider.track};
-`
-
-Track.displayName = 'SliderTrack'
-
-Track.defaultProps = slider.track.defaultProps
-
-const MarkerTrack = styled(
-  posed(React.forwardRef((props, ref) => <Track innerRef={ref} {...props} />))({
-    passive: {
-      width: ['x', (x) => x, true]
-    }
-  })
-)`
-  position: absolute;
-  margin-top: ${({height}) => -((parseInt(height) || 2) - 2) / 2}px;
-`
+const initialValue = value(0)
 
 class SliderTrackContainer extends PureComponent {
   static defaultProps = {
@@ -42,11 +24,13 @@ class SliderTrackContainer extends PureComponent {
   renderMarkerTrack = (marker, index) => {
     const {trackProps} = marker.element.props
     if (!trackProps) return
+    const prevMarker = index > 0 ? this.props.markers[index - 1] : undefined
     return (
       <MarkerTrack
         key={marker.key}
         zIndex={this.props.markers.length - index + 1}
-        parentValues={marker.state.animatedValues}
+        x={marker.state.animatedValues.x}
+        offset={prevMarker ? prevMarker.state.animatedValues.x : initialValue}
         {...this.props.trackProps}
         {...trackProps}
       />
