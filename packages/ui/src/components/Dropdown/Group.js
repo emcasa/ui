@@ -21,6 +21,12 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         focused: false
       }
 
+      static getDerivedStateFromProps(props) {
+        if (typeof props.focused !== 'undefined')
+          return {focused: Boolean(props.focused)}
+        return null
+      }
+
       get label() {
         const {label, placeholder, children, selectedValue} = this.props
         if (label) return label

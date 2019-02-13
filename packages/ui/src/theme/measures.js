@@ -19,6 +19,10 @@ export const FONT_SIZE = new Map([
   ['xlarge', 32]
 ])
 
-export const ICON_SIZE = new Map([
-  ['default', 20]
+export const ICON_SIZE = new Map([['default', 20]])
+
+export const BREAKPOINTS = new Map([
+  ['phone', 0],
+  ['tablet', '480px'],
+  ['desktop', '780px']
 ])
