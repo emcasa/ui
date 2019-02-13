@@ -14,8 +14,8 @@ export const BUTTON_HEIGHT = themeGet('buttonHeight.1')
 export const ROW_PADDING = themeGet('space.2')
 export const ROW_HEIGHT = (props) =>
   BUTTON_HEIGHT(props) + ROW_PADDING(props) * 2
-export const TOP_SPACING = (props) =>
-  ROW_HEIGHT(props) + props.theme.space[4] * 2
+export const TOP_SPACING = ({offset, ...props}) =>
+  (offset || ROW_HEIGHT(props)) + props.theme.space[4] * 2
 export const MIN_PANEL_HEIGHT_MOBILE = 200
 
 export const Container = styled.div`
@@ -99,7 +99,7 @@ const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
 
 export const Form = styled(
   posed.form({
-    open: {
+    filterOpen: {
       preTransition: (props) => props.dimensions.measure(),
       applyAtStart: {
         position: 'fixed',
@@ -110,7 +110,7 @@ export const Form = styled(
       },
       y: ({theme}) => theme.space[4]
     },
-    closed: {
+    filterClosed: {
       applyAtEnd: {
         position: '',
         top: '',
@@ -125,10 +125,8 @@ export const Form = styled(
   theme: ({theme}) => theme
 })`
   position: sticky;
-  padding: ${ROW_PADDING}px 0;
-  height: ${ROW_HEIGHT}px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: row;
   ${zIndex};
 `
 
@@ -136,15 +134,56 @@ Form.defaultProps = {
   zIndex: 101
 }
 
+export const BodyExpander = styled(
+  posed.div({
+    rowOpen: {
+      flip: true,
+      height: get('height')
+    },
+    rowClosed: {
+      flip: true,
+      height: ROW_HEIGHT
+    }
+  })
+).attrs({
+  theme: ({theme}) => theme
+})`
+  flex: 1;
+  padding: ${ROW_PADDING}px 0;
+  height: ${ROW_HEIGHT}px;
+  min-height: ${ROW_HEIGHT}px;
+  overflow: hidden;
+`
+
 export const Body = styled(Row)`
-  z-index: 1;
-  position: absolute;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   ${FilterButton} {
     margin-right: ${themeGet('space.2')}px;
     margin-bottom: ${themeGet('space.2')}px;
+  }
+`
+
+export const ExpandButton = styled(function ExpandButton({
+  isRowExpanded,
+  onClick,
+  ...props
+}) {
+  return (
+    <Col {...props}>
+      <FilterButton onClick={onClick}>
+        <Icon name={isRowExpanded ? 'angle-up' : 'angle-down'} color="grey" />
+      </FilterButton>
+    </Col>
+  )
+})`
+  padding: ${ROW_PADDING}px 0;
+  & > button {
+    padding: 0 ${themeGet('space.2')}px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `
 
@@ -162,10 +201,10 @@ const BackgroundComponent = React.forwardRef(
 
 export const Background = styled(
   posed(BackgroundComponent)({
-    open: {
+    bgOpen: {
       opacity: 1
     },
-    closed: {
+    bgClosed: {
       opacity: 0
     }
   })

@@ -6,7 +6,15 @@ import {compose} from 'recompose'
 import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
-import {ROW_HEIGHT, Container, Form, Body, Background} from './styles'
+import {
+  ROW_HEIGHT,
+  Container,
+  Form,
+  Body,
+  BodyExpander,
+  ExpandButton,
+  Background
+} from './styles'
 import {withBreakpoint} from '../Breakpoint'
 
 const FilterGroup = Group(
@@ -29,12 +37,16 @@ const FilterGroup = Group(
     state = {}
 
     static getDerivedStateFromProps(props, state) {
+      const bodyHeight = props.contentRect.bounds.height
       const rowHeight =
         state.rowHeight || ROW_HEIGHT(props) - props.theme.space[2]
+      const rowCount = Math.ceil(bodyHeight / rowHeight) || 1
       return {
+        bodyHeight,
         rowHeight,
-        rowCount: Math.ceil(props.contentRect.bounds.height / rowHeight) || 1,
-        isExpanded: props.isMobile && Boolean(props.selectedValue)
+        rowCount,
+        isFilterExpanded: props.isMobile && Boolean(props.selectedValue),
+        isRowExpanded: rowCount > 1 ? state.isRowExpanded : false
       }
     }
 
@@ -49,6 +61,10 @@ const FilterGroup = Group(
       }
     }
 
+    onExpandRow = () => this.setState({isRowExpanded: true})
+
+    onCollapseRow = () => this.setState({isRowExpanded: false})
+
     render() {
       const {
         children,
@@ -58,38 +74,52 @@ const FilterGroup = Group(
         measureRef,
         ...props
       } = this.props
-      const {rowCount, isExpanded} = this.state
+      const {bodyHeight, rowCount, isFilterExpanded, isRowExpanded} = this.state
       return (
         <Container>
           <Formik initialValues={initialValues}>
             {(form) => (
               <Form
                 innerRef={this.containerRef}
-                pose={isExpanded ? 'open' : 'closed'}
+                pose={isFilterExpanded ? 'filterOpen' : 'filterClosed'}
                 initialPose="closed"
                 onSubmit={form.handleSubmit}
-                isExpanded={isExpanded}
-                rowCount={rowCount}
                 {...props}
               >
-                <Body innerRef={measureRef}>
-                  {React.Children.map(children, (element) =>
-                    React.cloneElement(element, {
-                      rowCount,
-                      containerRect: this.state.contentRect,
-                      isExpanded: this.state.isExpanded,
-                      contentRef: this.contentRef,
-                      containerRef: this.containerRef
-                    })
-                  )}
-                </Body>
+                <BodyExpander
+                  pose={isRowExpanded ? 'rowOpen' : 'rowClosed'}
+                  initialPose="closed"
+                  height={bodyHeight}
+                >
+                  <Body innerRef={measureRef}>
+                    {React.Children.map(children, (element) =>
+                      React.cloneElement(element, {
+                        rowCount,
+                        isRowExpanded,
+                        isFilterExpanded,
+                        containerRect: this.state.contentRect,
+                        contentRef: this.contentRef,
+                        containerRef: this.containerRef
+                      })
+                    )}
+                  </Body>
+                </BodyExpander>
+                {rowCount > 1 && (
+                  <ExpandButton
+                    isRowExpanded={isRowExpanded}
+                    onClick={
+                      !isRowExpanded ? this.onExpandRow : this.onCollapseRow
+                    }
+                  />
+                )}
               </Form>
             )}
           </Formik>
           <Background
-            pose={selectedValue ? 'open' : 'closed'}
+            pose={selectedValue ? 'bgOpen' : 'bgClosed'}
             onDismiss={() => onSelect(undefined)}
             contentRef={this.contentRef}
+            offset={bodyHeight}
           />
         </Container>
       )
