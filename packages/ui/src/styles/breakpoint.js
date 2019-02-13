@@ -33,4 +33,6 @@ export const only = (name) => ({theme}) => {
   else return `(min-width: ${minWidth}px)`
 }
 
-export default {up, down, only}
+export const isMobile = (name) => ['tablet', 'phone'].indexOf(name) !== -1
+
+export default {up, down, only, isMobile}

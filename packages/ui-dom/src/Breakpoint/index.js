@@ -45,7 +45,10 @@ export const getBreakpoint = (width = getWindowWidth()) => {
     if (parseInt(bpWidth) >= width) break
     prev = name
   }
-  return prev
+  return {
+    breakpoint: prev,
+    isMobile: breakpoint.isMobile(prev)
+  }
 }
 
 export class BreakpointProvider extends PureComponent {
@@ -60,13 +63,14 @@ export class BreakpointProvider extends PureComponent {
   }
 
   state = {
-    breakpoint: undefined
+    breakpoint: undefined,
+    isMobile: undefined
   }
 
   constructor(props) {
     super(props)
     this.update = debounce(this._update, props.debounce)
-    if (!props.disabled) this.state.breakpoint = getBreakpoint()
+    if (!props.disabled) this.state = getBreakpoint()
   }
 
   _addEvents = () => {
@@ -77,7 +81,7 @@ export class BreakpointProvider extends PureComponent {
     window.removeEventListener('resize', this.update)
   }
 
-  _update = () => this.setState({breakpoint: getBreakpoint()})
+  _update = () => this.setState(getBreakpoint())
 
   componentDidUpdate(prevProps) {
     if (prevProps.debounce !== this.props.debounce) {
