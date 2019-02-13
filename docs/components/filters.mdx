@@ -13,21 +13,23 @@ import View from '@emcasa/ui-dom/components/View'
 # Filters
 
 <Playground>
-  <Filters>
-    <RangeSliderFilter
-      name="slider"
-      label="Range slider"
-      range={[0, 1000]}
-    />
-    <ButtonGroupFilter
-      name="buttons"
-      label="Button group"
-      range={[0, 1000]}
-    >
-      <Button value={0}>0</Button>
-      <Button value={1}>1</Button>
-      <Button value={2}>2</Button>
-      <Button value={3}>3</Button>
-    </ButtonGroupFilter>
-  </Filters>
+  <View height="150px">
+    <Filters>
+      <RangeSliderFilter
+        name="slider"
+        label="Range slider"
+        range={[0, 1000]}
+      />
+      <ButtonGroupFilter
+        name="buttons"
+        label="Button group"
+        range={[0, 1000]}
+      >
+        <Button value={0}>0</Button>
+        <Button value={1}>1</Button>
+        <Button value={2}>2</Button>
+        <Button value={3}>3</Button>
+      </ButtonGroupFilter>
+    </Filters>
+  </View>
 </Playground>

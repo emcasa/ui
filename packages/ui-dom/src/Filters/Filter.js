@@ -5,11 +5,16 @@ import View from '../View'
 import Row from '../Row'
 import Button from '../Button'
 
+const Link = (props) => (
+  <Button link type="button" p={0} height="auto" fontSize="small" {...props} />
+)
+
 export default class Filter extends PureComponent {
   render() {
     const {
       children,
       label,
+      selectedValue,
       selected,
       onSelect,
       onClear,
@@ -19,19 +24,23 @@ export default class Filter extends PureComponent {
     } = this.props
     return (
       <View>
-        <FilterButton {...props} onClick={onSelect}>
+        <FilterButton
+          {...props}
+          color={selectedValue && !selected ? 'grey' : props.color}
+          onClick={onSelect}
+        >
           {label}
         </FilterButton>
         {selected && (
           <Panel {...panelProps}>
             {children}
-            <Row justifyContent="space-between">
-              <Button link type="button" color="grey" pl={0} onClick={onClear}>
+            <Row mt={4} justifyContent="space-between">
+              <Link color="grey" onClick={onClear}>
                 Limpar
-              </Button>
-              <Button link type="button" color="pink" pr={0} onClick={onSubmit}>
+              </Link>
+              <Link color="pink" onClick={onSubmit}>
                 Aplicar
-              </Button>
+              </Link>
             </Row>
           </Panel>
         )}
@@ -43,25 +52,30 @@ export default class Filter extends PureComponent {
 export class ControlledFilter extends PureComponent {
   static Button = Button
 
-  state = {value: undefined}
+  state = {}
+
+  static getDerivedStateFromProps(props) {
+    if (!props.selected) return {value: null}
+    return null
+  }
 
   onChange = (value) => this.setState({value})
 
   render() {
-    const {children, label, name, selected, onSelect, panelProps} = this.props
+    const {children, name, selected, onSelect, ...props} = this.props
     const {value} = this.state
     return (
       <Field
         name={name}
         render={({field, form}) => (
           <Filter
-            label={label}
-            panelProps={panelProps}
+            {...props}
             selected={selected}
             onSelect={onSelect}
             onClear={() => {
               this.setState({value: null})
               form.setFieldValue(name, undefined)
+              requestAnimationFrame(onSelect)
             }}
             onSubmit={() => {
               form.setFieldValue(name, value)
@@ -71,7 +85,7 @@ export class ControlledFilter extends PureComponent {
             {children({
               field: {
                 ...field,
-                value,
+                value: value || field.value,
                 onChange: this.onChange
               },
               form

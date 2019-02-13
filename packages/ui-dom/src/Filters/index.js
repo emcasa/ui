@@ -1,7 +1,7 @@
 import React from 'react'
-import Group from '@emcasa/ui/lib/components/Group'
-import Row from '../Row'
 import {Formik} from 'formik'
+import Group from '@emcasa/ui/lib/components/Group'
+import {Form, Body, Background} from './styles'
 
 const FilterGroup = Group(
   ({onSelect, selected, selectedValue, disabled}) => ({
@@ -11,10 +11,21 @@ const FilterGroup = Group(
     selectedValue
   }),
   (node) => node.props.name
-)(function FilterGroup({children, initialValues = {}}) {
+)(function FilterGroup({
+  children,
+  initialValues = {},
+  selectedValue,
+  onSelect,
+  ...props
+}) {
   return (
     <Formik initialValues={initialValues}>
-      {(form) => <form onSubmit={form.handleSubmit}>{children}</form>}
+      {(form) => (
+        <Form onSubmit={form.handleSubmit} {...props}>
+          <Body>{children}</Body>
+          {selectedValue && <Background onClick={() => onSelect(undefined)} />}
+        </Form>
+      )}
     </Formik>
   )
 })

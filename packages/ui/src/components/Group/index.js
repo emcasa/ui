@@ -134,7 +134,7 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       const nextProps = parseProps(
         {
           ...this.props,
-          selectedValue: this.props.selectedValue,
+          selectedValue: this.state.selectedValue,
           onSelect: () => this.onChange(value),
           selected: this.isSelected(value)
         },
@@ -165,7 +165,7 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
 
     render() {
       return (
-        <Target {...this.props} {...this.state} onChange={this.onChange}>
+        <Target {...this.props} {...this.state} onSelect={this.onChange}>
           {React.Children.map(this.props.children, this.renderItem)}
         </Target>
       )

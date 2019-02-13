@@ -1,15 +1,18 @@
 import React, {PureComponent} from 'react'
 import {ControlledFilter} from './Filter'
 import Slider from '../Slider'
+import View from '../View'
 
 export class RangeSlider extends PureComponent {
   render() {
     const {value, onChange} = this.props
     return (
-      <Slider selectedValues={value} onChange={onChange}>
-        <Slider.Marker name="min" />
-        <Slider.Marker name="max" />
-      </Slider>
+      <View pr={2} pl={2}>
+        <Slider height="medium" selectedValues={value} onChange={onChange}>
+          <Slider.Marker name="min" />
+          <Slider.Marker name="max" />
+        </Slider>
+      </View>
     )
   }
 }

@@ -27,13 +27,13 @@ export default ({TabBar, TabBarButton}) => (Target) =>
       }
 
       renderTabBar = (node, index) => {
-        const {onChange, tabBarButtonProps, color, borderColor} = this.props
+        const {onSelect, tabBarButtonProps, color, borderColor} = this.props
         return (
           <TabBarButton
             color={color}
             borderColor={borderColor}
             selected={node.props.selected}
-            onSelect={() => onChange(index)}
+            onSelect={() => onSelect(index)}
             {...tabBarButtonProps}
           >
             {node.props.label}
@@ -45,7 +45,7 @@ export default ({TabBar, TabBarButton}) => (Target) =>
 
       render() {
         const {children, tabBarProps, ...props} = this.props
-        delete props.onChange
+        delete props.onSelect
         return (
           <Target {...props}>
             <TabBar height="medium" {...tabBarProps}>
