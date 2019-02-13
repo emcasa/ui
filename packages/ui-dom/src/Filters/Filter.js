@@ -4,12 +4,26 @@ import {FilterButton, Panel} from './styles'
 import View from '../View'
 import Row from '../Row'
 import Button from '../Button'
+import {withBreakpoint} from '../Breakpoint'
 
-const Link = (props) => (
-  <Button link type="button" p={0} height="auto" fontSize="small" {...props} />
-)
+const Link = withBreakpoint()(({isMobile, ...props}) => {
+  const style = isMobile
+    ? {}
+    : {
+        link: true,
+        color: props.active ? 'pink' : 'grey',
+        p: 0,
+        height: 'auto',
+        fontSize: 'small'
+      }
+  return <Button type="button" {...style} {...props} />
+})
 
 export default class Filter extends PureComponent {
+  static defaultProps = {
+    panelProps: {}
+  }
+
   render() {
     const {
       children,
@@ -20,6 +34,7 @@ export default class Filter extends PureComponent {
       onClear,
       onSubmit,
       panelProps,
+      contentRect,
       ...props
     } = this.props
     return (
@@ -32,13 +47,11 @@ export default class Filter extends PureComponent {
           {label}
         </FilterButton>
         {selected && (
-          <Panel {...panelProps}>
-            {children}
-            <Row mt={4} justifyContent="space-between">
-              <Link color="grey" onClick={onClear}>
-                Limpar
-              </Link>
-              <Link color="pink" onClick={onSubmit}>
+          <Panel {...panelProps} contentRect={contentRect}>
+            <Row className="panelBody">{children}</Row>
+            <Row className="panelFooter">
+              <Link onClick={onClear}>Limpar</Link>
+              <Link active onClick={onSubmit}>
                 Aplicar
               </Link>
             </Row>

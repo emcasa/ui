@@ -3,6 +3,7 @@ name: Filters
 menu: Components
 ---
 
+import './filters.js'
 import { Playground, PropsTable } from 'docz'
 import Filters from '@emcasa/ui-dom/components/Filters'
 import RangeSliderFilter from '@emcasa/ui-dom/components/Filters/RangeSliderFilter'
@@ -12,7 +13,7 @@ import View from '@emcasa/ui-dom/components/View'
 
 # Filters
 
-<Playground>
+<Playground className="filtersPlayground">
   <View height="150px">
     <Filters>
       <RangeSliderFilter

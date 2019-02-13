@@ -1,14 +1,16 @@
 import React from 'react'
 import {Formik} from 'formik'
+import {withContentRect} from 'react-measure'
 import Group from '@emcasa/ui/lib/components/Group'
 import {Form, Body, Background} from './styles'
 
 const FilterGroup = Group(
-  ({onSelect, selected, selectedValue, disabled}) => ({
+  ({onSelect, selected, selectedValue, disabled, contentRect}) => ({
     disabled,
     onSelect,
     selected,
-    selectedValue
+    selectedValue,
+    contentRect
   }),
   (node) => node.props.name
 )(function FilterGroup({
@@ -16,14 +18,17 @@ const FilterGroup = Group(
   initialValues = {},
   selectedValue,
   onSelect,
+  measureRef,
   ...props
 }) {
   return (
     <Formik initialValues={initialValues}>
       {(form) => (
-        <Form onSubmit={form.handleSubmit} {...props}>
+        <Form innerRef={measureRef} onSubmit={form.handleSubmit} {...props}>
           <Body>{children}</Body>
-          {selectedValue && <Background onClick={() => onSelect(undefined)} />}
+          {selectedValue && (
+            <Background onDismiss={() => onSelect(undefined)} />
+          )}
         </Form>
       )}
     </Formik>
@@ -32,4 +37,4 @@ const FilterGroup = Group(
 
 FilterGroup.defaultProps.strategy = 'switchable'
 
-export default FilterGroup
+export default withContentRect('bounds')(FilterGroup)

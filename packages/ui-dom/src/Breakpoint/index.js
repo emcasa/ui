@@ -8,7 +8,7 @@ import Media from 'react-responsive'
 import {BREAKPOINTS} from '@emcasa/ui/src/theme/measures'
 
 export const BreakpointType = PropTypes.oneOfType([
-  PropTypes.oneOf(BREAKPOINTS.keys()),
+  PropTypes.oneOf(Array.from(BREAKPOINTS.keys())),
   PropTypes.number
 ])
 
