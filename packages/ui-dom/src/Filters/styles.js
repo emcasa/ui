@@ -10,6 +10,14 @@ import Icon from '../Icon'
 import Text from '../Text'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 
+export const BUTTON_HEIGHT = themeGet('buttonHeight.1')
+export const ROW_PADDING = themeGet('space.2')
+export const ROW_HEIGHT = (props) =>
+  BUTTON_HEIGHT(props) + ROW_PADDING(props) * 2
+export const TOP_SPACING = (props) =>
+  ROW_HEIGHT(props) + props.theme.space[4] * 2
+export const MIN_PANEL_HEIGHT_MOBILE = 200
+
 export const Container = styled.div`
   position: relative;
   ${zIndex};
@@ -42,7 +50,6 @@ export const Panel = styled(Col).attrs({elevation: 2})`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: absolute;
   padding: ${themeGet('space.3')}px ${themeGet('space.4')}px;
   background-color: white;
   .panelBody {
@@ -55,16 +62,14 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     justify-content: space-between;
   }
   @media screen and ${breakpoint.down('tablet')} {
-    left: ${themeGet('space.4')}px;
-    right: ${themeGet('space.4')}px;
-    top: ${themeGet('space.4')}px;
-    bottom: ${themeGet('space.4')}px;
+    position: relative;
     width: auto;
+    flex: 1 0 ${MIN_PANEL_HEIGHT_MOBILE}px;
     box-shadow: none;
-    padding-top: ${({buttonRect, theme}) =>
-      buttonRect ? buttonRect.bounds.height + theme.space[4] * 2 : 0}px;
+    padding-top: 0;
   }
   @media screen and ${breakpoint.up('desktop')} {
+    position: absolute;
     border-radius: 4px;
     margin-top: ${themeGet('space.2')}px;
     border: 1px solid ${themeGet('colors.lightGrey')};
@@ -122,8 +127,8 @@ export const Form = styled(
   display: flex;
   flex-direction: row;
   position: sticky;
-  height: ${themeGet('buttonHeight.1')}px;
-  transform-origin: 50% 0;
+  padding: ${ROW_PADDING}px 0;
+  height: ${ROW_HEIGHT}px;
   ${zIndex};
 `
 
@@ -184,6 +189,19 @@ export const Background = styled(
     padding: ${themeGet('space.4')}px;
   }
 
+  .content {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    max-height: 100%;
+    height: calc(100vh - ${TOP_SPACING}px);
+    margin-top: ${TOP_SPACING}px;
+    padding: ${themeGet('space.4')}px;
+    padding-top: 0;
+    overflow-y: auto;
+  }
+
   @media screen and ${breakpoint.down('tablet')} {
     background: rgba(255, 255, 255, 1);
 
@@ -193,6 +211,10 @@ export const Background = styled(
 
     a.closeButton {
       display: block;
+    }
+
+    .content {
+      display: flex;
     }
   }
 `
