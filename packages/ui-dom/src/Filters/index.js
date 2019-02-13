@@ -1,6 +1,7 @@
 import pick from 'lodash/fp/pick'
 import React, {PureComponent} from 'react'
 import {Formik} from 'formik'
+import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
 import {Container, Form, Body, Background} from './styles'
 import {withBreakpoint} from '../Breakpoint'
@@ -20,6 +21,9 @@ const FilterGroup = Group(
   class FilterGroup extends PureComponent {
     static defaultProps = {
       strategy: 'switchable',
+      get scrollContainer() {
+        return typeof window === 'undefined' ? undefined : window.document.body
+      },
       get contentRef() {
         return React.createRef()
       },
@@ -28,18 +32,36 @@ const FilterGroup = Group(
       }
     }
 
+    state = {}
+
+    static getDerivedStateFromProps(props) {
+      return {
+        isOpen: props.isMobile && Boolean(props.selectedValue)
+      }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      if (
+        this.props.scrollContainer &&
+        prevState.isOpen !== this.state.isOpen
+      ) {
+        const classNames = elementClass(this.props.scrollContainer)
+        if (this.state.isOpen) classNames.add('noscroll')
+        else classNames.remove('noscroll')
+      }
+    }
+
     render() {
       const {
         children,
         initialValues = {},
-        selectedValue,
         onSelect,
         containerRef,
         contentRef,
         isMobile,
         ...props
       } = this.props
-      const isOpen = Boolean(selectedValue)
+      const {isOpen} = this.state
       return (
         <Container>
           <Formik initialValues={initialValues}>
