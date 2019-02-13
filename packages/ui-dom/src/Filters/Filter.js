@@ -35,6 +35,7 @@ export default class Filter extends PureComponent {
       contentRef,
       isMobile
     } = this.props
+    if (!children) return
     const panelElement = (
       <Panel
         pose={isMobile ? 'mobile' : 'desktop'}
@@ -116,6 +117,7 @@ export class ControlledFilter extends PureComponent {
               field: {
                 ...field,
                 currentValue: value,
+                initialValue: form.initialValues[name],
                 onChange: this.onChange
               },
               form

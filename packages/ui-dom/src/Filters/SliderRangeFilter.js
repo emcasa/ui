@@ -3,7 +3,7 @@ import {ControlledFilter} from './Filter'
 import Slider from '../Slider'
 import View from '../View'
 
-export class RangeSlider extends PureComponent {
+export class SliderRange extends PureComponent {
   render() {
     const {value, range, onChange, initialValue} = this.props
     return (
@@ -22,10 +22,10 @@ export class RangeSlider extends PureComponent {
   }
 }
 
-export default function RangeSliderFilter(props) {
+export default function SliderRangeFilter(props) {
   return (
     <ControlledFilter {...props}>
-      {({field}) => <RangeSlider {...field} {...props} />}
+      {({field}) => <SliderRange {...field} {...props} />}
     </ControlledFilter>
   )
 }
