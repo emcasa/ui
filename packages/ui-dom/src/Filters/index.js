@@ -1,9 +1,12 @@
 import pick from 'lodash/fp/pick'
 import React, {PureComponent} from 'react'
 import {Formik} from 'formik'
+import {withContentRect} from 'react-measure'
+import {compose} from 'recompose'
+import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
-import {Container, Form, Body, Background} from './styles'
+import {ROW_HEIGHT, Container, Form, Body, Background} from './styles'
 import {withBreakpoint} from '../Breakpoint'
 
 const FilterGroup = Group(
@@ -12,6 +15,7 @@ const FilterGroup = Group(
 )(
   class FilterGroup extends PureComponent {
     static defaultProps = {
+      contentRect: {bounds: {}},
       strategy: 'switchable',
       get scrollContainer() {
         return typeof window === 'undefined' ? undefined : window.document.body
@@ -24,19 +28,23 @@ const FilterGroup = Group(
 
     state = {}
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, state) {
+      const rowHeight =
+        state.rowHeight || ROW_HEIGHT(props) - props.theme.space[2]
       return {
-        isOpen: props.isMobile && Boolean(props.selectedValue)
+        rowHeight,
+        rowCount: Math.ceil(props.contentRect.bounds.height / rowHeight) || 1,
+        isExpanded: props.isMobile && Boolean(props.selectedValue)
       }
     }
 
     componentDidUpdate(prevProps, prevState) {
       if (
         this.props.scrollContainer &&
-        prevState.isOpen !== this.state.isOpen
+        prevState.isExpanded !== this.state.isExpanded
       ) {
         const classNames = elementClass(this.props.scrollContainer)
-        if (this.state.isOpen) classNames.add('noscroll')
+        if (this.state.isExpanded) classNames.add('noscroll')
         else classNames.remove('noscroll')
       }
     }
@@ -45,27 +53,29 @@ const FilterGroup = Group(
       const {
         children,
         initialValues = {},
+        selectedValue,
         onSelect,
-        isMobile,
+        measureRef,
         ...props
       } = this.props
-      const {isOpen} = this.state
+      const {rowCount, isExpanded} = this.state
       return (
         <Container>
           <Formik initialValues={initialValues}>
             {(form) => (
               <Form
                 innerRef={this.containerRef}
-                pose={isOpen && isMobile ? 'open' : 'closed'}
+                pose={isExpanded ? 'open' : 'closed'}
                 initialPose="closed"
                 onSubmit={form.handleSubmit}
+                isExpanded={isExpanded}
+                rowCount={rowCount}
                 {...props}
-                {...this.state}
               >
-                <Body>
+                <Body innerRef={measureRef}>
                   {React.Children.map(children, (element) =>
                     React.cloneElement(element, {
-                      ...this.state,
+                      isExpanded: this.state.isExpanded,
                       contentRef: this.contentRef,
                       containerRef: this.containerRef
                     })
@@ -75,7 +85,7 @@ const FilterGroup = Group(
             )}
           </Formik>
           <Background
-            pose={isOpen ? 'open' : 'closed'}
+            pose={selectedValue ? 'open' : 'closed'}
             onDismiss={() => onSelect(undefined)}
             contentRef={this.contentRef}
           />
@@ -85,4 +95,8 @@ const FilterGroup = Group(
   }
 )
 
-export default withBreakpoint()(FilterGroup)
+export default compose(
+  withContentRect('bounds'),
+  withBreakpoint(),
+  withTheme
+)(FilterGroup)

@@ -33,7 +33,7 @@ export default class Filter extends PureComponent {
       panelProps,
       contentRect,
       contentRef,
-      isOpen,
+      isExpanded,
       isMobile
     } = this.props
     if (!children) return
@@ -55,7 +55,7 @@ export default class Filter extends PureComponent {
         </Row>
       </Panel>
     )
-    if (!isOpen) {
+    if (!isExpanded) {
       return panelElement
     } else if (contentRef.current) {
       return ReactDOM.createPortal(panelElement, contentRef.current)
@@ -65,17 +65,17 @@ export default class Filter extends PureComponent {
   render() {
     const {label, selectedValue, selected, onSelect, ...props} = this.props
     return (
-          <View >
-            <FilterButton
-              {...props}
-              selected={selected}
-              disabledStyle={selectedValue && !selected}
-              onClick={onSelect}
-            >
-              {label}
-            </FilterButton>
-            {selected && this.renderPanel()}
-          </View>
+      <View>
+        <FilterButton
+          {...props}
+          selected={selected}
+          disabledStyle={selectedValue && !selected}
+          onClick={onSelect}
+        >
+          {label}
+        </FilterButton>
+        {selected && this.renderPanel()}
+      </View>
     )
   }
 }

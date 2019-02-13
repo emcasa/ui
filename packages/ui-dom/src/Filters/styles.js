@@ -125,11 +125,11 @@ export const Form = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
-  display: flex;
-  flex-direction: row;
   position: sticky;
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
+  overflow-y: auto;
+  overflow-x: hidden;
   ${zIndex};
 `
 
@@ -140,8 +140,12 @@ Form.defaultProps = {
 export const Body = styled(Row)`
   z-index: 1;
   position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   ${FilterButton} {
     margin-right: ${themeGet('space.2')}px;
+    margin-bottom: ${themeGet('space.2')}px;
   }
 `
 
