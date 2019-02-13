@@ -20,6 +20,7 @@ export const MIN_PANEL_HEIGHT_MOBILE = 200
 
 export const Container = styled.div`
   position: relative;
+  height: ${ROW_HEIGHT};
   ${zIndex};
 `
 
@@ -112,10 +113,10 @@ export const Form = styled(
     },
     closed: {
       applyAtEnd: {
-        position: 'sticky',
-        top: 'unset',
-        left: 'unset',
-        width: 'unset',
+        position: '',
+        top: '',
+        left: '',
+        width: '',
         y: 0
       },
       y: mapDimensions(get('top'), {initialize: false})
