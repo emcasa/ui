@@ -6,6 +6,8 @@ menu: Components
 import { Playground, PropsTable } from 'docz'
 import Filters from '@emcasa/ui-dom/components/Filters'
 import RangeSliderFilter from '@emcasa/ui-dom/components/Filters/RangeSliderFilter'
+import ButtonGroupFilter from '@emcasa/ui-dom/components/Filters/ButtonGroupFilter'
+import Button from '@emcasa/ui-dom/components/Button'
 import View from '@emcasa/ui-dom/components/View'
 
 # Filters
@@ -13,9 +15,19 @@ import View from '@emcasa/ui-dom/components/View'
 <Playground>
   <Filters>
     <RangeSliderFilter
-      name="foo"
-      label="Teste"
+      name="slider"
+      label="Range slider"
       range={[0, 1000]}
     />
+    <ButtonGroupFilter
+      name="buttons"
+      label="Button group"
+      range={[0, 1000]}
+    >
+      <Button value={0}>0</Button>
+      <Button value={1}>1</Button>
+      <Button value={2}>2</Button>
+      <Button value={3}>3</Button>
+    </ButtonGroupFilter>
   </Filters>
 </Playground>

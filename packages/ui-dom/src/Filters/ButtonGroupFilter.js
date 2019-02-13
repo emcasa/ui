@@ -1,21 +1,26 @@
 import React, {PureComponent} from 'react'
 import {Field} from 'formik'
 import Filter from './Filter'
-import Slider from './Slider'
+import Button from '../Button'
 
-export class RangeSlider extends PureComponent {
+export class ButtonGroup extends PureComponent {
   render() {
-    const {values, range, onChange} = this.state
+    const {children, value, onChange} = this.props
     return (
-      <Slider selectedValues={values} range={range} onChange={onChange}>
-        <Slider.Marker name="min" />
-        <Slider.Marker name="max" />
-      </Slider>
+      <Button.Group selectedValue={value} onChange={onChange}>
+        {React.Children.map(children, (element) =>
+          React.cloneElement(element, {
+            type: 'button'
+          })
+        )}
+      </Button.Group>
     )
   }
 }
 
-export default class RangeSliderFilter extends PureComponent {
+export default class ButtonGroupFilter extends PureComponent {
+  static Button = Button
+
   state = {value: undefined}
 
   onChange = (value) => this.setState({value})
@@ -23,18 +28,28 @@ export default class RangeSliderFilter extends PureComponent {
   onSubmit = () => this.props.onSubmit(this.state.value)
 
   render() {
-    const {label, name, selected, onDismiss, ...props} = this.props
+    const {label, name, selected, onSelect, ...props} = this.props
+    const {value} = this.state
     return (
       <Field
         name={name}
-        render={({field}) => (
+        render={({field, form}) => (
           <Filter
             label={label}
             selected={selected}
-            onDismiss={onDismiss}
-            onSubmit={() => field.onChange(this.state.value)}
+            onSelect={onSelect}
+            onClear={() => {
+              this.setState({value: null})
+              form.setFieldValue(name, undefined)
+            }}
+            onSubmit={() => form.setFieldValue(name, value)}
           >
-            <RangeSlider {...field} {...props} onChange={this.onChange} />
+            <ButtonGroup
+              {...field}
+              {...props}
+              value={value}
+              onChange={this.onChange}
+            />
           </Filter>
         )}
       />
