@@ -10,6 +10,7 @@ export const ButtonGroup = styled(function ButtonGroup({
   className,
   strategy,
   currentValue,
+  value,
   onChange
 }) {
   return (
@@ -17,7 +18,7 @@ export const ButtonGroup = styled(function ButtonGroup({
       style={style}
       className={className}
       strategy={strategy}
-      selectedValue={currentValue}
+      selectedValue={currentValue || value}
       onChange={onChange}
     >
       {React.Children.map(children, (element) =>
