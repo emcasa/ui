@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react'
+import {Field} from 'formik'
 import {FilterButton, Panel} from './styles'
 import View from '../View'
 import Row from '../Row'
@@ -35,6 +36,49 @@ export default class Filter extends PureComponent {
           </Panel>
         )}
       </View>
+    )
+  }
+}
+
+export class ControlledFilter extends PureComponent {
+  static Button = Button
+
+  state = {value: undefined}
+
+  onChange = (value) => this.setState({value})
+
+  render() {
+    const {children, label, name, selected, onSelect, panelProps} = this.props
+    const {value} = this.state
+    return (
+      <Field
+        name={name}
+        render={({field, form}) => (
+          <Filter
+            label={label}
+            panelProps={panelProps}
+            selected={selected}
+            onSelect={onSelect}
+            onClear={() => {
+              this.setState({value: null})
+              form.setFieldValue(name, undefined)
+            }}
+            onSubmit={() => {
+              form.setFieldValue(name, value)
+              requestAnimationFrame(onSelect)
+            }}
+          >
+            {children({
+              field: {
+                ...field,
+                value,
+                onChange: this.onChange
+              },
+              form
+            })}
+          </Filter>
+        )}
+      />
     )
   }
 }
