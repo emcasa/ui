@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
-import Measure from 'react-measure'
 import {FilterButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
@@ -25,7 +24,7 @@ export default class Filter extends PureComponent {
     panelProps: {}
   }
 
-  renderPanel(passProps) {
+  renderPanel() {
     const {
       children,
       title,
@@ -43,7 +42,6 @@ export default class Filter extends PureComponent {
         pose={isMobile ? 'mobile' : 'desktop'}
         contentRect={contentRect}
         {...panelProps}
-        {...passProps}
       >
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
@@ -67,9 +65,7 @@ export default class Filter extends PureComponent {
   render() {
     const {label, selectedValue, selected, onSelect, ...props} = this.props
     return (
-      <Measure bounds>
-        {({measureRef, contentRect: buttonRect}) => (
-          <View innerRef={measureRef}>
+          <View >
             <FilterButton
               {...props}
               selected={selected}
@@ -78,10 +74,8 @@ export default class Filter extends PureComponent {
             >
               {label}
             </FilterButton>
-            {selected && this.renderPanel({buttonRect})}
+            {selected && this.renderPanel()}
           </View>
-        )}
-      </Measure>
     )
   }
 }
