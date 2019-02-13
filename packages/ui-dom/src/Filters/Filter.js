@@ -82,8 +82,6 @@ export default class Filter extends PureComponent {
 }
 
 export class ControlledFilter extends PureComponent {
-  static Button = Button
-
   state = {}
 
   static getDerivedStateFromProps(props) {
@@ -117,7 +115,7 @@ export class ControlledFilter extends PureComponent {
             {children({
               field: {
                 ...field,
-                value: value || field.value,
+                currentValue: value,
                 onChange: this.onChange
               },
               form

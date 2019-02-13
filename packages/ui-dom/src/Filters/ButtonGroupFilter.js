@@ -8,14 +8,14 @@ export const ButtonGroup = styled(function ButtonGroup({
   children,
   style,
   className,
-  value,
+  currentValue,
   onChange
 }) {
   return (
     <Button.Group
       style={style}
       className={className}
-      selectedValue={value}
+      selectedValue={currentValue}
       onChange={onChange}
     >
       {React.Children.map(children, (element) =>
