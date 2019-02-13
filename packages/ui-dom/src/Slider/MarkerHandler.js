@@ -41,23 +41,18 @@ export default class MarkerHandler extends PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const nextState = {}
-    if (props.markerLayout) nextState.layout = props.markerLayout
-    if (typeof state.initialPosition === 'undefined')
-      nextState.initialPosition = props.position
-    return nextState
+    return {layout: props.layout || state.layout}
   }
 
-  _addEvents = () => {}
-
-  _removeEvents = () => {}
-
-  componentDidMount() {
-    if (!this.props.disabled) this._addEvents()
-  }
-
-  componentWillUnmount() {
-    if (!this.props.disabled) this._removeEvents()
+  componentDidUpdate(prevProps) {
+    const {animatedValues} = this.props
+    if (
+      prevProps.position !== this.props.posed &&
+      prevProps.value === this.props.value &&
+      this.props.position !== animatedValues.x.get()
+    ) {
+      this.props.animatedValues.x.update(this.props.position)
+    }
   }
 
   onResize = ({entry}) =>
