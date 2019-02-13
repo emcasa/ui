@@ -29,7 +29,26 @@ Slider component.
   </View>
 </Playground>
 
-## Track & Marker Styles
+## Fixed width
+
+<Playground>
+  <View m={4}>
+    <Slider
+      width={200}
+      onChange={console.log}
+      range={[0, 1]}
+      initialValue={{
+        min: 0,
+        max: 1
+      }}
+    >
+      <Slider.Marker name="min" />
+      <Slider.Marker name="max" />
+    </Slider>
+  </View>
+</Playground>
+
+## Track and marker styles
 
 <Playground>
   <View mb="25px">
@@ -65,7 +84,7 @@ Slider component.
   </View>
 </Playground>
 
-## Marker Labels
+## Marker labels
 
 <Playground>
   <View flexDirection="column">
