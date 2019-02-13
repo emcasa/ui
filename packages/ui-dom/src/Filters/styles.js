@@ -6,6 +6,16 @@ import View from '../View'
 import Row from '../Row'
 import Icon from '../Icon'
 import {breakpoint} from '@emcasa/ui/lib/styles'
+import posed from 'react-pose'
+
+export const Container = styled.div`
+  position: relative;
+  ${zIndex};
+`
+
+Container.defaultProps = {
+  zIndex: 101
+}
 
 export const FilterButton = styled(Button).attrs({type: 'button'})`
   ${borderColor};
@@ -52,7 +62,18 @@ Panel.defaultProps = {
   width: 400
 }
 
-export const Form = styled.form`
+export const Form = styled(
+  posed.form({
+    open: {
+      y: ({contentRect}) => -(contentRect.bounds.top - window.scrollY - 20)
+    },
+    closed: {
+      y: 0
+    }
+  })
+)`
+  display: flex;
+  flex-direction: row;
   position: sticky;
   height: ${themeGet('buttonHeight.1')}px;
   ${zIndex};
@@ -70,20 +91,32 @@ export const Body = styled(Row)`
   }
 `
 
-export const Background = styled(({onDismiss, ...props}) => (
-  <div {...props}>
+const BackgroundComponent = React.forwardRef(({onDismiss, ...props}, ref) => (
+  <div ref={ref} {...props}>
     <a className="closeButton" onClick={onDismiss}>
       <Icon name="times" size={22} />
     </a>
     <a className="clickArea" onClick={onDismiss} />
   </div>
-))`
+))
+
+export const Background = styled(
+  posed(BackgroundComponent)({
+    open: {
+      opacity: 1
+    },
+    closed: {
+      opacity: 0
+    }
+  })
+)`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.5);
+  pointer-events: ${({pose}) => (pose === 'closed' ? 'none' : 'all')};
 
   a.clickArea {
     display: block;
@@ -95,8 +128,8 @@ export const Background = styled(({onDismiss, ...props}) => (
   a.closeButton {
     display: none;
     position: absolute;
-    top: ${themeGet('space.4')}px;
-    right: ${themeGet('space.4')}px;
+    top: 0;
+    right: 0;
     padding: ${themeGet('space.4')}px;
   }
 

@@ -2,15 +2,15 @@ import React from 'react'
 import {Formik} from 'formik'
 import {withContentRect} from 'react-measure'
 import Group from '@emcasa/ui/lib/components/Group'
-import {Form, Body, Background} from './styles'
+import {Container, Form, Body, Background} from './styles'
+import {withBreakpoint} from '../Breakpoint'
 
 const FilterGroup = Group(
-  ({onSelect, selected, selectedValue, disabled, contentRect}) => ({
+  ({onSelect, selected, selectedValue, disabled}) => ({
     disabled,
     onSelect,
     selected,
-    selectedValue,
-    contentRect
+    selectedValue
   }),
   (node) => node.props.name
 )(function FilterGroup({
@@ -19,22 +19,35 @@ const FilterGroup = Group(
   selectedValue,
   onSelect,
   measureRef,
+  isMobile,
   ...props
 }) {
+  const isOpen = Boolean(selectedValue)
   return (
-    <Formik initialValues={initialValues}>
-      {(form) => (
-        <Form innerRef={measureRef} onSubmit={form.handleSubmit} {...props}>
-          <Body>{children}</Body>
-          {selectedValue && (
-            <Background onDismiss={() => onSelect(undefined)} />
-          )}
-        </Form>
-      )}
-    </Formik>
+    <Container>
+      <Formik initialValues={initialValues}>
+        {(form) => (
+          <Form
+            innerRef={measureRef}
+            pose={isOpen && isMobile ? 'open' : 'closed'}
+            onSubmit={form.handleSubmit}
+            {...props}
+          >
+            <Body>{children}</Body>
+          </Form>
+        )}
+      </Formik>
+      <Background
+        pose={isOpen ? 'open' : 'closed'}
+        onDismiss={() => onSelect(undefined)}
+      />
+    </Container>
   )
 })
 
-FilterGroup.defaultProps.strategy = 'switchable'
+FilterGroup.defaultProps = {
+  ...FilterGroup.defaultProps,
+  strategy: 'switchable'
+}
 
-export default withContentRect('bounds')(FilterGroup)
+export default withContentRect('bounds')(withBreakpoint()(FilterGroup))
