@@ -7,6 +7,7 @@ import Button from '../Button'
 import Row from '../Row'
 import Col from '../Col'
 import Icon from '../Icon'
+import Text from '../Text'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 
 export const Container = styled.div`
@@ -21,6 +22,15 @@ Container.defaultProps = {
 export const FilterButton = styled(Button)`
   ${borderColor};
   ${color};
+  ${({hasValue, selected, disabledStyle, theme}) => {
+    let color
+    let borderColor
+    const opacity = disabledStyle ? '70' : ''
+    if (hasValue || selected) color = borderColor = theme.colors.pink + opacity
+    else if (disabledStyle) color = theme.colors.grey
+    else color = theme.colors.dark
+    return {color, borderColor}
+  }};
 `
 
 FilterButton.defaultProps = {
@@ -64,6 +74,20 @@ export const Panel = styled(Col).attrs({elevation: 2})`
 Panel.defaultProps = {
   width: 400
 }
+
+export const Title = styled(Text)`
+  transition: all 300ms ease-in-out;
+  display: flex;
+  align-items: center;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  display: block;
+  @media screen and ${breakpoint.down('tablet')} {
+    height: ${themeGet('buttonHeight.1')}px;
+    line-height: ${themeGet('buttonHeight.1')}px;
+  }
+`
 
 const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
   fun(initialize ? dimensions.measure() : dimensions.get())

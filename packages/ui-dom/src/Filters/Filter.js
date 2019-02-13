@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
 import Measure from 'react-measure'
-import {FilterButton, Panel} from './styles'
+import {FilterButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
 import Button from '../Button'
@@ -28,11 +28,13 @@ export default class Filter extends PureComponent {
   renderPanel(passProps) {
     const {
       children,
+      title,
       onClear,
       onSubmit,
       panelProps,
       contentRect,
       contentRef,
+      isOpen,
       isMobile
     } = this.props
     if (!children) return
@@ -43,6 +45,7 @@ export default class Filter extends PureComponent {
         {...panelProps}
         {...passProps}
       >
+        {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
           <Link isMobile={isMobile} onClick={onClear}>
@@ -54,7 +57,7 @@ export default class Filter extends PureComponent {
         </Row>
       </Panel>
     )
-    if (!this.props.isOpen) {
+    if (!isOpen) {
       return panelElement
     } else if (contentRef.current) {
       return ReactDOM.createPortal(panelElement, contentRef.current)
@@ -69,7 +72,8 @@ export default class Filter extends PureComponent {
           <View innerRef={measureRef}>
             <FilterButton
               {...props}
-              color={selectedValue && !selected ? 'grey' : props.color}
+              selected={selected}
+              disabledStyle={selectedValue && !selected}
               onClick={onSelect}
             >
               {label}
@@ -103,6 +107,9 @@ export class ControlledFilter extends PureComponent {
             {...props}
             selected={selected}
             onSelect={onSelect}
+            hasValue={Boolean(
+              field.value && field.value !== form.initialValues[name]
+            )}
             onClear={() => {
               this.setState({value: null})
               form.setFieldValue(name, undefined)

@@ -12,6 +12,7 @@ PriceFilter.initialValue = {min: MIN_PRICE, max: MAX_PRICE}
 PriceFilter.defaultProps = {
   name: 'price',
   label: 'Preço',
+  title: 'Preço',
   range: [PriceFilter.initialValue.min, PriceFilter.initialValue.max]
 }
 
@@ -22,6 +23,7 @@ AreaFilter.initialValue = {min: MIN_AREA, max: MAX_AREA}
 AreaFilter.defaultProps = {
   name: 'area',
   label: 'Área',
+  title: 'Área',
   range: [AreaFilter.initialValue.min, AreaFilter.initialValue.max]
 }
 
@@ -36,12 +38,13 @@ const RoomsFilter = ({...props}) => (
 RoomsFilter.defaultProps = {
   name: 'rooms',
   label: 'Quartos',
+  title: 'Quartos',
   range: [0, 5]
 }
 
 const GarageSpotsFilter = ({...props}) => (
   <ButtonRangeFilter
-    formatEmpty={() => 'Sem garagem'}
+    formatEmpty={() => 'Sem vagas'}
     formatLast={({value}) => value + '+'}
     {...props}
   />
@@ -50,6 +53,7 @@ const GarageSpotsFilter = ({...props}) => (
 GarageSpotsFilter.defaultProps = {
   name: 'garageSpots',
   label: 'Vagas',
+  title: 'Vagas de garagem',
   range: [0, 5]
 }
 
@@ -70,6 +74,7 @@ const TypesFilter = ({buttonProps, ...props}) => (
 TypesFilter.defaultProps = {
   name: 'types',
   label: 'Tipos de imóveis',
+  title: 'Tipos de imóveis',
   buttonProps: {}
 }
 
