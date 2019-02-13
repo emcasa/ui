@@ -1,12 +1,12 @@
 import React, {PureComponent} from 'react'
+import ReactDOM from 'react-dom'
 import {Field} from 'formik'
 import {FilterButton, Panel} from './styles'
 import View from '../View'
 import Row from '../Row'
 import Button from '../Button'
-import {withBreakpoint} from '../Breakpoint'
 
-const Link = withBreakpoint()(({isMobile, ...props}) => {
+const Link = ({isMobile, ...props}) => {
   const style = isMobile
     ? {}
     : {
@@ -17,7 +17,7 @@ const Link = withBreakpoint()(({isMobile, ...props}) => {
         fontSize: 'small'
       }
   return <Button type="button" {...style} {...props} />
-})
+}
 
 export default class Filter extends PureComponent {
   static defaultProps = {
@@ -35,6 +35,8 @@ export default class Filter extends PureComponent {
       onSubmit,
       panelProps,
       contentRect,
+      contentRef,
+      isMobile,
       ...props
     } = this.props
     return (
@@ -46,17 +48,26 @@ export default class Filter extends PureComponent {
         >
           {label}
         </FilterButton>
-        {selected && (
-          <Panel {...panelProps} contentRect={contentRect}>
-            <Row className="panelBody">{children}</Row>
-            <Row className="panelFooter">
-              <Link onClick={onClear}>Limpar</Link>
-              <Link active onClick={onSubmit}>
-                Aplicar
-              </Link>
-            </Row>
-          </Panel>
-        )}
+        {selected &&
+          contentRef.current &&
+          ReactDOM.createPortal(
+            <Panel
+              pose={isMobile ? 'mobile' : 'desktop'}
+              {...panelProps}
+              contentRect={contentRect}
+            >
+              <Row className="panelBody">{children}</Row>
+              <Row className="panelFooter">
+                <Link isMobile={isMobile} onClick={onClear}>
+                  Limpar
+                </Link>
+                <Link isMobile={isMobile} active onClick={onSubmit}>
+                  Aplicar
+                </Link>
+              </Row>
+            </Panel>,
+            contentRef.current
+          )}
       </View>
     )
   }

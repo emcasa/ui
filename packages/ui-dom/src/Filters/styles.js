@@ -91,14 +91,17 @@ export const Body = styled(Row)`
   }
 `
 
-const BackgroundComponent = React.forwardRef(({onDismiss, ...props}, ref) => (
-  <div ref={ref} {...props}>
-    <a className="closeButton" onClick={onDismiss}>
-      <Icon name="times" size={22} />
-    </a>
-    <a className="clickArea" onClick={onDismiss} />
-  </div>
-))
+const BackgroundComponent = React.forwardRef(
+  ({contentRef, onDismiss, ...props}, ref) => (
+    <div ref={ref} {...props}>
+      <a className="closeButton" onClick={onDismiss}>
+        <Icon name="times" size={22} />
+      </a>
+      <div ref={contentRef} className="content" />
+      <a className="clickArea" onClick={onDismiss} />
+    </div>
+  )
+)
 
 export const Background = styled(
   posed(BackgroundComponent)({
