@@ -1,0 +1,21 @@
+---
+name: Filters
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz'
+import Filters from '@emcasa/ui-dom/components/Filters'
+import RangeSliderFilter from '@emcasa/ui-dom/components/Filters/RangeSliderFilter'
+import View from '@emcasa/ui-dom/components/View'
+
+# Filters
+
+<Playground>
+  <Filters>
+    <RangeSliderFilter
+      name="foo"
+      label="Teste"
+      range={[0, 1000]}
+    />
+  </Filters>
+</Playground>

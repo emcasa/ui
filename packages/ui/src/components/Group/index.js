@@ -15,6 +15,14 @@ export const Strategies = {
       return value
     }
   },
+  switchable: {
+    isSelected(selectedValue, value) {
+      return selectedValue === value
+    },
+    update(selectedValue, value) {
+      return selectedValue === value ? undefined : value
+    }
+  },
   /**
    * Multi-select strategy
    */
@@ -126,6 +134,7 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       const nextProps = parseProps(
         {
           ...this.props,
+          selectedValue: this.props.selectedValue,
           onSelect: () => this.onChange(value),
           selected: this.isSelected(value)
         },
