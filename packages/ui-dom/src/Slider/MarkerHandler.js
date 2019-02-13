@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
 import Measure from 'react-measure'
-import {themeGet, zIndex} from 'styled-system'
+import {zIndex} from 'styled-system'
 
 const MarkerWrapper = styled(
   posed.div({
@@ -19,13 +19,10 @@ const MarkerWrapper = styled(
   ${({layout, hitSlop}) =>
     layout ? {left: `-${layout.width / 2 + hitSlop}px`} : {opacity: 0}};
   & > * {
-    transition: box-shadow 200ms ease-in-out;
+    transition: box-shadow 250ms ease-in-out;
   }
   &:focus {
     outline: none;
-    & > * {
-      box-shadow: 0 0 2px 2px ${themeGet('colors.blue')};
-    }
   }
   ${zIndex};
 `
@@ -37,7 +34,8 @@ export default class MarkerHandler extends PureComponent {
   }
 
   state = {
-    layout: undefined
+    layout: undefined,
+    focus: false
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -70,6 +68,10 @@ export default class MarkerHandler extends PureComponent {
     if (onSlideStop) onSlideStop()
   }
 
+  onFocus = () => this.setState({focus: true})
+
+  onBlur = () => this.setState({focus: false})
+
   render() {
     const {
       children,
@@ -82,7 +84,7 @@ export default class MarkerHandler extends PureComponent {
       zIndex,
       animatedValues
     } = this.props
-    const {layout} = this.state
+    const {layout, focus} = this.state
     return (
       <Measure onResize={this.onResize}>
         {({measureRef}) => (
@@ -96,9 +98,12 @@ export default class MarkerHandler extends PureComponent {
             sliderLayout={sliderLayout}
             onValueChange={{x: this.onChange}}
             onDragEnd={this.onDragEnd}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
             values={animatedValues}
           >
             {React.cloneElement(children, {
+              focus,
               markerState: {position, value, bounds}
             })}
           </MarkerWrapper>

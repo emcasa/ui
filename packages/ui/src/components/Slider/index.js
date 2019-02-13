@@ -1,5 +1,5 @@
 import {css} from 'styled-components'
-import {width, height, bgColor, zIndex} from 'styled-system'
+import {width, height, bgColor, zIndex, themeGet} from 'styled-system'
 
 import {buttonHeight} from '../../styles'
 import {container as col} from '../Col'
@@ -37,6 +37,8 @@ export const marker = css`
   height: ${({size}) => size}px;
   border-radius: ${({size}) => size}px;
   ${bgColor};
+  ${({focus, theme}) =>
+    focus && `box-shadow: 0 0 0 10px ${theme.colors.pink}50;`};
 `
 
 marker.label = css`
