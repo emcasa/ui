@@ -41,7 +41,8 @@
     "react-dom": "^16.5.2",
     "react-measure": "^2.2.4",
     "react-pose": "^4.0.6",
-    "react-responsive": "^6.1.1"
+    "react-responsive": "^6.1.1",
+    "react-tether": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

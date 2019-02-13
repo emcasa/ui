@@ -72,7 +72,6 @@ export const Panel = styled(Col).attrs({elevation: 2})`
   @media screen and ${breakpoint.up('desktop')} {
     position: absolute;
     border-radius: 4px;
-    margin-top: ${themeGet('space.2')}px;
     border: 1px solid ${themeGet('colors.lightGrey')};
   }
 `

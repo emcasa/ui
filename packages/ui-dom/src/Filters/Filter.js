@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
+import Tether from 'react-tether'
 import {FilterButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
@@ -31,18 +32,11 @@ export default class Filter extends PureComponent {
       onClear,
       onSubmit,
       panelProps,
-      contentRect,
-      contentRef,
-      isExpanded,
       isMobile
     } = this.props
     if (!children) return
-    const panelElement = (
-      <Panel
-        pose={isMobile ? 'mobile' : 'desktop'}
-        contentRect={contentRect}
-        {...panelProps}
-      >
+    return (
+      <Panel pose={isMobile ? 'mobile' : 'desktop'} {...panelProps}>
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
@@ -55,17 +49,12 @@ export default class Filter extends PureComponent {
         </Row>
       </Panel>
     )
-    if (!isExpanded) {
-      return panelElement
-    } else if (contentRef.current) {
-      return ReactDOM.createPortal(panelElement, contentRef.current)
-    }
   }
 
-  render() {
+  renderButton() {
     const {label, selectedValue, selected, onSelect, ...props} = this.props
     return (
-      <View>
+      <View style={{position: 'static'}}>
         <FilterButton
           {...props}
           selected={selected}
@@ -74,9 +63,42 @@ export default class Filter extends PureComponent {
         >
           {label}
         </FilterButton>
-        {selected && this.renderPanel()}
       </View>
     )
+  }
+
+  render() {
+    const {selected, isExpanded, contentRef} = this.props
+    const buttonElement = this.renderButton()
+    let panelElement
+    if (!selected || !(panelElement = this.renderPanel())) return buttonElement
+    else if (isExpanded) {
+      return (
+        <>
+          {buttonElement}
+          {ReactDOM.createPortal(panelElement, contentRef.current)}
+        </>
+      )
+    } else {
+      return (
+        <Tether
+          attachment="top right"
+          constraints={[
+            {
+              to: 'scrollParent',
+              attachment: 'together'
+            }
+          ]}
+          renderElementTo={contentRef.current}
+          renderElement={(innerRef) =>
+            React.cloneElement(panelElement, {innerRef})
+          }
+          renderTarget={(innerRef) =>
+            React.cloneElement(buttonElement, {innerRef})
+          }
+        />
+      )
+    }
   }
 }
 

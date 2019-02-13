@@ -75,6 +75,8 @@ const FilterGroup = Group(
                 <Body innerRef={measureRef}>
                   {React.Children.map(children, (element) =>
                     React.cloneElement(element, {
+                      rowCount,
+                      containerRect: this.state.contentRect,
                       isExpanded: this.state.isExpanded,
                       contentRef: this.contentRef,
                       containerRef: this.containerRef
