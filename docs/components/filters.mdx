@@ -51,14 +51,16 @@ import View from '@emcasa/ui-dom/components/View'
 ## Listing filters
 
 <Playground>
-  <Filters initialValues={{
-    area: AreaFilter.initialValue,
-    price: PriceFilter.initialValue
-  }}>
-    <TypesFilter />
-    <PriceFilter />
-    <AreaFilter />
-    <RoomsFilter />
-    <GarageSpotsFilter />
-  </Filters>
+  <View height="150px">
+    <Filters initialValues={{
+      area: AreaFilter.initialValue,
+      price: PriceFilter.initialValue
+    }}>
+      <TypesFilter />
+      <PriceFilter />
+      <AreaFilter />
+      <RoomsFilter />
+      <GarageSpotsFilter />
+    </Filters>
+  </View>
 </Playground>

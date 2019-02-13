@@ -54,7 +54,7 @@ export default class Filter extends PureComponent {
         </Row>
       </Panel>
     )
-    if (!this.props.isMobile) {
+    if (!this.props.isOpen) {
       return panelElement
     } else if (contentRef.current) {
       return ReactDOM.createPortal(panelElement, contentRef.current)

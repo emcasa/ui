@@ -7,15 +7,7 @@ import {Container, Form, Body, Background} from './styles'
 import {withBreakpoint} from '../Breakpoint'
 
 const FilterGroup = Group(
-  pick([
-    'onSelect',
-    'selected',
-    'selectedValue',
-    'disabled',
-    'contentRef',
-    'containerRef',
-    'isMobile'
-  ]),
+  pick(['onSelect', 'selected', 'selectedValue', 'disabled', 'isMobile']),
   (node) => node.props.name
 )(
   class FilterGroup extends PureComponent {
@@ -23,14 +15,12 @@ const FilterGroup = Group(
       strategy: 'switchable',
       get scrollContainer() {
         return typeof window === 'undefined' ? undefined : window.document.body
-      },
-      get contentRef() {
-        return React.createRef()
-      },
-      get containerRef() {
-        return React.createRef()
       }
     }
+
+    contentRef = React.createRef()
+
+    containerRef = React.createRef()
 
     state = {}
 
@@ -56,8 +46,6 @@ const FilterGroup = Group(
         children,
         initialValues = {},
         onSelect,
-        containerRef,
-        contentRef,
         isMobile,
         ...props
       } = this.props
@@ -67,7 +55,7 @@ const FilterGroup = Group(
           <Formik initialValues={initialValues}>
             {(form) => (
               <Form
-                innerRef={containerRef}
+                innerRef={this.containerRef}
                 pose={isOpen && isMobile ? 'open' : 'closed'}
                 initialPose="closed"
                 onSubmit={form.handleSubmit}
@@ -76,7 +64,11 @@ const FilterGroup = Group(
               >
                 <Body>
                   {React.Children.map(children, (element) =>
-                    React.cloneElement(element, this.state)
+                    React.cloneElement(element, {
+                      ...this.state,
+                      contentRef: this.contentRef,
+                      containerRef: this.containerRef
+                    })
                   )}
                 </Body>
               </Form>
@@ -85,7 +77,7 @@ const FilterGroup = Group(
           <Background
             pose={isOpen ? 'open' : 'closed'}
             onDismiss={() => onSelect(undefined)}
-            contentRef={contentRef}
+            contentRef={this.contentRef}
           />
         </Container>
       )
