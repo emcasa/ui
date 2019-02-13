@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import {themeGet, color, borderColor, zIndex} from 'styled-system'
 import Button from '../Button'
-import View from '../View'
 import Row from '../Row'
+import Col from '../Col'
 import Icon from '../Icon'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import posed from 'react-pose'
@@ -17,20 +17,23 @@ Container.defaultProps = {
   zIndex: 101
 }
 
-export const FilterButton = styled(Button).attrs({type: 'button'})`
+export const FilterButton = styled(Button)`
   ${borderColor};
   ${color};
 `
 
-export const Panel = styled(View).attrs({elevation: 2})`
+FilterButton.defaultProps = {
+  type: 'button',
+  fontSize: 'small'
+}
+
+export const Panel = styled(Col).attrs({elevation: 2})`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: absolute;
-  border-radius: 4px;
-  margin-top: ${themeGet('space.2')}px;
   padding: ${themeGet('space.3')}px ${themeGet('space.4')}px;
-  border: 1px solid ${themeGet('colors.lightGrey')};
+  background-color: white;
   .panelBody {
     flex: 1;
     flex-direction: column;
@@ -41,20 +44,19 @@ export const Panel = styled(View).attrs({elevation: 2})`
     justify-content: space-between;
   }
   @media screen and ${breakpoint.down('tablet')} {
-    position: fixed;
     left: ${themeGet('space.4')}px;
     right: ${themeGet('space.4')}px;
+    top: ${themeGet('space.4')}px;
+    bottom: ${themeGet('space.4')}px;
     width: auto;
     box-shadow: none;
-    border: none;
-    ${({contentRect, theme}) =>
-      contentRect && {
-        top: contentRect.bottom,
-        height: `${window.innerHeight -
-          contentRect.bounds.bottom -
-          theme.space[2] -
-          2}px`
-      }};
+    padding-top: ${({buttonRect, theme}) =>
+      buttonRect ? buttonRect.bounds.height + theme.space[4] * 2 : 0}px;
+  }
+  @media screen and ${breakpoint.up('desktop')} {
+    border-radius: 4px;
+    margin-top: ${themeGet('space.2')}px;
+    border: 1px solid ${themeGet('colors.lightGrey')};
   }
 `
 

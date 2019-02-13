@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
+import Measure from 'react-measure'
 import {FilterButton, Panel} from './styles'
 import View from '../View'
 import Row from '../Row'
@@ -24,51 +25,58 @@ export default class Filter extends PureComponent {
     panelProps: {}
   }
 
-  render() {
+  renderPanel(passProps) {
     const {
       children,
-      label,
-      selectedValue,
-      selected,
-      onSelect,
       onClear,
       onSubmit,
       panelProps,
       contentRect,
       contentRef,
-      isMobile,
-      ...props
+      isMobile
     } = this.props
+    const panelElement = (
+      <Panel
+        pose={isMobile ? 'mobile' : 'desktop'}
+        contentRect={contentRect}
+        {...panelProps}
+        {...passProps}
+      >
+        <Row className="panelBody">{children}</Row>
+        <Row className="panelFooter">
+          <Link isMobile={isMobile} onClick={onClear}>
+            Limpar
+          </Link>
+          <Link isMobile={isMobile} active onClick={onSubmit}>
+            Aplicar
+          </Link>
+        </Row>
+      </Panel>
+    )
+    if (!this.props.isMobile) {
+      return panelElement
+    } else if (contentRef.current) {
+      return ReactDOM.createPortal(panelElement, contentRef.current)
+    }
+  }
+
+  render() {
+    const {label, selectedValue, selected, onSelect, ...props} = this.props
     return (
-      <View>
-        <FilterButton
-          {...props}
-          color={selectedValue && !selected ? 'grey' : props.color}
-          onClick={onSelect}
-        >
-          {label}
-        </FilterButton>
-        {selected &&
-          contentRef.current &&
-          ReactDOM.createPortal(
-            <Panel
-              pose={isMobile ? 'mobile' : 'desktop'}
-              {...panelProps}
-              contentRect={contentRect}
+      <Measure bounds>
+        {({measureRef, contentRect: buttonRect}) => (
+          <View innerRef={measureRef}>
+            <FilterButton
+              {...props}
+              color={selectedValue && !selected ? 'grey' : props.color}
+              onClick={onSelect}
             >
-              <Row className="panelBody">{children}</Row>
-              <Row className="panelFooter">
-                <Link isMobile={isMobile} onClick={onClear}>
-                  Limpar
-                </Link>
-                <Link isMobile={isMobile} active onClick={onSubmit}>
-                  Aplicar
-                </Link>
-              </Row>
-            </Panel>,
-            contentRef.current
-          )}
-      </View>
+              {label}
+            </FilterButton>
+            {selected && this.renderPanel({buttonRect})}
+          </View>
+        )}
+      </Measure>
     )
   }
 }
