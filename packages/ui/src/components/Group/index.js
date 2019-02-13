@@ -86,10 +86,12 @@ const Group = (parseProps, getValue = defaultGetValue) => (Target) =>
       ...(Target.propTypes || {})
     }
 
-    static defaultProps = {
-      strategy: Strategies.simple,
-      ...(Target.defaultProps || {})
-    }
+    static defaultProps = Object.assign(
+      {
+        strategy: Strategies.simple
+      },
+      Target.defaultProps || {}
+    )
 
     state = {}
 

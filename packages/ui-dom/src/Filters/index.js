@@ -1,7 +1,6 @@
 import pick from 'lodash/fp/pick'
 import React, {PureComponent} from 'react'
 import {Formik} from 'formik'
-import {withContentRect} from 'react-measure'
 import Group from '@emcasa/ui/lib/components/Group'
 import {Container, Form, Body, Background} from './styles'
 import {withBreakpoint} from '../Breakpoint'
@@ -12,8 +11,8 @@ const FilterGroup = Group(
     'selected',
     'selectedValue',
     'disabled',
-    'contentRect',
     'contentRef',
+    'containerRef',
     'isMobile'
   ]),
   (node) => node.props.name
@@ -23,12 +22,9 @@ const FilterGroup = Group(
       strategy: 'switchable',
       get contentRef() {
         return React.createRef()
-      }
-    }
-
-    componentDidUpdate(prevProps) {
-      if (prevProps.isMobile !== this.props.isMobile) {
-        requestAnimationFrame(() => this.props.measure())
+      },
+      get containerRef() {
+        return React.createRef()
       }
     }
 
@@ -38,7 +34,7 @@ const FilterGroup = Group(
         initialValues = {},
         selectedValue,
         onSelect,
-        measureRef,
+        containerRef,
         contentRef,
         isMobile,
         ...props
@@ -49,12 +45,18 @@ const FilterGroup = Group(
           <Formik initialValues={initialValues}>
             {(form) => (
               <Form
-                innerRef={measureRef}
+                innerRef={containerRef}
                 pose={isOpen && isMobile ? 'open' : 'closed'}
+                initialPose="closed"
                 onSubmit={form.handleSubmit}
                 {...props}
+                {...this.state}
               >
-                <Body>{children}</Body>
+                <Body>
+                  {React.Children.map(children, (element) =>
+                    React.cloneElement(element, this.state)
+                  )}
+                </Body>
               </Form>
             )}
           </Formik>
@@ -69,4 +71,4 @@ const FilterGroup = Group(
   }
 )
 
-export default withContentRect('bounds')(withBreakpoint()(FilterGroup))
+export default withBreakpoint()(FilterGroup)
