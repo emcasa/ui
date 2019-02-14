@@ -4,22 +4,8 @@ import {Field} from 'formik'
 import Measure from 'react-measure'
 import View from '../View'
 import Row from '../Row'
-import Button from '../Button'
 import FilterButton from './FilterButton'
-import {Panel, Title} from './styles'
-
-const Link = ({isMobile, ...props}) => {
-  const style = isMobile
-    ? {}
-    : {
-        link: true,
-        color: props.active ? 'pink' : 'grey',
-        p: 0,
-        height: 'auto',
-        fontSize: 'small'
-      }
-  return <Button type="button" {...style} {...props} />
-}
+import {Panel, PanelButton, Title} from './styles'
 
 export default class Filter extends PureComponent {
   static defaultProps = {
@@ -49,12 +35,12 @@ export default class Filter extends PureComponent {
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
-          <Link isMobile={isMobile} onClick={onClear}>
+          <PanelButton isMobile={isMobile} onClick={onClear}>
             Limpar
-          </Link>
-          <Link isMobile={isMobile} active onClick={onSubmit}>
+          </PanelButton>
+          <PanelButton active isMobile={isMobile} onClick={onSubmit}>
             Aplicar
-          </Link>
+          </PanelButton>
         </Row>
       </Panel>
     )

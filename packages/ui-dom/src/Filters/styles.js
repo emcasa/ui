@@ -8,6 +8,7 @@ import Row from '../Row'
 import Col from '../Col'
 import Icon from '../Icon'
 import Text from '../Text'
+import Button from '../Button'
 import FilterButton from './FilterButton'
 import {
   ROW_PADDING,
@@ -55,6 +56,22 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     border-radius: 4px;
     margin-top: ${themeGet('space.2')}px;
     border: 1px solid ${themeGet('colors.lightGrey')};
+  }
+`
+
+export const PanelButton = styled(Button).attrs({
+  type: 'button',
+  link: ({isMobile}) => !isMobile
+})`
+  font-size: ${themeGet('fontSizes.1')}px;
+  @media screen and ${breakpoint.down('tablet')} {
+    height: ${themeGet('buttonHeight.0')}px;
+  }
+  @media screen and ${breakpoint.up('desktop')} {
+    color: ${({active, theme: {colors}}) =>
+      active ? colors.pink : colors.grey};
+    padding: 0;
+    height: auto;
   }
 `
 
