@@ -160,9 +160,17 @@ const BackgroundComponent = React.forwardRef(
 export const Background = styled(
   posed(BackgroundComponent)({
     open: {
+      applyAtStart: {
+        display: 'block',
+        pointerEvents: 'all'
+      },
       opacity: 1
     },
     closed: {
+      applyAtEnd: {
+        display: 'none',
+        pointerEvents: 'none'
+      },
       opacity: 0
     }
   })
