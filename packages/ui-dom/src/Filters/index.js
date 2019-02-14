@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 import pick from 'lodash/fp/pick'
 import React, {PureComponent} from 'react'
 import {Formik} from 'formik'
@@ -6,18 +7,32 @@ import Group from '@emcasa/ui/lib/components/Group'
 import {Container, Form, Body, Background} from './styles'
 import {withBreakpoint} from '../Breakpoint'
 
+const ESC_KEY = 27
+
+const isBrowser = typeof window !== 'undefined'
+
 const FilterGroup = Group(
-  pick(['onSelect', 'selected', 'selectedValue', 'disabled', 'isMobile']),
+  pick([
+    'onSelect',
+    'selected',
+    'selectedValue',
+    'disabled',
+    'isMobile',
+    'initialValues'
+  ]),
   (node) => node.props.name
 )(
   class FilterGroup extends PureComponent {
     static defaultProps = {
+      initialValues: {},
       strategy: 'switchable',
       onSubmit: () => null,
       get scrollContainer() {
-        return typeof window === 'undefined' ? undefined : window.document.body
+        return !isBrowser ? undefined : window.document.body
       }
     }
+
+    formikRef = React.createRef()
 
     contentRef = React.createRef()
 
@@ -27,7 +42,7 @@ const FilterGroup = Group(
 
     static getDerivedStateFromProps(props, state) {
       return {
-        initialValues: props.initialValues || state.initialValues || {},
+        initialValues: state.initialValues || props.initialValues || {},
         isOpen: props.isMobile && Boolean(props.selectedValue)
       }
     }
@@ -41,50 +56,82 @@ const FilterGroup = Group(
         if (this.state.isOpen) classNames.add('noscroll')
         else classNames.remove('noscroll')
       }
+      if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
+        this.setState({initialValues: this.initialValues})
+      }
     }
 
-    onSubmit = (values, actions) => {
+    componentDidMount() {
+      if (isBrowser) window.addEventListener('keyup', this.onKeyPress)
+    }
+
+    componentWillUnmount() {
+      if (isBrowser) window.removeEventListener('keyup', this.onKeyPress)
+    }
+
+    onKeyPress = (e) => {
+      if (this.props.selectedValue && e.keyCode === ESC_KEY) {
+        this.formikRef.current.handleReset()
+        this.props.onSelect(undefined)
+      }
+    }
+
+    onSubmit = (values) => {
+      if (this.props.onSubmit) this.props.onSubmit(values)
       this.setState({initialValues: values})
-      if (this.porps.onSubmit) this.props.onSubmit(values, actions)
     }
 
     render() {
-      const {children, selectedValue, onSelect, onSubmit, ...props} = this.props
+      const {
+        children,
+        id,
+        style,
+        className,
+        selectedValue,
+        onSelect
+      } = this.props
       const {isOpen, initialValues} = this.state
       return (
-        <Container>
-          <Formik
-            enableReinitialize
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-          >
-            {(form) => (
+        <Formik
+          ref={this.formikRef}
+          enableReinitialize
+          initialValues={initialValues}
+          onSubmit={this.onSubmit}
+        >
+          {(form) => (
+            <Container style={style} className={className}>
               <Form
+                id={id}
                 innerRef={this.containerRef}
                 pose={isOpen ? 'open' : 'closed'}
                 initialPose="closed"
-                onSubmit={form.handleSubmit}
-                {...props}
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  form.handleSubmit(e)
+                }}
                 {...this.state}
               >
                 <Body>
                   {React.Children.map(children, (element) =>
                     React.cloneElement(element, {
-                      ...this.state,
+                      isOpen: this.state.isOpen,
                       contentRef: this.contentRef,
                       containerRef: this.containerRef
                     })
                   )}
                 </Body>
               </Form>
-            )}
-          </Formik>
-          <Background
-            pose={selectedValue ? 'open' : 'closed'}
-            onDismiss={() => onSelect(undefined)}
-            contentRef={this.contentRef}
-          />
-        </Container>
+              <Background
+                pose={selectedValue ? 'open' : 'closed'}
+                onDismiss={() => {
+                  form.handleReset()
+                  onSelect(undefined)
+                }}
+                contentRef={this.contentRef}
+              />
+            </Container>
+          )}
+        </Formik>
       )
     }
   }

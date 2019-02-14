@@ -91,21 +91,24 @@ class ControlledFilterContainer extends PureComponent {
   state = {}
 
   componentDidUpdate(prevProps) {
-    if (prevProps.selected !== this.props.selected) {
-      if (!this.props.selectedValue) {
-        // Focused out
-        this.setState({value: null})
-      } else if (this.props.selectedValue !== this.props.name) {
-        // Switched to another filter
-        this.props.setFieldValue(this.props.name, this.state.value)
-      }
-    }
+    const focusChanged = prevProps.selected !== this.props.selected
+    const focusedFilter = this.props.selectedValue
+    if (focusChanged && focusedFilter && focusedFilter !== this.props.name)
+      this.props.setFieldValue(this.props.name, this.state.value)
+    else if (!focusedFilter && this.state.value) this.setState({value: null})
   }
 
   onChange = (value) => this.setState({value})
 
   render() {
-    const {children, name, selected, onSelect, ...props} = this.props
+    const {
+      children,
+      name,
+      selected,
+      onSelect,
+      initialValues,
+      ...props
+    } = this.props
     const {value} = this.state
     return (
       <Field
@@ -118,7 +121,7 @@ class ControlledFilterContainer extends PureComponent {
             hasValue={Boolean(
               field.value !== null &&
                 typeof field.value !== 'undefined' &&
-                !isEqual(field.value, form.initialValues[name])
+                !isEqual(field.value, initialValues[name])
             )}
             onClear={() => {
               this.setState({value: null})
