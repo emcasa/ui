@@ -2,21 +2,20 @@ import get from 'lodash/fp/get'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
-import {themeGet, color, borderColor, zIndex} from 'styled-system'
-import Button from '../Button'
+import {themeGet, zIndex} from 'styled-system'
+import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '../Row'
 import Col from '../Col'
 import Icon from '../Icon'
 import Text from '../Text'
-import {breakpoint} from '@emcasa/ui/lib/styles'
-
-export const BUTTON_HEIGHT = themeGet('buttonHeight.2')
-export const ROW_PADDING = themeGet('space.2')
-export const ROW_HEIGHT = (props) =>
-  BUTTON_HEIGHT(props) + ROW_PADDING(props) * 2
-export const TOP_SPACING = (props) =>
-  ROW_HEIGHT(props) + props.theme.space[4] * 2
-export const MIN_PANEL_HEIGHT_MOBILE = 200
+import FilterButton from './FilterButton'
+import {
+  ROW_PADDING,
+  ROW_HEIGHT,
+  TOP_SPACING,
+  MOBILE_PANEL_MIN_HEIGHT,
+  DESKTOP_PANEL_WIDTH
+} from './constants'
 
 export const Container = styled.div`
   position: relative;
@@ -26,24 +25,6 @@ export const Container = styled.div`
 
 Container.defaultProps = {
   zIndex: 101
-}
-
-export const FilterButton = styled(({...props}) => {
-  delete props.disabled
-  return <Button {...props} />
-})`
-  height: ${BUTTON_HEIGHT}px;
-  opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
-  transition: ${['color', 'border-color', 'opacity']
-    .map((prop) => `${prop} 200ms ease-in-out`)
-    .join()};
-  ${({theme, active}) =>
-    !active && {color: theme.colors.pink, borderColor: theme.colors.pink}};
-`
-
-FilterButton.defaultProps = {
-  type: 'button',
-  fontSize: 'small'
 }
 
 export const Panel = styled(Col).attrs({elevation: 2})`
@@ -64,21 +45,18 @@ export const Panel = styled(Col).attrs({elevation: 2})`
   @media screen and ${breakpoint.down('tablet')} {
     position: relative;
     width: auto;
-    flex: 1 0 ${MIN_PANEL_HEIGHT_MOBILE}px;
+    flex: 1 0 ${MOBILE_PANEL_MIN_HEIGHT}px;
     box-shadow: none;
     padding-top: 0;
   }
   @media screen and ${breakpoint.up('desktop')} {
     position: absolute;
+    width: ${DESKTOP_PANEL_WIDTH}px;
     border-radius: 4px;
     margin-top: ${themeGet('space.2')}px;
     border: 1px solid ${themeGet('colors.lightGrey')};
   }
 `
-
-Panel.defaultProps = {
-  width: 400
-}
 
 export const Title = styled(Text)`
   transition: all 300ms ease-in-out;
@@ -148,7 +126,7 @@ const BackgroundComponent = React.forwardRef(
   ({contentRef, onDismiss, ...props}, ref) => (
     <div ref={ref} {...props}>
       <a className="closeButton" onClick={onDismiss}>
-        <Icon name="times" size={22} />
+        <Icon name="times" size={22} color="dark" />
       </a>
       <div ref={contentRef} className="content" />
       <a className="clickArea" onClick={onDismiss} />

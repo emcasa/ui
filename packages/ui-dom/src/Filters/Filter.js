@@ -2,10 +2,11 @@ import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
 import Measure from 'react-measure'
-import {FilterButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
 import Button from '../Button'
+import FilterButton from './FilterButton'
+import {Panel, Title} from './styles'
 
 const Link = ({isMobile, ...props}) => {
   const style = isMobile
