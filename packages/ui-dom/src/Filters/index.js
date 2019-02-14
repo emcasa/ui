@@ -6,6 +6,7 @@ import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
 import {Container, Form, Body, Background} from './styles'
 import {withBreakpoint} from '../Breakpoint'
+import {compose, mapProps} from 'recompose'
 
 const ESC_KEY = 27
 
@@ -137,4 +138,11 @@ const FilterGroup = Group(
   }
 )
 
-export default withBreakpoint()(FilterGroup)
+export default compose(
+  withBreakpoint(),
+  mapProps(({onSelectFilter, selectedFilter, ...props}) => ({
+    onChange: onSelectFilter,
+    selectedValue: selectedFilter,
+    ...props
+  }))
+)(FilterGroup)
