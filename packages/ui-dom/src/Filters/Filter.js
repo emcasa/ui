@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, connect} from 'formik'
@@ -115,8 +116,9 @@ class ControlledFilterContainer extends PureComponent {
             selected={selected}
             onSelect={onSelect}
             hasValue={Boolean(
-              typeof field.value !== 'undefined' &&
-                field.value !== form.initialValues[name]
+              field.value !== null &&
+                typeof field.value !== 'undefined' &&
+                !isEqual(field.value, form.initialValues[name])
             )}
             onClear={() => {
               this.setState({value: null})

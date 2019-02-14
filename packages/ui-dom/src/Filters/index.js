@@ -25,8 +25,9 @@ const FilterGroup = Group(
 
     state = {}
 
-    static getDerivedStateFromProps(props) {
+    static getDerivedStateFromProps(props, state) {
       return {
+        initialValues: props.initialValues || state.initialValues || {},
         isOpen: props.isMobile && Boolean(props.selectedValue)
       }
     }
@@ -42,21 +43,18 @@ const FilterGroup = Group(
       }
     }
 
+    onSubmit = (values, actions) => {
+      this.setState({initialValues: values})
+      if (this.porps.onSubmit) this.props.onSubmit(values, actions)
+    }
+
     render() {
-      const {
-        children,
-        initialValues = {},
-        selectedValue,
-        onSelect,
-        onSubmit,
-        enableReinitialize,
-        ...props
-      } = this.props
-      const {isOpen} = this.state
+      const {children, selectedValue, onSelect, onSubmit, ...props} = this.props
+      const {isOpen, initialValues} = this.state
       return (
         <Container>
           <Formik
-            enableReinitialize={enableReinitialize}
+            enableReinitialize
             initialValues={initialValues}
             onSubmit={onSubmit}
           >
