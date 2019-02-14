@@ -10,7 +10,7 @@ import Icon from '../Icon'
 import Text from '../Text'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 
-export const BUTTON_HEIGHT = themeGet('buttonHeight.1')
+export const BUTTON_HEIGHT = themeGet('buttonHeight.2')
 export const ROW_PADDING = themeGet('space.2')
 export const ROW_HEIGHT = (props) =>
   BUTTON_HEIGHT(props) + ROW_PADDING(props) * 2
@@ -28,18 +28,17 @@ Container.defaultProps = {
   zIndex: 101
 }
 
-export const FilterButton = styled(Button)`
-  ${borderColor};
-  ${color};
-  ${({hasValue, selected, disabledStyle, theme}) => {
-    let color
-    let borderColor
-    const opacity = disabledStyle ? '70' : ''
-    if (hasValue || selected) color = borderColor = theme.colors.pink + opacity
-    else if (disabledStyle) color = theme.colors.grey
-    else color = theme.colors.dark
-    return {color, borderColor}
-  }};
+export const FilterButton = styled(({...props}) => {
+  delete props.disabled
+  return <Button {...props} />
+})`
+  height: ${BUTTON_HEIGHT}px;
+  opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
+  transition: ${['color', 'border-color', 'opacity']
+    .map((prop) => `${prop} 200ms ease-in-out`)
+    .join()};
+  ${({theme, active}) =>
+    !active && {color: theme.colors.pink, borderColor: theme.colors.pink}};
 `
 
 FilterButton.defaultProps = {

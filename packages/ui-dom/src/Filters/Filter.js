@@ -65,15 +65,22 @@ export default class Filter extends PureComponent {
   }
 
   render() {
-    const {label, selectedValue, selected, onSelect, ...props} = this.props
+    const {
+      label,
+      selectedValue,
+      hasValue,
+      selected,
+      onSelect,
+      ...props
+    } = this.props
     return (
       <Measure bounds>
         {({measureRef, contentRect: buttonRect}) => (
           <View innerRef={measureRef}>
             <FilterButton
               {...props}
-              selected={selected}
-              disabledStyle={selectedValue && !selected}
+              active={selected || hasValue}
+              disabled={selectedValue && !selected}
               onClick={onSelect}
             >
               {label}
