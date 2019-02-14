@@ -3,7 +3,7 @@ import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
 import SliderRangeFilter from './SliderRangeFilter'
-import Button from '../Button'
+import FilterButton from './FilterButton'
 
 const PriceFilter = ({...props}) => <SliderRangeFilter {...props} />
 
@@ -12,6 +12,7 @@ PriceFilter.initialValue = {min: MIN_PRICE, max: MAX_PRICE}
 PriceFilter.defaultProps = {
   name: 'price',
   label: 'Preço',
+  title: 'Preço',
   range: [PriceFilter.initialValue.min, PriceFilter.initialValue.max]
 }
 
@@ -22,6 +23,7 @@ AreaFilter.initialValue = {min: MIN_AREA, max: MAX_AREA}
 AreaFilter.defaultProps = {
   name: 'area',
   label: 'Área',
+  title: 'Área',
   range: [AreaFilter.initialValue.min, AreaFilter.initialValue.max]
 }
 
@@ -36,12 +38,13 @@ const RoomsFilter = ({...props}) => (
 RoomsFilter.defaultProps = {
   name: 'rooms',
   label: 'Quartos',
+  title: 'Quartos',
   range: [0, 5]
 }
 
 const GarageSpotsFilter = ({...props}) => (
   <ButtonRangeFilter
-    formatEmpty={() => 'Sem garagem'}
+    formatEmpty={() => 'Sem vagas'}
     formatLast={({value}) => value + '+'}
     {...props}
   />
@@ -50,26 +53,28 @@ const GarageSpotsFilter = ({...props}) => (
 GarageSpotsFilter.defaultProps = {
   name: 'garageSpots',
   label: 'Vagas',
+  title: 'Vagas de garagem',
   range: [0, 5]
 }
 
 const TypesFilter = ({buttonProps, ...props}) => (
   <ButtonGroupFilter {...props}>
-    <Button {...buttonProps} value="Casa">
+    <FilterButton {...buttonProps} value="Casa">
       Casa
-    </Button>
-    <Button {...buttonProps} value="Apartamento">
+    </FilterButton>
+    <FilterButton {...buttonProps} value="Apartamento">
       Apartamento
-    </Button>
-    <Button {...buttonProps} value="Cobertura">
+    </FilterButton>
+    <FilterButton {...buttonProps} value="Cobertura">
       Cobertura
-    </Button>
+    </FilterButton>
   </ButtonGroupFilter>
 )
 
 TypesFilter.defaultProps = {
   name: 'types',
   label: 'Tipos de imóveis',
+  title: 'Tipos de imóveis',
   buttonProps: {}
 }
 

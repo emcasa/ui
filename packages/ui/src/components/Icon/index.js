@@ -1,13 +1,20 @@
 import PropTypes from 'prop-types'
 import {css} from 'styled-components'
-import {space} from 'styled-system'
+import {space, width, height} from 'styled-system'
 
 import {ICON_SIZE} from '../../theme/measures'
+import {iconHeight} from '../../styles'
 
 export {default} from './hoc'
 
 export const container = css`
   ${space};
+  width: auto;
+  ${width};
+  ${(props) => {
+    if (props.height) return height(props)
+    else if (props.size) return iconHeight(props)
+  }};
 `
 
 container.propTypes = {
