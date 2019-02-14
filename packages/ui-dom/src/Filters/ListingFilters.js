@@ -3,7 +3,7 @@ import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
 import SliderRangeFilter from './SliderRangeFilter'
-import Button from '../Button'
+import FilterButton from './FilterButton'
 
 const PriceFilter = ({...props}) => <SliderRangeFilter {...props} />
 
@@ -59,15 +59,15 @@ GarageSpotsFilter.defaultProps = {
 
 const TypesFilter = ({buttonProps, ...props}) => (
   <ButtonGroupFilter {...props}>
-    <Button {...buttonProps} value="Casa">
+    <FilterButton {...buttonProps} value="Casa">
       Casa
-    </Button>
-    <Button {...buttonProps} value="Apartamento">
+    </FilterButton>
+    <FilterButton {...buttonProps} value="Apartamento">
       Apartamento
-    </Button>
-    <Button {...buttonProps} value="Cobertura">
+    </FilterButton>
+    <FilterButton {...buttonProps} value="Cobertura">
       Cobertura
-    </Button>
+    </FilterButton>
   </ButtonGroupFilter>
 )
 
