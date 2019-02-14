@@ -38,6 +38,12 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    & > div {
+      margin: 0 0 -${themeGet('space.2')}px -${themeGet('space.2')}px;
+    }
+    ${FilterButton} {
+      margin: 0 0 ${themeGet('space.2')}px ${themeGet('space.2')}px;
+    }
   }
   .panelFooter {
     margin-top: ${themeGet('space.4')}px;
@@ -175,7 +181,6 @@ export const Background = styled(
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.5);
-  pointer-events: ${({pose}) => (pose === 'closed' ? 'none' : 'all')};
 
   a.clickArea {
     display: block;
@@ -186,6 +191,7 @@ export const Background = styled(
 
   a.closeButton {
     display: none;
+    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;

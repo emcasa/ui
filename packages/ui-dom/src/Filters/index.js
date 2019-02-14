@@ -45,8 +45,8 @@ const FilterGroup = Group(
       const {
         children,
         initialValues = {},
+        selectedValue,
         onSelect,
-        isMobile,
         ...props
       } = this.props
       const {isOpen} = this.state
@@ -56,7 +56,7 @@ const FilterGroup = Group(
             {(form) => (
               <Form
                 innerRef={this.containerRef}
-                pose={isOpen && isMobile ? 'open' : 'closed'}
+                pose={isOpen ? 'open' : 'closed'}
                 initialPose="closed"
                 onSubmit={form.handleSubmit}
                 {...props}
@@ -75,7 +75,7 @@ const FilterGroup = Group(
             )}
           </Formik>
           <Background
-            pose={isOpen ? 'open' : 'closed'}
+            pose={selectedValue ? 'open' : 'closed'}
             onDismiss={() => onSelect(undefined)}
             contentRef={this.contentRef}
           />
