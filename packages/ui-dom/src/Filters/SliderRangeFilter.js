@@ -5,13 +5,21 @@ import View from '../View'
 
 export class SliderRange extends PureComponent {
   render() {
-    const {value, range, onChange, initialValue, currentValue} = this.props
+    const {
+      value,
+      range,
+      onChange,
+      initialValue,
+      currentValue,
+      formatValue
+    } = this.props
     return (
       <View pr={2} pl={2}>
         <Slider
           height="medium"
           range={range}
           initialValue={currentValue || value || initialValue}
+          formatValue={formatValue}
           onChange={onChange}
         >
           <Slider.Marker name="min" />

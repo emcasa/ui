@@ -5,7 +5,9 @@ import ButtonRangeFilter from './ButtonRangeFilter'
 import SliderRangeFilter from './SliderRangeFilter'
 import FilterButton from './FilterButton'
 
-const PriceFilter = ({...props}) => <SliderRangeFilter {...props} />
+const PriceFilter = ({...props}) => (
+  <SliderRangeFilter formatValue={Math.round} {...props} />
+)
 
 PriceFilter.initialValue = {min: MIN_PRICE, max: MAX_PRICE}
 
@@ -16,7 +18,9 @@ PriceFilter.defaultProps = {
   range: [PriceFilter.initialValue.min, PriceFilter.initialValue.max]
 }
 
-const AreaFilter = ({...props}) => <SliderRangeFilter {...props} />
+const AreaFilter = ({...props}) => (
+  <SliderRangeFilter formatValue={Math.round} {...props} />
+)
 
 AreaFilter.initialValue = {min: MIN_AREA, max: MAX_AREA}
 
