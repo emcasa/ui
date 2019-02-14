@@ -18,6 +18,13 @@ import {
   DESKTOP_PANEL_WIDTH
 } from './constants'
 
+const swiftInOut = [0.55, -0.15, 0.15, 1.45]
+
+const transition = {
+  duration: 250,
+  ease: swiftInOut
+}
+
 export const Container = styled.div`
   position: relative;
   height: ${ROW_HEIGHT};
@@ -60,7 +67,6 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     position: absolute;
     width: ${DESKTOP_PANEL_WIDTH}px;
     border-radius: 4px;
-    margin-top: ${themeGet('space.2')}px;
     border: 1px solid ${themeGet('colors.lightGrey')};
   }
 `
@@ -100,7 +106,8 @@ const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
 
 export const Form = styled(
   posed.form({
-    open: {
+    filterOpen: {
+      transition,
       preTransition: (props) => props.dimensions.measure(),
       applyAtStart: {
         position: 'fixed',
@@ -111,7 +118,8 @@ export const Form = styled(
       },
       y: ({theme}) => theme.space[4]
     },
-    closed: {
+    filterClosed: {
+      transition,
       applyAtEnd: {
         position: '',
         top: '',
@@ -125,11 +133,9 @@ export const Form = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
+  position: sticky;
   display: flex;
   flex-direction: row;
-  position: sticky;
-  padding: ${ROW_PADDING}px 0;
-  height: ${ROW_HEIGHT}px;
   ${zIndex};
 `
 
@@ -137,11 +143,59 @@ Form.defaultProps = {
   zIndex: 101
 }
 
+export const BodyExpander = styled(
+  posed.div({
+    rowOpen: {
+      transition,
+      flip: true,
+      height: get('height')
+    },
+    rowClosed: {
+      transition,
+      flip: true,
+      height: ROW_HEIGHT
+    }
+  })
+).attrs({
+  theme: ({theme}) => theme
+})`
+  flex: 1;
+  padding: ${ROW_PADDING}px 0;
+  height: ${ROW_HEIGHT}px;
+  min-height: ${ROW_HEIGHT}px;
+  overflow: hidden;
+`
+
 export const Body = styled(Row)`
-  z-index: 1;
-  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   ${FilterButton} {
     margin-right: ${themeGet('space.2')}px;
+    margin-bottom: ${themeGet('space.2')}px;
+  }
+`
+
+export const ExpandButton = styled(function ExpandButton({
+  isRowExpanded,
+  onClick,
+  ...props
+}) {
+  return (
+    <Col {...props}>
+      <FilterButton onClick={onClick}>
+        <Icon name={isRowExpanded ? 'angle-up' : 'angle-down'} color="grey" />
+      </FilterButton>
+    </Col>
+  )
+})`
+  padding: ${ROW_PADDING}px 0;
+  ${FilterButton} {
+    padding: 0 ${themeGet('space.2')}px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: ${themeGet('colors.lightGrey')};
   }
 `
 
@@ -159,14 +213,14 @@ const BackgroundComponent = React.forwardRef(
 
 export const Background = styled(
   posed(BackgroundComponent)({
-    open: {
+    bgOpen: {
       applyAtStart: {
         display: 'block',
         pointerEvents: 'all'
       },
       opacity: 1
     },
-    closed: {
+    bgClosed: {
       applyAtEnd: {
         display: 'none',
         pointerEvents: 'none'

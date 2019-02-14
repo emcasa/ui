@@ -1,34 +1,34 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
-import Measure from 'react-measure'
+import {Manager, Reference, Popper} from 'react-popper'
+import {PanelButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
 import FilterButton from './FilterButton'
-import {Panel, PanelButton, Title} from './styles'
 
 export default class Filter extends PureComponent {
   static defaultProps = {
     panelProps: {}
   }
 
-  renderPanel(passProps) {
+  get hasPanel() {
+    return Boolean(this.props.children)
+  }
+
+  renderPanel(passProps = {}) {
     const {
       children,
       title,
       onClear,
       onSubmit,
       panelProps,
-      contentRect,
-      contentRef,
-      isOpen,
       isMobile
     } = this.props
-    if (!children) return
-    const panelElement = (
+    if (!this.hasPanel) return
+    return (
       <Panel
         pose={isMobile ? 'mobile' : 'desktop'}
-        contentRect={contentRect}
         {...panelProps}
         {...passProps}
       >
@@ -44,39 +44,44 @@ export default class Filter extends PureComponent {
         </Row>
       </Panel>
     )
-    if (!isOpen) {
-      return panelElement
-    } else if (contentRef.current) {
-      return ReactDOM.createPortal(panelElement, contentRef.current)
-    }
+  }
+
+  renderButton(passProps = {}) {
+    const {label, selectedValue, selected, onSelect, ...props} = this.props
+    return (
+      <View style={{position: 'static'}} {...passProps}>
+        <FilterButton
+          {...props}
+          selected={selected}
+          disabledStyle={selectedValue && !selected}
+          onClick={onSelect}
+        >
+          {label}
+        </FilterButton>
+      </View>
+    )
   }
 
   render() {
-    const {
-      label,
-      selectedValue,
-      hasValue,
-      selected,
-      onSelect,
-      ...props
-    } = this.props
-    return (
-      <Measure bounds>
-        {({measureRef, contentRect: buttonRect}) => (
-          <View innerRef={measureRef}>
-            <FilterButton
-              {...props}
-              active={selected || hasValue}
-              disabled={selectedValue && !selected}
-              onClick={onSelect}
-            >
-              {label}
-            </FilterButton>
-            {selected && this.renderPanel({buttonRect})}
-          </View>
-        )}
-      </Measure>
-    )
+    const {selected, isFilterExpanded, contentRef} = this.props
+    if (!selected || !this.hasPanel) return this.renderButton()
+    else if (isFilterExpanded) {
+      return (
+        <>
+          {this.renderButton()}
+          {ReactDOM.createPortal(this.renderPanel(), contentRef.current)}
+        </>
+      )
+    } else {
+      return (
+        <Manager>
+          <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
+          <Popper placement="bottom-start">
+            {({ref, style}) => this.renderPanel({innerRef: ref, style})}
+          </Popper>
+        </Manager>
+      )
+    }
   }
 }
 
