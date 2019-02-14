@@ -13,6 +13,7 @@ const FilterGroup = Group(
   class FilterGroup extends PureComponent {
     static defaultProps = {
       strategy: 'switchable',
+      onSubmit: () => null,
       get scrollContainer() {
         return typeof window === 'undefined' ? undefined : window.document.body
       }
@@ -47,12 +48,18 @@ const FilterGroup = Group(
         initialValues = {},
         selectedValue,
         onSelect,
+        onSubmit,
+        enableReinitialize,
         ...props
       } = this.props
       const {isOpen} = this.state
       return (
         <Container>
-          <Formik initialValues={initialValues}>
+          <Formik
+            enableReinitialize={enableReinitialize}
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+          >
             {(form) => (
               <Form
                 innerRef={this.containerRef}

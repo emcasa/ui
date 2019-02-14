@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
-import {Field} from 'formik'
+import {Field, connect} from 'formik'
+import {mapProps, compose} from 'recompose'
 import Measure from 'react-measure'
 import View from '../View'
 import Row from '../Row'
@@ -35,10 +36,15 @@ export default class Filter extends PureComponent {
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
-          <PanelButton isMobile={isMobile} onClick={onClear}>
+          <PanelButton type="submit" isMobile={isMobile} onClick={onClear}>
             Limpar
           </PanelButton>
-          <PanelButton active isMobile={isMobile} onClick={onSubmit}>
+          <PanelButton
+            active
+            type="submit"
+            isMobile={isMobile}
+            onClick={onSubmit}
+          >
             Aplicar
           </PanelButton>
         </Row>
@@ -80,12 +86,19 @@ export default class Filter extends PureComponent {
   }
 }
 
-export class ControlledFilter extends PureComponent {
+class ControlledFilterContainer extends PureComponent {
   state = {}
 
-  static getDerivedStateFromProps(props) {
-    if (!props.selected) return {value: null}
-    return null
+  componentDidUpdate(prevProps) {
+    if (prevProps.selected !== this.props.selected) {
+      if (!this.props.selectedValue) {
+        // Focused out
+        this.setState({value: null})
+      } else if (this.props.selectedValue !== this.props.name) {
+        // Switched to another filter
+        this.props.setFieldValue(this.props.name, this.state.value)
+      }
+    }
   }
 
   onChange = (value) => this.setState({value})
@@ -102,7 +115,8 @@ export class ControlledFilter extends PureComponent {
             selected={selected}
             onSelect={onSelect}
             hasValue={Boolean(
-              field.value && field.value !== form.initialValues[name]
+              typeof field.value !== 'undefined' &&
+                field.value !== form.initialValues[name]
             )}
             onClear={() => {
               this.setState({value: null})
@@ -129,3 +143,11 @@ export class ControlledFilter extends PureComponent {
     )
   }
 }
+
+export const ControlledFilter = compose(
+  connect,
+  mapProps(({formik, ...props}) => ({
+    setFieldValue: formik.setFieldValue,
+    ...props
+  }))
+)(ControlledFilterContainer)
