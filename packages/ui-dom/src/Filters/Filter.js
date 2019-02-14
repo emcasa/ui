@@ -35,6 +35,7 @@ export default class Filter extends PureComponent {
       contentRef,
       isMobile
     } = this.props
+    if (!children) return
     const panelElement = (
       <Panel
         pose={isMobile ? 'mobile' : 'desktop'}
@@ -53,7 +54,7 @@ export default class Filter extends PureComponent {
         </Row>
       </Panel>
     )
-    if (!this.props.isMobile) {
+    if (!this.props.isOpen) {
       return panelElement
     } else if (contentRef.current) {
       return ReactDOM.createPortal(panelElement, contentRef.current)
@@ -116,6 +117,7 @@ export class ControlledFilter extends PureComponent {
               field: {
                 ...field,
                 currentValue: value,
+                initialValue: form.initialValues[name],
                 onChange: this.onChange
               },
               form

@@ -1,12 +1,13 @@
+import get from 'lodash/fp/get'
 import React from 'react'
 import styled from 'styled-components'
+import posed from 'react-pose'
 import {themeGet, color, borderColor, zIndex} from 'styled-system'
 import Button from '../Button'
 import Row from '../Row'
 import Col from '../Col'
 import Icon from '../Icon'
 import {breakpoint} from '@emcasa/ui/lib/styles'
-import posed from 'react-pose'
 
 export const Container = styled.div`
   position: relative;
@@ -64,20 +65,41 @@ Panel.defaultProps = {
   width: 400
 }
 
+const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
+  fun(initialize ? dimensions.measure() : dimensions.get())
+
 export const Form = styled(
   posed.form({
     open: {
-      y: ({contentRect}) => -(contentRect.bounds.top - window.scrollY - 20)
+      preTransition: (props) => props.dimensions.measure(),
+      applyAtStart: {
+        position: 'fixed',
+        top: 0,
+        left: mapDimensions(get('left')),
+        width: mapDimensions(get('width')),
+        y: mapDimensions(get('top'))
+      },
+      y: ({theme}) => theme.space[4]
     },
     closed: {
-      y: 0
+      applyAtEnd: {
+        position: 'sticky',
+        top: 'unset',
+        left: 'unset',
+        width: 'unset',
+        y: 0
+      },
+      y: mapDimensions(get('top'), {initialize: false})
     }
   })
-)`
+).attrs({
+  theme: ({theme}) => theme
+})`
   display: flex;
   flex-direction: row;
   position: sticky;
   height: ${themeGet('buttonHeight.1')}px;
+  transform-origin: 50% 0;
   ${zIndex};
 `
 

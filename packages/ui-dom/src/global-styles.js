@@ -1,4 +1,4 @@
-import { injectGlobal } from 'styled-components'
+import {injectGlobal} from 'styled-components'
 
 injectGlobal`
   @font-face {
@@ -23,6 +23,10 @@ injectGlobal`
     src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.woff") format('woff'),
         url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.woff2") format('woff2'),
         url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.ttf") format('ttf');
+  }
+
+  .noscroll {
+    overflow: hidden;
   }
 `
 
