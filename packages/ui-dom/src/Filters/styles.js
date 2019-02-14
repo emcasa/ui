@@ -18,6 +18,13 @@ import {
   DESKTOP_PANEL_WIDTH
 } from './constants'
 
+const swiftInOut = [0.55, -0.15, 0.15, 1.45]
+
+const transition = {
+  duration: 250,
+  ease: swiftInOut
+}
+
 export const Container = styled.div`
   position: relative;
   height: ${ROW_HEIGHT};
@@ -100,6 +107,7 @@ const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
 export const Form = styled(
   posed.form({
     filterOpen: {
+      transition,
       preTransition: (props) => props.dimensions.measure(),
       applyAtStart: {
         position: 'fixed',
@@ -111,6 +119,7 @@ export const Form = styled(
       y: ({theme}) => theme.space[4]
     },
     filterClosed: {
+      transition,
       applyAtEnd: {
         position: '',
         top: '',
@@ -137,10 +146,12 @@ Form.defaultProps = {
 export const BodyExpander = styled(
   posed.div({
     rowOpen: {
+      transition,
       flip: true,
       height: get('height')
     },
     rowClosed: {
+      transition,
       flip: true,
       height: ROW_HEIGHT
     }
