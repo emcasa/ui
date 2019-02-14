@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
-import Tether from 'react-tether'
+import {Manager, Reference, Popper} from 'react-popper'
 import {FilterButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
@@ -25,7 +25,11 @@ export default class Filter extends PureComponent {
     panelProps: {}
   }
 
-  renderPanel() {
+  get hasPanel() {
+    return Boolean(this.props.children)
+  }
+
+  renderPanel(passProps = {}) {
     const {
       children,
       title,
@@ -34,9 +38,13 @@ export default class Filter extends PureComponent {
       panelProps,
       isMobile
     } = this.props
-    if (!children) return
+    if (!this.hasPanel) return
     return (
-      <Panel pose={isMobile ? 'mobile' : 'desktop'} {...panelProps}>
+      <Panel
+        pose={isMobile ? 'mobile' : 'desktop'}
+        {...panelProps}
+        {...passProps}
+      >
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
@@ -51,10 +59,10 @@ export default class Filter extends PureComponent {
     )
   }
 
-  renderButton() {
+  renderButton(passProps = {}) {
     const {label, selectedValue, selected, onSelect, ...props} = this.props
     return (
-      <View style={{position: 'static'}}>
+      <View style={{position: 'static'}} {...passProps}>
         <FilterButton
           {...props}
           selected={selected}
@@ -69,34 +77,22 @@ export default class Filter extends PureComponent {
 
   render() {
     const {selected, isFilterExpanded, contentRef} = this.props
-    const buttonElement = this.renderButton()
-    let panelElement
-    if (!selected || !(panelElement = this.renderPanel())) return buttonElement
+    if (!selected || !this.hasPanel) return this.renderButton()
     else if (isFilterExpanded) {
       return (
         <>
-          {buttonElement}
-          {ReactDOM.createPortal(panelElement, contentRef.current)}
+          {this.renderButton()}
+          {ReactDOM.createPortal(this.renderPanel(), contentRef.current)}
         </>
       )
     } else {
       return (
-        <Tether
-          attachment="top right"
-          constraints={[
-            {
-              to: 'scrollParent',
-              attachment: 'together'
-            }
-          ]}
-          renderElementTo={contentRef.current}
-          renderElement={(innerRef) =>
-            React.cloneElement(panelElement, {innerRef})
-          }
-          renderTarget={(innerRef) =>
-            React.cloneElement(buttonElement, {innerRef})
-          }
-        />
+        <Manager>
+          <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
+          <Popper placement="bottom-start">
+            {({ref, style}) => this.renderPanel({innerRef: ref, style})}
+          </Popper>
+        </Manager>
       )
     }
   }
