@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ButtonGroupFilter from './ButtonGroupFilter'
-import Button from '../Button'
+import FilterButton from './FilterButton'
 
 export const selectStrategy = ({range: [min, max]}) => ({
   get maxValue() {
@@ -35,7 +35,7 @@ export default function ButtonRangeFilter({
           const value = index + min
           const input = {index, value}
           return (
-            <Button key={index} value={value} {...buttonProps}>
+            <FilterButton key={index} value={value} {...buttonProps}>
               {value == 0
                 ? formatEmpty(input)
                 : index == 0
@@ -43,7 +43,7 @@ export default function ButtonRangeFilter({
                   : value == max
                     ? formatLast(input)
                     : formatText(input)}
-            </Button>
+            </FilterButton>
           )
         })}
     </ButtonGroupFilter>

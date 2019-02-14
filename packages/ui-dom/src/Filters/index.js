@@ -6,8 +6,8 @@ import {compose} from 'recompose'
 import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
+import {ROW_HEIGHT} from './constants'
 import {
-  ROW_HEIGHT,
   Container,
   Form,
   Body,

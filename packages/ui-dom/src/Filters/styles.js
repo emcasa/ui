@@ -2,21 +2,21 @@ import get from 'lodash/fp/get'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
-import {themeGet, color, borderColor, zIndex} from 'styled-system'
-import Button from '../Button'
+import {themeGet, zIndex} from 'styled-system'
+import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '../Row'
 import Col from '../Col'
 import Icon from '../Icon'
 import Text from '../Text'
-import {breakpoint} from '@emcasa/ui/lib/styles'
-
-export const BUTTON_HEIGHT = themeGet('buttonHeight.1')
-export const ROW_PADDING = themeGet('space.2')
-export const ROW_HEIGHT = (props) =>
-  BUTTON_HEIGHT(props) + ROW_PADDING(props) * 2
-export const TOP_SPACING = ({offset, ...props}) =>
-  (offset || ROW_HEIGHT(props)) + props.theme.space[4] * 2
-export const MIN_PANEL_HEIGHT_MOBILE = 200
+import Button from '../Button'
+import FilterButton from './FilterButton'
+import {
+  ROW_PADDING,
+  ROW_HEIGHT,
+  TOP_SPACING,
+  MOBILE_PANEL_MIN_HEIGHT,
+  DESKTOP_PANEL_WIDTH
+} from './constants'
 
 export const Container = styled.div`
   position: relative;
@@ -26,25 +26,6 @@ export const Container = styled.div`
 
 Container.defaultProps = {
   zIndex: 101
-}
-
-export const FilterButton = styled(Button)`
-  ${borderColor};
-  ${color};
-  ${({hasValue, selected, disabledStyle, theme}) => {
-    let color
-    let borderColor
-    const opacity = disabledStyle ? '70' : ''
-    if (hasValue || selected) color = borderColor = theme.colors.pink + opacity
-    else if (disabledStyle) color = theme.colors.grey
-    else color = theme.colors.dark
-    return {color, borderColor}
-  }};
-`
-
-FilterButton.defaultProps = {
-  type: 'button',
-  fontSize: 'small'
 }
 
 export const Panel = styled(Col).attrs({elevation: 2})`
@@ -57,6 +38,12 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    & > div {
+      margin: 0 0 -${themeGet('space.2')}px -${themeGet('space.2')}px;
+    }
+    ${FilterButton} {
+      margin: 0 0 ${themeGet('space.2')}px ${themeGet('space.2')}px;
+    }
   }
   .panelFooter {
     margin-top: ${themeGet('space.4')}px;
@@ -65,20 +52,33 @@ export const Panel = styled(Col).attrs({elevation: 2})`
   @media screen and ${breakpoint.down('tablet')} {
     position: relative;
     width: auto;
-    flex: 1 0 ${MIN_PANEL_HEIGHT_MOBILE}px;
+    flex: 1 0 ${MOBILE_PANEL_MIN_HEIGHT}px;
     box-shadow: none;
     padding-top: 0;
   }
   @media screen and ${breakpoint.up('desktop')} {
     position: absolute;
+    width: ${DESKTOP_PANEL_WIDTH}px;
     border-radius: 4px;
     border: 1px solid ${themeGet('colors.lightGrey')};
   }
 `
 
-Panel.defaultProps = {
-  width: 400
-}
+export const PanelButton = styled(Button).attrs({
+  type: 'button',
+  link: ({isMobile}) => !isMobile
+})`
+  font-size: ${themeGet('fontSizes.1')}px;
+  @media screen and ${breakpoint.down('tablet')} {
+    height: ${themeGet('buttonHeight.0')}px;
+  }
+  @media screen and ${breakpoint.up('desktop')} {
+    color: ${({active, theme: {colors}}) =>
+      active ? colors.pink : colors.grey};
+    padding: 0;
+    height: auto;
+  }
+`
 
 export const Title = styled(Text)`
   transition: all 300ms ease-in-out;
@@ -179,11 +179,12 @@ export const ExpandButton = styled(function ExpandButton({
   )
 })`
   padding: ${ROW_PADDING}px 0;
-  & > button {
+  ${FilterButton} {
     padding: 0 ${themeGet('space.2')}px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-color: ${themeGet('colors.lightGrey')};
   }
 `
 
@@ -191,7 +192,7 @@ const BackgroundComponent = React.forwardRef(
   ({contentRef, onDismiss, ...props}, ref) => (
     <div ref={ref} {...props}>
       <a className="closeButton" onClick={onDismiss}>
-        <Icon name="times" size={22} />
+        <Icon name="times" size={22} color="dark" />
       </a>
       <div ref={contentRef} className="content" />
       <a className="clickArea" onClick={onDismiss} />
@@ -202,9 +203,17 @@ const BackgroundComponent = React.forwardRef(
 export const Background = styled(
   posed(BackgroundComponent)({
     bgOpen: {
+      applyAtStart: {
+        display: 'block',
+        pointerEvents: 'all'
+      },
       opacity: 1
     },
     bgClosed: {
+      applyAtEnd: {
+        display: 'none',
+        pointerEvents: 'none'
+      },
       opacity: 0
     }
   })
@@ -215,7 +224,6 @@ export const Background = styled(
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.5);
-  pointer-events: ${({pose}) => (pose === 'closed' ? 'none' : 'all')};
 
   a.clickArea {
     display: block;
@@ -226,6 +234,7 @@ export const Background = styled(
 
   a.closeButton {
     display: none;
+    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;

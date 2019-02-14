@@ -2,23 +2,10 @@ import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field} from 'formik'
 import {Manager, Reference, Popper} from 'react-popper'
-import {FilterButton, Panel, Title} from './styles'
+import {PanelButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
-import Button from '../Button'
-
-const Link = ({isMobile, ...props}) => {
-  const style = isMobile
-    ? {}
-    : {
-        link: true,
-        color: props.active ? 'pink' : 'grey',
-        p: 0,
-        height: 'auto',
-        fontSize: 'small'
-      }
-  return <Button type="button" {...style} {...props} />
-}
+import FilterButton from './FilterButton'
 
 export default class Filter extends PureComponent {
   static defaultProps = {
@@ -48,12 +35,12 @@ export default class Filter extends PureComponent {
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
-          <Link isMobile={isMobile} onClick={onClear}>
+          <PanelButton isMobile={isMobile} onClick={onClear}>
             Limpar
-          </Link>
-          <Link isMobile={isMobile} active onClick={onSubmit}>
+          </PanelButton>
+          <PanelButton active isMobile={isMobile} onClick={onSubmit}>
             Aplicar
-          </Link>
+          </PanelButton>
         </Row>
       </Panel>
     )
