@@ -32,7 +32,9 @@
     "nuke": "rm -rf node_modules && lerna exec -- rm -rf node_modules",
     "watch": "lerna run watch --parallel",
     "dev": "docz dev",
-    "docz": "docz build"
+    "docz": "docz build",
+    "release": "lerna exec --no-private --bail=false -- \"npm publish\"",
+    "release:canary": "lerna publish --preid rc --dist-tag rc --npm-client npm --force-publish @emcasa/ui --canary "
   },
   "dependencies": {
     "formik": "^1.5.0",
