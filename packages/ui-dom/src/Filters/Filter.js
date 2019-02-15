@@ -25,6 +25,7 @@ export default class Filter extends PureComponent {
       onClear,
       onSubmit,
       panelProps,
+      hideFooter,
       isMobile
     } = this.props
     if (!this.hasPanel) return
@@ -36,14 +37,20 @@ export default class Filter extends PureComponent {
       >
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
-        <Row className="panelFooter">
-          <PanelButton isMobile={isMobile} onClick={onClear}>
-            Limpar
-          </PanelButton>
-          <PanelButton active isMobile={isMobile} onClick={onSubmit}>
-            Aplicar
-          </PanelButton>
-        </Row>
+        {!hideFooter && (
+          <Row className="panelFooter">
+            {onClear && (
+              <PanelButton isMobile={isMobile} onClick={onClear}>
+                Limpar
+              </PanelButton>
+            )}
+            {onSubmit && (
+              <PanelButton active isMobile={isMobile} onClick={onSubmit}>
+                Aplicar
+              </PanelButton>
+            )}
+          </Row>
+        )}
       </Panel>
     )
   }
