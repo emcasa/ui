@@ -62,7 +62,7 @@ GarageSpotsFilter.defaultProps = {
 }
 
 const TypesFilter = ({buttonProps, ...props}) => (
-  <ButtonGroupFilter {...props}>
+  <ButtonGroupFilter strategy="multi" {...props}>
     <FilterButton {...buttonProps} value="Casa">
       Casa
     </FilterButton>
