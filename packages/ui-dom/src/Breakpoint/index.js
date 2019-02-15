@@ -3,9 +3,9 @@ import isFunction from 'lodash/isFunction'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {withTheme} from 'styled-components'
-import {breakpoint} from '@emcasa/ui/src/styles'
+import {breakpoint} from '@emcasa/ui/lib/styles'
+import {BREAKPOINTS} from '@emcasa/ui/lib/theme/measures'
 import Media from 'react-responsive'
-import {BREAKPOINTS} from '@emcasa/ui/src/theme/measures'
 
 export const BreakpointType = PropTypes.oneOfType([
   PropTypes.oneOf(Array.from(BREAKPOINTS.keys())),
