@@ -150,7 +150,8 @@ class ControlledFilterContainer extends PureComponent {
               field: {
                 ...field,
                 currentValue: value,
-                initialValue: form.initialValues[name],
+                appliedValue: form.initialValues[name],
+                initialValue: initialValues[name],
                 onChange: this.onChange
               },
               form
