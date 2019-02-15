@@ -63,8 +63,7 @@ export class BreakpointProvider extends PureComponent {
   }
 
   static defaultProps = {
-    debounce: 150,
-    disabled: true
+    debounce: 150
   }
 
   state = {

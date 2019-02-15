@@ -13908,7 +13908,7 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-recompose@^0.30.0:
+recompose@^0.30.0, recompose@~0.30.0:
   version "0.30.0"
   resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.30.0.tgz#82773641b3927e8c7d24a0d87d65aeeba18aabd0"
   dependencies:
@@ -15297,7 +15297,7 @@ style-value-types@^3.0.6, style-value-types@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.0.7.tgz#6e7a22cc8b1a4465193268ed66ad5f2a82579054"
 
-styled-components@^3.4.10, styled-components@^3.4.9:
+styled-components@^3.4.10:
   version "3.4.10"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.4.10.tgz#9a654c50ea2b516c36ade57ddcfa296bf85c96e1"
   dependencies:
