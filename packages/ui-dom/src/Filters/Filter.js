@@ -3,87 +3,94 @@ import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import {Field, connect} from 'formik'
 import {mapProps, compose} from 'recompose'
-import Measure from 'react-measure'
+import {Manager, Reference, Popper} from 'react-popper'
+import {PanelButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
 import FilterButton from './FilterButton'
-import {Panel, PanelButton, Title} from './styles'
 
 export default class Filter extends PureComponent {
   static defaultProps = {
     panelProps: {}
   }
 
-  renderPanel(passProps) {
+  get hasPanel() {
+    return Boolean(this.props.children)
+  }
+
+  renderPanel(passProps = {}) {
     const {
       children,
       title,
       onClear,
       onSubmit,
       panelProps,
-      contentRect,
-      contentRef,
-      isOpen,
       isMobile
     } = this.props
-    if (!children) return
-    const panelElement = (
+    if (!this.hasPanel) return
+    return (
       <Panel
         pose={isMobile ? 'mobile' : 'desktop'}
-        contentRect={contentRect}
         {...panelProps}
         {...passProps}
       >
         {title && <Title>{title}</Title>}
         <Row className="panelBody">{children}</Row>
         <Row className="panelFooter">
-          <PanelButton type="submit" isMobile={isMobile} onClick={onClear}>
+          <PanelButton isMobile={isMobile} onClick={onClear}>
             Limpar
           </PanelButton>
-          <PanelButton
-            active
-            type="submit"
-            isMobile={isMobile}
-            onClick={onSubmit}
-          >
+          <PanelButton active isMobile={isMobile} onClick={onSubmit}>
             Aplicar
           </PanelButton>
         </Row>
       </Panel>
     )
-    if (!isOpen) {
-      return panelElement
-    } else if (contentRef.current) {
-      return ReactDOM.createPortal(panelElement, contentRef.current)
-    }
   }
 
-  render() {
+  renderButton(passProps = {}) {
     const {
       label,
       selectedValue,
-      hasValue,
       selected,
       onSelect,
+      hasValue,
       ...props
     } = this.props
     return (
-      <Measure bounds>
-        {({measureRef, contentRect: buttonRect}) => (
-          <View innerRef={measureRef}>
-            <FilterButton
-              {...props}
-              active={selected || hasValue}
-              disabled={selectedValue && !selected}
-              onClick={onSelect}
-            >
-              {label}
-            </FilterButton>
-            {selected && this.renderPanel({buttonRect})}
-          </View>
-        )}
-      </Measure>
+      <View style={{position: 'static'}} {...passProps}>
+        <FilterButton
+          {...props}
+          selected={selected || hasValue}
+          disabled={selectedValue && !selected}
+          onClick={onSelect}
+        >
+          {label}
+        </FilterButton>
+      </View>
     )
+  }
+
+  render() {
+    const {selected, isFilterExpanded, contentRef} = this.props
+    if (!selected || !this.hasPanel) return this.renderButton()
+    else if (isFilterExpanded) {
+      return (
+        <>
+          {this.renderButton()}
+          {ReactDOM.createPortal(this.renderPanel(), contentRef.current)}
+        </>
+      )
+    } else {
+      return (
+        <Manager>
+          <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
+          <Popper placement="bottom-start">
+            {({ref, style}) => this.renderPanel({innerRef: ref, style})}
+          </Popper>
+        </Manager>
+      )
+    }
   }
 }
 
@@ -126,11 +133,17 @@ class ControlledFilterContainer extends PureComponent {
             onClear={() => {
               this.setState({value: null})
               form.setFieldValue(name, undefined)
-              requestAnimationFrame(onSelect)
+              requestAnimationFrame(() => {
+                onSelect()
+                form.submitForm()
+              })
             }}
             onSubmit={() => {
               form.setFieldValue(name, value)
-              requestAnimationFrame(onSelect)
+              requestAnimationFrame(() => {
+                onSelect()
+                form.submitForm()
+              })
             }}
           >
             {children({

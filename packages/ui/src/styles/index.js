@@ -26,13 +26,18 @@ export const buttonHeight = enumeratedStyle({
   transformValue: transformUnit('px')
 })
 
-export const iconSize = enumeratedStyle({
-  enum: Array.from(ICON_SIZE.keys()),
-  prop: 'size',
-  cssProperty: 'width',
-  key: 'iconSize',
-  transformValue: transformUnit('px')
-})
+export const iconSize = (config) =>
+  enumeratedStyle({
+    enum: Array.from(ICON_SIZE.keys()),
+    prop: 'size',
+    key: 'iconSize',
+    transformValue: transformUnit('px'),
+    ...config
+  })
+
+export const iconHeight = iconSize({cssProperty: 'height'})
+
+export const iconWidth = iconSize({cssProperty: 'height'})
 
 export const fontSize = enumerated(Array.from(FONT_SIZE.keys()), 'fontSize')(
   styles.fontSize
