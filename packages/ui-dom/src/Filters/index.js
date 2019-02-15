@@ -70,14 +70,14 @@ const FilterGroup = Group(
     componentDidUpdate(prevProps, prevState) {
       if (
         this.props.scrollContainer &&
-        prevState.isExpanded !== this.state.isExpanded
+        prevState.isFilterExpanded !== this.state.isFilterExpanded
       ) {
         const classNames = elementClass(this.props.scrollContainer)
-        if (this.state.isExpanded) classNames.add('noscroll')
+        if (this.state.isFilterExpanded) classNames.add('noscroll')
         else classNames.remove('noscroll')
       }
       if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
-        this.setState({initialValues: this.initialValues})
+        this.setState({initialValues: this.props.initialValues})
       }
     }
 
