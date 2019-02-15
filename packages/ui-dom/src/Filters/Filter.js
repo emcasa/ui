@@ -9,6 +9,17 @@ import View from '../View'
 import Row from '../Row'
 import FilterButton from './FilterButton'
 
+const popperModifiers = {
+  offset: {
+    fn(data) {
+      if (data.placement.indexOf('top') !== -1) {
+        data.offsets.popper.top -= 10
+      }
+      return data
+    }
+  }
+}
+
 export default class Filter extends PureComponent {
   static defaultProps = {
     panelProps: {}
@@ -92,7 +103,7 @@ export default class Filter extends PureComponent {
       return (
         <Manager>
           <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
-          <Popper placement="bottom-start">
+          <Popper placement="bottom-start" modifiers={popperModifiers}>
             {({ref, style}) => this.renderPanel({innerRef: ref, style})}
           </Popper>
         </Manager>
