@@ -2,7 +2,7 @@ import get from 'lodash/fp/get'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
-import {themeGet, zIndex} from 'styled-system'
+import {themeGet, zIndex, width} from 'styled-system'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '../Row'
 import Col from '../Col'
@@ -27,7 +27,8 @@ const transition = {
 
 export const Container = styled.div`
   position: relative;
-  height: ${ROW_HEIGHT};
+  display: inline-flex;
+  ${width};
   ${zIndex};
 `
 
@@ -133,8 +134,10 @@ export const Form = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
+  flex: 1;
   position: sticky;
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   ${zIndex};
 `
@@ -159,7 +162,7 @@ export const BodyExpander = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
-  flex: 1;
+  flex: 0 1 auto;
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
   min-height: ${ROW_HEIGHT}px;
@@ -189,7 +192,6 @@ export const ExpandButton = styled(function ExpandButton({
     </Col>
   )
 })`
-  padding: ${ROW_PADDING}px 0;
   ${FilterButton} {
     padding: 0 ${themeGet('space.2')}px;
     display: flex;

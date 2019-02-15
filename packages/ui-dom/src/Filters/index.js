@@ -17,6 +17,8 @@ import {
   Background
 } from './styles'
 import {withBreakpoint} from '../Breakpoint'
+import Button from '../Button'
+import Row from '../Row'
 
 const ESC_KEY = 27
 
@@ -111,6 +113,8 @@ const FilterGroup = Group(
         id,
         style,
         className,
+        width,
+        zIndex,
         selectedValue,
         onSelect,
         measureRef
@@ -130,7 +134,12 @@ const FilterGroup = Group(
           onSubmit={this.onSubmit}
         >
           {(form) => (
-            <Container style={style} className={className}>
+            <Container
+              style={style}
+              className={className}
+              width={width}
+              zIndex={zIndex}
+            >
               <Form
                 id={id}
                 innerRef={this.containerRef}
@@ -160,14 +169,29 @@ const FilterGroup = Group(
                     )}
                   </Body>
                 </BodyExpander>
-                {rowCount > 1 && (
-                  <ExpandButton
-                    isRowExpanded={isRowExpanded}
-                    onClick={
-                      !isRowExpanded ? this.onExpandRow : this.onCollapseRow
-                    }
-                  />
-                )}
+                <Row pt={2}>
+                  {rowCount > 1 && (
+                    <ExpandButton
+                      isRowExpanded={isRowExpanded}
+                      onClick={
+                        !isRowExpanded ? this.onExpandRow : this.onCollapseRow
+                      }
+                    />
+                  )}
+                  <Button
+                    link
+                    type="button"
+                    fontSize="small"
+                    height="short"
+                    color="grey"
+                    onClick={() => {
+                      form.resetForm({})
+                      form.submitForm()
+                    }}
+                  >
+                    Limpar
+                  </Button>
+                </Row>
               </Form>
               <Background
                 pose={selectedValue ? 'bgOpen' : 'bgClosed'}
