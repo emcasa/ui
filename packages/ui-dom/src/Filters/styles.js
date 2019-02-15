@@ -2,7 +2,7 @@ import get from 'lodash/fp/get'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
-import {themeGet, zIndex, width} from 'styled-system'
+import {themeGet, zIndex, width, space} from 'styled-system'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '../Row'
 import Col from '../Col'
@@ -28,13 +28,11 @@ const transition = {
 export const Container = styled.div`
   position: relative;
   display: inline-flex;
+  width: fit-content;
   ${width};
+  ${space};
   ${zIndex};
 `
-
-Container.defaultProps = {
-  zIndex: 101
-}
 
 export const Panel = styled(Col).attrs({elevation: 2})`
   display: flex;
@@ -162,6 +160,7 @@ export const BodyExpander = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
+  box-sizing: border-box;
   flex: 0 1 auto;
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
@@ -173,7 +172,7 @@ export const Body = styled(Row)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  ${FilterButton} {
+  .filterButton {
     margin-right: ${themeGet('space.2')}px;
     margin-bottom: ${themeGet('space.2')}px;
   }
@@ -192,7 +191,7 @@ export const ExpandButton = styled(function ExpandButton({
     </Col>
   )
 })`
-  ${FilterButton} {
+  button {
     padding: 0 ${themeGet('space.2')}px;
     display: flex;
     justify-content: center;
@@ -255,16 +254,11 @@ export const Background = styled(
   }
 
   .content {
-    display: none;
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
     flex: 1;
     flex-direction: column;
-    width: 100%;
-    max-height: 100%;
-    height: calc(100vh - ${TOP_SPACING}px);
-    margin-top: ${TOP_SPACING}px;
-    padding: ${themeGet('space.4')}px;
-    padding-top: 0;
-    overflow-y: auto;
   }
 
   @media screen and ${breakpoint.down('tablet')} {
@@ -279,7 +273,13 @@ export const Background = styled(
     }
 
     .content {
-      display: flex;
+      width: 100%;
+      max-height: 100%;
+      height: calc(100vh - ${TOP_SPACING}px);
+      margin-top: ${TOP_SPACING}px;
+      padding: ${themeGet('space.4')}px;
+      padding-top: 0;
+      overflow-y: auto;
     }
   }
 `

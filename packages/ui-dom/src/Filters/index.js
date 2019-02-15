@@ -37,6 +37,8 @@ const FilterGroup = Group(
 )(
   class FilterGroup extends PureComponent {
     static defaultProps = {
+      zIndex: 1,
+      zIndexActiveOffset: 100,
       initialValues: {},
       contentRect: {bounds: {}},
       strategy: 'switchable',
@@ -115,6 +117,7 @@ const FilterGroup = Group(
         className,
         width,
         zIndex,
+        zIndexActiveOffset,
         selectedValue,
         onSelect,
         measureRef
@@ -126,6 +129,7 @@ const FilterGroup = Group(
         isFilterExpanded,
         isRowExpanded
       } = this.state
+      const hasSelectedValue = Boolean(selectedValue)
       return (
         <Formik
           ref={this.formikRef}
@@ -135,10 +139,11 @@ const FilterGroup = Group(
         >
           {(form) => (
             <Container
+              hasSelectedValue={hasSelectedValue}
               style={style}
               className={className}
               width={width}
-              zIndex={zIndex}
+              zIndex={zIndex + (hasSelectedValue ? zIndexActiveOffset : 0)}
             >
               <Form
                 id={id}

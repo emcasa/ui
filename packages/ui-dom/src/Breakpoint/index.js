@@ -37,7 +37,7 @@ export default withTheme(
   }
 )
 
-const getWindowWidth = () => {
+export const getWindowWidth = () => {
   if (canUseDOM)
     return window.innerWidth || document.documentElement.clientWidth
 }

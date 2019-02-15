@@ -79,6 +79,7 @@ export default class Filter extends PureComponent {
       <View style={{position: 'static'}} {...passProps}>
         <FilterButton
           {...props}
+          className="filterButton"
           selected={selected || hasValue}
           disabled={selectedValue && !selected}
           onClick={onSelect}
@@ -103,9 +104,12 @@ export default class Filter extends PureComponent {
       return (
         <Manager>
           <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
-          <Popper placement="bottom-start" modifiers={popperModifiers}>
-            {({ref, style}) => this.renderPanel({innerRef: ref, style})}
-          </Popper>
+          {ReactDOM.createPortal(
+            <Popper positionFixed placement="bottom-start" modifiers={popperModifiers}>
+              {({ref, style}) => this.renderPanel({innerRef: ref, style})}
+            </Popper>,
+            contentRef.current
+          )}
         </Manager>
       )
     }
