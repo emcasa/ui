@@ -122,9 +122,15 @@ class ControlledFilterContainer extends PureComponent {
   componentDidUpdate(prevProps) {
     const focusChanged = prevProps.selected !== this.props.selected
     const focusedFilter = this.props.selectedValue
-    if (focusChanged && focusedFilter && focusedFilter !== this.props.name)
+    if (
+      focusChanged &&
+      focusedFilter &&
+      focusedFilter !== this.props.name &&
+      this.state.value
+    )
       this.props.setFieldValue(this.props.name, this.state.value)
-    else if (!focusedFilter && this.state.value) this.setState({value: null})
+    else if (!focusedFilter && this.state.value)
+      this.setState({value: undefined})
   }
 
   onChange = (value) => this.setState({value})
@@ -148,12 +154,11 @@ class ControlledFilterContainer extends PureComponent {
             selected={selected}
             onSelect={onSelect}
             hasValue={Boolean(
-              field.value !== null &&
-                typeof field.value !== 'undefined' &&
+              typeof field.value !== 'undefined' &&
                 !isEqual(field.value, initialValues[name])
             )}
             onClear={() => {
-              this.setState({value: null})
+              this.setState({value: undefined})
               form.setFieldValue(name, undefined)
               requestAnimationFrame(() => {
                 onSelect()

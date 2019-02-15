@@ -194,6 +194,7 @@ const FilterGroup = Group(
                     onClick={() => {
                       form.resetForm({})
                       form.submitForm()
+                      onSelect(undefined)
                     }}
                   >
                     Limpar

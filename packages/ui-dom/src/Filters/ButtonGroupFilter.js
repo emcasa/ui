@@ -30,12 +30,12 @@ export const ButtonGroup = styled(function ButtonGroup({
     </Button.Group>
   )
 })`
-  margin-left: -${themeGet('space.3')}px;
-  margin-bottom: -${themeGet('space.3')}px;
+  margin-left: -${themeGet('space.2')}px;
+  margin-bottom: -${themeGet('space.2')}px;
   flex-wrap: wrap;
   .filterButton {
-    margin-left: ${themeGet('space.3')}px;
-    margin-bottom: ${themeGet('space.3')}px;
+    margin-left: ${themeGet('space.2')}px;
+    margin-bottom: ${themeGet('space.2')}px;
   }
 `
 

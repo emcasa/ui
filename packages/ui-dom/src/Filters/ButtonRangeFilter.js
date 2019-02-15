@@ -19,7 +19,7 @@ export default function ButtonRangeFilter({
   range: [min, max],
   formatText,
   formatEmpty = formatText,
-  formatFirst = formatEmpty,
+  formatFirst = formatText,
   formatLast = formatText,
   buttonProps,
   ...props
