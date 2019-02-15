@@ -34,7 +34,7 @@ AreaFilter.defaultProps = {
 const RoomsFilter = ({...props}) => (
   <ButtonRangeFilter
     formatEmpty={() => 'Sem quartos'}
-    formatLast={({value}) => value + '+'}
+    formatLast={() => '+'}
     {...props}
   />
 )
@@ -43,13 +43,13 @@ RoomsFilter.defaultProps = {
   name: 'rooms',
   label: 'Quartos',
   title: 'Quartos',
-  range: [0, 5]
+  range: [1, 5]
 }
 
 const GarageSpotsFilter = ({...props}) => (
   <ButtonRangeFilter
     formatEmpty={() => 'Sem vagas'}
-    formatLast={({value}) => value + '+'}
+    formatLast={() => '+'}
     {...props}
   />
 )
