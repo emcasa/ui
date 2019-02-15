@@ -1,6 +1,7 @@
 import debounce from 'lodash/debounce'
 import isFunction from 'lodash/isFunction'
 import React, {PureComponent} from 'react'
+import hoistStatics from 'hoist-non-react-statics'
 import {canUseDOM} from 'fbjs/lib/ExecutionEnvironment'
 import PropTypes from 'prop-types'
 import {withTheme} from 'styled-components'
@@ -112,10 +113,14 @@ export class BreakpointProvider extends PureComponent {
   }
 }
 
-export const withBreakpoint = (getOptions = {}) => (Target) => (props) => (
-  <BreakpointProvider
-    {...(isFunction(getOptions) ? getOptions(props) : getOptions)}
-  >
-    {(ctx) => <Target {...props} {...ctx} />}
-  </BreakpointProvider>
-)
+export const withBreakpoint = (getOptions = {}) => (Target) =>
+  hoistStatics(
+    (props) => (
+      <BreakpointProvider
+        {...(isFunction(getOptions) ? getOptions(props) : getOptions)}
+      >
+        {(ctx) => <Target {...props} {...ctx} />}
+      </BreakpointProvider>
+    ),
+    Target
+  )

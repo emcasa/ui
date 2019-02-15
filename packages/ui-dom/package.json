@@ -16,9 +16,10 @@
     "@emcasa/ui": "^0.8.11",
     "@rebass/grid": "6.0.0-4",
     "element-class": "^0.2.2",
+    "fbjs": "^1.0.0",
+    "hoist-non-react-statics": "^3.3.0",
     "numeral": "^2.0.6",
     "recompose": "~0.30.0",
-    "fbjs": "^1.0.0",
     "styled-icons": "^3.0.0",
     "styled-system": "3.1.6"
   },
@@ -31,9 +32,9 @@
     "formik": "~1.5.0",
     "react-dom": "^16.5.2",
     "react-measure": "~2.2.4",
+    "react-popper": "~1.3.3",
     "react-pose": "~4.0.6",
-    "react-responsive": "~6.1.1",
-    "react-popper": "~1.3.3"
+    "react-responsive": "~6.1.1"
   },
   "publishConfig": {
     "access": "public"
