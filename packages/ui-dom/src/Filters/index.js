@@ -45,10 +45,11 @@ const FilterGroup = Group(
       onSubmit: () => null,
       get scrollContainer() {
         return !isBrowser ? undefined : window.document.body
+      },
+      get formikRef() {
+        return React.createRef()
       }
     }
-
-    formikRef = React.createRef()
 
     contentRef = React.createRef()
 
@@ -67,7 +68,8 @@ const FilterGroup = Group(
         rowCount,
         isFilterExpanded: props.isMobile && Boolean(props.selectedValue),
         isRowExpanded: rowCount > 1 ? state.isRowExpanded : false,
-        initialValues: state.initialValues || props.initialValues || {}
+        initialValues:
+          props.values || state.initialValues || props.initialValues || {}
       }
     }
 
@@ -95,7 +97,7 @@ const FilterGroup = Group(
 
     onKeyPress = (e) => {
       if (this.props.selectedValue && e.keyCode === ESC_KEY) {
-        this.formikRef.current.handleReset()
+        this.props.formikRef.current.handleReset()
         this.props.onSelect(undefined)
       }
     }
@@ -132,8 +134,8 @@ const FilterGroup = Group(
       const hasSelectedValue = Boolean(selectedValue)
       return (
         <Formik
-          ref={this.formikRef}
           enableReinitialize
+          ref={this.props.formikRef}
           initialValues={initialValues}
           onSubmit={this.onSubmit}
         >
