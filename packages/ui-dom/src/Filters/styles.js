@@ -29,6 +29,7 @@ export const Container = styled.div`
   position: relative;
   display: inline-flex;
   width: fit-content;
+  min-height: ${ROW_HEIGHT}px;
   ${width};
   ${space};
   ${zIndex};
@@ -126,8 +127,7 @@ export const Form = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
-  flex: 1;
-  position: sticky;
+  flex: ${({fluid}) => (fluid ? '1' : '0 1 auto')};
   display: flex;
   justify-content: space-between;
   flex-direction: row;

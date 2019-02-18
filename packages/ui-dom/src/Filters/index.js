@@ -117,6 +117,7 @@ const FilterGroup = Group(
         id,
         style,
         className,
+        fluid,
         width,
         zIndex,
         zIndexActiveOffset,
@@ -149,6 +150,7 @@ const FilterGroup = Group(
             >
               <Form
                 id={id}
+                fluid={fluid}
                 innerRef={this.containerRef}
                 pose={isFilterExpanded ? 'filterOpen' : 'filterClosed'}
                 initialPose="closed"
