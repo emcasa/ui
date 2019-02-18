@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import {ControlledFilter} from './Filter'
 import Slider from '../Slider'
 import View from '../View'
+import Text from '../Text'
 
 export class SliderRange extends PureComponent {
   render() {
@@ -11,14 +12,21 @@ export class SliderRange extends PureComponent {
       onChange,
       initialValue,
       currentValue,
-      formatValue
+      formatValue,
+      formatLabel
     } = this.props
+    const displayValue = currentValue || value || initialValue
     return (
       <View pr={2} pl={2}>
+        {formatLabel && (
+          <Text fontSize="small" textAlign="center">
+            {formatLabel(displayValue)}
+          </Text>
+        )}
         <Slider
           height="medium"
           range={range}
-          initialValue={currentValue || value || initialValue}
+          initialValue={displayValue}
           formatValue={formatValue}
           onChange={onChange}
         >

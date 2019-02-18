@@ -3,15 +3,12 @@ import PropTypes from 'prop-types'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import FilterButton from './FilterButton'
 
-export const selectStrategy = ({range: [min, max]}) => ({
-  get maxValue() {
-    return max - min
-  },
+export const selectStrategy = ({range: [_, max]}) => ({
   isSelected(range, value) {
     return range && range.min === value
   },
   update(_, value) {
-    return {min: value, max: value == this.maxValue ? undefined : value}
+    return {min: value, max: value == max ? undefined : value}
   }
 })
 

@@ -18,6 +18,7 @@
     "element-class": "^0.2.2",
     "fbjs": "^1.0.0",
     "hoist-non-react-statics": "^3.3.0",
+    "number-abbreviate": "^2.0.0",
     "numeral": "^2.0.6",
     "recompose": "~0.30.0",
     "styled-icons": "^3.0.0",

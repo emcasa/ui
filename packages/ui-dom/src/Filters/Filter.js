@@ -69,10 +69,12 @@ export default class Filter extends PureComponent {
   renderButton(passProps = {}) {
     const {
       label,
+      formatLabel,
       selectedValue,
       selected,
       onSelect,
       hasValue,
+      value,
       ...props
     } = this.props
     return (
@@ -84,7 +86,7 @@ export default class Filter extends PureComponent {
           disabled={selectedValue && !selected}
           onClick={onSelect}
         >
-          {label}
+          {formatLabel ? formatLabel(value, hasValue) : label}
         </FilterButton>
       </View>
     )
@@ -105,7 +107,11 @@ export default class Filter extends PureComponent {
         <Manager>
           <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
           {ReactDOM.createPortal(
-            <Popper positionFixed placement="bottom-start" modifiers={popperModifiers}>
+            <Popper
+              positionFixed
+              placement="bottom-start"
+              modifiers={popperModifiers}
+            >
               {({ref, style}) => this.renderPanel({innerRef: ref, style})}
             </Popper>,
             contentRef.current
@@ -148,43 +154,50 @@ class ControlledFilterContainer extends PureComponent {
     return (
       <Field
         name={name}
-        render={({field, form}) => (
-          <Filter
-            {...props}
-            selected={selected}
-            onSelect={onSelect}
-            hasValue={Boolean(
-              typeof field.value !== 'undefined' &&
-                !isEqual(field.value, initialValues[name])
-            )}
-            onClear={() => {
-              this.setState({value: undefined})
-              form.setFieldValue(name, undefined)
-              requestAnimationFrame(() => {
-                onSelect()
-                form.submitForm()
-              })
-            }}
-            onSubmit={() => {
-              form.setFieldValue(name, value)
-              requestAnimationFrame(() => {
-                onSelect()
-                form.submitForm()
-              })
-            }}
-          >
-            {children({
-              field: {
-                ...field,
-                currentValue: value,
-                appliedValue: form.initialValues[name],
-                initialValue: initialValues[name],
-                onChange: this.onChange
-              },
-              form
-            })}
-          </Filter>
-        )}
+        render={({field, form}) => {
+          const initialValue = initialValues[name]
+          const appliedValue = form.initialValues[name]
+          const fieldValue = field.value
+          const hasValue = Boolean(
+            typeof fieldValue !== 'undefined' &&
+              !isEqual(fieldValue, initialValues[name])
+          )
+          return (
+            <Filter
+              {...props}
+              selected={selected}
+              onSelect={onSelect}
+              value={hasValue ? fieldValue : undefined}
+              hasValue={hasValue}
+              onClear={() => {
+                this.setState({value: undefined})
+                form.setFieldValue(name, undefined)
+                requestAnimationFrame(() => {
+                  onSelect()
+                  form.submitForm()
+                })
+              }}
+              onSubmit={() => {
+                form.setFieldValue(name, value)
+                requestAnimationFrame(() => {
+                  onSelect()
+                  form.submitForm()
+                })
+              }}
+            >
+              {children({
+                field: {
+                  ...field,
+                  currentValue: value,
+                  appliedValue,
+                  initialValue,
+                  onChange: this.onChange
+                },
+                form
+              })}
+            </Filter>
+          )
+        }}
       />
     )
   }

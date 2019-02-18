@@ -141,6 +141,9 @@ Form.defaultProps = {
 export const BodyExpander = styled(
   posed.div({
     rowOpen: {
+      applyAtEnd: {
+        height: ''
+      },
       transition,
       flip: true,
       height: get('height')
@@ -159,6 +162,7 @@ export const BodyExpander = styled(
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
   min-height: ${ROW_HEIGHT}px;
+  ${({pose, height}) => pose === 'rowOpen' && {height: height + 'px'}};
   overflow: hidden;
 `
 
