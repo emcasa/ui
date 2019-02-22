@@ -38,6 +38,8 @@
     "lodash": "^4.17.11",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-measure": "^2.2.4",
+    "react-pose": "^4.0.6",
     "react-responsive": "^6.1.1"
   },
   "devDependencies": {

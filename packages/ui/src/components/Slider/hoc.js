@@ -39,6 +39,7 @@ export default ({
       initialValue: 0,
       minDistance: 1,
       slideEventThrottle: 50,
+      layoutEventThrottle: 50,
       ...(Target.defaultProps || {})
     }
 
@@ -52,6 +53,7 @@ export default ({
       getMarkerLayout: PropTypes.func,
       minDistance: PropTypes.number.isRequired,
       slideEventThrottle: PropTypes.number.isRequired,
+      layoutEventThrottle: PropTypes.number.isRequired,
       ...(Target.propTypes || {})
     }
 
@@ -59,13 +61,18 @@ export default ({
 
     static getDerivedStateFromProps = getDerivedState
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
       if (
         prevProps.children &&
         this.props.children &&
         prevProps.children.length !== this.props.children.length
       )
         throw new Error('Changing Slider children on the fly is not supported.')
+      if (
+        prevState.layout &&
+        prevState.layout.width !== this.state.layout.width
+      )
+        this._updateBounds()
     }
 
     _getInitialState() {
@@ -131,6 +138,11 @@ export default ({
       return interpolatePosition([0, this.state.layout.width], this.props.range)
     }
 
+    get _getPositionFromValue() {
+      if (!this.state.layout || !this.props.range) return identity
+      return interpolatePosition(this.props.range, [0, this.state.layout.width])
+    }
+
     _onChangeCallback = () => {
       const {onChange} = this.props
       if (!onChange) return
@@ -140,6 +152,27 @@ export default ({
         {}
       )
       onChange(markerValues)
+    }
+
+    _updateBounds = () => {
+      this.setState(({markers, layout}) => ({
+        markers: markers.reduce((result, marker, index) => {
+          const nextMarker = {
+            ...marker,
+            state: {
+              ...marker.state,
+              position: this._getPositionFromValue(marker.state.value)
+            }
+          }
+          updateMarkerBounds(
+            [0, layout.width],
+            nextMarker.state,
+            index > 0 ? result[index - 1].state : undefined
+          )
+          result.push(nextMarker)
+          return result
+        }, [])
+      }))
     }
 
     onSlide = throttle(
@@ -162,30 +195,20 @@ export default ({
       {leading: false, trailing: true}
     )
 
-    // Update marker bounds
     onSlideStop = () => {
       this.onSlide.flush()
-      this.setState(({markers, layout}) => ({
-        markers: markers.reduce((result, marker, index) => {
-          const nextMarker = {
-            ...marker,
-            state: {...marker.state}
-          }
-          updateMarkerBounds(
-            [0, layout.width],
-            nextMarker.state,
-            index > 0 ? result[index - 1].state : undefined
-          )
-          result.push(nextMarker)
-          return result
-        }, [])
-      }))
+      this._updateBounds()
     }
 
-    onLayout = (layout) => {
-      const markers = this.state.markers || this._getInitialMarkerState(layout)
-      this.setState({layout, markers})
-    }
+    onLayout = throttle(
+      (layout) => {
+        const markers =
+          this.state.markers || this._getInitialMarkerState(layout)
+        this.setState({layout, markers})
+      },
+      this.props.layoutEventThrottle,
+      {leading: true, trailing: true}
+    )
 
     renderMarker = ({key, index, element, state}) => {
       return (

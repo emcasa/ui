@@ -1,8 +1,8 @@
 import {css} from 'styled-components'
-import {width, height, bgColor, zIndex} from 'styled-system'
+import {width, height, bgColor, zIndex, themeGet} from 'styled-system'
 
 import {buttonHeight} from '../../styles'
-import {container as row} from '../Row'
+import {container as col} from '../Col'
 
 export {default} from './hoc'
 
@@ -19,8 +19,10 @@ export {default} from './hoc'
  */
 
 export const container = css`
+  display: flex;
   justify-content: center;
-  ${row};
+  flex-direction: column;
+  ${col};
   ${width};
   ${buttonHeight};
 `
@@ -35,6 +37,8 @@ export const marker = css`
   height: ${({size}) => size}px;
   border-radius: ${({size}) => size}px;
   ${bgColor};
+  ${({focus, theme}) =>
+    focus && `box-shadow: 0 0 0 10px ${theme.colors.pink}50;`};
 `
 
 marker.label = css`
