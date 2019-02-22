@@ -1,0 +1,22 @@
+---
+name: Map
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz'
+import View from '@emcasa/ui-dom/components/View'
+import Map from '@emcasa/ui-dom/components/Map'
+import markers from './markers.json'
+import {GOOGLE_MAPS_API_KEY} from './config'
+
+# Map
+
+Map component.
+
+## Basic usage
+
+<Playground>
+  <View m={4} height={400}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY} markers={markers} />
+  </View>
+</Playground>
