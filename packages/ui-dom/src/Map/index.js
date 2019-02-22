@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import supercluster from 'points-cluster'
 import flatten from 'lodash/flatten'
-import throttle from 'lodash/throttle'
 import isEqual from 'lodash/isEqual'
 import isObject from 'lodash/isObject'
 import MapMarker from './Marker'
@@ -63,26 +62,6 @@ const getClusterProps = (props, state) => {
       id: `${numPoints}_${points[0].id}`,
       points
     }))
-
-  //const framedListings = flatten(
-  //  clusters
-  //    .filter((cluster) => cluster.numPoints === 1)
-  //    .map((marker) => [...marker.points])
-  //)
-
-  //if (onChange && !updateAfterApiCall) {
-  //  onChange(framedListings.map((listing) => listing.id), bounds)
-  //}
-
-  //return
-  //this.setState({
-  //  clusters: this.state.mapOptions.bounds ? clusters : [],
-  //  hasAggregators:
-  //    clusters.reduce(
-  //      (prevVal, elem) => (elem.numPoints > 1 ? prevVal + 1 : prevVal),
-  //      0
-  //    ) > 1
-  //})
 }
 
 export default class MapContainer extends PureComponent {
@@ -139,30 +118,28 @@ export default class MapContainer extends PureComponent {
 
   onMapLoaded = ({map, maps}) => {
     if (map) {
+      const {onDragEnd, onZoomChanged} = this.props
       this.setState({loaded: true})
       this.map = map
       this.maps = maps
-
       this.fitMap(this.state.markers)
-
-      map.addListener('dragend', () => {
-        // log(LISTING_SEARCH_MAP_PAN)
-      })
-      map.addListener('zoom_changed', () => {
-        // log(LISTING_SEARCH_MAP_ZOOM)
-      })
+      if (onDragEnd) map.addListener('dragend', onDragEnd)
+      if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
     }
   }
 
   onMapChange = ({center, zoom, bounds}) =>
-    this.setState({
-      clusters: undefined,
-      mapOptions: {
-        center,
-        zoom,
-        bounds
-      }
-    })
+    this.setState(
+      {
+        clusters: undefined,
+        mapOptions: {
+          center,
+          zoom,
+          bounds
+        }
+      },
+      this.boundsUpdated
+    )
 
   fitMap = (markers) => {
     const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
@@ -186,8 +163,8 @@ export default class MapContainer extends PureComponent {
     }
   }
 
-  frameMarkers(markers) {
-    // log(LISTING_SEARCH_MAP_CLUSTER)
+  frameCluster = (markers) => {
+    const {onFrameCluster} = this.props
     const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
 
     const bounds = new this.maps.LatLngBounds()
@@ -195,14 +172,22 @@ export default class MapContainer extends PureComponent {
       bounds.extend(LatLngList[i])
     }
     this.map.fitBounds(bounds)
+    if (onFrameCluster) onFrameCluster(bounds, markers)
   }
 
-  resetMapView = () => {
-    const {
-      mapOptions: {center}
-    } = this.state
-    this.map.setCenter(new this.maps.LatLng(center.lat, center.lng))
-    this.map.setZoom(13)
+  boundsUpdated() {
+    const {onChange} = this.props
+    const {mapOptions, clusters} = this.state
+    if (onChange) {
+      const framedListings = clusters
+        ? flatten(
+            clusters
+              .filter((cluster) => cluster.numPoints === 1)
+              .map((marker) => [...marker.points])
+          )
+        : []
+      onChange(mapOptions.bounds, framedListings.map((listing) => listing.id))
+    }
   }
 
   isMarkerHighlighted = ({lat, lng}) => {
@@ -227,7 +212,7 @@ export default class MapContainer extends PureComponent {
         lat={cluster.lat}
         lng={cluster.lng}
         points={cluster.points}
-        onClick={this.frameMarkers.bind(this)}
+        onClick={this.frameCluster}
         highlight={this.isClusterHighlighted(cluster)}
       />
     )
