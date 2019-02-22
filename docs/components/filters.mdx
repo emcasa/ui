@@ -23,7 +23,10 @@ import View from '@emcasa/ui-dom/components/View'
 
 <Playground className="filtersPlayground">
   <View height="150px">
-    <Filters>
+    <Filters
+      onSubmit={console.log}
+      initialValues={{slider: {min: 0, max: 1}}}
+    >
       <SliderRangeFilter
         name="slider"
         label="Slider range"
@@ -52,10 +55,13 @@ import View from '@emcasa/ui-dom/components/View'
 
 <Playground>
   <View height="150px">
-    <Filters initialValues={{
-      area: AreaFilter.initialValue,
-      price: PriceFilter.initialValue
-    }}>
+    <Filters
+      onSubmit={console.log}
+      initialValues={{
+        area: AreaFilter.initialValue,
+        price: PriceFilter.initialValue
+      }}
+    >
       <TypesFilter />
       <PriceFilter />
       <AreaFilter />

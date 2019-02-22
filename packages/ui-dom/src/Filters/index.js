@@ -1,8 +1,9 @@
+import isEqual from 'lodash/isEqual'
 import pick from 'lodash/fp/pick'
 import React, {PureComponent} from 'react'
 import {Formik} from 'formik'
 import {withContentRect} from 'react-measure'
-import {compose} from 'recompose'
+import {compose, mapProps} from 'recompose'
 import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
@@ -16,17 +17,37 @@ import {
   Background
 } from './styles'
 import {withBreakpoint} from '../Breakpoint'
+import Button from '../Button'
+import Row from '../Row'
+
+const ESC_KEY = 27
+
+const isBrowser = typeof window !== 'undefined'
 
 const FilterGroup = Group(
-  pick(['onSelect', 'selected', 'selectedValue', 'disabled', 'isMobile']),
+  pick([
+    'onSelect',
+    'selected',
+    'selectedValue',
+    'disabled',
+    'isMobile',
+    'initialValues'
+  ]),
   (node) => node.props.name
 )(
   class FilterGroup extends PureComponent {
     static defaultProps = {
+      zIndex: 1,
+      zIndexActiveOffset: 100,
+      initialValues: {},
       contentRect: {bounds: {}},
       strategy: 'switchable',
+      onSubmit: () => null,
       get scrollContainer() {
-        return typeof window === 'undefined' ? undefined : window.document.body
+        return !isBrowser ? undefined : window.document.body
+      },
+      get formikRef() {
+        return React.createRef()
       }
     }
 
@@ -46,19 +67,44 @@ const FilterGroup = Group(
         rowHeight,
         rowCount,
         isFilterExpanded: props.isMobile && Boolean(props.selectedValue),
-        isRowExpanded: rowCount > 1 ? state.isRowExpanded : false
+        isRowExpanded: rowCount > 1 ? state.isRowExpanded : false,
+        initialValues:
+          props.values || state.initialValues || props.initialValues || {}
       }
     }
 
     componentDidUpdate(prevProps, prevState) {
       if (
         this.props.scrollContainer &&
-        prevState.isExpanded !== this.state.isExpanded
+        prevState.isFilterExpanded !== this.state.isFilterExpanded
       ) {
         const classNames = elementClass(this.props.scrollContainer)
-        if (this.state.isExpanded) classNames.add('noscroll')
+        if (this.state.isFilterExpanded) classNames.add('noscroll')
         else classNames.remove('noscroll')
       }
+      if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
+        this.setState({initialValues: this.props.initialValues})
+      }
+    }
+
+    componentDidMount() {
+      if (isBrowser) window.addEventListener('keyup', this.onKeyPress)
+    }
+
+    componentWillUnmount() {
+      if (isBrowser) window.removeEventListener('keyup', this.onKeyPress)
+    }
+
+    onKeyPress = (e) => {
+      if (this.props.selectedValue && e.keyCode === ESC_KEY) {
+        this.props.formikRef.current.handleReset()
+        this.props.onSelect(undefined)
+      }
+    }
+
+    onSubmit = (values) => {
+      if (this.props.onSubmit) this.props.onSubmit(values)
+      this.setState({initialValues: values})
     }
 
     onExpandRow = () => this.setState({isRowExpanded: true})
@@ -68,23 +114,51 @@ const FilterGroup = Group(
     render() {
       const {
         children,
-        initialValues = {},
+        id,
+        style,
+        className,
+        fluid,
+        width,
+        zIndex,
+        zIndexActiveOffset,
         selectedValue,
         onSelect,
-        measureRef,
-        ...props
+        measureRef
       } = this.props
-      const {bodyHeight, rowCount, isFilterExpanded, isRowExpanded} = this.state
+      const {
+        initialValues,
+        bodyHeight,
+        rowCount,
+        isFilterExpanded,
+        isRowExpanded
+      } = this.state
+      const hasSelectedValue = Boolean(selectedValue)
       return (
-        <Container>
-          <Formik initialValues={initialValues}>
-            {(form) => (
+        <Formik
+          enableReinitialize
+          ref={this.props.formikRef}
+          initialValues={initialValues}
+          onSubmit={this.onSubmit}
+        >
+          {(form) => (
+            <Container
+              hasSelectedValue={hasSelectedValue}
+              style={style}
+              className={className}
+              width={width}
+              zIndex={zIndex + (hasSelectedValue ? zIndexActiveOffset : 0)}
+            >
               <Form
+                id={id}
+                fluid={fluid}
                 innerRef={this.containerRef}
                 pose={isFilterExpanded ? 'filterOpen' : 'filterClosed'}
                 initialPose="closed"
-                onSubmit={form.handleSubmit}
-                {...props}
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  form.handleSubmit(e)
+                }}
+                {...this.state}
               >
                 <BodyExpander
                   pose={isRowExpanded ? 'rowOpen' : 'rowClosed'}
@@ -104,31 +178,56 @@ const FilterGroup = Group(
                     )}
                   </Body>
                 </BodyExpander>
-                {rowCount > 1 && (
-                  <ExpandButton
-                    isRowExpanded={isRowExpanded}
-                    onClick={
-                      !isRowExpanded ? this.onExpandRow : this.onCollapseRow
-                    }
-                  />
-                )}
+                <Row pt={2}>
+                  {rowCount > 1 && (
+                    <ExpandButton
+                      isRowExpanded={isRowExpanded}
+                      onClick={
+                        !isRowExpanded ? this.onExpandRow : this.onCollapseRow
+                      }
+                    />
+                  )}
+                  <Button
+                    link
+                    type="button"
+                    fontSize="small"
+                    height="short"
+                    color="grey"
+                    onClick={() => {
+                      form.resetForm({})
+                      form.submitForm()
+                      onSelect(undefined)
+                    }}
+                  >
+                    Limpar
+                  </Button>
+                </Row>
               </Form>
-            )}
-          </Formik>
-          <Background
-            pose={selectedValue ? 'bgOpen' : 'bgClosed'}
-            onDismiss={() => onSelect(undefined)}
-            contentRef={this.contentRef}
-            offset={bodyHeight}
-          />
-        </Container>
+              <Background
+                pose={selectedValue ? 'bgOpen' : 'bgClosed'}
+                onDismiss={() => onSelect(undefined)}
+                contentRef={this.contentRef}
+                offset={bodyHeight}
+                onDismiss={() => {
+                  form.handleReset()
+                  onSelect(undefined)
+                }}
+              />
+            </Container>
+          )}
+        </Formik>
       )
     }
   }
 )
 
 export default compose(
-  withContentRect('bounds'),
+  mapProps(({onSelectFilter, selectedFilter, ...props}) => ({
+    onChange: onSelectFilter,
+    selectedValue: selectedFilter,
+    ...props
+  })),
   withBreakpoint(),
+  withContentRect('bounds'),
   withTheme
 )(FilterGroup)

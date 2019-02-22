@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {breakpoint} from '@emcasa/ui/src/styles'
+import {breakpoint} from '@emcasa/ui/lib/styles'
 import {themeGet} from 'styled-system'
 import TextBase from '@emcasa/ui-dom/components/Text'
 

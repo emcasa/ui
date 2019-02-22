@@ -3,8 +3,8 @@ name: Helpers
 ---
 
 import { Playground } from 'docz'
-import {breakpoint} from '@emcasa/ui/src/styles'
-import {BREAKPOINTS} from '@emcasa/ui/src/theme/measures'
+import {breakpoint} from '@emcasa/ui/lib/styles'
+import {BREAKPOINTS} from '@emcasa/ui/lib/theme/measures'
 import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
 import Col from '@emcasa/ui-dom/components/Col'
@@ -29,7 +29,7 @@ Default breakpoints (min-width):
 ```js
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
-import {breakpoint} from '@emcasa/ui/src/styles'
+import {breakpoint} from '@emcasa/ui/lib/styles'
 import Text from '@emcasa/ui-dom/components/Text'
 
 const ExampleText = styled(Text)`

@@ -2,7 +2,7 @@ import get from 'lodash/fp/get'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
-import {themeGet, zIndex} from 'styled-system'
+import {themeGet, zIndex, width, space} from 'styled-system'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import Row from '../Row'
 import Col from '../Col'
@@ -27,13 +27,13 @@ const transition = {
 
 export const Container = styled.div`
   position: relative;
-  height: ${ROW_HEIGHT};
+  display: inline-flex;
+  width: fit-content;
+  min-height: ${ROW_HEIGHT}px;
+  ${width};
+  ${space};
   ${zIndex};
 `
-
-Container.defaultProps = {
-  zIndex: 101
-}
 
 export const Panel = styled(Col).attrs({elevation: 2})`
   display: flex;
@@ -45,12 +45,6 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     flex: 1;
     flex-direction: column;
     justify-content: center;
-    & > div {
-      margin: 0 0 -${themeGet('space.2')}px -${themeGet('space.2')}px;
-    }
-    ${FilterButton} {
-      margin: 0 0 ${themeGet('space.2')}px ${themeGet('space.2')}px;
-    }
   }
   .panelFooter {
     margin-top: ${themeGet('space.4')}px;
@@ -133,8 +127,9 @@ export const Form = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
-  position: sticky;
+  flex: ${({fluid}) => (fluid ? '1' : '0 1 auto')};
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   ${zIndex};
 `
@@ -146,6 +141,9 @@ Form.defaultProps = {
 export const BodyExpander = styled(
   posed.div({
     rowOpen: {
+      applyAtEnd: {
+        height: ''
+      },
       transition,
       flip: true,
       height: get('height')
@@ -159,10 +157,12 @@ export const BodyExpander = styled(
 ).attrs({
   theme: ({theme}) => theme
 })`
-  flex: 1;
+  box-sizing: border-box;
+  flex: 0 1 auto;
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
   min-height: ${ROW_HEIGHT}px;
+  ${({pose, height}) => pose === 'rowOpen' && {height: height + 'px'}};
   overflow: hidden;
 `
 
@@ -170,7 +170,7 @@ export const Body = styled(Row)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  ${FilterButton} {
+  .filterButton {
     margin-right: ${themeGet('space.2')}px;
     margin-bottom: ${themeGet('space.2')}px;
   }
@@ -189,8 +189,7 @@ export const ExpandButton = styled(function ExpandButton({
     </Col>
   )
 })`
-  padding: ${ROW_PADDING}px 0;
-  ${FilterButton} {
+  button {
     padding: 0 ${themeGet('space.2')}px;
     display: flex;
     justify-content: center;
@@ -253,16 +252,11 @@ export const Background = styled(
   }
 
   .content {
-    display: none;
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
     flex: 1;
     flex-direction: column;
-    width: 100%;
-    max-height: 100%;
-    height: calc(100vh - ${TOP_SPACING}px);
-    margin-top: ${TOP_SPACING}px;
-    padding: ${themeGet('space.4')}px;
-    padding-top: 0;
-    overflow-y: auto;
   }
 
   @media screen and ${breakpoint.down('tablet')} {
@@ -277,7 +271,13 @@ export const Background = styled(
     }
 
     .content {
-      display: flex;
+      width: 100%;
+      max-height: 100%;
+      height: calc(100vh - ${TOP_SPACING}px);
+      margin-top: ${TOP_SPACING}px;
+      padding: ${themeGet('space.4')}px;
+      padding-top: 0;
+      overflow-y: auto;
     }
   }
 `

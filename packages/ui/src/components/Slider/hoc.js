@@ -1,3 +1,4 @@
+import flow from 'lodash/fp/flow'
 import throttle from 'lodash/throttle'
 import identity from 'lodash/identity'
 import React, {PureComponent} from 'react'
@@ -35,13 +36,16 @@ export default ({
   class extends PureComponent {
     static displayName = `Slider(${Target.displayName || Target.name})`
 
-    static defaultProps = {
-      initialValue: 0,
-      minDistance: 1,
-      slideEventThrottle: 50,
-      layoutEventThrottle: 50,
-      ...(Target.defaultProps || {})
-    }
+    static defaultProps = Object.assign(
+      {
+        formatValue: identity,
+        initialValue: 0,
+        minDistance: 1,
+        slideEventThrottle: 50,
+        layoutEventThrottle: 50
+      },
+      Target.defaultProps || {}
+    )
 
     static propTypes = {
       width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -50,6 +54,7 @@ export default ({
         PropTypes.array,
         PropTypes.object
       ]).isRequired,
+      formatValue: PropTypes.func,
       getMarkerLayout: PropTypes.func,
       minDistance: PropTypes.number.isRequired,
       slideEventThrottle: PropTypes.number.isRequired,
@@ -135,7 +140,10 @@ export default ({
 
     get _getValueFromPosition() {
       if (!this.state.layout || !this.props.range) return identity
-      return interpolatePosition([0, this.state.layout.width], this.props.range)
+      return flow(
+        interpolatePosition([0, this.state.layout.width], this.props.range),
+        this.props.formatValue
+      )
     }
 
     get _getPositionFromValue() {
