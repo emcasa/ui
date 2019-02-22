@@ -1,0 +1,72 @@
+---
+name: Filters
+menu: Components
+---
+
+import './filters.js'
+import { Playground, PropsTable } from 'docz'
+import Filters from '@emcasa/ui-dom/components/Filters'
+import Button from '@emcasa/ui-dom/components/Filters/FilterButton'
+import SliderRangeFilter from '@emcasa/ui-dom/components/Filters/SliderRangeFilter'
+import ButtonGroupFilter from '@emcasa/ui-dom/components/Filters/ButtonGroupFilter'
+import ButtonRangeFilter from '@emcasa/ui-dom/components/Filters/ButtonRangeFilter'
+import {
+  TypesFilter,
+  PriceFilter,
+  AreaFilter,
+  RoomsFilter,
+  GarageSpotsFilter
+} from '@emcasa/ui-dom/components/Filters/ListingFilters'
+import View from '@emcasa/ui-dom/components/View'
+
+# Filters
+
+<Playground className="filtersPlayground">
+  <View height="150px">
+    <Filters
+      onSubmit={console.log}
+      initialValues={{slider: {min: 0, max: 1}}}
+    >
+      <SliderRangeFilter
+        name="slider"
+        label="Slider range"
+        range={[0, 1]}
+      />
+      <ButtonGroupFilter
+        name="buttons"
+        label="Button group"
+      >
+        <Button value={0}>0</Button>
+        <Button value={1}>1</Button>
+        <Button value={2}>2</Button>
+        <Button value={3}>3</Button>
+      </ButtonGroupFilter>
+      <ButtonRangeFilter
+        name="buttonRange"
+        label="Button range"
+        range={[1, 5]}
+        formatLast={() => '+'}
+      />
+    </Filters>
+  </View>
+</Playground>
+
+## Listing filters
+
+<Playground>
+  <View height="150px">
+    <Filters
+      onSubmit={console.log}
+      initialValues={{
+        area: AreaFilter.initialValue,
+        price: PriceFilter.initialValue
+      }}
+    >
+      <TypesFilter />
+      <PriceFilter />
+      <AreaFilter />
+      <RoomsFilter />
+      <GarageSpotsFilter />
+    </Filters>
+  </View>
+</Playground>

@@ -1,15 +1,16 @@
 import debounce from 'lodash/debounce'
 import isFunction from 'lodash/isFunction'
 import React, {PureComponent} from 'react'
+import hoistStatics from 'hoist-non-react-statics'
 import {canUseDOM} from 'fbjs/lib/ExecutionEnvironment'
 import PropTypes from 'prop-types'
 import {withTheme} from 'styled-components'
 import {breakpoint} from '@emcasa/ui/lib/styles'
-import Media from 'react-responsive'
 import {BREAKPOINTS} from '@emcasa/ui/lib/theme/measures'
+import Media from 'react-responsive'
 
 export const BreakpointType = PropTypes.oneOfType([
-  PropTypes.oneOf(BREAKPOINTS.keys()),
+  PropTypes.oneOf(Array.from(BREAKPOINTS.keys())),
   PropTypes.number
 ])
 
@@ -36,7 +37,7 @@ export default withTheme(
   }
 )
 
-const getWindowWidth = () => {
+export const getWindowWidth = () => {
   if (canUseDOM)
     return window.innerWidth || document.documentElement.clientWidth
 }
@@ -49,7 +50,10 @@ export const getBreakpoint = (windowWidth) => {
     if (parseInt(bpWidth) >= width) break
     prev = name
   }
-  return prev
+  return {
+    breakpoint: prev,
+    isMobile: breakpoint.isMobile(prev)
+  }
 }
 
 export class BreakpointProvider extends PureComponent {
@@ -64,13 +68,14 @@ export class BreakpointProvider extends PureComponent {
   }
 
   state = {
-    breakpoint: undefined
+    breakpoint: undefined,
+    isMobile: undefined
   }
 
   constructor(props) {
     super(props)
     this.update = debounce(this._update, props.debounce)
-    if (canUseDOM && !props.disabled) this.state.breakpoint = getBreakpoint()
+    if (canUseDOM && !props.disabled) this.state = getBreakpoint()
   }
 
   _addEvents = () => {
@@ -81,7 +86,7 @@ export class BreakpointProvider extends PureComponent {
     window.removeEventListener('resize', this.update)
   }
 
-  _update = () => this.setState({breakpoint: getBreakpoint()})
+  _update = () => this.setState(getBreakpoint())
 
   componentDidUpdate(prevProps) {
     if (prevProps.debounce !== this.props.debounce) {
@@ -108,10 +113,14 @@ export class BreakpointProvider extends PureComponent {
   }
 }
 
-export const withBreakpoint = (getOptions = {}) => (Target) => (props) => (
-  <BreakpointProvider
-    {...(isFunction(getOptions) ? getOptions(props) : getOptions)}
-  >
-    {(ctx) => <Target {...props} {...ctx} />}
-  </BreakpointProvider>
-)
+export const withBreakpoint = (getOptions = {}) => (Target) =>
+  hoistStatics(
+    (props) => (
+      <BreakpointProvider
+        {...(isFunction(getOptions) ? getOptions(props) : getOptions)}
+      >
+        {(ctx) => <Target {...props} {...ctx} />}
+      </BreakpointProvider>
+    ),
+    Target
+  )
