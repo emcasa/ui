@@ -17,6 +17,24 @@ Map component.
 
 <Playground>
   <View m={4} height={400}>
-    <Map apiKey={GOOGLE_MAPS_API_KEY} markers={markers} />
+    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+      <Map.Marker {...markers[0]} />
+    </Map>
+  </View>
+</Playground>
+
+## Cluster
+
+<Playground>
+  <View m={4} height={400}>
+    <Map cluster apiKey={GOOGLE_MAPS_API_KEY}>
+      {markers.map((props) => (
+        <Map.Marker
+          {...props}
+          key={props.id}
+          onSelect={() => console.log('selected', props.id)}
+        />
+      ))}
+    </Map>
   </View>
 </Playground>
