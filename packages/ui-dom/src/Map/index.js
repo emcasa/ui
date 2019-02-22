@@ -64,11 +64,36 @@ const getClusterProps = (props, state) => {
     }))
 }
 
+const T = {
+  Coordinates: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired
+  }),
+  SuperClusterOptions: PropTypes.shape({
+    minZoom: PropTypes.number.isRequired,
+    maxZoom: PropTypes.number.isRequired,
+    radius: PropTypes.number.isRequired
+  })
+}
+
 export default class MapContainer extends PureComponent {
   static Marker = MapMarker
 
   static propTypes = {
-    apiKey: PropTypes.string
+    children: PropTypes.node.isRequired,
+    apiKey: PropTypes.string,
+    defaultZoom: PropTypes.number.isRequired,
+    defaultCenter: T.Coordinates.isRequired,
+    /** Enable/disable marker clustering */
+    cluster: PropTypes.oneOfType([PropTypes.bool, T.SuperClusterOptions]),
+    /** Called on map bounds change */
+    onChange: PropTypes.func,
+    /** Called on map drag end */
+    onDragEnd: PropTypes.func,
+    /** Called on map zoom change */
+    onZoomChanged: PropTypes.func,
+    /** Called after clicking a map cluster */
+    onFrameCluster: PropTypes.func
   }
 
   static defaultProps = {
