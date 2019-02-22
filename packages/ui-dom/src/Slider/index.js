@@ -1,6 +1,7 @@
 import React from 'react'
-import {Animated} from 'react-native'
-import styled from 'styled-components/native'
+import styled from 'styled-components'
+import {value} from 'popmotion'
+import Measure from 'react-measure'
 import Slider, * as slider from '@emcasa/ui/lib/components/Slider'
 
 import MarkerHandler from './MarkerHandler'
@@ -9,6 +10,9 @@ import View from '../View'
 
 const MarkerLabel = styled(View)`
   ${slider.marker.label};
+  margin-bottom: 50%;
+  margin-left: -50%;
+  left: ${({size}) => size}px;
 `
 
 MarkerLabel.displayName = 'SliderMarkerLabel'
@@ -37,42 +41,30 @@ Marker.defaultProps = slider.marker.defaultProps
 
 const Container = styled(function SliderContainer({onLayout, ...props}) {
   return (
-    <View onLayout={({nativeEvent: {layout}}) => onLayout(layout)} {...props} />
+    <Measure
+      onResize={({entry}) =>
+        onLayout({
+          width: entry.width,
+          height: entry.height
+        })
+      }
+    >
+      {({measureRef}) => <View innerRef={measureRef} {...props} />}
+    </Measure>
   )
 })`
   ${slider.container};
+  position: relative;
 `
 
-Container.defaultProps = {
-  ...slider.container.defaultProps,
-  useNativeDriver: true
-}
-
-const getInitialAnimatedValue = (position) => {
-  const value = new Animated.Value(0)
-  value.setOffset(position)
-  return value
-}
+Container.defaultProps = slider.container.defaultProps
 
 const SliderComponent = Slider({
   MarkerHandler,
   Marker,
   SliderTrack,
-  getDerivedState: ({useNativeDriver}) => ({
-    useNativeDriver
-  }),
   getInitialMarkerState: ({position}) => ({
-    animatedValue: getInitialAnimatedValue(position),
-    getComputedPosition() {
-      const {animatedValue, bounds} = this
-      const min = bounds.left + 1
-      const max = bounds.right - 1
-      return animatedValue.interpolate({
-        inputRange: [bounds.left, bounds.right],
-        outputRange: [min, max],
-        extrapolate: 'clamp'
-      })
-    }
+    animatedValues: {x: value(position)}
   })
 })(Container)
 

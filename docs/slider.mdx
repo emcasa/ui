@@ -1,0 +1,100 @@
+---
+name: Slider
+---
+
+import { Playground, PropsTable } from 'docz'
+import Slider from '@emcasa/ui-dom/components/Slider'
+import View from '@emcasa/ui-dom/components/View'
+import {MarkerLabel} from './slider.js'
+
+# Slider
+
+Slider component.
+
+## Basic usage
+
+<Playground>
+  <View m={4}>
+    <Slider
+      onChange={console.log}
+      range={[0, 1]}
+      initialValue={{
+        min: 0,
+        max: 1
+      }}
+    >
+      <Slider.Marker name="min" />
+      <Slider.Marker name="max" />
+    </Slider>
+  </View>
+</Playground>
+
+## Fixed width
+
+<Playground>
+  <View m={4}>
+    <Slider
+      width={200}
+      onChange={console.log}
+      range={[0, 1]}
+      initialValue={{
+        min: 0,
+        max: 1
+      }}
+    >
+      <Slider.Marker name="min" />
+      <Slider.Marker name="max" />
+    </Slider>
+  </View>
+</Playground>
+
+## Track and marker styles
+
+<Playground>
+  <View mb="25px">
+    <Slider
+      range={[0, 1]}
+      initialValue={1 / 2}
+      trackProps={{bg: 'lightGrey'}}
+    >
+      <Slider.Marker trackProps={{height: 4, bg: 'pink'}} />
+    </Slider>
+  </View>
+  <View mb="25px">
+    <Slider
+      range={[0, 1]}
+      initialValue={[1 / 4, 3 / 4]}
+      trackProps={{bg: 'lightGrey'}}
+    >
+      <View
+        bg="pink"
+        width={25}
+        height={25}
+        borderRadius={5}
+        trackProps={{bg: 'pink'}}
+      />
+      <View
+        bg="blue"
+        width={25}
+        height={25}
+        borderRadius={5}
+        trackProps={{bg: 'blue'}}
+      />
+    </Slider>
+  </View>
+</Playground>
+
+## Marker labels
+
+<Playground>
+  <View flexDirection="column">
+    <Slider range={[0, 100]} initialValue={[0, 100]}>
+      <Slider.Marker
+        renderLabel={({value}) => <MarkerLabel>{value.toFixed(2)}</MarkerLabel>}
+      />
+      <Slider.Marker
+        renderLabel={({value}) => <MarkerLabel>{value.toFixed(2)}</MarkerLabel>}
+      />
+    </Slider>
+  </View>
+</Playground>

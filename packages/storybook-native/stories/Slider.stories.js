@@ -43,6 +43,23 @@ story.add('basic', () => (
   </View>
 ))
 
+story.add('fixed width', () => (
+  <View flexDirection="column">
+    <Slider
+      onChange={action('slider changed')}
+      width={250}
+      range={[0, 1]}
+      initialValue={{
+        min: 0,
+        max: 1
+      }}
+    >
+      <Slider.Marker name="min" />
+      <Slider.Marker name="max" />
+    </Slider>
+  </View>
+))
+
 story.add('track and marker styles', () => (
   <View flexDirection="column">
     <View mb="25px">
