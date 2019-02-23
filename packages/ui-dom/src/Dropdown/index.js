@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {width} from 'styled-system'
 import DropdownGroup from '@emcasa/ui/lib/components/Dropdown/Group'
 
 import DropdownContainer from './Container'
@@ -13,6 +14,7 @@ const Dropdown = DropdownGroup({DropdownButton, DropdownContainer})(
   styled.div`
     z-index: ${({zIndex = 0, focused}) => zIndex + (focused ? 1 : 0)};
     position: relative;
+    ${width};
   `
 )
 

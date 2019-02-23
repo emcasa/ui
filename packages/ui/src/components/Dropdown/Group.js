@@ -88,9 +88,13 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       render() {
-        const {children} = this.props
+        const {children, zIndex, width, style, className} = this.props
         return (
           <Target
+            zIndex={zIndex}
+            width={width}
+            style={style}
+            className={className}
             ref={(target) => this.setState({target})}
             focused={this.state.focused}
           >
