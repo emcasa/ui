@@ -33,6 +33,7 @@ Map component.
     <Map
       cluster
       apiKey={GOOGLE_MAPS_API_KEY}
+      highlight={{lat: markers[0].lat, lng: markers[0].lng}}
       onChange={(bounds, listings) => console.log('onChange', {bounds, listings})}
     >
       {markers.map((props) => (

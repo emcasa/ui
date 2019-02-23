@@ -84,6 +84,7 @@ export default class MapContainer extends PureComponent {
     apiKey: PropTypes.string,
     defaultZoom: PropTypes.number.isRequired,
     defaultCenter: T.Coordinates.isRequired,
+    highlight: T.Coordinates,
     /** Enable/disable marker clustering */
     cluster: PropTypes.oneOfType([PropTypes.bool, T.SuperClusterOptions]),
     /** Called on map bounds change */
@@ -117,7 +118,7 @@ export default class MapContainer extends PureComponent {
     const shouldUpdateMarkers =
       state.children !== props.children || !state.markers
     if (shouldUpdateMarkers) markers = getMarkers(props, state)
-    if (shouldUpdateMarkers || !state.clusters) {
+    if (props.cluster && (shouldUpdateMarkers || !state.clusters)) {
       clusters = getClusterProps(props, {...state, markers})
       hasAggregators =
         clusters.reduce(
