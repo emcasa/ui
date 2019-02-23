@@ -32,6 +32,9 @@ export default styled.div`
     z-index: 1;
     cursor: grab;
   }
+  &.clickable:hover {
+    cursor: pointer;
+  }
   &.text:hover,
   &.text.highlight {
     background: white;

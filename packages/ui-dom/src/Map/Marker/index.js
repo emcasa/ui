@@ -11,9 +11,9 @@ export default class MapMarker extends PureComponent {
       children,
       onSelect,
       highlight,
-      onClick = () => onSelect && onSelect(id),
-      onMouseEnter = () => onSelect && onSelect(id, {lat, lng}),
-      onMouseLeave = () => onSelect && onSelect(id, {})
+      onClick = onSelect ? () => onSelect(id) : undefined,
+      onMouseEnter = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
+      onMouseLeave = onSelect ? () => onSelect(id, {}) : undefined
     } = this.props
 
     return (
@@ -23,7 +23,11 @@ export default class MapMarker extends PureComponent {
         onMouseLeave={onMouseLeave}
         lat={lat}
         lng={lng}
-        className={classNames({highlight, text: typeof children === 'string'})}
+        className={classNames({
+          highlight,
+          text: typeof children === 'string',
+          clickable: Boolean(onClick)
+        })}
       >
         {children}
       </Container>
