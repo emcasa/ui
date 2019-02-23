@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react'
+import classNames from 'classnames'
 import Container from './styles'
 
 export default class MapMarker extends PureComponent {
   render() {
-    const {id, lat, lng, text, onSelect, highlight} = this.props
+    const {id, lat, lng, children, onSelect, highlight} = this.props
 
     return (
       <Container
@@ -12,10 +13,9 @@ export default class MapMarker extends PureComponent {
         onMouseLeave={() => onSelect && onSelect(id, {})}
         lat={lat}
         lng={lng}
-        highlight={highlight}
-        text={text}
+        className={classNames({highlight, text: typeof children === 'string'})}
       >
-        {text}
+        {children}
       </Container>
     )
   }

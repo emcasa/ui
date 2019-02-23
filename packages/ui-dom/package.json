@@ -15,6 +15,7 @@
   "dependencies": {
     "@emcasa/ui": "^0.8.11",
     "@rebass/grid": "6.0.0-4",
+    "classnames": "^2.2.6",
     "element-class": "^0.2.2",
     "fbjs": "^1.0.0",
     "google-map-react": "^1.1.2",
