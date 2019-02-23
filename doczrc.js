@@ -22,7 +22,9 @@ export default {
   },
   modifyBundlerConfig(config) {
     config.plugins.unshift(
-      new webpack.EnvironmentPlugin(['GOOGLE_MAPS_API_KEY'])
+      new webpack.EnvironmentPlugin({
+        GOOGLE_MAPS_API_KEY: ''
+      })
     )
     return config
   }
