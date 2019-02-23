@@ -134,14 +134,6 @@ export default class MapContainer extends PureComponent {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {markers} = this.state
-    const {markers: prevMarkers} = prevState
-    if (this.map && !isEqual(markers, prevMarkers)) {
-      this.fitMap(markers)
-    }
-  }
-
   onMapLoaded = ({map, maps}) => {
     if (map) {
       const {onDragEnd, onZoomChanged} = this.props
@@ -167,7 +159,7 @@ export default class MapContainer extends PureComponent {
       this.boundsUpdated
     )
 
-  fitMap = (markers) => {
+  fitMap = (markers = this.state.markers) => {
     const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
 
     const bounds = new this.maps.LatLngBounds()
