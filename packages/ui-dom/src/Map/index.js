@@ -85,6 +85,7 @@ export default class MapContainer extends PureComponent {
     defaultZoom: PropTypes.number.isRequired,
     defaultCenter: T.Coordinates.isRequired,
     highlight: T.Coordinates,
+    isHighlight: PropTypes.func,
     /** Enable/disable marker clustering */
     cluster: PropTypes.oneOfType([PropTypes.bool, T.SuperClusterOptions]),
     /** Called on map bounds change */
@@ -208,19 +209,15 @@ export default class MapContainer extends PureComponent {
     }
   }
 
-  isMarkerHighlighted = ({lat, lng}) => {
-    const {highlight} = this.props
-    return highlight && isEqual(highlight, {lat, lng})
+  isMarkerHighlighted = ({id, lat, lng}) => {
+    const {highlight, isHighlight} = this.props
+    if (typeof isHighlight === 'function') return isHighlight({id, lat, lng})
+    else if (highlight) return highlight.lat == lat && highlight.lng == lng
+    else return false
   }
 
   isClusterHighlighted = (cluster) => {
-    const {highlight} = this.props
-    return (
-      highlight &&
-      cluster.points.filter(
-        ({lat, lng}) => lat === highlight.lat && lng === highlight.lng
-      ).length > 0
-    )
+    return cluster.points.filter(this.isMarkerHighlighted).length > 0
   }
 
   renderCluster = (cluster) => {
