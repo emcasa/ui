@@ -2,8 +2,8 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import supercluster from 'points-cluster'
+import noop from 'lodash/noop'
 import flatten from 'lodash/flatten'
-import isEqual from 'lodash/isEqual'
 import isObject from 'lodash/isObject'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
@@ -160,6 +160,22 @@ export default class MapContainer extends PureComponent {
       this.boundsUpdated
     )
 
+  panTo(...args) {
+    return (this.map ? this.map.panTo : noop).call(this.map, ...args)
+  }
+
+  fitBounds(...args) {
+    return (this.map ? this.map.fitBounds : noop).call(this.map, ...args)
+  }
+
+  setCenter(...args) {
+    return (this.map ? this.map.setCenter : noop).call(this.map, ...args)
+  }
+
+  setZoom(...args) {
+    return (this.map ? this.map.setZoom : noop).call(this.map, ...args)
+  }
+
   fitMap = (markers = this.state.markers) => {
     const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
 
@@ -167,18 +183,18 @@ export default class MapContainer extends PureComponent {
     for (let i = 0, LtLgLen = LatLngList.length; i < LtLgLen; i++) {
       bounds.extend(LatLngList[i])
     }
-    this.map.fitBounds(bounds)
+    this.fitBounds(bounds)
 
     if (markers.length === 1) {
-      this.map.setZoom(15)
+      this.setZoom(15)
     }
 
     if (markers.length === 0) {
       const {
         mapOptions: {center}
       } = this.state
-      this.map.setCenter(new this.maps.LatLng(center.lat, center.lng))
-      this.map.setZoom(13)
+      this.setCenter(new this.maps.LatLng(center.lat, center.lng))
+      this.setZoom(13)
     }
   }
 
@@ -190,7 +206,7 @@ export default class MapContainer extends PureComponent {
     for (let i = 0, LtLgLen = LatLngList.length; i < LtLgLen; i++) {
       bounds.extend(LatLngList[i])
     }
-    this.map.fitBounds(bounds)
+    this.fitBounds(bounds)
     if (onFrameCluster) onFrameCluster(bounds, markers)
   }
 
