@@ -46,8 +46,8 @@ export const getBreakpoint = ({width: windowWidth, theme}) => {
     name
   const width = windowWidth || getWindowWidth()
   for (; index < theme.breakpointNames.length; ++index) {
-    name = theme.breakpointNames[index]
     if (parseInt(theme.breakpoints[index]) >= width) break
+    name = theme.breakpointNames[index]
   }
   return {
     breakpoint: name,
