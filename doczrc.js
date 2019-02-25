@@ -1,3 +1,5 @@
+import webpack from 'webpack'
+
 export default {
   title: 'EmCasa UI',
   dest: './public',
@@ -17,5 +19,13 @@ export default {
       sidebarBg: '#e0e6ed',
       link: '#1fb6ff'
     }
+  },
+  modifyBundlerConfig(config) {
+    config.plugins.unshift(
+      new webpack.EnvironmentPlugin({
+        GOOGLE_MAPS_API_KEY: ''
+      })
+    )
+    return config
   }
 }

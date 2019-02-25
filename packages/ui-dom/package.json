@@ -15,11 +15,14 @@
   "dependencies": {
     "@emcasa/ui": "^0.9.0",
     "@rebass/grid": "6.0.0-4",
+    "classnames": "^2.2.6",
     "element-class": "^0.2.2",
     "fbjs": "^1.0.0",
+    "google-map-react": "^1.1.2",
     "hoist-non-react-statics": "^3.3.0",
     "number-abbreviate": "^2.0.0",
     "numeral": "^2.0.6",
+    "points-cluster": "^0.1.4",
     "recompose": "~0.30.0",
     "styled-icons": "^3.0.0",
     "styled-system": "3.1.6"

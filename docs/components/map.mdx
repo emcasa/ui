@@ -1,0 +1,50 @@
+---
+name: Map
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz'
+import View from '@emcasa/ui-dom/components/View'
+import Map from '@emcasa/ui-dom/components/Map'
+import Icon from '@emcasa/ui-dom/components/Icon'
+import markers from './markers.json'
+import {GOOGLE_MAPS_API_KEY} from './config'
+
+# Map
+
+Map component.
+
+## Basic usage
+
+<Playground>
+  <View m={4} height={400}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+      <View {...markers[0]} mt={-25}>
+        <Icon name="map-marker-alt" color="pink" size={25} />
+      </View>
+    </Map>
+  </View>
+</Playground>
+
+## Cluster
+
+<Playground>
+  <View m={4} height={400}>
+    <Map
+      cluster
+      apiKey={GOOGLE_MAPS_API_KEY}
+      highlight={{lat: markers[0].lat, lng: markers[0].lng}}
+      onChange={(bounds, listings) => console.log('onChange', {bounds, listings})}
+    >
+      {markers.map((props) => (
+        <Map.Marker
+          {...props}
+          key={props.id}
+          onSelect={() => console.log('onSelect', props.id)}
+        >
+          {String(props.text)}
+        </Map.Marker>
+      ))}
+    </Map>
+  </View>
+</Playground>
