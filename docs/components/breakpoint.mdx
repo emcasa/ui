@@ -5,6 +5,8 @@ menu: Components
 
 import { Playground, PropsTable } from 'docz'
 import Breakpoint, {BreakpointProvider} from '@emcasa/ui-dom/components/Breakpoint'
+import Row from '@emcasa/ui-dom/components/Row'
+import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
 
@@ -30,7 +32,16 @@ Returns current breakpoint
 
 <Playground>
   <BreakpointProvider>
-    {({breakpoint}) => <Text>{breakpoint}</Text>}
+    {({breakpoint, isMobile}) => (
+      <Row>
+        <Col mr={2}>
+          <Text>{breakpoint}</Text>
+        </Col>
+        <Col>
+          <Text color={isMobile ? 'pink' : 'grey'}>({isMobile ? 'is mobile' : 'not mobile'})</Text>
+        </Col>
+      </Row>
+    )}
   </BreakpointProvider>
 </Playground>
 

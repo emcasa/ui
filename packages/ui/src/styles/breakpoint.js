@@ -1,23 +1,16 @@
-import {BREAKPOINTS} from '../theme/measures'
-
-const BreakpointNames = Array.from(BREAKPOINTS.keys()).reduce(
-  (obj, key, index) => ({...obj, [key]: index}),
-  {}
-)
-
-const getBreakpointIndex = (name) => {
-  const index = BreakpointNames[name]
-  return typeof index !== 'undefined' ? index : isNaN(name) ? undefined : name
+const getBreakpointIndex = (name, theme) => {
+  const index = theme.breakpointNames.indexOf(name)
+  return index !== -1 ? index : undefined
 }
 
 export const up = (name) => ({theme}) => {
-  const index = getBreakpointIndex(name)
+  const index = getBreakpointIndex(name, theme)
   const minWidth = parseInt(theme.breakpoints[index])
   return `(min-width: ${minWidth}px)`
 }
 
 export const down = (name) => ({theme}) => {
-  const index = getBreakpointIndex(name)
+  const index = getBreakpointIndex(name, theme)
   const maxWidth = parseInt(theme.breakpoints[index + 1])
   return !isNaN(maxWidth)
     ? `(max-width: ${maxWidth - 1}px)`
@@ -25,7 +18,7 @@ export const down = (name) => ({theme}) => {
 }
 
 export const only = (name) => ({theme}) => {
-  const index = getBreakpointIndex(name)
+  const index = getBreakpointIndex(name, theme)
   const minWidth = parseInt(theme.breakpoints[index])
   const maxWidth = parseInt(theme.breakpoints[index + 1])
   if (!isNaN(maxWidth))
