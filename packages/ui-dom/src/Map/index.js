@@ -8,23 +8,6 @@ import isObject from 'lodash/isObject'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
 
-function createMapOptions(maps) {
-  return {
-    defaultZoom: 8,
-    defaultCenter: {lat: -22.9608099, lng: -43.2096142},
-    maxZoom: 20,
-    minZoom: 7,
-    zoomControlOptions: {
-      position: maps.ControlPosition.RIGHT_TOP,
-      style: maps.ZoomControlStyle.SMALL
-    },
-    mapTypeControlOptions: {
-      position: maps.ControlPosition.TOP_RIGHT
-    },
-    mapTypeControl: true
-  }
-}
-
 const getMarkers = ({children}) => {
   return React.Children.map(
     children,
@@ -82,10 +65,13 @@ export default class MapContainer extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     apiKey: PropTypes.string,
-    defaultZoom: PropTypes.number.isRequired,
-    defaultCenter: T.Coordinates.isRequired,
     highlight: T.Coordinates,
     isHighlight: PropTypes.func,
+    minZoom: PropTypes.number,
+    maxZoom: PropTypes.number,
+    defaultZoom: PropTypes.number.isRequired,
+    defaultCenter: T.Coordinates.isRequired,
+    createMapOptions: PropTypes.func,
     /** Enable/disable marker clustering */
     cluster: PropTypes.oneOfType([PropTypes.bool, T.SuperClusterOptions]),
     /** Called on map bounds change */
@@ -100,7 +86,9 @@ export default class MapContainer extends PureComponent {
 
   static defaultProps = {
     defaultCenter: {lat: -22.9608099, lng: -43.2096142},
-    defaultZoom: 8
+    defaultZoom: 8,
+    minZoom: 7,
+    maxZoom: 20
   }
 
   state = {
@@ -210,6 +198,31 @@ export default class MapContainer extends PureComponent {
     if (onFrameCluster) onFrameCluster(bounds, markers)
   }
 
+  createMapOptions = (maps) => {
+    const {
+      createMapOptions,
+      minZoom,
+      maxZoom,
+      defaultZoom,
+      defaultCenter
+    } = this.props
+    if (createMapOptions) return createMapOptions(maps)
+    return {
+      defaultZoom,
+      defaultCenter,
+      maxZoom,
+      minZoom,
+      zoomControlOptions: {
+        position: maps.ControlPosition.RIGHT_TOP,
+        style: maps.ZoomControlStyle.SMALL
+      },
+      mapTypeControlOptions: {
+        position: maps.ControlPosition.TOP_RIGHT
+      },
+      mapTypeControl: true
+    }
+  }
+
   boundsUpdated() {
     const {onChange} = this.props
     const {mapOptions, clusters} = this.state
@@ -276,7 +289,7 @@ export default class MapContainer extends PureComponent {
         }}
         defaultZoom={defaultZoom}
         defaultCenter={defaultCenter}
-        options={createMapOptions}
+        options={this.createMapOptions}
         yesIWantToUseGoogleMapApiInternals
         onChange={this.onMapChange}
         onGoogleApiLoaded={this.onMapLoaded}
