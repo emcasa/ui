@@ -65,6 +65,7 @@ export default class MapContainer extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     apiKey: PropTypes.string,
+    libraries: PropTypes.array,
     highlight: T.Coordinates,
     isHighlight: PropTypes.func,
     minZoom: PropTypes.number,
@@ -275,6 +276,7 @@ export default class MapContainer extends PureComponent {
       children,
       cluster: shouldCluster,
       apiKey,
+      libraries,
       defaultCenter,
       defaultZoom
     } = this.props
@@ -284,6 +286,7 @@ export default class MapContainer extends PureComponent {
       <GoogleMapReact
         bootstrapURLKeys={{
           key: apiKey,
+          libraries,
           language: 'pt-BR',
           region: 'br'
         }}
