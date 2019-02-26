@@ -28,10 +28,13 @@ const defaultClusterOptions = {
 }
 
 const getClusters = ({cluster}, {markers, mapOptions}) => {
-  const clusters = supercluster(
-    markers,
-    isObject(cluster) ? cluster : defaultClusterOptions
-  )
+  const clusterOptions =
+    typeof cluster === 'function'
+      ? cluster(mapOptions)
+      : isObject(cluster)
+        ? cluster
+        : defaultClusterOptions
+  const clusters = supercluster(markers, clusterOptions)
   return clusters(mapOptions)
 }
 
@@ -72,9 +75,14 @@ export default class MapContainer extends PureComponent {
     maxZoom: PropTypes.number,
     defaultZoom: PropTypes.number.isRequired,
     defaultCenter: T.Coordinates.isRequired,
-    createMapOptions: PropTypes.func,
+    /** google-map-react options */
+    options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     /** Enable/disable marker clustering */
-    cluster: PropTypes.oneOfType([PropTypes.bool, T.SuperClusterOptions]),
+    cluster: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.func,
+      T.SuperClusterOptions
+    ]),
     /** Called on map bounds change */
     onChange: PropTypes.func,
     /** Called on map drag end */
@@ -200,14 +208,9 @@ export default class MapContainer extends PureComponent {
   }
 
   createMapOptions = (maps) => {
-    const {
-      createMapOptions,
-      minZoom,
-      maxZoom,
-      defaultZoom,
-      defaultCenter
-    } = this.props
-    if (createMapOptions) return createMapOptions(maps)
+    const {options, minZoom, maxZoom, defaultZoom, defaultCenter} = this.props
+    if (typeof options === 'function') return options(maps)
+    else if (options) return options
     return {
       defaultZoom,
       defaultCenter,
