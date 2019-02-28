@@ -1,5 +1,22 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {themeGet} from 'styled-system'
+
+export const markerTipStyle = css`
+  bottom: -6px;
+  content: '';
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 8px solid ${themeGet('colors.pink')};
+`
+
+export const markerTipHighlightStyle = css`
+  border-top: 8px solid white;
+`
 
 export default styled.div`
   background: ${themeGet('colors.pink')};
@@ -15,17 +32,9 @@ export default styled.div`
     scale(${({highlight}) => (highlight ? 1.3 : 1)});
   transition: transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: ${({highlight}) => (highlight ? 1 : 0)};
+  white-space: nowrap;
   &:after {
-    bottom: -6px;
-    content: '';
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 8px solid ${themeGet('colors.pink')};
+    ${markerTipStyle};
   }
   &:hover,
   &.highlight {
@@ -40,7 +49,7 @@ export default styled.div`
     background: white;
     color: ${themeGet('colors.pink')};
     &:after {
-      border-top: 8px solid white;
+      ${markerTipHighlightStyle};
     }
   }
 `

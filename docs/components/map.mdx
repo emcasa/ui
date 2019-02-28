@@ -33,7 +33,7 @@ Map component.
     <Map
       cluster
       apiKey={GOOGLE_MAPS_API_KEY}
-      highlight={{lat: markers[0].lat, lng: markers[0].lng}}
+      isHighlight={({id}) => id == markers[0].id}
       onChange={(bounds, listings) => console.log('onChange', {bounds, listings})}
     >
       {markers.map((props) => (
@@ -43,6 +43,24 @@ Map component.
           onSelect={() => console.log('onSelect', props.id)}
         >
           {String(props.text)}
+        </Map.Marker>
+      ))}
+    </Map>
+  </View>
+</Playground>
+
+## Multi marker
+
+<Playground>
+  <View m={4} height={400}>
+    <Map
+      cluster
+      apiKey={GOOGLE_MAPS_API_KEY}
+      isHighlight={({id}) => id === 1}
+    >
+      {['A', 'B', 'C'].map((name, i) => (
+        <Map.Marker {...markers[0]} key={name} id={i}>
+          {'Marker ' + name}
         </Map.Marker>
       ))}
     </Map>
