@@ -8,6 +8,7 @@ export default styled.div`
   border: 2px solid ${themeGet('colors.pink')};
   border-radius: 4px;
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.3);
+  background: ${themeGet('colors.pink')};
   &:before {
     z-index: 2;
     position: absolute;
@@ -17,7 +18,7 @@ export default styled.div`
     left: 0;
     right: 0;
     border-radius: 4px;
-    border: 1px solid white;
+    border: 1px solid ${themeGet('colors.pink')};
     pointer-events: none;
   }
   &:after {
@@ -27,9 +28,7 @@ export default styled.div`
   &.highlight,
   &:hover {
     border-color: white;
-    &:before {
-      border-color: ${themeGet('colors.pink')};
-    }
+    background: white;
     &:after {
       ${markerTipHighlightStyle};
     }
@@ -40,6 +39,7 @@ export default styled.div`
     transform: none;
     margin: 0;
     border-radius: 0;
+    box-shadow: none;
     &:after,
     &:before {
       display: none;

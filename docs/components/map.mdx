@@ -51,15 +51,15 @@ Map component.
 
 ## MultiMarker
 
+When clustering is enabled and the zoom level is greater than `cluster.maxZoom` (defaults to `17`), markers on the same spot are clustered into multi markers.
+
+Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups markers in the same coordinates.
+
 <Playground>
   <View m={4} height={400}>
-    <Map
-      cluster
-      apiKey={GOOGLE_MAPS_API_KEY}
-      isHighlight={({id}) => id === 1}
-    >
-      {['A', 'B', 'C'].map((name, i) => (
-        <Map.Marker {...markers[0]} key={name} id={i}>
+    <Map cluster apiKey={GOOGLE_MAPS_API_KEY}>
+      {['A', 'B', 'C'].map((name) => (
+        <Map.Marker {...markers[0]} key={name}>
           {'Marker ' + name}
         </Map.Marker>
       ))}
