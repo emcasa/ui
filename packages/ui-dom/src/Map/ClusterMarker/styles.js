@@ -13,6 +13,7 @@ export default styled.div`
   border-radius: 100%;
   background-color: ${themeGet('colors.pink')};
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
 
   > span {
     box-sizing: border-box;

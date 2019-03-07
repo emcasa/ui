@@ -1,12 +1,18 @@
+import cond from 'lodash/cond'
+import stubTrue from 'lodash/stubTrue'
+import constant from 'lodash/constant'
+import identity from 'lodash/identity'
+import flatten from 'lodash/flatten'
+import isObject from 'lodash/isObject'
+import isFunction from 'lodash/isFunction'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import supercluster from 'points-cluster'
 import noop from 'lodash/noop'
-import flatten from 'lodash/flatten'
-import isObject from 'lodash/isObject'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
+import MultiMarker from './MultiMarker'
 
 const getMarkers = ({children}) => {
   return React.Children.map(
@@ -21,19 +27,32 @@ const getMarkers = ({children}) => {
   ).filter(Boolean)
 }
 
-const defaultClusterOptions = {
-  minZoom: 7,
+const getOptions = (getDefaultOptions) =>
+  cond([
+    [isFunction, identity],
+    [isObject, constant],
+    [stubTrue, getDefaultOptions]
+  ])
+
+const getClusterOptions = getOptions(() => ({
+  minZoom: 0,
   maxZoom: 17,
   radius: 40
-}
+}))
 
-const getClusters = ({cluster}, {markers, mapOptions}) => {
-  const clusterOptions =
-    typeof cluster === 'function'
-      ? cluster(mapOptions)
-      : isObject(cluster)
-        ? cluster
-        : defaultClusterOptions
+const getClusters = (
+  props,
+  {markers, mapOptions, clusterOptions: _options}
+) => {
+  const clusterOptions = {..._options}
+  if (
+    !isNaN(props.multiMarkerRadius) &&
+    mapOptions.zoom > clusterOptions.maxZoom
+  )
+    Object.assign(clusterOptions, {
+      maxZoom: props.maxZoom,
+      radius: props.multiMarkerRadius
+    })
   const clusters = supercluster(markers, clusterOptions)
   return clusters(mapOptions)
 }
@@ -71,10 +90,12 @@ export default class MapContainer extends PureComponent {
     libraries: PropTypes.array,
     highlight: T.Coordinates,
     isHighlight: PropTypes.func,
-    minZoom: PropTypes.number,
-    maxZoom: PropTypes.number,
+    minZoom: PropTypes.number.isRequired,
+    maxZoom: PropTypes.number.isRequired,
     defaultZoom: PropTypes.number.isRequired,
     defaultCenter: T.Coordinates.isRequired,
+    /** Radius to cluster multi markers in pixels. Use 0 to only cluster markers in the same coordinates */
+    multiMarkerRadius: PropTypes.number.isRequired,
     /** google-map-react options */
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     /** Enable/disable marker clustering */
@@ -94,10 +115,12 @@ export default class MapContainer extends PureComponent {
   }
 
   static defaultProps = {
+    libraries: [],
     defaultCenter: {lat: -22.9608099, lng: -43.2096142},
     defaultZoom: 8,
     minZoom: 7,
-    maxZoom: 20
+    maxZoom: 20,
+    multiMarkerRadius: 0
   }
 
   state = {
@@ -112,12 +135,13 @@ export default class MapContainer extends PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let {markers, clusters, hasAggregators} = state
+    let {markers, clusters, clusterOptions, hasAggregators} = state
     const shouldUpdateMarkers =
       state.children !== props.children || !state.markers
     if (shouldUpdateMarkers) markers = getMarkers(props, state)
     if (props.cluster && (shouldUpdateMarkers || !state.clusters)) {
-      clusters = getClusterProps(props, {...state, markers})
+      clusterOptions = getClusterOptions(props.cluster, props)
+      clusters = getClusterProps(props, {...state, markers, clusterOptions})
       hasAggregators =
         clusters.reduce(
           (prevVal, elem) => (elem.numPoints > 1 ? prevVal + 1 : prevVal),
@@ -128,6 +152,7 @@ export default class MapContainer extends PureComponent {
       children: props.children,
       markers,
       clusters,
+      clusterOptions,
       hasAggregators
     }
   }
@@ -242,34 +267,38 @@ export default class MapContainer extends PureComponent {
     }
   }
 
-  isMarkerHighlighted = ({id, lat, lng}) => {
+  getMarkerHighlight = ({id, lat, lng}) => {
     const {highlight, isHighlight} = this.props
     if (typeof isHighlight === 'function') return isHighlight({id, lat, lng})
     else if (highlight) return highlight.lat == lat && highlight.lng == lng
     else return false
   }
 
-  isClusterHighlighted = (cluster) => {
-    return cluster.points.filter(this.isMarkerHighlighted).length > 0
+  getClusterHighlight = (cluster) => {
+    return cluster.points
+      .filter(this.getMarkerHighlight)
+      .map((marker) => marker.id)
   }
 
   renderCluster = (cluster) => {
-    return (
-      <ClusterMarker
-        key={cluster.id}
-        lat={cluster.lat}
-        lng={cluster.lng}
-        points={cluster.points}
-        onClick={this.frameCluster}
-        highlight={this.isClusterHighlighted(cluster)}
-      />
-    )
+    const {mapOptions, clusterOptions} = this.state
+    const clusterProps = {
+      key: cluster.id,
+      lat: cluster.lat,
+      lng: cluster.lng,
+      points: cluster.points,
+      onClick: this.frameCluster,
+      highlight: this.getClusterHighlight(cluster)
+    }
+    const Component =
+      mapOptions.zoom > clusterOptions.maxZoom ? MultiMarker : ClusterMarker
+    return <Component {...clusterProps} />
   }
 
   renderClusterMarkers = (item) => {
     return item.points.map((marker) =>
       React.cloneElement(marker.node, {
-        highlight: this.isMarkerHighlighted(marker)
+        highlight: this.getMarkerHighlight(marker)
       })
     )
   }
