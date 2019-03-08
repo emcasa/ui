@@ -168,6 +168,25 @@ const FilterGroup = Group(
       return filters
     }
 
+    renderClearButton = (form) => {
+      return (
+        <Button
+          link
+          type="button"
+          fontSize="small"
+          height="short"
+          color="grey"
+          onClick={() => {
+            form.resetForm({})
+            form.submitForm()
+            this.props.onSelect(undefined)
+          }}
+        >
+          Limpar
+        </Button>
+      )
+    }
+
     render() {
       const {
         id,
@@ -190,23 +209,6 @@ const FilterGroup = Group(
         isRowExpanded
       } = this.state
       const hasSelectedValue = Boolean(selectedValue)
-
-      const clearButton = (
-        <Button
-          link
-          type="button"
-          fontSize="small"
-          height="short"
-          color="grey"
-          onClick={() => {
-            form.resetForm({})
-            form.submitForm()
-            onSelect(undefined)
-          }}
-        >
-          Limpar
-        </Button>
-      )
 
       return (
         <Formik
@@ -253,10 +255,10 @@ const FilterGroup = Group(
                   )}
                   {minClearButtonBreakpoint ? (
                     <Breakpoint up={minClearButtonBreakpoint}>
-                      {clearButton}
+                      {this.renderClearButton(form)}
                     </Breakpoint>
                   ) : (
-                    clearButton
+                    this.renderClearButton(form)
                   )}
                 </Row>
               </Form>
