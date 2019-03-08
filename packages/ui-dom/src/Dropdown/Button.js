@@ -46,7 +46,6 @@ const DropdownButton = styled(
             type={type}
             color="dark"
             size={18}
-            mt="5px"
             {...iconProps}
           />
           <ButtonText {...props}>{children}</ButtonText>
