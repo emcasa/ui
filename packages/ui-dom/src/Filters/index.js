@@ -264,6 +264,7 @@ const FilterGroup = Group(
               </Form>
               <Background
                 pose={selectedValue ? 'bgOpen' : 'bgClosed'}
+                isRowExpanded={isRowExpanded}
                 onDismiss={() => onSelect(undefined)}
                 contentRef={this.contentRef}
                 offset={bodyHeight}

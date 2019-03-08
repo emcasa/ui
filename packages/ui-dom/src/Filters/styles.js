@@ -277,6 +277,7 @@ export const Background = styled(
       padding: ${themeGet('space.4')}px;
       padding-top: 0;
       overflow-y: auto;
+      transition: all ${transition.duration}ms cubic-bezier(${transition.ease.join(',')});
     }
   }
 `

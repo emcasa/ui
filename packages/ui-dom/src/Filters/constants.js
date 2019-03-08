@@ -16,7 +16,8 @@ export const ROW_HEIGHT = (props) =>
   BUTTON_HEIGHT(props) + ROW_PADDING(props) * 2
 
 export const TOP_SPACING = (props) =>
-  (props.offset || ROW_HEIGHT(props)) + props.theme.space[4] * 2
+  (props.isRowExpanded ? props.offset : ROW_HEIGHT(props)) +
+  props.theme.space[4] * 2
 
 export const MOBILE_PANEL_MIN_HEIGHT = 200
 
