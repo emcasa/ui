@@ -74,14 +74,19 @@ const FilterGroup = Group(
     }
 
     componentDidUpdate(prevProps, prevState) {
-      if (
-        this.props.scrollContainer &&
-        prevState.isFilterExpanded !== this.state.isFilterExpanded
-      ) {
-        const classNames = elementClass(this.props.scrollContainer)
-        if (this.state.isFilterExpanded) classNames.add('noscroll')
-        else classNames.remove('noscroll')
+      if (prevState.isFilterExpanded !== this.state.isFilterExpanded) {
+        // Collapse row when mobile filter closes
+        if (!this.state.isFilterExpanded && this.state.isRowExpanded) {
+          this.setState({isRowExpanded: false})
+        }
+        // Disable container scroll when mobile filter opens
+        if (this.props.scrollContainer) {
+          const classNames = elementClass(this.props.scrollContainer)
+          if (this.state.isFilterExpanded) classNames.add('noscroll')
+          else classNames.remove('noscroll')
+        }
       }
+      // Reinitialize formik initial values
       if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
         this.setState({initialValues: this.props.initialValues})
       }
