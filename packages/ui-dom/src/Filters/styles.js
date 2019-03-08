@@ -1,4 +1,5 @@
 import get from 'lodash/fp/get'
+import cond from 'lodash/fp/cond'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
@@ -138,15 +139,14 @@ Form.defaultProps = {
   zIndex: 101
 }
 
+const EXPANDED_ROW_HEIGHT = (props) => props.height + ROW_PADDING(props)
+
 export const BodyExpander = styled(
   posed.div({
     rowOpen: {
-      applyAtEnd: {
-        height: ''
-      },
       transition,
       flip: true,
-      height: get('height')
+      height: EXPANDED_ROW_HEIGHT
     },
     rowClosed: {
       transition,
@@ -162,8 +162,6 @@ export const BodyExpander = styled(
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
   min-height: ${ROW_HEIGHT}px;
-  ${({pose, height, ...props}) =>
-    pose === 'rowOpen' && {height: height + ROW_PADDING(props) + 'px'}};
   overflow: hidden;
 `
 

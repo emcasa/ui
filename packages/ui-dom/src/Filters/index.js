@@ -7,7 +7,7 @@ import {compose, mapProps} from 'recompose'
 import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
-import {ROW_HEIGHT} from './constants'
+import {BUTTON_HEIGHT} from './constants'
 import {
   Container,
   Form,
@@ -60,7 +60,7 @@ const FilterGroup = Group(
     static getDerivedStateFromProps(props, state) {
       const bodyHeight = props.contentRect.bounds.height
       const rowHeight =
-        state.rowHeight || ROW_HEIGHT(props) - props.theme.space[2]
+        state.rowHeight || BUTTON_HEIGHT(props) + props.theme.space[2]
       const rowCount = Math.ceil(bodyHeight / rowHeight) || 1
       return {
         bodyHeight,
