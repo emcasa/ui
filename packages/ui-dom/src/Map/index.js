@@ -234,9 +234,7 @@ export default class MapContainer extends PureComponent {
 
   createMapOptions = (maps) => {
     const {options, minZoom, maxZoom, defaultZoom, defaultCenter} = this.props
-    if (typeof options === 'function') return options(maps)
-    else if (options) return options
-    return {
+    const mapOptions = {
       defaultZoom,
       defaultCenter,
       maxZoom,
@@ -250,6 +248,8 @@ export default class MapContainer extends PureComponent {
       },
       mapTypeControl: true
     }
+    if (typeof options === 'function') return options(maps, mapOptions)
+    return Object.assign(mapOptions, options)
   }
 
   boundsUpdated() {

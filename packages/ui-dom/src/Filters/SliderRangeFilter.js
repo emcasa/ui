@@ -29,9 +29,10 @@ export class SliderRange extends PureComponent {
           initialValue={displayValue}
           formatValue={formatValue}
           onChange={onChange}
+          trackProps={{bg: 'lightGrey'}}
         >
           <Slider.Marker name="min" />
-          <Slider.Marker name="max" />
+          <Slider.Marker name="max" trackProps={{bg: 'pink'}} />
         </Slider>
       </View>
     )

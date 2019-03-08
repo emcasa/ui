@@ -16,7 +16,7 @@ import {
   ExpandButton,
   Background
 } from './styles'
-import {withBreakpoint} from '../Breakpoint'
+import Breakpoint, {withBreakpoint} from '../Breakpoint'
 import Button from '../Button'
 import Row from '../Row'
 
@@ -42,7 +42,10 @@ const FilterGroup = Group(
       initialValues: {},
       contentRect: {bounds: {}},
       strategy: 'switchable',
+      minClearButtonBreakpoint: 'desktop',
       onSubmit: () => null,
+      order: ({value, initialValue, selected}) =>
+        selected ? 2 : value && !isEqual(value, initialValue) ? 1 : 0,
       get scrollContainer() {
         return !isBrowser ? undefined : window.document.body
       },
@@ -62,7 +65,10 @@ const FilterGroup = Group(
       const rowHeight =
         state.rowHeight || BUTTON_HEIGHT(props) + props.theme.space[2]
       const rowCount = Math.ceil(bodyHeight / rowHeight) || 1
+      const sort =
+        typeof props.sort === 'undefined' ? props.isMobile : props.sort
       return {
+        sort,
         bodyHeight,
         rowHeight,
         rowCount,
@@ -76,7 +82,7 @@ const FilterGroup = Group(
     componentDidUpdate(prevProps, prevState) {
       if (prevState.isFilterExpanded !== this.state.isFilterExpanded) {
         // Collapse row when mobile filter closes
-        if (!this.state.isFilterExpanded && this.state.isRowExpanded) {
+        if (this.state.isRowExpanded) {
           requestAnimationFrame(() => this.setState({isRowExpanded: false}))
         }
         // Disable container scroll when mobile filter opens
@@ -116,9 +122,54 @@ const FilterGroup = Group(
 
     onCollapseRow = () => this.setState({isRowExpanded: false})
 
+    getFilterData = (name) => {
+      const {initialValues, selectedValue, formikRef} = this.props
+      const value = formikRef.current
+        ? formikRef.current.state.values[name]
+        : this.state.initialValues[name]
+      return {
+        name,
+        value,
+        initialValue: initialValues[name],
+        selected: name === selectedValue
+      }
+    }
+
+    sortFilters = (a, b) => {
+      const {sort, order} = this.props
+      const args = [
+        this.getFilterData(a.props.name),
+        this.getFilterData(b.props.name)
+      ]
+      if (typeof sort === 'function') return sort(...args)
+      if (typeof order === 'function') {
+        const aPriority = order(args[0])
+        const bPriority = order(args[1])
+        if (aPriority > bPriority) return -1
+        else if (aPriority < bPriority) return 1
+      }
+      return 0
+    }
+
+    renderFilters() {
+      const {children} = this.props
+      const {rowCount, isFilterExpanded, isRowExpanded} = this.state
+      const filters = React.Children.map(children, (element) =>
+        React.cloneElement(element, {
+          rowCount,
+          isRowExpanded,
+          isFilterExpanded,
+          containerRect: this.state.contentRect,
+          contentRef: this.contentRef,
+          containerRef: this.containerRef
+        })
+      )
+      if (this.state.sort) return filters.sort(this.sortFilters)
+      return filters
+    }
+
     render() {
       const {
-        children,
         id,
         style,
         className,
@@ -128,7 +179,8 @@ const FilterGroup = Group(
         zIndexActiveOffset,
         selectedValue,
         onSelect,
-        measureRef
+        measureRef,
+        minClearButtonBreakpoint
       } = this.props
       const {
         initialValues,
@@ -138,6 +190,24 @@ const FilterGroup = Group(
         isRowExpanded
       } = this.state
       const hasSelectedValue = Boolean(selectedValue)
+
+      const clearButton = (
+        <Button
+          link
+          type="button"
+          fontSize="small"
+          height="short"
+          color="grey"
+          onClick={() => {
+            form.resetForm({})
+            form.submitForm()
+            onSelect(undefined)
+          }}
+        >
+          Limpar
+        </Button>
+      )
+
       return (
         <Formik
           enableReinitialize
@@ -170,18 +240,7 @@ const FilterGroup = Group(
                   initialPose="closed"
                   height={bodyHeight}
                 >
-                  <Body innerRef={measureRef}>
-                    {React.Children.map(children, (element) =>
-                      React.cloneElement(element, {
-                        rowCount,
-                        isRowExpanded,
-                        isFilterExpanded,
-                        containerRect: this.state.contentRect,
-                        contentRef: this.contentRef,
-                        containerRef: this.containerRef
-                      })
-                    )}
-                  </Body>
+                  <Body innerRef={measureRef}>{this.renderFilters()}</Body>
                 </BodyExpander>
                 <Row pt={2}>
                   {rowCount > 1 && (
@@ -192,20 +251,13 @@ const FilterGroup = Group(
                       }
                     />
                   )}
-                  <Button
-                    link
-                    type="button"
-                    fontSize="small"
-                    height="short"
-                    color="grey"
-                    onClick={() => {
-                      form.resetForm({})
-                      form.submitForm()
-                      onSelect(undefined)
-                    }}
-                  >
-                    Limpar
-                  </Button>
+                  {minClearButtonBreakpoint ? (
+                    <Breakpoint up={minClearButtonBreakpoint}>
+                      {clearButton}
+                    </Breakpoint>
+                  ) : (
+                    clearButton
+                  )}
                 </Row>
               </Form>
               <Background
