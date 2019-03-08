@@ -77,7 +77,7 @@ const FilterGroup = Group(
       if (prevState.isFilterExpanded !== this.state.isFilterExpanded) {
         // Collapse row when mobile filter closes
         if (!this.state.isFilterExpanded && this.state.isRowExpanded) {
-          this.setState({isRowExpanded: false})
+          requestAnimationFrame(() => this.setState({isRowExpanded: false}))
         }
         // Disable container scroll when mobile filter opens
         if (this.props.scrollContainer) {
