@@ -7,7 +7,7 @@ import {compose, mapProps} from 'recompose'
 import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
 import Group from '@emcasa/ui/lib/components/Group'
-import {ROW_HEIGHT} from './constants'
+import {BUTTON_HEIGHT} from './constants'
 import {
   Container,
   Form,
@@ -60,7 +60,7 @@ const FilterGroup = Group(
     static getDerivedStateFromProps(props, state) {
       const bodyHeight = props.contentRect.bounds.height
       const rowHeight =
-        state.rowHeight || ROW_HEIGHT(props) - props.theme.space[2]
+        state.rowHeight || BUTTON_HEIGHT(props) + props.theme.space[2]
       const rowCount = Math.ceil(bodyHeight / rowHeight) || 1
       return {
         bodyHeight,
@@ -74,14 +74,19 @@ const FilterGroup = Group(
     }
 
     componentDidUpdate(prevProps, prevState) {
-      if (
-        this.props.scrollContainer &&
-        prevState.isFilterExpanded !== this.state.isFilterExpanded
-      ) {
-        const classNames = elementClass(this.props.scrollContainer)
-        if (this.state.isFilterExpanded) classNames.add('noscroll')
-        else classNames.remove('noscroll')
+      if (prevState.isFilterExpanded !== this.state.isFilterExpanded) {
+        // Collapse row when mobile filter closes
+        if (!this.state.isFilterExpanded && this.state.isRowExpanded) {
+          requestAnimationFrame(() => this.setState({isRowExpanded: false}))
+        }
+        // Disable container scroll when mobile filter opens
+        if (this.props.scrollContainer) {
+          const classNames = elementClass(this.props.scrollContainer)
+          if (this.state.isFilterExpanded) classNames.add('noscroll')
+          else classNames.remove('noscroll')
+        }
       }
+      // Reinitialize formik initial values
       if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
         this.setState({initialValues: this.props.initialValues})
       }
