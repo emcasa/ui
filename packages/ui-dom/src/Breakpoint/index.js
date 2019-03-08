@@ -117,12 +117,12 @@ export const BreakpointProvider = withTheme(
 
 export const withBreakpoint = (getOptions = {}) => (Target) =>
   hoistStatics(
-    (props) => (
+    React.forwardRef((props, ref) => (
       <BreakpointProvider
         {...(isFunction(getOptions) ? getOptions(props) : getOptions)}
       >
-        {(ctx) => <Target {...props} {...ctx} />}
+        {(ctx) => <Target ref={ref} {...props} {...ctx} />}
       </BreakpointProvider>
-    ),
+    )),
     Target
   )
