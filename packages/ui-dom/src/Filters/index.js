@@ -44,6 +44,8 @@ const FilterGroup = Group(
       strategy: 'switchable',
       minClearButtonBreakpoint: 'desktop',
       onSubmit: () => null,
+      order: ({value, initialValue, selected}) =>
+        selected ? 2 : value && value !== initialValue ? 1 : 0,
       get scrollContainer() {
         return !isBrowser ? undefined : window.document.body
       },
@@ -77,7 +79,7 @@ const FilterGroup = Group(
     componentDidUpdate(prevProps, prevState) {
       if (prevState.isFilterExpanded !== this.state.isFilterExpanded) {
         // Collapse row when mobile filter closes
-        if (!this.state.isFilterExpanded && this.state.isRowExpanded) {
+        if (this.state.isRowExpanded) {
           requestAnimationFrame(() => this.setState({isRowExpanded: false}))
         }
         // Disable container scroll when mobile filter opens
@@ -117,24 +119,47 @@ const FilterGroup = Group(
 
     onCollapseRow = () => this.setState({isRowExpanded: false})
 
-    filterHasValue = (name) => {
-      return (
-        this.state.initialValues[name] &&
-        !isEqual(this.props.initialValues[name], this.state.initialValues[name])
-      )
+    getFilterOrder = (name) => {
+      const {order, initialValues, selectedValue, formikRef} = this.props
+      if (!order) return 0
+      const value = formikRef.current
+        ? formikRef.current.state.values[name]
+        : this.state.initialValues[name]
+      return order({
+        name,
+        value,
+        initialValue: initialValues[name],
+        selected: name === selectedValue
+      })
     }
 
     sortFilters = (a, b) => {
-      const aHasPriority = a.props.name && this.filterHasValue(a.props.name)
-      const bHasPriority = b.props.name && this.filterHasValue(b.props.name)
-      if (aHasPriority && !bHasPriority) return -1
-      else if (!aHasPriority && bHasPriority) return 1
+      const aPriority = a.props.name ? this.getFilterOrder(a.props.name) : 0
+      const bPriority = b.props.name ? this.getFilterOrder(b.props.name) : 0
+      if (aPriority > bPriority) return -1
+      else if (aPriority < bPriority) return 1
       return 0
+    }
+
+    renderFilters() {
+      const {children, order} = this.props
+      const {rowCount, isFilterExpanded, isRowExpanded} = this.state
+      const filters = React.Children.map(children, (element) =>
+        React.cloneElement(element, {
+          rowCount,
+          isRowExpanded,
+          isFilterExpanded,
+          containerRect: this.state.contentRect,
+          contentRef: this.contentRef,
+          containerRef: this.containerRef
+        })
+      )
+      if (order) return filters.sort(this.sortFilters)
+      return filters
     }
 
     render() {
       const {
-        children,
         id,
         style,
         className,
@@ -205,18 +230,7 @@ const FilterGroup = Group(
                   initialPose="closed"
                   height={bodyHeight}
                 >
-                  <Body innerRef={measureRef}>
-                    {React.Children.map(children, (element) =>
-                      React.cloneElement(element, {
-                        rowCount,
-                        isRowExpanded,
-                        isFilterExpanded,
-                        containerRect: this.state.contentRect,
-                        contentRef: this.contentRef,
-                        containerRef: this.containerRef
-                      })
-                    ).sort(this.sortFilters)}
-                  </Body>
+                  <Body innerRef={measureRef}>{this.renderFilters()}</Body>
                 </BodyExpander>
                 <Row pt={2}>
                   {rowCount > 1 && (
