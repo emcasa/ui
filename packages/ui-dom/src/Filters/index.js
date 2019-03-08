@@ -16,8 +16,7 @@ import {
   ExpandButton,
   Background
 } from './styles'
-import Breakpoint, {withBreakpoint} from '../Breakpoint'
-import Button from '../Button'
+import {withBreakpoint} from '../Breakpoint'
 import Row from '../Row'
 
 const ESC_KEY = 27
@@ -42,7 +41,7 @@ const FilterGroup = Group(
       initialValues: {},
       contentRect: {bounds: {}},
       strategy: 'switchable',
-      minClearButtonBreakpoint: 'desktop',
+      showMobileHeader: false,
       onSubmit: () => null,
       order: ({value, initialValue, selected}) =>
         selected ? 2 : value && !isEqual(value, initialValue) ? 1 : 0,
@@ -91,6 +90,7 @@ const FilterGroup = Group(
           if (this.state.isFilterExpanded) classNames.add('noscroll')
           else classNames.remove('noscroll')
         }
+        this.props.measure()
       }
       // Reinitialize formik initial values
       if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
@@ -168,25 +168,6 @@ const FilterGroup = Group(
       return filters
     }
 
-    renderClearButton = (form) => {
-      return (
-        <Button
-          link
-          type="button"
-          fontSize="small"
-          height="short"
-          color="grey"
-          onClick={() => {
-            form.resetForm({})
-            form.submitForm()
-            this.props.onSelect(undefined)
-          }}
-        >
-          Limpar
-        </Button>
-      )
-    }
-
     render() {
       const {
         id,
@@ -196,10 +177,10 @@ const FilterGroup = Group(
         width,
         zIndex,
         zIndexActiveOffset,
+        showMobileHeader,
         selectedValue,
         onSelect,
-        measureRef,
-        minClearButtonBreakpoint
+        measureRef
       } = this.props
       const {
         initialValues,
@@ -209,6 +190,7 @@ const FilterGroup = Group(
         isRowExpanded
       } = this.state
       const hasSelectedValue = Boolean(selectedValue)
+      const isRowVisible = (showMobileHeader || !isFilterExpanded)
 
       return (
         <Formik
@@ -228,9 +210,14 @@ const FilterGroup = Group(
               <Form
                 id={id}
                 fluid={fluid}
+                zIndex={isRowVisible ? 101 : 0}
                 innerRef={this.containerRef}
-                pose={isFilterExpanded ? 'filterOpen' : 'filterClosed'}
-                initialPose="closed"
+                pose={
+                  isRowVisible && isFilterExpanded
+                    ? 'filterOpen'
+                    : 'filterClosed'
+                }
+                initialPose="filterClosed"
                 onSubmit={(e) => {
                   e.preventDefault()
                   form.handleSubmit(e)
@@ -239,7 +226,7 @@ const FilterGroup = Group(
               >
                 <BodyExpander
                   pose={isRowExpanded ? 'rowOpen' : 'rowClosed'}
-                  initialPose="closed"
+                  initialPose="rowClosed"
                   height={bodyHeight}
                 >
                   <Body innerRef={measureRef}>{this.renderFilters()}</Body>
@@ -253,18 +240,11 @@ const FilterGroup = Group(
                       }
                     />
                   )}
-                  {minClearButtonBreakpoint ? (
-                    <Breakpoint up={minClearButtonBreakpoint}>
-                      {this.renderClearButton(form)}
-                    </Breakpoint>
-                  ) : (
-                    this.renderClearButton(form)
-                  )}
                 </Row>
               </Form>
               <Background
                 pose={selectedValue ? 'bgOpen' : 'bgClosed'}
-                isRowExpanded={isRowExpanded}
+                row={{expanded: isRowExpanded, visible: isRowVisible}}
                 onDismiss={() => onSelect(undefined)}
                 contentRef={this.contentRef}
                 offset={bodyHeight}

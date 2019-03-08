@@ -1,5 +1,4 @@
 import get from 'lodash/fp/get'
-import cond from 'lodash/fp/cond'
 import React from 'react'
 import styled from 'styled-components'
 import posed from 'react-pose'
@@ -25,6 +24,8 @@ const transition = {
   duration: 250,
   ease: swiftInOut
 }
+
+transition.css = `${transition.duration}ms cubic-bezier(${transition.ease.join(',')})`
 
 export const Container = styled.div`
   position: relative;
@@ -134,10 +135,6 @@ export const Form = styled(
   flex-direction: row;
   ${zIndex};
 `
-
-Form.defaultProps = {
-  zIndex: 101
-}
 
 const EXPANDED_ROW_HEIGHT = (props) => props.height + ROW_PADDING(props)
 
@@ -277,7 +274,7 @@ export const Background = styled(
       padding: ${themeGet('space.4')}px;
       padding-top: 0;
       overflow-y: auto;
-      transition: all ${transition.duration}ms cubic-bezier(${transition.ease.join(',')});
+      transition: all ${transition.css};
     }
   }
 `
