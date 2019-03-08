@@ -120,10 +120,7 @@ export default class MapContainer extends PureComponent {
     defaultZoom: 8,
     minZoom: 7,
     maxZoom: 20,
-
-
-
-    : 0
+    multiMarkerRadius: 0
   }
 
   state = {

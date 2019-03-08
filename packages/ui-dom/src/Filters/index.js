@@ -16,7 +16,7 @@ import {
   ExpandButton,
   Background
 } from './styles'
-import {withBreakpoint} from '../Breakpoint'
+import Breakpoint, {withBreakpoint} from '../Breakpoint'
 import Button from '../Button'
 import Row from '../Row'
 
@@ -42,6 +42,7 @@ const FilterGroup = Group(
       initialValues: {},
       contentRect: {bounds: {}},
       strategy: 'switchable',
+      minClearButtonBreakpoint: 'desktop',
       onSubmit: () => null,
       get scrollContainer() {
         return !isBrowser ? undefined : window.document.body
@@ -116,6 +117,21 @@ const FilterGroup = Group(
 
     onCollapseRow = () => this.setState({isRowExpanded: false})
 
+    filterHasValue = (name) => {
+      return (
+        this.state.initialValues[name] &&
+        !isEqual(this.props.initialValues[name], this.state.initialValues[name])
+      )
+    }
+
+    sortFilters = (a, b) => {
+      const aHasPriority = a.props.name && this.filterHasValue(a.props.name)
+      const bHasPriority = b.props.name && this.filterHasValue(b.props.name)
+      if (aHasPriority && !bHasPriority) return -1
+      else if (!aHasPriority && bHasPriority) return 1
+      return 0
+    }
+
     render() {
       const {
         children,
@@ -128,7 +144,8 @@ const FilterGroup = Group(
         zIndexActiveOffset,
         selectedValue,
         onSelect,
-        measureRef
+        measureRef,
+        minClearButtonBreakpoint
       } = this.props
       const {
         initialValues,
@@ -138,6 +155,24 @@ const FilterGroup = Group(
         isRowExpanded
       } = this.state
       const hasSelectedValue = Boolean(selectedValue)
+
+      const clearButton = (
+        <Button
+          link
+          type="button"
+          fontSize="small"
+          height="short"
+          color="grey"
+          onClick={() => {
+            form.resetForm({})
+            form.submitForm()
+            onSelect(undefined)
+          }}
+        >
+          Limpar
+        </Button>
+      )
+
       return (
         <Formik
           enableReinitialize
@@ -180,7 +215,7 @@ const FilterGroup = Group(
                         contentRef: this.contentRef,
                         containerRef: this.containerRef
                       })
-                    )}
+                    ).sort(this.sortFilters)}
                   </Body>
                 </BodyExpander>
                 <Row pt={2}>
@@ -192,20 +227,13 @@ const FilterGroup = Group(
                       }
                     />
                   )}
-                  <Button
-                    link
-                    type="button"
-                    fontSize="small"
-                    height="short"
-                    color="grey"
-                    onClick={() => {
-                      form.resetForm({})
-                      form.submitForm()
-                      onSelect(undefined)
-                    }}
-                  >
-                    Limpar
-                  </Button>
+                  {minClearButtonBreakpoint ? (
+                    <Breakpoint up={minClearButtonBreakpoint}>
+                      {clearButton}
+                    </Breakpoint>
+                  ) : (
+                    clearButton
+                  )}
                 </Row>
               </Form>
               <Background
