@@ -162,7 +162,8 @@ export const BodyExpander = styled(
   padding: ${ROW_PADDING}px 0;
   height: ${ROW_HEIGHT}px;
   min-height: ${ROW_HEIGHT}px;
-  ${({pose, height}) => pose === 'rowOpen' && {height: height + 'px'}};
+  ${({pose, height, ...props}) =>
+    pose === 'rowOpen' && {height: height + ROW_PADDING(props) + 'px'}};
   overflow: hidden;
 `
 
