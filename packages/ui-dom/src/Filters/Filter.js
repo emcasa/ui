@@ -166,9 +166,19 @@ class ControlledFilterContainer extends PureComponent {
             <Filter
               {...props}
               selected={selected}
-              onSelect={onSelect}
               value={hasValue ? fieldValue : undefined}
               hasValue={hasValue}
+              onSelect={() => {
+                if (selected) {
+                  form.setFieldValue(name, value)
+                  requestAnimationFrame(() => {
+                    onSelect()
+                    form.submitForm()
+                  })
+                } else {
+                  onSelect()
+                }
+              }}
               onClear={() => {
                 this.setState({value: undefined})
                 form.setFieldValue(name, undefined)
