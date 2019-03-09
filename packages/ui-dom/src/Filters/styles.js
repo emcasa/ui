@@ -100,6 +100,10 @@ export const Title = styled(Text)`
 const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
   fun(initialize ? dimensions.measure() : dimensions.get())
 
+const ROW_OFFSET_RIGHT = 60
+
+const rightOffset = ({right}) => Math.max(0, ROW_OFFSET_RIGHT - (window.innerWidth - right))
+
 export const Form = styled(
   posed.form({
     filterOpen: {
@@ -112,7 +116,8 @@ export const Form = styled(
         width: mapDimensions(get('width')),
         y: mapDimensions(get('top'))
       },
-      y: ({theme}) => theme.space[4]
+      y: ({theme}) => theme.space[4],
+      paddingRight: mapDimensions(rightOffset)
     },
     filterClosed: {
       transition,
@@ -123,7 +128,8 @@ export const Form = styled(
         width: '',
         y: 0
       },
-      y: mapDimensions(get('top'), {initialize: false})
+      y: mapDimensions(get('top'), {initialize: false}),
+      paddingRight: 0
     }
   })
 ).attrs({
