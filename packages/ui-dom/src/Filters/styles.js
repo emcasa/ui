@@ -185,7 +185,7 @@ export const ExpandButton = styled(function ExpandButton({
 }) {
   return (
     <Col {...props}>
-      <FilterButton onClick={onClick}>
+      <FilterButton onClick={onClick} style={{}}>
         <Icon name={isRowExpanded ? 'angle-up' : 'angle-down'} color="grey" />
       </FilterButton>
     </Col>
