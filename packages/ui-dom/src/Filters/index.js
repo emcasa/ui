@@ -1,8 +1,8 @@
 import isEqual from 'lodash/isEqual'
 import pick from 'lodash/fp/pick'
+import throttle from 'lodash/throttle'
 import React, {PureComponent} from 'react'
 import {Formik} from 'formik'
-import {withContentRect} from 'react-measure'
 import {compose, mapProps} from 'recompose'
 import {withTheme} from 'styled-components'
 import elementClass from 'element-class'
@@ -53,22 +53,22 @@ const FilterGroup = Group(
       }
     }
 
+    bodyRef = React.createRef()
+
     contentRef = React.createRef()
 
     containerRef = React.createRef()
 
-    state = {}
+    state = {bodyHeight: 0}
 
     static getDerivedStateFromProps(props, state) {
-      const bodyHeight = props.contentRect.bounds.height
       const rowHeight =
         state.rowHeight || BUTTON_HEIGHT(props) + props.theme.space[2]
-      const rowCount = Math.ceil(bodyHeight / rowHeight) || 1
+      const rowCount = Math.ceil(state.bodyHeight / rowHeight) || 1
       const sort =
         typeof props.sort === 'undefined' ? props.isMobile : props.sort
       return {
         sort,
-        bodyHeight,
         rowHeight,
         rowCount,
         isFilterExpanded: props.isMobile && Boolean(props.selectedValue),
@@ -90,7 +90,10 @@ const FilterGroup = Group(
           if (this.state.isFilterExpanded) classNames.add('noscroll')
           else classNames.remove('noscroll')
         }
-        this.props.measure()
+      }
+      // Update expanded row height
+      if (prevProps.selectedValue !== this.props.selectedValue) {
+        requestAnimationFrame(this.measureBody)
       }
       // Reinitialize formik initial values
       if (!isEqual(prevProps.initialValues, this.props.initialValues)) {
@@ -99,12 +102,27 @@ const FilterGroup = Group(
     }
 
     componentDidMount() {
-      if (isBrowser) window.addEventListener('keyup', this.onKeyPress)
+      if (this.bodyRef.current) this.measureBody()
+      if (isBrowser) {
+        window.addEventListener('keyup', this.onKeyPress)
+        window.addEventListener('resize', this.measureBody)
+      }
     }
 
     componentWillUnmount() {
-      if (isBrowser) window.removeEventListener('keyup', this.onKeyPress)
+      if (isBrowser) {
+        window.removeEventListener('keyup', this.onKeyPress)
+        window.removeEventListener('resize', this.measureBody)
+      }
     }
+
+    measureBody = throttle(() => {
+      const element = this.bodyRef.current
+      if (element)
+        this.setState({
+          bodyHeight: element.offsetHeight || element.height
+        })
+    }, 100)
 
     onKeyPress = (e) => {
       if (this.props.selectedValue && e.keyCode === ESC_KEY) {
@@ -159,7 +177,6 @@ const FilterGroup = Group(
           rowCount,
           isRowExpanded,
           isFilterExpanded,
-          containerRect: this.state.contentRect,
           contentRef: this.contentRef,
           containerRef: this.containerRef
         })
@@ -179,8 +196,7 @@ const FilterGroup = Group(
         zIndexActiveOffset,
         showMobileHeader,
         selectedValue,
-        onSelect,
-        measureRef
+        onSelect
       } = this.props
       const {
         initialValues,
@@ -189,8 +205,9 @@ const FilterGroup = Group(
         isFilterExpanded,
         isRowExpanded
       } = this.state
+
       const hasSelectedValue = Boolean(selectedValue)
-      const isRowVisible = (showMobileHeader || !isFilterExpanded)
+      const isRowVisible = showMobileHeader || !isFilterExpanded
 
       return (
         <Formik
@@ -210,7 +227,7 @@ const FilterGroup = Group(
               <Form
                 id={id}
                 fluid={fluid}
-                zIndex={isRowVisible ? 101 : 0}
+                zIndex={isRowVisible ? 1 : 0}
                 innerRef={this.containerRef}
                 pose={
                   isRowVisible && isFilterExpanded
@@ -225,11 +242,12 @@ const FilterGroup = Group(
                 {...this.state}
               >
                 <BodyExpander
+                  poseKey={isRowExpanded ? bodyHeight : 0}
                   pose={isRowExpanded ? 'rowOpen' : 'rowClosed'}
                   initialPose="rowClosed"
                   height={bodyHeight}
                 >
-                  <Body innerRef={measureRef}>{this.renderFilters()}</Body>
+                  <Body innerRef={this.bodyRef}>{this.renderFilters()}</Body>
                 </BodyExpander>
                 <Row pt={2}>
                   {rowCount > 1 && (
@@ -268,6 +286,5 @@ export default compose(
     ...props
   })),
   withBreakpoint(),
-  withContentRect('bounds'),
   withTheme
 )(FilterGroup)
