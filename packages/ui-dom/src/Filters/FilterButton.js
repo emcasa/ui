@@ -9,11 +9,14 @@ const FilterButton = styled(({active, selected, ...props}) => {
 }).attrs({
   height: BUTTON_HEIGHT,
   style: ({theme, style, active, selected}) =>
-    style ||
-    (!(active || selected) && {
-      color: theme.colors.pink,
-      borderColor: theme.colors.pink
-    })
+    style
+      ? style
+      : !(active || selected)
+        ? {
+            color: theme.colors.pink,
+            borderColor: theme.colors.pink
+          }
+        : undefined
 })`
   opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
   transition: ${['color', 'border-color', 'opacity']
