@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
@@ -155,8 +156,8 @@ class ControlledFilterContainer extends PureComponent {
       <Field
         name={name}
         render={({field, form}) => {
-          const initialValue = initialValues[name]
-          const appliedValue = form.initialValues[name]
+          const initialValue = get(initialValues, name)
+          const appliedValue = get(form.initialValues || {}, name)
           const fieldValue = field.value
           const hasValue = Boolean(
             typeof fieldValue !== 'undefined' &&
