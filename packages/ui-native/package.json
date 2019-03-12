@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui-native",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "description": "EmCasa's UI library for react-native",
   "license": "MIT",
   "main": "components/index.js",
@@ -12,7 +12,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@emcasa/ui": "^0.9.10",
+    "@emcasa/ui": "^0.9.11",
     "recompose": "^0.30.0"
   },
   "devDependencies": {
