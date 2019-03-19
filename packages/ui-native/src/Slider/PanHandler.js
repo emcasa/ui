@@ -22,7 +22,7 @@ export default class MarkerPanHandler extends Component {
     return {
       top: hitSlop,
       bottom: hitSlop,
-      left: Math.min(Math.abs(this.offset - bounds.left) / 2, hitSlop),
+      left: Math.min(bounds.left / 2, hitSlop),
       right: Math.min(bounds.right / 2, hitSlop)
     }
   }
@@ -30,11 +30,13 @@ export default class MarkerPanHandler extends Component {
   get paddingAndroid() {
     const hitSlop = this.hitSlop
     const style = {}
-    Object.keys(hitSlop).forEach((key) => {
-      style[`padding${key[0].toUpperCase()}${key.slice(1)}`] = hitSlop[key]
-    })
-    style.marginTop = -hitSlop.top
-    style.marginLeft = -hitSlop.left
+    if (hitSlop) {
+      Object.keys(hitSlop).forEach((key) => {
+        style[`padding${key[0].toUpperCase()}${key.slice(1)}`] = hitSlop[key]
+      })
+      style.marginTop = -hitSlop.top
+      style.marginLeft = -hitSlop.left
+    }
     return style
   }
 
@@ -59,6 +61,7 @@ export default class MarkerPanHandler extends Component {
     delete props.bounds
     delete props.layout
     delete props.getComputedPosition
+    console.log('.............. hitSlop', this.hitSlop, this.offset)
     return (
       <PanGestureHandler
         minDist={0}

@@ -20,6 +20,7 @@ const Marker = styled(function SliderMarker({
   renderLabel,
   ...props
 }) {
+  delete props.hitSlop
   return (
     <View style={style} {...props}>
       {renderLabel && (
