@@ -8,7 +8,7 @@ import theme from '@emcasa/ui'
 
 styledInjectGlobal`
   * {
-    font-family: 'FaktSoftPro-Normal';
+    font-family: 'Rubik';
     -webkit-font-smoothing: antialiased;
   }
 `

@@ -10,7 +10,7 @@ import {
 } from './theme/measures'
 
 export default {
-  fontFamily: 'FaktSoftPro-Normal',
+  fontFamily: 'Rubik',
   breakpoints: Array.from(BREAKPOINTS.values()),
   breakpointNames: Array.from(BREAKPOINTS.keys()),
   space: [0, 4, 10, 14, 20, 25, 80],
