@@ -61,7 +61,6 @@ export default class MarkerPanHandler extends Component {
     delete props.bounds
     delete props.layout
     delete props.getComputedPosition
-    console.log('.............. hitSlop', this.hitSlop, this.offset)
     return (
       <PanGestureHandler
         minDist={0}

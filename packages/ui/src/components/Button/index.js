@@ -32,7 +32,7 @@ export const container = css`
     active && !disabled ? colors.pink : colors.white};
   ${({link}) =>
     link
-      ? {borderRadius: 0, borderWidth: 0, backgroundColor: 'unset'}
+      ? {borderRadius: 0, borderWidth: 0, backgroundColor: 'transparent'}
       : {borderRadius: '4px', borderWidth: '1px'}}
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
   ${buttonHeight}
