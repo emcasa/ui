@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import React, {PureComponent} from 'react'
 import {View, Platform} from 'react-native'
 import {State} from 'react-native-gesture-handler'
@@ -6,8 +7,7 @@ import PanHandler from './PanHandler'
 
 class MarkerHandler extends PureComponent {
   static defaultProps = {
-    zIndex: 100,
-    hitSlop: 15
+    zIndex: 100
   }
 
   state = {
@@ -82,7 +82,6 @@ class MarkerHandler extends PureComponent {
       zIndex,
       sliderLayout,
       animatedValue,
-      hitSlop,
       getComputedPosition
     } = this.props
     const {layout} = this.state
@@ -90,7 +89,7 @@ class MarkerHandler extends PureComponent {
       <PanHandler
         zIndex={zIndex + index}
         bounds={bounds}
-        hitSlop={hitSlop}
+        hitSlop={get(children, 'props.hitSlop', 15)}
         layout={layout}
         sliderLayout={sliderLayout}
         enabled={bounds.right - bounds.left !== 0}

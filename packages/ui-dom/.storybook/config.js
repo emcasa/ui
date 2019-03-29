@@ -7,23 +7,21 @@ import addonInfo from '@storybook/addon-info'
 
 injectGlobal`
   @font-face {
-    font-family: "FaktSoftPro-Normal";
-    src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.eot");
-    src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.woff") format('woff'),
-        url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.woff2") format('woff2'),
-        url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Normal.ttf") format('ttf');
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Rubik'), local('Rubik-Regular'), url(https://fonts.gstatic.com/s/rubik/v8/iJWKBXyIfDnIV7nBrXyw023e.woff2) format('woff2');
   }
 
   @font-face {
-    font-family: "FaktSoftPro-Medium";
-    src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.eot");
-    src: url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.woff") format('woff'),
-        url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.woff2") format('woff2'),
-        url("https://s3.amazonaws.com/emcasa-ui/fonts/FaktSoftPro-Medium.ttf") format('ttf');
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Rubik Medium'), local('Rubik-Medium'), url(https://fonts.gstatic.com/s/rubik/v8/iJWHBXyIfDnIV7Eyjmmd8WD07oB-.woff2) format('woff2');
   }
 
   * {
-    font-family: 'FaktSoftPro-Normal';
+    font-family: 'Rubik';
     -webkit-font-smoothing: antialiased;
   }
 `
