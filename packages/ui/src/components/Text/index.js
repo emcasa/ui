@@ -1,14 +1,13 @@
 import {css} from 'styled-components'
 import {
   color,
-  fontWeight,
   fontFamily,
   fontStyle,
   lineHeight,
   textAlign
 } from 'styled-system'
 
-import {letterSpacing, fontSize, defaultFontFamily} from '../../styles'
+import {letterSpacing, fontSize, fontWeight, defaultFontFamily} from '../../styles'
 
 export const container = css`
   ${defaultFontFamily}
