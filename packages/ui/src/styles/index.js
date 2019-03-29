@@ -5,6 +5,7 @@ import {
   LETTER_SPACING,
   BUTTON_HEIGHT,
   FONT_SIZE,
+  FONT_WEIGHT,
   ICON_SIZE
 } from '../theme/measures'
 
@@ -41,6 +42,10 @@ export const iconWidth = iconSize({cssProperty: 'height'})
 
 export const fontSize = enumerated(Array.from(FONT_SIZE.keys()), 'fontSize')(
   styles.fontSize
+)
+
+export const fontWeight = enumerated(Array.from(FONT_WEIGHT.keys()), 'fontWeight')(
+  styles.fontWeight
 )
 
 export const defaultFontFamily = ({theme: {fontFamily}}) =>
