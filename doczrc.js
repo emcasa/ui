@@ -3,6 +3,7 @@ import webpack from 'webpack'
 export default {
   title: 'EmCasa UI',
   base: '/',
+  dest: './dist',
   hashRouter: true,
   wrapper: 'wrapper.js',
   files: './docs/**/*.mdx',
