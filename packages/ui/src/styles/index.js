@@ -12,7 +12,7 @@ import {
 const transformUnit = (unit) => (n) => (isNaN(n) ? n : `${n}${unit}`)
 
 export const letterSpacing = enumeratedStyle({
-  enum: Array.from(LETTER_SPACING.keys()),
+  map: LETTER_SPACING,
   prop: 'letterSpacing',
   cssProperty: 'letterSpacing',
   key: 'letterSpacing',
@@ -20,7 +20,7 @@ export const letterSpacing = enumeratedStyle({
 })
 
 export const buttonHeight = enumeratedStyle({
-  enum: Array.from(BUTTON_HEIGHT.keys()),
+  map: BUTTON_HEIGHT,
   prop: 'height',
   cssProperty: 'height',
   key: 'buttonHeight',
@@ -29,7 +29,7 @@ export const buttonHeight = enumeratedStyle({
 
 export const iconSize = (config) =>
   enumeratedStyle({
-    enum: Array.from(ICON_SIZE.keys()),
+    map: ICON_SIZE,
     prop: 'size',
     key: 'iconSize',
     transformValue: transformUnit('px'),
@@ -40,11 +40,9 @@ export const iconHeight = iconSize({cssProperty: 'height'})
 
 export const iconWidth = iconSize({cssProperty: 'height'})
 
-export const fontSize = enumerated(Array.from(FONT_SIZE.keys()), 'fontSize')(
-  styles.fontSize
-)
+export const fontSize = enumerated(FONT_SIZE, 'fontSize')(styles.fontSize)
 
-export const fontWeight = enumerated(Array.from(FONT_WEIGHT.keys()), 'fontWeight')(
+export const fontWeight = enumerated(FONT_WEIGHT, 'fontWeight')(
   styles.fontWeight
 )
 

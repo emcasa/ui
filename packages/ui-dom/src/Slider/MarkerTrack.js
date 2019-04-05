@@ -6,7 +6,7 @@ import posed from 'react-pose'
 import Track from './Track'
 
 const MarkerTrackAnimation = styled(
-  posed(React.forwardRef((props, ref) => <Track innerRef={ref} {...props} />))({
+  posed(React.forwardRef((props, ref) => <Track ref={ref} {...props} />))({
     passive: {
       width: ['x', identity, true],
       left: ['offset', identity, true]

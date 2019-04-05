@@ -228,7 +228,7 @@ const FilterGroup = Group(
                 id={id}
                 fluid={fluid}
                 zIndex={isRowVisible ? 1 : 0}
-                innerRef={this.containerRef}
+                ref={this.containerRef}
                 pose={
                   isRowVisible && isFilterExpanded
                     ? 'filterOpen'
@@ -247,7 +247,7 @@ const FilterGroup = Group(
                   initialPose="rowClosed"
                   height={bodyHeight}
                 >
-                  <Body innerRef={this.bodyRef}>{this.renderFilters()}</Body>
+                  <Body ref={this.bodyRef}>{this.renderFilters()}</Body>
                 </BodyExpander>
                 <Row pt={2}>
                   {rowCount > 1 && (
@@ -263,7 +263,6 @@ const FilterGroup = Group(
               <Background
                 pose={selectedValue ? 'bgOpen' : 'bgClosed'}
                 row={{expanded: isRowExpanded, visible: isRowVisible}}
-                onDismiss={() => onSelect(undefined)}
                 contentRef={this.contentRef}
                 offset={bodyHeight}
                 onDismiss={() => {
