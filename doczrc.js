@@ -2,7 +2,6 @@ import webpack from 'webpack'
 
 export default {
   title: 'EmCasa UI',
-  dest: './public',
   base: '/',
   hashRouter: true,
   wrapper: 'wrapper.js',
