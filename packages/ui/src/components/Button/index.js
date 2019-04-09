@@ -35,6 +35,9 @@ export const container = css`
       ? {borderRadius: 0, borderWidth: 0, backgroundColor: 'transparent'}
       : {borderRadius: '4px', borderWidth: '1px'}}
   width: ${({fluid}) => (fluid ? '100%' : 'auto')};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   ${buttonHeight}
   ${space}
   ${flex}
