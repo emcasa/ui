@@ -1,9 +1,9 @@
 import React from 'react'
 import {
   ThemeProvider,
-  injectGlobal as styledInjectGlobal
+  createGlobalStyle as styledInjectGlobal
 } from 'styled-components'
-import injectGlobal from '@emcasa/ui-dom/src/global-styles'
+import '@emcasa/ui-dom/src/global-styles'
 import theme from '@emcasa/ui'
 
 styledInjectGlobal`

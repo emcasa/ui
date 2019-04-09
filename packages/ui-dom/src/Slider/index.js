@@ -49,7 +49,7 @@ const Container = styled(function SliderContainer({onLayout, ...props}) {
         })
       }
     >
-      {({measureRef}) => <View innerRef={measureRef} {...props} />}
+      {({measureRef}) => <View ref={measureRef} {...props} />}
     </Measure>
   )
 })`

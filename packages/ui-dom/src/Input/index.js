@@ -33,7 +33,7 @@ const TextInput = styled(ForwardedInput)`
 `
 
 const Input = React.forwardRef(({...props}, ref) => {
-  return <Field Component={TextInput} innerRef={ref} {...props} />
+  return <Field Component={TextInput} ref={ref} {...props} />
 })
 
 Input.propTypes = {

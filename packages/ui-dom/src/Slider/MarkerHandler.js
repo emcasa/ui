@@ -134,7 +134,7 @@ export default class MarkerHandler extends PureComponent {
       <Measure onResize={this.onResize}>
         {({measureRef}) => (
           <MarkerWrapper
-            innerRef={measureRef}
+            ref={measureRef}
             bounds={bounds}
             tabIndex={0}
             zIndex={index + zIndex}

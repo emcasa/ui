@@ -1,6 +1,6 @@
-import {injectGlobal} from 'styled-components'
+import {createGlobalStyle} from 'styled-components'
 
-injectGlobal`
+createGlobalStyle`
   @font-face {
     font-family: 'Rubik';
     font-style: normal;
@@ -20,4 +20,4 @@ injectGlobal`
   }
 `
 
-export default injectGlobal
+export default createGlobalStyle

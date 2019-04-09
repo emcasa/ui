@@ -3,6 +3,7 @@ node_modules/
 # Docz
 .docz/
 public/
+dist/
 
 # Build
 /packages/*/components/
