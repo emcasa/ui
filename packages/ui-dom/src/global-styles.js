@@ -1,6 +1,6 @@
 import {createGlobalStyle} from 'styled-components'
 
-createGlobalStyle`
+export default createGlobalStyle`
   @font-face {
     font-family: 'Rubik';
     font-style: normal;
@@ -19,5 +19,3 @@ createGlobalStyle`
     overflow: hidden;
   }
 `
-
-export default createGlobalStyle
