@@ -7,10 +7,31 @@ import Col from '../Col'
 import Text from '../Text'
 import Input from './Input'
 import TagButton from './Button'
+import MD5 from 'md5.js'
+import tinycolor from 'tinycolor2'
+
+const MIN_LUMINANCE = 0.15
+const MAX_LUMINANCE = 0.5
+
+export function getDefaultGroupColor(group) {
+  if (!group) return undefined
+  const hex = `#${new MD5()
+    .update(group)
+    .digest('hex')
+    .slice(0, 6)}`
+  const color = tinycolor(hex)
+  const luminance = color.getLuminance()
+  if (luminance < MIN_LUMINANCE)
+    color.brighten((MIN_LUMINANCE - luminance) * (1 - luminance) * 100)
+  if (luminance > MAX_LUMINANCE)
+    color.darken((luminance - MAX_LUMINANCE) * luminance * 100)
+  return color.toHexString()
+}
 
 export default class TagInput extends PureComponent {
   static propTypes = {
-    values: PropTypes.arrayOf(PropTypes.object),
+    initialValue: PropTypes.arrayOf(PropTypes.object),
+    selectedValue: PropTypes.arrayOf(PropTypes.object),
     options: PropTypes.arrayOf(PropTypes.object),
     renderTag: PropTypes.func,
     groupBy: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
@@ -19,19 +40,36 @@ export default class TagInput extends PureComponent {
 
   static defaultProps = {
     groupBy: 'category',
-    getKey: (_, index) => index
+    getKey: (_, index) => index,
+    getGroupColor: getDefaultGroupColor
   }
 
   static Option = Dropdown.Option
 
-  state = {
-    values: []
-  }
+  state = {}
 
   static getDerivedStateFromProps(props, state) {
     return {
-      values: props.values || state.values
+      values: props.selectedValue || state.values || props.initialValue || []
     }
+  }
+
+  getGroup(tag) {
+    if (typeof this.props.groupBy === 'function') return this.props.groupBy(tag)
+    return tag[this.props.groupBy]
+  }
+
+  getGroupColor(group) {
+    return (
+      (this.props.getGroupColor && this.props.getGroupColor(group)) || undefined
+    )
+  }
+
+  getTagColor(tag) {
+    return (
+      (this.props.getTagColor && this.props.getTagColor(tag)) ||
+      this.getGroupColor(this.getGroup(tag))
+    )
   }
 
   onChange = (values) => {
@@ -49,7 +87,13 @@ export default class TagInput extends PureComponent {
     if (renderTag) renderTag(value, key)
     if (this.props.renderTag) this.props.renderTag(value, key)
     return (
-      <TagButton key={key} active onDelete={() => this.onDelete(value)}>
+      <TagButton
+        key={key}
+        active
+        group={this.getGroup(value)}
+        color={this.getTagColor(value)}
+        onDelete={() => this.onDelete(value)}
+      >
         {value.name}
       </TagButton>
     )
@@ -60,7 +104,7 @@ export default class TagInput extends PureComponent {
     const key = getKey(value, index)
     if (renderOption) renderOption(value, key)
     return (
-      <TagButton key={key} value={value}>
+      <TagButton key={key} value={value} color={this.getTagColor(value)}>
         {value.name}
       </TagButton>
     )
@@ -91,11 +135,13 @@ export default class TagInput extends PureComponent {
 
   render() {
     const {children, options} = this.props
+    const {values} = this.state
     const optionsGroups = groupBy(options, this.props.groupBy)
     return (
       <Dropdown
         strategy="multi"
         blurOnChange={false}
+        selectedValue={values}
         onChange={this.onChange}
         icon="tag"
         height="auto"

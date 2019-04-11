@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
+import Col from '../Col'
 import Button from '../Button'
 import Text from '../Text'
 import Icon from '../Icon'
@@ -30,6 +31,7 @@ const IconButton = styled(function TagIconButton({
 
 const stopPropagation = (fun) => (e) => {
   e.preventDefault()
+  e.stopPropagation()
   fun(e)
 }
 
@@ -37,6 +39,8 @@ export default styled(function TagButton({
   children,
   onDelete,
   onSelect,
+  group,
+  color,
   ...props
 }) {
   return (
@@ -45,9 +49,11 @@ export default styled(function TagButton({
       fontSize="small"
       {...props}
     >
-      <Text inline fontSize="small" color="inherit">
-        {children}
-      </Text>
+      <Col>
+        <Text inline fontSize="small" color="inherit">
+          {children}
+        </Text>
+      </Col>
       {onDelete && (
         <IconButton
           name="times"
@@ -69,10 +75,18 @@ export default styled(function TagButton({
     ${themeGet('space.2')}px;
   margin-right: 0;
   padding: 0 ${themeGet('space.2')}px;
-  ${IconButton}:first-of-type {
-    margin-left: ${themeGet('space.2')}px;
+  ${({color, active}) =>
+    color && active ? {backgroundColor: color, borderColor: color} : undefined};
+  ${({color, selected}) =>
+    color && selected ? {color, borderColor: color} : undefined};
+  &:hover {
+    ${({color, active}) =>
+      color && active
+        ? {backgroundColor: color, borderColor: color}
+        : undefined};
   }
   ${IconButton}:last-of-type {
+    margin-left: ${themeGet('space.2')}px;
     margin-right: -${themeGet('space.2')}px;
   }
 `
