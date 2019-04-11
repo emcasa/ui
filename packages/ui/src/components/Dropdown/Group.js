@@ -13,7 +13,8 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       static defaultProps = {
         blurOnChange: true,
         height: 'tall',
-        containerProps: {}
+        containerProps: {},
+        buttonProps: {}
       }
 
       state = {
@@ -36,7 +37,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       get _buttonProps() {
-        const {...props} = this.props
+        const {buttonProps, ...props} = this.props
         const {focused} = this.state
         delete props.renderButton
         delete props.renderItem
@@ -44,6 +45,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         delete props.initialValue
         return {
           ...props,
+          ...buttonProps,
           focused,
           isPlaceholder: Boolean(!props.label && !props.selectedValue),
           onFocusChange: focused ? this.onBlur : this.onFocus,
