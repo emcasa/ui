@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Dachshund",
+    "category": "Dogs"
+  },
+  {
+    "name": "Yorkshire",
+    "category": "Dogs"
+  },
+  {
+    "name": "Dalmatian",
+    "category": "Dogs"
+  },
+  {
+    "name": "Golden Retriever",
+    "category": "Dogs"
+  },
+  {
+    "name": "Chow Chow",
+    "category": "Dogs"
+  },
+  {
+    "name": "Siamese",
+    "category": "Cats"
+  },
+  {
+    "name": "Munchkin",
+    "category": "Cats"
+  },
+  {
+    "name": "Abyssinian",
+    "category": "Cats"
+  },
+  {
+    "name": "Toyger",
+    "category": "Cats"
+  }
+]

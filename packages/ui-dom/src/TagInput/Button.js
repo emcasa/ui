@@ -1,0 +1,78 @@
+import React from 'react'
+import styled from 'styled-components'
+import {themeGet} from 'styled-system'
+import Button from '../Button'
+import Text from '../Text'
+import Icon from '../Icon'
+
+const TAG_HEIGHT = 25
+
+const IconButton = styled(function TagIconButton({
+  className,
+  onClick,
+  ...props
+}) {
+  return (
+    <div className={className} onClick={onClick}>
+      <Icon size={10} {...props} />
+    </div>
+  )
+})`
+  z-index: 1;
+  height: ${TAG_HEIGHT - 1}px;
+  line-height: ${TAG_HEIGHT - 1}px;
+  width: 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+`
+
+const stopPropagation = (fun) => (e) => {
+  e.preventDefault()
+  fun(e)
+}
+
+export default styled(function TagButton({
+  children,
+  onDelete,
+  onSelect,
+  ...props
+}) {
+  return (
+    <Button
+      onClick={!onSelect ? undefined : stopPropagation(onSelect)}
+      fontSize="small"
+      {...props}
+    >
+      <Text inline fontSize="small" color="inherit">
+        {children}
+      </Text>
+      {onDelete && (
+        <IconButton
+          name="times"
+          size={10}
+          color={props.active ? 'white' : 'pink'}
+          onClick={stopPropagation(onDelete)}
+        />
+      )}
+    </Button>
+  )
+})`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  display: flex;
+  height: ${TAG_HEIGHT}px;
+  margin: ${({theme}) => (theme.buttonHeight[1] - TAG_HEIGHT) / 2}px
+    ${themeGet('space.2')}px;
+  margin-right: 0;
+  padding: 0 ${themeGet('space.2')}px;
+  ${IconButton}:first-of-type {
+    margin-left: ${themeGet('space.2')}px;
+  }
+  ${IconButton}:last-of-type {
+    margin-right: -${themeGet('space.2')}px;
+  }
+`

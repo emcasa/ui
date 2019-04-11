@@ -1,0 +1,17 @@
+---
+name: TagInput
+menu: Components
+---
+
+import { Playground } from 'docz'
+import TagInput from '@emcasa/ui-dom/components/TagInput'
+import tags from './tags.json'
+
+# TagInput
+
+## Basic usage
+
+<Playground style={{minHeight: "250px"}}>
+  <TagInput options={tags} onChange={(value) => console.log('selected', value)}>
+  </TagInput>
+</Playground>

@@ -9,7 +9,7 @@ const Button = styled.button`
   outline: none;
   ${(props) => props.fluid && 'display: block'};
   cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
-  & :hover {
+  &:hover {
     background-color: ${({active, disabled, theme: {colors}}) =>
       active && !disabled ? colors.pink : colors.white};
   }
