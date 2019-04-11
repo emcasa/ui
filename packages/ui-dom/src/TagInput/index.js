@@ -1,17 +1,25 @@
 import PropTypes from 'prop-types'
 import groupBy from 'lodash/groupBy'
 import React, {PureComponent} from 'react'
+import MD5 from 'md5.js'
+import tinycolor from 'tinycolor2'
+import styled from 'styled-components'
+import {themeGet} from 'styled-system'
 import Dropdown from '../Dropdown'
 import Row from '../Row'
 import Col from '../Col'
 import Text from '../Text'
 import Input from './Input'
 import TagButton from './Button'
-import MD5 from 'md5.js'
-import tinycolor from 'tinycolor2'
 
 const MIN_LUMINANCE = 0.15
-const MAX_LUMINANCE = 0.5
+const MAX_LUMINANCE = 0.4
+
+const Label = styled(Row)`
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: ${themeGet('buttonHeight.1')}px;
+`
 
 export function getDefaultGroupColor(group) {
   if (!group) return undefined
@@ -114,22 +122,27 @@ export default class TagInput extends PureComponent {
     const children = options.map(this.renderOption)
     if (group)
       children.unshift(
-        <Row flex="1 0 100%" pr={2} pl={2}>
-          <Text>{group}</Text>
+        <Row flex="1 0 100%" mt={2} pr={2} pl={2}>
+          <Text inline>{group}</Text>
         </Row>
       )
     return children
   }
 
   renderLabel() {
-    const {values} = this.state
+    const {values, onChangeText} = this.state
     return (
-      <Row alignItems="center" flexWrap="wrap">
+      <Label>
         {values.map(this.renderTag)}
-        <Col flex="1 0 30%">
-          <Input height="medium" />
-        </Col>
-      </Row>
+        {onChangeText && (
+          <Col flex="1 0 30%">
+            <Input
+              height="medium"
+              onChange={(e) => onChangeText(e.target.value)}
+            />
+          </Col>
+        )}
+      </Label>
     )
   }
 
@@ -150,6 +163,9 @@ export default class TagInput extends PureComponent {
             flexDirection: 'row',
             flexWrap: 'wrap'
           }
+        }}
+        iconProps={{
+          height: 'medium'
         }}
         label={this.renderLabel()}
       >

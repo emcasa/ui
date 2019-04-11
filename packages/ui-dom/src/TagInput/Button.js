@@ -20,6 +20,9 @@ const IconButton = styled(function TagIconButton({
   )
 })`
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: ${TAG_HEIGHT - 1}px;
   line-height: ${TAG_HEIGHT - 1}px;
   width: 20px;

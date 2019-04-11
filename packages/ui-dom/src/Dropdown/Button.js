@@ -29,6 +29,7 @@ const DropdownButton = styled(
     focused,
     icon,
     type,
+    height,
     iconProps = {},
     ...props
   }) => {
@@ -46,6 +47,8 @@ const DropdownButton = styled(
             type={type}
             color="dark"
             size={18}
+            height={height}
+            style={{alignSelf: 'flex-start'}}
             {...iconProps}
           />
           <ButtonText {...props}>{children}</ButtonText>
@@ -55,10 +58,12 @@ const DropdownButton = styled(
     )
   }
 )`
+  ${button};
+  display: flex;
+  align-items: center;
   z-index: 0;
   outline: none;
   cursor: pointer;
-  ${button};
 `
 
 DropdownButton.displayName = 'DropdownButton'
