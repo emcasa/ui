@@ -106,14 +106,14 @@ export default class Filter extends PureComponent {
     } else {
       return (
         <Manager>
-          <Reference>{({ref}) => this.renderButton({innerRef: ref})}</Reference>
+          <Reference>{({ref}) => this.renderButton({ref})}</Reference>
           {ReactDOM.createPortal(
             <Popper
               positionFixed
               placement="bottom-start"
               modifiers={popperModifiers}
             >
-              {({ref, style}) => this.renderPanel({innerRef: ref, style})}
+              {({ref, style}) => this.renderPanel({ref, style})}
             </Popper>,
             contentRef.current
           )}
