@@ -51,7 +51,7 @@ const formatSliderRange = (format) => (range) =>
     },
     formatRange({
       format,
-      empty: () => `${format(range[0])} - ${format(range[1])}`,
+      empty: () => `${format(range[0])} - ${format(range[1])}`,
       max: (value) => `Até ${format(value)}`,
       min: (value) => `A partir de ${format(value)}`,
       range: (min, max) => `${format(min)} - ${format(max)}`
