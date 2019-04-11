@@ -58,7 +58,9 @@ export default class TagInput extends PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     return {
-      values: props.selectedValue || state.values || props.initialValue || []
+      values: props.selectedValue || state.values || props.initialValue || [],
+      search: props.search || state.search || '',
+      focus: typeof props.focused !== 'undefined' ? props.focused : state.focus
     }
   }
 
@@ -88,6 +90,15 @@ export default class TagInput extends PureComponent {
   onDelete = (value) => {
     this.onChange(this.state.values.filter((val) => val !== value))
   }
+
+  onChangeText = (search) => {
+    if (this.props.onChangeText) this.props.onChangeText(search)
+    this.setState({search, focus: true})
+  }
+
+  onFocus = () => this.setState({focus: true}, this.props.onFocus)
+
+  onBlur = () => this.setState({focus: false, search: ''}, this.props.onBlur)
 
   renderTag = (value, index) => {
     const {getKey, renderTag} = this.props
@@ -130,15 +141,22 @@ export default class TagInput extends PureComponent {
   }
 
   renderLabel() {
-    const {values, onChangeText} = this.state
+    const {onChangeText, placeholder} = this.props
+    const {values, search, focus} = this.state
     return (
       <Label>
         {values.map(this.renderTag)}
-        {onChangeText && (
+        {Boolean(onChangeText) && (
           <Col flex="1 0 30%">
             <Input
               height="medium"
-              onChange={(e) => onChangeText(e.target.value)}
+              placeholder={placeholder}
+              onChange={(e) => this.onChangeText(e.target.value)}
+              onMouseDown={(e) => {
+                e.stopPropagation()
+                if (!focus) setTimeout(this.onFocus, 0)
+              }}
+              value={search}
             />
           </Col>
         )}
@@ -147,17 +165,21 @@ export default class TagInput extends PureComponent {
   }
 
   render() {
-    const {children, options} = this.props
-    const {values} = this.state
+    const {children, options, placeholder} = this.props
+    const {values, focus} = this.state
     const optionsGroups = groupBy(options, this.props.groupBy)
     return (
       <Dropdown
+        focused={focus}
         strategy="multi"
         blurOnChange={false}
         selectedValue={values}
         onChange={this.onChange}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
         icon="tag"
         height="auto"
+        placeholder={placeholder}
         containerProps={{
           style: {
             flexDirection: 'row',
@@ -169,11 +191,11 @@ export default class TagInput extends PureComponent {
         }}
         label={this.renderLabel()}
       >
-        {options
-          ? Object.entries(optionsGroups).map(([group, options]) =>
-              this.renderOptions(options, group)
-            )
-          : children}
+        <Row flex="1 0 100%">{children}</Row>
+        {options &&
+          Object.entries(optionsGroups).map(([group, options]) =>
+            this.renderOptions(options, group)
+          )}
       </Dropdown>
     )
   }

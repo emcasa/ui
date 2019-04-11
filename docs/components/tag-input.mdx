@@ -5,6 +5,9 @@ menu: Components
 
 import { Playground } from 'docz'
 import TagInput from '@emcasa/ui-dom/components/TagInput'
+import View from '@emcasa/ui-dom/components/View'
+import Text from '@emcasa/ui-dom/components/Text'
+import TagSearch from './TagSearch'
 import tags from './tags.json'
 
 # TagInput
@@ -12,6 +15,36 @@ import tags from './tags.json'
 ## Basic usage
 
 <Playground style={{minHeight: "250px"}}>
-  <TagInput options={tags} onChange={(value) => console.log('selected', value)}>
-  </TagInput>
+  <TagInput options={tags} onChange={(value) => console.log('selected', value)} />
+</Playground>
+
+## With search input
+
+<Playground style={{minHeight: "250px"}}>
+  <TagSearch tags={tags}>
+    {({loading, search, results, onChange}) =>
+      <TagInput
+        placeholder="Search tags"
+        options={results}
+        onChange={(value) => console.log('selected', value)}
+        onChangeText={onChange}
+        >
+        {loading ? (
+          <View mr="15px" ml="15px">
+            <Text>Loading...</Text>
+          </View>
+        ) : results.length ? (
+          undefined
+        ) : search.length ? (
+          <View mr="15px" ml="15px">
+            <Text>No results for "{search}"</Text>
+          </View>
+        ) : (
+          <View mr="15px" ml="15px">
+            <Text>Start typing to search tags</Text>
+          </View>
+        )}
+      </TagInput>
+    }
+  </TagSearch>
 </Playground>
