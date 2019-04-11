@@ -1,12 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
+import {themeGet, space} from 'styled-system'
+import {buttonHeight} from '@emcasa/ui/lib/styles'
 import Col from '../Col'
 import Button from '../Button'
 import Text from '../Text'
 import Icon from '../Icon'
 
-const TAG_HEIGHT = 25
+export const tagVerticalMargin = 5
+
+export const tagHeight = (props) => ({
+  height: parseInt(buttonHeight(props).height) - tagVerticalMargin * 2
+})
 
 const IconButton = styled(function TagIconButton({
   className,
@@ -23,8 +28,8 @@ const IconButton = styled(function TagIconButton({
   display: flex;
   align-items: center;
   justify-content: center;
-  height: ${TAG_HEIGHT - 1}px;
-  line-height: ${TAG_HEIGHT - 1}px;
+  height: ${(props) => tagHeight(props).height - 1}px;
+  line-height: ${(props) => tagHeight(props).height - 1}px;
   width: 20px;
   background-color: rgba(255, 255, 255, 0.4);
   &:hover {
@@ -60,6 +65,7 @@ export default styled(function TagButton({
         <IconButton
           name="times"
           size={10}
+          height={props.height}
           color={props.active ? 'white' : 'pink'}
           onClick={stopPropagation(onDelete)}
         />
@@ -72,9 +78,7 @@ export default styled(function TagButton({
   align-items: center;
   overflow: hidden;
   display: flex;
-  height: ${TAG_HEIGHT}px;
-  margin: ${({theme}) => (theme.buttonHeight[1] - TAG_HEIGHT) / 2}px
-    ${themeGet('space.2')}px;
+  margin: 0 0 ${tagVerticalMargin}px ${themeGet('space.2')}px;
   margin-right: 0;
   padding: 0 ${themeGet('space.2')}px;
   ${({color, active}) =>
@@ -91,4 +95,6 @@ export default styled(function TagButton({
     margin-left: ${themeGet('space.2')}px;
     margin-right: -${themeGet('space.2')}px;
   }
+  ${tagHeight};
+  ${space};
 `

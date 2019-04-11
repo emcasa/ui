@@ -5,12 +5,13 @@ import MD5 from 'md5.js'
 import tinycolor from 'tinycolor2'
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
+import {buttonHeight} from '@emcasa/ui/lib/styles'
 import Dropdown from '../Dropdown'
 import Row from '../Row'
 import Col from '../Col'
 import Text from '../Text'
 import Input from './Input'
-import TagButton from './Button'
+import TagButton, {tagVerticalMargin} from './Button'
 
 const MIN_LUMINANCE = 0.15
 const MAX_LUMINANCE = 0.4
@@ -18,7 +19,8 @@ const MAX_LUMINANCE = 0.4
 const Label = styled(Row)`
   align-items: center;
   flex-wrap: wrap;
-  min-height: ${themeGet('buttonHeight.1')}px;
+  min-height: ${(props) => buttonHeight(props).height};
+  padding-top: ${tagVerticalMargin}px;
 `
 
 export function getDefaultGroupColor(group) {
@@ -47,6 +49,7 @@ export default class TagInput extends PureComponent {
   }
 
   static defaultProps = {
+    height: 'medium',
     groupBy: 'category',
     getKey: (_, index) => index,
     getGroupColor: getDefaultGroupColor
@@ -101,7 +104,7 @@ export default class TagInput extends PureComponent {
   onBlur = () => this.setState({focus: false, search: ''}, this.props.onBlur)
 
   renderTag = (value, index) => {
-    const {getKey, renderTag} = this.props
+    const {getKey, renderTag, height} = this.props
     const key = getKey(value, index)
     if (renderTag) renderTag(value, key)
     if (this.props.renderTag) this.props.renderTag(value, key)
@@ -111,6 +114,7 @@ export default class TagInput extends PureComponent {
         active
         group={this.getGroup(value)}
         color={this.getTagColor(value)}
+        height={height}
         onDelete={() => this.onDelete(value)}
       >
         {value.name}
@@ -119,11 +123,16 @@ export default class TagInput extends PureComponent {
   }
 
   renderOption = (value, index) => {
-    const {getKey, renderOption} = this.props
+    const {getKey, renderOption, height} = this.props
     const key = getKey(value, index)
     if (renderOption) renderOption(value, key)
     return (
-      <TagButton key={key} value={value} color={this.getTagColor(value)}>
+      <TagButton
+        key={key}
+        value={value}
+        height={height}
+        color={this.getTagColor(value)}
+      >
         {value.name}
       </TagButton>
     )
@@ -133,7 +142,7 @@ export default class TagInput extends PureComponent {
     const children = options.map(this.renderOption)
     if (group)
       children.unshift(
-        <Row flex="1 0 100%" mt={2} pr={2} pl={2}>
+        <Row flex="1 0 100%" mt={2} mb={2} pr={2} pl={2}>
           <Text inline>{group}</Text>
         </Row>
       )
@@ -141,15 +150,16 @@ export default class TagInput extends PureComponent {
   }
 
   renderLabel() {
-    const {onChangeText, placeholder} = this.props
+    const {onChangeText, placeholder, height} = this.props
     const {values, search, focus} = this.state
     return (
-      <Label>
+      <Label height={height}>
         {values.map(this.renderTag)}
         {Boolean(onChangeText) && (
           <Col flex="1 0 30%">
             <Input
-              height="medium"
+              style={{marginTop: `-${tagVerticalMargin}px`}}
+              height={height}
               placeholder={placeholder}
               onChange={(e) => this.onChangeText(e.target.value)}
               onMouseDown={(e) => {
@@ -165,7 +175,7 @@ export default class TagInput extends PureComponent {
   }
 
   render() {
-    const {children, options, placeholder} = this.props
+    const {children, options, placeholder, height} = this.props
     const {values, focus} = this.state
     const optionsGroups = groupBy(options, this.props.groupBy)
     return (
@@ -186,9 +196,7 @@ export default class TagInput extends PureComponent {
             flexWrap: 'wrap'
           }
         }}
-        iconProps={{
-          height: 'medium'
-        }}
+        iconProps={{height}}
         label={this.renderLabel()}
       >
         <Row flex="1 0 100%">{children}</Row>
