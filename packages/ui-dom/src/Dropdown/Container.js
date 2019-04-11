@@ -43,7 +43,7 @@ export default styled(
     render() {
       const {children, id, className, style} = this.props
       return (
-        <div id={id} className={className} style={style}>
+        <div tabIndex="-1" id={id} className={className} style={style}>
           {children}
         </div>
       )
@@ -59,4 +59,7 @@ export default styled(
   ${container.contentContainer};
   display: ${({focused}) => (focused ? 'flex' : 'none')};
   box-sizing: border-box;
+  &:focus {
+    outline: none;
+  }
 `

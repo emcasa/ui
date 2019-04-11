@@ -14,7 +14,7 @@ const IconButton = styled(function TagIconButton({
   ...props
 }) {
   return (
-    <div className={className} onClick={onClick}>
+    <div className={className} onMouseDown={onClick}>
       <Icon size={10} {...props} />
     </div>
   )
@@ -42,10 +42,9 @@ export default styled(function TagButton({
   children,
   onDelete,
   onSelect,
-  group,
-  color,
   ...props
 }) {
+  delete props.color
   return (
     <Button
       onClick={!onSelect ? undefined : stopPropagation(onSelect)}
