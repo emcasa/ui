@@ -72,6 +72,9 @@ export const PanelButton = styled(Button).attrs({
   link: ({isMobile}) => !isMobile
 })`
   font-size: ${themeGet('fontSizes.1')}px;
+  &:hover {
+    background-color: ${({theme: {colors}}) => colors.white};
+  }
   @media screen and ${breakpoint.down('tablet')} {
     height: ${themeGet('buttonHeight.0')}px;
   }
