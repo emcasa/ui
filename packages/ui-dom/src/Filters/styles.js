@@ -25,7 +25,9 @@ const transition = {
   ease: swiftInOut
 }
 
-transition.css = `${transition.duration}ms cubic-bezier(${transition.ease.join(',')})`
+transition.css = `${transition.duration}ms cubic-bezier(${transition.ease.join(
+  ','
+)})`
 
 export const Container = styled.div`
   position: relative;
@@ -72,15 +74,13 @@ export const PanelButton = styled(Button).attrs({
   link: ({isMobile}) => !isMobile
 })`
   font-size: ${themeGet('fontSizes.1')}px;
-  &:hover {
-    background-color: ${({theme: {colors}}) => colors.white};
-  }
   @media screen and ${breakpoint.down('tablet')} {
     height: ${themeGet('buttonHeight.0')}px;
   }
   @media screen and ${breakpoint.up('desktop')} {
     color: ${({active, theme: {colors}}) =>
       active ? colors.pink : colors.grey};
+    background-color: transparent !important;
     padding: 0;
     height: auto;
   }
@@ -105,7 +105,8 @@ const mapDimensions = (fun, {initialize = true} = {}) => ({dimensions}) =>
 
 const ROW_OFFSET_RIGHT = 60
 
-const rightOffset = ({right}) => Math.max(0, ROW_OFFSET_RIGHT - (window.innerWidth - right))
+const rightOffset = ({right}) =>
+  Math.max(0, ROW_OFFSET_RIGHT - (window.innerWidth - right))
 
 export const Form = styled(
   posed.form({
