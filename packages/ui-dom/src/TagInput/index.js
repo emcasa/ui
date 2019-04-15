@@ -4,7 +4,6 @@ import React, {PureComponent} from 'react'
 import MD5 from 'md5.js'
 import tinycolor from 'tinycolor2'
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
 import {buttonHeight} from '@emcasa/ui/lib/styles'
 import Dropdown from '../Dropdown'
 import Row from '../Row'
@@ -17,6 +16,7 @@ const MIN_LUMINANCE = 0.15
 const MAX_LUMINANCE = 0.4
 
 const Label = styled(Row)`
+  box-sizing: border-box;
   align-items: center;
   flex-wrap: wrap;
   min-height: ${(props) => buttonHeight(props).height};
@@ -142,7 +142,14 @@ export default class TagInput extends PureComponent {
     const children = options.map(this.renderOption)
     if (group)
       children.unshift(
-        <Row flex="1 0 100%" mt={2} mb={2} pr={2} pl={2}>
+        <Row
+          style={{boxSizing: 'border-box'}}
+          flex="1 0 100%"
+          mt={2}
+          mb={2}
+          pr={2}
+          pl={2}
+        >
           <Text inline>{group}</Text>
         </Row>
       )
