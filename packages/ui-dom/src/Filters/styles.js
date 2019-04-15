@@ -69,10 +69,10 @@ export const Panel = styled(Col).attrs({elevation: 2})`
   }
 `
 
-export const PanelButton = styled(Button).attrs({
+export const PanelButton = styled(Button).attrs((props) => ({
   type: 'button',
-  link: ({isMobile}) => !isMobile
-})`
+  link: !props.isMobile
+}))`
   font-size: ${themeGet('fontSizes.1')}px;
   @media screen and ${breakpoint.down('tablet')} {
     height: ${themeGet('buttonHeight.0')}px;
@@ -136,9 +136,7 @@ export const Form = styled(
       paddingRight: 0
     }
   })
-).attrs({
-  theme: ({theme}) => theme
-})`
+).attrs(({theme}) => ({theme}))`
   flex: ${({fluid}) => (fluid ? '1' : '0 1 auto')};
   display: flex;
   justify-content: space-between;
@@ -161,9 +159,7 @@ export const BodyExpander = styled(
       height: ROW_HEIGHT
     }
   })
-).attrs({
-  theme: ({theme}) => theme
-})`
+).attrs(({theme}) => ({theme}))`
   box-sizing: border-box;
   flex: 0 1 auto;
   padding: ${ROW_PADDING}px 0;
