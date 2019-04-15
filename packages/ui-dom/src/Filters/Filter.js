@@ -78,6 +78,8 @@ export default class Filter extends PureComponent {
       value,
       ...props
     } = this.props
+    delete props.onClear
+    delete props.onSubmit
     return (
       <View style={{position: 'static'}} {...passProps}>
         <FilterButton

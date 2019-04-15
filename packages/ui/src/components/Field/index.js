@@ -5,8 +5,8 @@ import {defaultFontFamily} from '../../styles'
 
 export const container = {
   propTypes: {
-    error: PropTypes.string,
-    label: PropTypes.string,
+    error: PropTypes.node,
+    label: PropTypes.node,
     hideLabelView: PropTypes.bool,
     hideErrorView: PropTypes.bool
   },
