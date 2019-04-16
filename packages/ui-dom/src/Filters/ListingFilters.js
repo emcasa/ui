@@ -4,15 +4,18 @@ import isObject from 'lodash/isObject'
 import isEmpty from 'lodash/isEmpty'
 import identity from 'lodash/identity'
 import join from 'lodash/fp/join'
+import map from 'lodash/fp/map'
 import flow from 'lodash/fp/flow'
 import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
 import stubTrue from 'lodash/fp/stubTrue'
 import abbrev from 'number-abbreviate'
 import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
+import TagInput from '../TagInput'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
 import SliderRangeFilter from './SliderRangeFilter'
+import {ControlledFilter} from './Filter'
 import FilterButton from './FilterButton'
 
 const hasValue = (value) => typeof value !== 'undefined'
@@ -179,4 +182,33 @@ TypesFilter.defaultProps = {
   buttonProps: {}
 }
 
-export {PriceFilter, AreaFilter, RoomsFilter, GarageSpotsFilter, TypesFilter}
+const TagsFilter = (props) => (
+  <ControlledFilter {...props}>
+    {({field, form}) => (
+      <TagInput
+        {...props}
+        selectedValue={field.currentValue || field.value || []}
+        onChange={field.onChange}
+        onBlur={() => form.setFieldTouched(field.name, true)}
+      />
+    )}
+  </ControlledFilter>
+)
+
+TagsFilter.defaultProps = {
+  name: 'tags',
+  formatLabel: cond([
+    [isEmpty, () => 'Tags'],
+    [stubTrue, flow([map('name'), join(', ')])]
+  ]),
+  title: 'Tags'
+}
+
+export {
+  PriceFilter,
+  AreaFilter,
+  RoomsFilter,
+  GarageSpotsFilter,
+  TypesFilter,
+  TagsFilter
+}

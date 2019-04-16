@@ -161,7 +161,7 @@ export default class TagInput extends PureComponent {
     const {values, search, focus} = this.state
     return (
       <Label height={height}>
-        {values.map(this.renderTag)}
+        {values && values.map(this.renderTag)}
         {Boolean(onChangeText) && (
           <Col flex="1 0 30%">
             <Input
