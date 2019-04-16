@@ -6,7 +6,9 @@ import {
   flex,
   flexDirection,
   alignItems,
-  justifyContent
+  justifyContent,
+  borderColor,
+  bgColor
 } from 'styled-system'
 import {css} from 'styled-components'
 
@@ -44,6 +46,8 @@ export const container = css`
   ${flexDirection}
   ${alignItems}
   ${justifyContent}
+  ${borderColor}
+  ${bgColor}
 `
 
 container.propTypes = {

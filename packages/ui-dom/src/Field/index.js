@@ -23,12 +23,17 @@ function Field({
   error,
   children,
   Component,
+  fowardedRef,
   ...props
 }) {
+  const refProp = {}
+  if (fowardedRef) {
+    refProp.ref = fowardedRef
+  }
   return (
     <View>
       {!hideLabelView && <LabelText>{label}</LabelText>}
-      {Component ? <Component {...props} /> : children}
+      {Component ? <Component {...refProp} {...props} /> : children}
       {!hideErrorView && <ErrorText>{error}</ErrorText>}
     </View>
   )
