@@ -126,20 +126,29 @@ export default class Filter extends PureComponent {
 }
 
 class ControlledFilterContainer extends PureComponent {
+  static defaultProps = {
+    isEmpty: (value) => typeof value === 'undefined'
+  }
+
   state = {}
+
+  constructor(props) {
+    super(props)
+    this.state.value = this.props.value
+  }
 
   componentDidUpdate(prevProps) {
     const focusChanged = prevProps.selected !== this.props.selected
     const focusedFilter = this.props.selectedValue
-    if (
-      focusChanged &&
-      focusedFilter &&
-      focusedFilter !== this.props.name &&
-      this.state.value
-    )
-      this.props.setFieldValue(this.props.name, this.state.value)
-    else if (!focusedFilter && this.state.value)
-      this.setState({value: undefined})
+    if (focusChanged) {
+      if (
+        focusedFilter &&
+        focusedFilter !== this.props.name &&
+        this.state.value !== this.props.value
+      )
+        this.props.setFieldValue(this.props.name, this.state.value)
+      else if (!focusedFilter) this.setState({value: this.props.value})
+    }
   }
 
   onChange = (value) => this.setState({value})
@@ -151,6 +160,7 @@ class ControlledFilterContainer extends PureComponent {
       selected,
       onSelect,
       initialValues,
+      isEmpty,
       ...props
     } = this.props
     const {value} = this.state
@@ -162,8 +172,7 @@ class ControlledFilterContainer extends PureComponent {
           const appliedValue = get(form.initialValues || {}, name)
           const fieldValue = field.value
           const hasValue = Boolean(
-            typeof fieldValue !== 'undefined' &&
-              !isEqual(fieldValue, initialValues[name])
+            !isEmpty(fieldValue) && !isEqual(fieldValue, initialValues[name])
           )
           return (
             <Filter
@@ -219,6 +228,7 @@ class ControlledFilterContainer extends PureComponent {
 export const ControlledFilter = compose(
   connect,
   mapProps(({formik, ...props}) => ({
+    value: formik.values[props.name],
     setFieldValue: formik.setFieldValue,
     ...props
   }))

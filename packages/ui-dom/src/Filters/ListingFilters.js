@@ -159,7 +159,7 @@ GarageSpotsFilter.defaultProps = {
 }
 
 const TypesFilter = ({buttonProps, ...props}) => (
-  <ButtonGroupFilter strategy="multi" {...props}>
+  <ButtonGroupFilter strategy="multi" isEmpty={isEmpty} {...props}>
     <FilterButton {...buttonProps} value="Casa">
       Casa
     </FilterButton>
@@ -183,13 +183,12 @@ TypesFilter.defaultProps = {
 }
 
 const TagsFilter = (props) => (
-  <ControlledFilter {...props}>
-    {({field, form}) => (
+  <ControlledFilter isEmpty={isEmpty} {...props}>
+    {({field}) => (
       <TagInput
         {...props}
-        selectedValue={field.currentValue || field.value || []}
+        selectedValue={field.currentValue || []}
         onChange={field.onChange}
-        onBlur={() => form.setFieldTouched(field.name, true)}
       />
     )}
   </ControlledFilter>

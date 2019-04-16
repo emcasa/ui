@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty'
 import React from 'react'
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
@@ -10,7 +11,6 @@ export const ButtonGroup = styled(function ButtonGroup({
   className,
   strategy,
   currentValue,
-  value,
   onChange
 }) {
   return (
@@ -18,7 +18,7 @@ export const ButtonGroup = styled(function ButtonGroup({
       style={style}
       className={className}
       strategy={strategy}
-      selectedValue={currentValue || value}
+      selectedValue={currentValue}
       onChange={onChange}
     >
       {React.Children.map(children, (element) =>
