@@ -164,26 +164,40 @@ export default class TagInput extends PureComponent {
   }
 
   renderLabel() {
-    const {onChangeText, placeholder, height, labelProps} = this.props
+    const {
+      onChangeText,
+      placeholder,
+      height,
+      labelProps,
+      renderLabel
+    } = this.props
     const {values, search, focus} = this.state
+    const input = (
+      <Col flex="0 0 125px">
+        <Input
+          style={{marginTop: `-${tagVerticalMargin}px`}}
+          height={height}
+          placeholder={placeholder}
+          onChange={(e) => this.onChangeText(e.target.value)}
+          onMouseDown={(e) => {
+            e.stopPropagation()
+            if (!focus) setTimeout(this.onFocus, 0)
+          }}
+          value={search}
+        />
+      </Col>
+    )
+    const tags = values ? values.map(this.renderTag) : []
     return (
       <Label height={height} {...labelProps}>
-        {Boolean(onChangeText) && (
-          <Col flex="0 0 125px">
-            <Input
-              style={{marginTop: `-${tagVerticalMargin}px`}}
-              height={height}
-              placeholder={placeholder}
-              onChange={(e) => this.onChangeText(e.target.value)}
-              onMouseDown={(e) => {
-                e.stopPropagation()
-                if (!focus) setTimeout(this.onFocus, 0)
-              }}
-              value={search}
-            />
-          </Col>
+        {renderLabel ? (
+          renderLabel(values, {input, tags})
+        ) : (
+          <>
+            {Boolean(onChangeText) && input}
+            {tags}
+          </>
         )}
-        {values && values.map(this.renderTag)}
       </Label>
     )
   }
