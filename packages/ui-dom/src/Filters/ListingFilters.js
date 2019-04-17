@@ -11,11 +11,9 @@ import not from 'lodash/fp/negate'
 import stubTrue from 'lodash/fp/stubTrue'
 import abbrev from 'number-abbreviate'
 import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
-import TagInput from '../TagInput'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
 import SliderRangeFilter from './SliderRangeFilter'
-import {ControlledFilter} from './Filter'
 import FilterButton from './FilterButton'
 
 const hasValue = (value) => typeof value !== 'undefined'
@@ -182,32 +180,5 @@ TypesFilter.defaultProps = {
   buttonProps: {}
 }
 
-const TagsFilter = (props) => (
-  <ControlledFilter isEmpty={isEmpty} {...props}>
-    {({field}) => (
-      <TagInput
-        {...props}
-        selectedValue={field.currentValue || []}
-        onChange={field.onChange}
-      />
-    )}
-  </ControlledFilter>
-)
-
-TagsFilter.defaultProps = {
-  name: 'tags',
-  formatLabel: cond([
-    [isEmpty, () => 'Tags'],
-    [stubTrue, flow([map('name'), join(', ')])]
-  ]),
-  title: 'Tags'
-}
-
-export {
-  PriceFilter,
-  AreaFilter,
-  RoomsFilter,
-  GarageSpotsFilter,
-  TypesFilter,
-  TagsFilter
-}
+export {PriceFilter, AreaFilter, RoomsFilter, GarageSpotsFilter, TypesFilter}
+export {default as TagsFilter} from './TagsFilter'

@@ -19,7 +19,13 @@ const Label = styled(Row)`
   box-sizing: border-box;
   align-items: center;
   flex-wrap: wrap;
+  overflow-y: auto;
   min-height: ${(props) => buttonHeight(props).height};
+  ${(props) =>
+    props.maxRows && {
+      maxHeight: `${parseInt(buttonHeight(props).height) * props.maxRows -
+        tagVerticalMargin}px`
+    }};
   padding-top: ${tagVerticalMargin}px;
 `
 
@@ -52,7 +58,8 @@ export default class TagInput extends PureComponent {
     height: 'medium',
     groupBy: 'category',
     getKey: (_, index) => index,
-    getGroupColor: getDefaultGroupColor
+    getGroupColor: getDefaultGroupColor,
+    labelProps: {}
   }
 
   static Option = Dropdown.Option
@@ -157,13 +164,12 @@ export default class TagInput extends PureComponent {
   }
 
   renderLabel() {
-    const {onChangeText, placeholder, height} = this.props
+    const {onChangeText, placeholder, height, labelProps} = this.props
     const {values, search, focus} = this.state
     return (
-      <Label height={height}>
-        {values && values.map(this.renderTag)}
+      <Label height={height} {...labelProps}>
         {Boolean(onChangeText) && (
-          <Col flex="1 0 30%">
+          <Col flex="0 0 125px">
             <Input
               style={{marginTop: `-${tagVerticalMargin}px`}}
               height={height}
@@ -177,12 +183,13 @@ export default class TagInput extends PureComponent {
             />
           </Col>
         )}
+        {values && values.map(this.renderTag)}
       </Label>
     )
   }
 
   render() {
-    const {children, options, placeholder, height} = this.props
+    const {children, options, placeholder, height, ...props} = this.props
     const {values, focus} = this.state
     const optionsGroups = groupBy(options, this.props.groupBy)
     return (
@@ -190,10 +197,6 @@ export default class TagInput extends PureComponent {
         focused={focus}
         strategy="multi"
         blurOnChange={false}
-        selectedValue={values}
-        onChange={this.onChange}
-        onFocus={this.onFocus}
-        onBlur={this.onBlur}
         icon="tag"
         height="auto"
         placeholder={placeholder}
@@ -205,6 +208,11 @@ export default class TagInput extends PureComponent {
         }}
         iconProps={{height}}
         label={this.renderLabel()}
+        {...props}
+        selectedValue={values}
+        onChange={this.onChange}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}
       >
         <Row flex="1 0 100%">{children}</Row>
         {options &&

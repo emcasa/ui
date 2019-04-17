@@ -65,7 +65,11 @@ import tags from './tags.json'
         price: PriceFilter.initialValue
       }}
     >
-      <TagsFilter options={tags} />
+      <TagsFilter
+        options={tags}
+        onChangeText={console.log}
+        placeholder="Search tags"
+      />
       <TypesFilter />
       <PriceFilter />
       <AreaFilter />

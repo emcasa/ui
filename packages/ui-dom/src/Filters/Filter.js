@@ -2,6 +2,7 @@ import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
+import Measure from 'react-measure'
 import {Field, connect} from 'formik'
 import {mapProps, compose} from 'recompose'
 import {Manager, Reference, Popper} from 'react-popper'
@@ -30,7 +31,7 @@ export default class Filter extends PureComponent {
     return Boolean(this.props.children)
   }
 
-  renderPanel(passProps = {}) {
+  renderPanel({onResize, ...passProps} = {}) {
     const {
       children,
       title,
@@ -48,7 +49,13 @@ export default class Filter extends PureComponent {
         {...passProps}
       >
         {title && <Title>{title}</Title>}
-        <Row className="panelBody">{children}</Row>
+        <Measure bounds onResize={onResize}>
+          {({measureRef}) => (
+            <Row ref={measureRef} className="panelBody">
+              {children}
+            </Row>
+          )}
+        </Measure>
         {!hideFooter && (
           <Row className="panelFooter">
             {onClear && (
@@ -115,7 +122,13 @@ export default class Filter extends PureComponent {
               placement="bottom-start"
               modifiers={popperModifiers}
             >
-              {({ref, style}) => this.renderPanel({ref, style})}
+              {({ref, style, scheduleUpdate}) =>
+                this.renderPanel({
+                  ref,
+                  style,
+                  onResize: () => scheduleUpdate()
+                })
+              }
             </Popper>,
             contentRef.current
           )}
