@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import groupBy from 'lodash/groupBy'
+import toArray from 'lodash/toArray'
+import deepMerge from 'deepmerge'
 import React, {PureComponent} from 'react'
 import MD5 from 'md5.js'
 import tinycolor from 'tinycolor2'
@@ -202,7 +204,14 @@ export default class TagInput extends PureComponent {
   }
 
   render() {
-    const {children, options, placeholder, height, ...props} = this.props
+    const {
+      children,
+      options,
+      placeholder,
+      height,
+      containerProps,
+      ...props
+    } = this.props
     const {values, focus} = this.state
     const optionsGroups = groupBy(options, this.props.groupBy)
     return (
@@ -213,12 +222,15 @@ export default class TagInput extends PureComponent {
         icon="tag"
         height="auto"
         placeholder={placeholder}
-        containerProps={{
-          style: {
-            flexDirection: 'row',
-            flexWrap: 'wrap'
+        containerProps={deepMerge(
+          {...containerProps},
+          {
+            style: {
+              flexDirection: 'row',
+              flexWrap: 'wrap'
+            }
           }
-        }}
+        )}
         iconProps={{height}}
         label={this.renderLabel()}
         {...props}

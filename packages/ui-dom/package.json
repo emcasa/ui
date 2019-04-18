@@ -16,6 +16,7 @@
     "@emcasa/ui": "^2.0.6",
     "@rebass/grid": "6.0.0-4",
     "classnames": "^2.2.6",
+    "deepmerge": "^3.2.0",
     "element-class": "^0.2.2",
     "fbjs": "^1.0.0",
     "google-map-react": "^1.1.2",
