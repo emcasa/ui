@@ -175,7 +175,6 @@ export default class TagInput extends PureComponent {
     const input = (
       <Col flex="0 0 125px">
         <Input
-          style={{marginTop: `-${tagVerticalMargin}px`}}
           height={height}
           placeholder={placeholder}
           onChange={(e) => this.onChangeText(e.target.value)}

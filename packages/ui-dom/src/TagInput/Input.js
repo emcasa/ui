@@ -1,14 +1,19 @@
-import styled from 'styled-components'
+import React from 'react'
 import Input from '../Input'
+import {tagVerticalMargin} from './Button'
 
-export default styled(Input).attrs({
-  hideErrorView: true,
-  hideLabelView: true
-})`
-  border: none;
-  outline: none;
-  :focus {
-    border: none;
-    outline: none;
-  }
-`
+export default ({style, ...props}) => (
+  <Input
+    hideErrorView
+    hideLabelView
+    style={Object.assign(
+      {
+        marginTop: `-${tagVerticalMargin}px`,
+        border: 'none',
+        outline: 'none'
+      },
+      style || {}
+    )}
+    {...props}
+  />
+)
