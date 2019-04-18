@@ -83,6 +83,8 @@ export default class TagInput extends PureComponent {
 
   state = {}
 
+  inputRef = React.createRef()
+
   static getDerivedStateFromProps(props, state) {
     return {
       values: props.selectedValue || state.values || props.initialValue || [],
@@ -126,6 +128,14 @@ export default class TagInput extends PureComponent {
   onFocus = () => this.setState({focus: true}, this.props.onFocus)
 
   onBlur = () => this.setState({focus: false, search: ''}, this.props.onBlur)
+
+  onClickButton = () => {
+    setTimeout(() => {
+      if (this.inputRef.current) {
+        this.inputRef.current.focus()
+      }
+    }, 0)
+  }
 
   renderTag = (value, index) => {
     const {getKey, renderTag, height} = this.props
@@ -190,8 +200,9 @@ export default class TagInput extends PureComponent {
     } = this.props
     const {values, search, focus} = this.state
     const input = (
-      <Col flex="0 0 125px">
+      <Col flex="1 0 150px">
         <Input
+          ref={this.inputRef}
           height={height}
           placeholder={placeholder}
           onChange={(e) => this.onChangeText(e.target.value)}
@@ -210,8 +221,8 @@ export default class TagInput extends PureComponent {
           renderLabel(values, {input, tags})
         ) : (
           <>
-            {Boolean(onChangeText) && input}
             {tags}
+            {Boolean(onChangeText) && input}
           </>
         )}
       </Label>
@@ -225,6 +236,7 @@ export default class TagInput extends PureComponent {
       placeholder,
       height,
       containerProps,
+      buttonProps,
       ...props
     } = this.props
     const {values, focus} = this.state
@@ -245,6 +257,10 @@ export default class TagInput extends PureComponent {
               flexWrap: 'wrap'
             }
           }
+        )}
+        buttonProps={Object.assign(
+          {...buttonProps},
+          {onClick: this.onClickButton}
         )}
         iconProps={{height}}
         label={this.renderLabel()}
