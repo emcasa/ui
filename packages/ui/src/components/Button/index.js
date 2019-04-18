@@ -8,7 +8,7 @@ import {
   alignItems,
   justifyContent,
   borderColor,
-  bgColor
+  backgroundColor
 } from 'styled-system'
 import {css} from 'styled-components'
 
@@ -47,7 +47,7 @@ export const container = css`
   ${alignItems}
   ${justifyContent}
   ${borderColor}
-  ${bgColor}
+  ${backgroundColor}
 `
 
 container.propTypes = {

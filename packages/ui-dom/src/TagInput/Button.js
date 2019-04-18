@@ -54,6 +54,7 @@ export default styled(function TagButton({
     <Button
       onClick={!onSelect ? undefined : stopPropagation(onSelect)}
       fontSize="small"
+      type="button"
       {...props}
     >
       <Col>
