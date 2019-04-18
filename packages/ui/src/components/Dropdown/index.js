@@ -35,6 +35,7 @@ export const container = css`
   border-top-width: 0px;
   padding-top: 5px;
   background-color: white;
+  overflow-y: auto;
   ${maxHeight};
   ${({layout}) => layout};
 `
