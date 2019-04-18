@@ -16,16 +16,16 @@ const TagFilterInput = styled(TagInput).attrs({
   containerProps: {
     style: {
       position: 'relative',
-      top: '5px',
+      top: 'unset',
       flex: '0 1 auto',
       flexFlow: 'row wrap',
       border: 'none',
       paddingRight: '10px',
-      overflowY: 'auto',
-      maxHeight: 'inherit'
+      overflowY: 'auto'
     }
   }
 })`
+  height: auto;
   ${maxHeight};
 `
 
@@ -49,7 +49,7 @@ const MAX_LABEL_LENGTH = 2
 
 TagsFilter.defaultProps = {
   name: 'tags',
-  maxHeight: [null, null, null, '50vh'],
+  maxHeight: ['100%', null, null, '50vh'],
   formatLabel: cond([
     [isEmpty, () => 'Tags'],
     [
