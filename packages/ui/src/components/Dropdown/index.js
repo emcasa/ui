@@ -1,5 +1,13 @@
 import {css} from 'styled-components'
-import {themeGet, color, width, maxHeight, textAlign} from 'styled-system'
+import {
+  themeGet,
+  color,
+  width,
+  maxHeight,
+  textAlign,
+  borderColor,
+  backgroundColor
+} from 'styled-system'
 import PropTypes from 'prop-types'
 
 import {buttonHeight, fontSize} from '../../styles'
@@ -27,6 +35,7 @@ export const container = css`
   border-top-width: 0px;
   padding-top: 5px;
   background-color: white;
+  overflow-y: auto;
   ${maxHeight};
   ${({layout}) => layout};
 `
@@ -69,6 +78,8 @@ export const button = css`
   ${row};
   ${width};
   ${buttonHeight};
+  ${borderColor};
+  ${backgroundColor};
 `
 
 button.textContainer = css`

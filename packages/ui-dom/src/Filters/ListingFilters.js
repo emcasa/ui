@@ -4,6 +4,7 @@ import isObject from 'lodash/isObject'
 import isEmpty from 'lodash/isEmpty'
 import identity from 'lodash/identity'
 import join from 'lodash/fp/join'
+import map from 'lodash/fp/map'
 import flow from 'lodash/fp/flow'
 import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
@@ -156,7 +157,7 @@ GarageSpotsFilter.defaultProps = {
 }
 
 const TypesFilter = ({buttonProps, ...props}) => (
-  <ButtonGroupFilter strategy="multi" {...props}>
+  <ButtonGroupFilter strategy="multi" isEmpty={isEmpty} {...props}>
     <FilterButton {...buttonProps} value="Casa">
       Casa
     </FilterButton>
@@ -180,3 +181,4 @@ TypesFilter.defaultProps = {
 }
 
 export {PriceFilter, AreaFilter, RoomsFilter, GarageSpotsFilter, TypesFilter}
+export {default as TagsFilter} from './TagsFilter'

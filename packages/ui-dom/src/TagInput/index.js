@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import groupBy from 'lodash/groupBy'
+import toArray from 'lodash/toArray'
+import deepMerge from 'deepmerge'
 import React, {PureComponent} from 'react'
 import MD5 from 'md5.js'
 import tinycolor from 'tinycolor2'
@@ -19,7 +21,13 @@ const Label = styled(Row)`
   box-sizing: border-box;
   align-items: center;
   flex-wrap: wrap;
+  overflow-y: auto;
   min-height: ${(props) => buttonHeight(props).height};
+  ${(props) =>
+    props.maxRows && {
+      maxHeight: `${parseInt(buttonHeight(props).height) * props.maxRows -
+        tagVerticalMargin}px`
+    }};
   padding-top: ${tagVerticalMargin}px;
 `
 
@@ -38,6 +46,21 @@ export function getDefaultGroupColor(group) {
   return color.toHexString()
 }
 
+const isTag = (tag) => (t) => t.name == tag.name
+
+const selectStrategy = {
+  getInitialValue: toArray,
+  isSelected(selectedValue, tag) {
+    return tag && selectedValue.find(isTag(tag))
+  },
+  update([...selectedValue], tag) {
+    const index = selectedValue.findIndex(isTag(tag))
+    if (index === -1) selectedValue.push(tag)
+    else selectedValue.splice(index, 1)
+    return selectedValue
+  }
+}
+
 export default class TagInput extends PureComponent {
   static propTypes = {
     initialValue: PropTypes.arrayOf(PropTypes.object),
@@ -52,12 +75,15 @@ export default class TagInput extends PureComponent {
     height: 'medium',
     groupBy: 'category',
     getKey: (_, index) => index,
-    getGroupColor: getDefaultGroupColor
+    getGroupColor: getDefaultGroupColor,
+    labelProps: {}
   }
 
   static Option = Dropdown.Option
 
   state = {}
+
+  inputRef = React.createRef()
 
   static getDerivedStateFromProps(props, state) {
     return {
@@ -102,6 +128,14 @@ export default class TagInput extends PureComponent {
   onFocus = () => this.setState({focus: true}, this.props.onFocus)
 
   onBlur = () => this.setState({focus: false, search: ''}, this.props.onBlur)
+
+  onClickButton = () => {
+    setTimeout(() => {
+      if (this.inputRef.current) {
+        this.inputRef.current.focus()
+      }
+    }, 0)
+  }
 
   renderTag = (value, index) => {
     const {getKey, renderTag, height} = this.props
@@ -157,54 +191,84 @@ export default class TagInput extends PureComponent {
   }
 
   renderLabel() {
-    const {onChangeText, placeholder, height} = this.props
+    const {
+      onChangeText,
+      placeholder,
+      height,
+      labelProps,
+      renderLabel
+    } = this.props
     const {values, search, focus} = this.state
+    const input = (
+      <Col flex="1 0 150px">
+        <Input
+          ref={this.inputRef}
+          height={height}
+          placeholder={placeholder}
+          onChange={(e) => this.onChangeText(e.target.value)}
+          onMouseDown={(e) => {
+            e.stopPropagation()
+            if (!focus) setTimeout(this.onFocus, 0)
+          }}
+          value={search}
+        />
+      </Col>
+    )
+    const tags = values ? values.map(this.renderTag) : []
     return (
-      <Label height={height}>
-        {values.map(this.renderTag)}
-        {Boolean(onChangeText) && (
-          <Col flex="1 0 30%">
-            <Input
-              style={{marginTop: `-${tagVerticalMargin}px`}}
-              height={height}
-              placeholder={placeholder}
-              onChange={(e) => this.onChangeText(e.target.value)}
-              onMouseDown={(e) => {
-                e.stopPropagation()
-                if (!focus) setTimeout(this.onFocus, 0)
-              }}
-              value={search}
-            />
-          </Col>
+      <Label height={height} {...labelProps}>
+        {renderLabel ? (
+          renderLabel(values, {input, tags})
+        ) : (
+          <>
+            {tags}
+            {Boolean(onChangeText) && input}
+          </>
         )}
       </Label>
     )
   }
 
   render() {
-    const {children, options, placeholder, height} = this.props
+    const {
+      children,
+      options,
+      placeholder,
+      height,
+      containerProps,
+      buttonProps,
+      ...props
+    } = this.props
     const {values, focus} = this.state
     const optionsGroups = groupBy(options, this.props.groupBy)
     return (
       <Dropdown
         focused={focus}
-        strategy="multi"
+        strategy={selectStrategy}
         blurOnChange={false}
+        icon="tag"
+        height="auto"
+        placeholder={placeholder}
+        containerProps={deepMerge(
+          {...containerProps},
+          {
+            style: {
+              flexDirection: 'row',
+              flexWrap: 'wrap'
+            }
+          }
+        )}
+        buttonProps={Object.assign(
+          {...buttonProps},
+          {onClick: this.onClickButton}
+        )}
+        iconProps={{height}}
+        label={this.renderLabel()}
+        {...props}
         selectedValue={values}
         onChange={this.onChange}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
-        icon="tag"
-        height="auto"
-        placeholder={placeholder}
-        containerProps={{
-          style: {
-            flexDirection: 'row',
-            flexWrap: 'wrap'
-          }
-        }}
-        iconProps={{height}}
-        label={this.renderLabel()}
       >
         <Row flex="1 0 100%">{children}</Row>
         {options &&

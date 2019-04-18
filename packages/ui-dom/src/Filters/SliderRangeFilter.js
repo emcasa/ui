@@ -15,7 +15,7 @@ export class SliderRange extends PureComponent {
       formatValue,
       formatLabel
     } = this.props
-    const displayValue = currentValue || value || initialValue
+    const displayValue = currentValue || initialValue
     return (
       <View pr={2} pl={2}>
         {formatLabel && (
