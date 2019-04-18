@@ -46,6 +46,21 @@ export function getDefaultGroupColor(group) {
   return color.toHexString()
 }
 
+const isTag = (tag) => (t) => t.name == tag.name
+
+const selectStrategy = {
+  getInitialValue: toArray,
+  isSelected(selectedValue, tag) {
+    return tag && selectedValue.find(isTag(tag))
+  },
+  update([...selectedValue], tag) {
+    const index = selectedValue.findIndex(isTag(tag))
+    if (index === -1) selectedValue.push(tag)
+    else selectedValue.splice(index, 1)
+    return selectedValue
+  }
+}
+
 export default class TagInput extends PureComponent {
   static propTypes = {
     initialValue: PropTypes.arrayOf(PropTypes.object),
@@ -217,7 +232,7 @@ export default class TagInput extends PureComponent {
     return (
       <Dropdown
         focused={focus}
-        strategy="multi"
+        strategy={selectStrategy}
         blurOnChange={false}
         icon="tag"
         height="auto"
