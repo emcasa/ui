@@ -4,7 +4,6 @@ import isObject from 'lodash/isObject'
 import isEmpty from 'lodash/isEmpty'
 import identity from 'lodash/identity'
 import join from 'lodash/fp/join'
-import map from 'lodash/fp/map'
 import flow from 'lodash/fp/flow'
 import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
@@ -98,6 +97,28 @@ PriceFilter.defaultProps = {
   name: 'price',
   title: 'Preço',
   range: [PriceFilter.initialValue.min, PriceFilter.initialValue.max]
+}
+
+const PricePerAreaFilter = ({...props}) => (
+  <SliderRangeFilter
+    formatValue={(value) => Math.round(value / 1000) * 1000}
+    formatLabel={cond([
+      [not(hasValue), () => 'Preço/m²'],
+      [stubTrue, formatPriceRange(props.range)]
+    ])}
+    {...props}
+  />
+)
+
+PricePerAreaFilter.initialValue = {min: 1000 * 1, max: 1000 * 100}
+
+PricePerAreaFilter.defaultProps = {
+  name: 'pricePerArea',
+  title: 'Preço/m²',
+  range: [
+    PricePerAreaFilter.initialValue.min,
+    PricePerAreaFilter.initialValue.max
+  ]
 }
 
 const AreaFilter = ({...props}) => (
