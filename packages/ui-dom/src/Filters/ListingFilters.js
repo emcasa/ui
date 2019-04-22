@@ -159,6 +159,24 @@ RoomsFilter.defaultProps = {
   range: [1, 5]
 }
 
+const SuitesFilter = ({...props}) => (
+  <ButtonRangeFilter
+    formatEmpty={() => 'Sem suítes'}
+    formatLast={() => '+'}
+    {...props}
+  />
+)
+
+SuitesFilter.defaultProps = {
+  name: 'suites',
+  formatLabel: cond([
+    [not(hasValue), () => 'Suítes'],
+    [stubTrue, formatNumRange('suíte')]
+  ]),
+  title: 'Suítes',
+  range: [1, 5]
+}
+
 const GarageSpotsFilter = ({...props}) => (
   <ButtonRangeFilter
     formatEmpty={() => 'Sem vagas'}
@@ -201,5 +219,13 @@ TypesFilter.defaultProps = {
   buttonProps: {}
 }
 
-export {PriceFilter, AreaFilter, RoomsFilter, GarageSpotsFilter, TypesFilter}
+export {
+  PriceFilter,
+  PricePerAreaFilter,
+  AreaFilter,
+  RoomsFilter,
+  SuitesFilter,
+  GarageSpotsFilter,
+  TypesFilter
+}
 export {default as TagsFilter} from './TagsFilter'
