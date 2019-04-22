@@ -5,7 +5,8 @@ import {ICON_SIZE} from '../../theme/measures'
 const getIcon = ({type, name}, {icons, defaultIcon}) => {
   const findIcon = (iconName, key = type) => {
     if (!(key in icons)) return undefined
-    for (const icon of Object.values(icons[key]))
+    const values = Object.keys(icons[key]).map((item) => icons[key][item])
+    for (const icon of values)
       if (icon.iconName == iconName) return icon
   }
   const icon = findIcon(name) || findIcon(defaultIcon, 'default')
