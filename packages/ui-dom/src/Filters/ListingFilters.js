@@ -110,7 +110,7 @@ PriceFilter.defaultProps = {
 
 const PricePerAreaFilter = ({...props}) => (
   <SliderRangeFilter
-    formatValue={(value) => Math.round(value / 1000) * 1000}
+    formatValue={(value) => Math.round(value / 100) * 100}
     formatLabel={cond([
       [not(hasValue), () => 'Preço/m²'],
       [stubTrue, formatPriceRange(props.range)]
