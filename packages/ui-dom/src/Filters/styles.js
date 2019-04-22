@@ -200,13 +200,35 @@ export const ExpandButton = styled(function ExpandButton({
   }
 `
 
+export const Content = styled.div`
+  z-index: 1;
+  position: absolute;
+  box-sizing: border-box;
+  flex: 1;
+  flex-direction: column;
+  display: ${(props) => (props.visible ? 'flex' : 'none')};
+  @media screen and ${breakpoint.down('tablet')} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 100%;
+    height: calc(100vh - ${TOP_SPACING}px);
+    margin-top: ${TOP_SPACING}px;
+    padding: ${themeGet('space.4')}px;
+    padding-top: 0;
+    overflow-y: auto;
+    transition: all ${transition.css};
+  }
+`
+
 const BackgroundComponent = React.forwardRef(
-  ({contentRef, onDismiss, ...props}, ref) => (
-    <div ref={ref} {...props}>
+  ({onDismiss, style, className}, ref) => (
+    <div ref={ref} style={style} className={className}>
       <a className="closeButton" onClick={onDismiss}>
         <Icon name="times" size={22} color="dark" />
       </a>
-      <div ref={contentRef} className="content" />
       <a className="clickArea" onClick={onDismiss} />
     </div>
   )
@@ -253,14 +275,6 @@ export const Background = styled(
     padding: ${themeGet('space.4')}px;
   }
 
-  .content {
-    position: absolute;
-    box-sizing: border-box;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-  }
-
   @media screen and ${breakpoint.down('tablet')} {
     background: rgba(255, 255, 255, 1);
 
@@ -270,17 +284,6 @@ export const Background = styled(
 
     a.closeButton {
       display: block;
-    }
-
-    .content {
-      width: 100%;
-      max-height: 100%;
-      height: calc(100vh - ${TOP_SPACING}px);
-      margin-top: ${TOP_SPACING}px;
-      padding: ${themeGet('space.4')}px;
-      padding-top: 0;
-      overflow-y: auto;
-      transition: all ${transition.css};
     }
   }
 `

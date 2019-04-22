@@ -10,6 +10,7 @@ import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
 import stubTrue from 'lodash/fp/stubTrue'
 import abbrev from 'number-abbreviate'
+import curry from 'lodash/fp/curry'
 import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
@@ -41,7 +42,7 @@ const formatRange = (formatOptions) => {
   ])
 }
 
-const formatSliderRange = (format) => (range) =>
+const formatSliderRange = curry((format, range) =>
   flow(
     (value) => {
       if (!value) return value
@@ -58,6 +59,7 @@ const formatSliderRange = (format) => (range) =>
       range: (min, max) => `${format(min)} - ${format(max)}`
     })
   )
+)
 
 const formatNumRange = (noun) => {
   const singular = noun
@@ -81,6 +83,12 @@ const formatPriceRange = formatSliderRange(
 
 const formatAreaRange = formatSliderRange((value) => `${value} m²`)
 
+const formatMultiSelect = (getLabel) =>
+  flow(
+    map(getLabel),
+    join(', ')
+  )
+
 const PriceFilter = ({...props}) => (
   <SliderRangeFilter
     formatValue={(value) => Math.round(value / 1000) * 1000}
@@ -98,6 +106,28 @@ PriceFilter.defaultProps = {
   name: 'price',
   title: 'Preço',
   range: [PriceFilter.initialValue.min, PriceFilter.initialValue.max]
+}
+
+const PricePerAreaFilter = ({...props}) => (
+  <SliderRangeFilter
+    formatValue={(value) => Math.round(value / 100) * 100}
+    formatLabel={cond([
+      [not(hasValue), () => 'Preço/m²'],
+      [stubTrue, formatPriceRange(props.range)]
+    ])}
+    {...props}
+  />
+)
+
+PricePerAreaFilter.initialValue = {min: 1000 * 1, max: 1000 * 100}
+
+PricePerAreaFilter.defaultProps = {
+  name: 'pricePerArea',
+  title: 'Preço/m²',
+  range: [
+    PricePerAreaFilter.initialValue.min,
+    PricePerAreaFilter.initialValue.max
+  ]
 }
 
 const AreaFilter = ({...props}) => (
@@ -138,6 +168,24 @@ RoomsFilter.defaultProps = {
   range: [1, 5]
 }
 
+const SuitesFilter = ({...props}) => (
+  <ButtonRangeFilter
+    formatEmpty={() => 'Sem suítes'}
+    formatLast={() => '+'}
+    {...props}
+  />
+)
+
+SuitesFilter.defaultProps = {
+  name: 'suites',
+  formatLabel: cond([
+    [not(hasValue), () => 'Suítes'],
+    [stubTrue, formatNumRange('suíte')]
+  ]),
+  title: 'Suítes',
+  range: [1, 5]
+}
+
 const GarageSpotsFilter = ({...props}) => (
   <ButtonRangeFilter
     formatEmpty={() => 'Sem vagas'}
@@ -154,6 +202,31 @@ GarageSpotsFilter.defaultProps = {
     [stubTrue, formatNumRange('vaga')]
   ]),
   range: [0, 5]
+}
+
+const GarageTypesFilter = ({buttonProps, options, ...props}) => (
+  <ButtonGroupFilter
+    strategy="multi"
+    isEmpty={isEmpty}
+    formatLabel={cond([
+      [isEmpty, () => 'Tipo de vaga'],
+      [stubTrue, formatMultiSelect((value) => options.get(value))]
+    ])}
+    {...props}
+  >
+    {Array.from(options).map(([value, label]) => (
+      <FilterButton {...buttonProps} key={value} value={value}>
+        {label}
+      </FilterButton>
+    ))}
+  </ButtonGroupFilter>
+)
+
+GarageTypesFilter.defaultProps = {
+  name: 'garageTypes',
+  title: 'Tipo de vaga',
+  buttonProps: {},
+  options: new Map([['CONTRACT', 'Escritura'], ['CONDOMINIUM', 'Condomínio']])
 }
 
 const TypesFilter = ({buttonProps, ...props}) => (
@@ -180,5 +253,41 @@ TypesFilter.defaultProps = {
   buttonProps: {}
 }
 
-export {PriceFilter, AreaFilter, RoomsFilter, GarageSpotsFilter, TypesFilter}
+const ConstructionYearFilter = ({...props}) => (
+  <SliderRangeFilter
+    formatValue={Math.round}
+    formatLabel={cond([
+      [not(hasValue), () => 'Ano'],
+      [stubTrue, formatSliderRange(identity, props.range)]
+    ])}
+    {...props}
+  />
+)
+
+ConstructionYearFilter.initialValue = {
+  min: 1900,
+  max: parseInt(new Date().getFullYear())
+}
+
+ConstructionYearFilter.defaultProps = {
+  name: 'constructionYear',
+  label: 'Ano de construção',
+  title: 'Ano de construção',
+  range: [
+    ConstructionYearFilter.initialValue.min,
+    ConstructionYearFilter.initialValue.max
+  ]
+}
+
+export {
+  PriceFilter,
+  PricePerAreaFilter,
+  AreaFilter,
+  RoomsFilter,
+  SuitesFilter,
+  GarageSpotsFilter,
+  GarageTypesFilter,
+  TypesFilter,
+  ConstructionYearFilter
+}
 export {default as TagsFilter} from './TagsFilter'

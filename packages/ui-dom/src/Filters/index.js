@@ -14,6 +14,7 @@ import {
   Body,
   BodyExpander,
   ExpandButton,
+  Content,
   Background
 } from './styles'
 import {withBreakpoint} from '../Breakpoint'
@@ -260,10 +261,14 @@ const FilterGroup = Group(
                   )}
                 </Row>
               </Form>
+              <Content
+                ref={this.contentRef}
+                visible={Boolean(selectedValue)}
+                row={{expanded: isRowExpanded, visible: isRowVisible}}
+              />
               <Background
                 pose={selectedValue ? 'bgOpen' : 'bgClosed'}
                 row={{expanded: isRowExpanded, visible: isRowVisible}}
-                contentRef={this.contentRef}
                 offset={bodyHeight}
                 onDismiss={() => {
                   form.handleReset()
