@@ -18,7 +18,8 @@ import {
   AreaFilter,
   RoomsFilter,
   SuitesFilter,
-  GarageSpotsFilter
+  GarageSpotsFilter,
+  ConstructionYearFilter
 } from '@emcasa/ui-dom/components/Filters/ListingFilters'
 import View from '@emcasa/ui-dom/components/View'
 import tags from './tags.json'
@@ -65,7 +66,8 @@ import tags from './tags.json'
       initialValues={{
         area: AreaFilter.initialValue,
         price: PriceFilter.initialValue,
-        pricePerArea: PricePerAreaFilter.initialValue
+        pricePerArea: PricePerAreaFilter.initialValue,
+        constructionYear: ConstructionYearFilter.initialValue
       }}
     >
       <TagsFilter
@@ -80,6 +82,7 @@ import tags from './tags.json'
       <RoomsFilter />
       <SuitesFilter />
       <GarageSpotsFilter />
+      <ConstructionYearFilter />
     </Filters>
   </View>
 </Playground>

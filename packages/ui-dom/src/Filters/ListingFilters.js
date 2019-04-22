@@ -9,6 +9,7 @@ import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
 import stubTrue from 'lodash/fp/stubTrue'
 import abbrev from 'number-abbreviate'
+import curry from 'lodash/fp/curry'
 import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
@@ -40,7 +41,7 @@ const formatRange = (formatOptions) => {
   ])
 }
 
-const formatSliderRange = (format) => (range) =>
+const formatSliderRange = curry((format, range) =>
   flow(
     (value) => {
       if (!value) return value
@@ -57,6 +58,7 @@ const formatSliderRange = (format) => (range) =>
       range: (min, max) => `${format(min)} - ${format(max)}`
     })
   )
+)
 
 const formatNumRange = (noun) => {
   const singular = noun
@@ -219,6 +221,32 @@ TypesFilter.defaultProps = {
   buttonProps: {}
 }
 
+const ConstructionYearFilter = ({...props}) => (
+  <SliderRangeFilter
+    formatValue={Math.round}
+    formatLabel={cond([
+      [not(hasValue), () => 'Ano'],
+      [stubTrue, formatSliderRange(identity, props.range)]
+    ])}
+    {...props}
+  />
+)
+
+ConstructionYearFilter.initialValue = {
+  min: 1900,
+  max: parseInt(new Date().getFullYear())
+}
+
+ConstructionYearFilter.defaultProps = {
+  name: 'constructionYear',
+  label: 'Ano de construção',
+  title: 'Ano de construção',
+  range: [
+    ConstructionYearFilter.initialValue.min,
+    ConstructionYearFilter.initialValue.max
+  ]
+}
+
 export {
   PriceFilter,
   PricePerAreaFilter,
@@ -226,6 +254,7 @@ export {
   RoomsFilter,
   SuitesFilter,
   GarageSpotsFilter,
-  TypesFilter
+  TypesFilter,
+  ConstructionYearFilter
 }
 export {default as TagsFilter} from './TagsFilter'
