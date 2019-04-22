@@ -4,6 +4,7 @@ import isObject from 'lodash/isObject'
 import isEmpty from 'lodash/isEmpty'
 import identity from 'lodash/identity'
 import join from 'lodash/fp/join'
+import map from 'lodash/fp/map'
 import flow from 'lodash/fp/flow'
 import cond from 'lodash/fp/cond'
 import not from 'lodash/fp/negate'
@@ -81,6 +82,12 @@ const formatPriceRange = formatSliderRange(
 )
 
 const formatAreaRange = formatSliderRange((value) => `${value} m²`)
+
+const formatMultiSelect = (getLabel) =>
+  flow(
+    map(getLabel),
+    join(', ')
+  )
 
 const PriceFilter = ({...props}) => (
   <SliderRangeFilter
@@ -197,6 +204,31 @@ GarageSpotsFilter.defaultProps = {
   range: [0, 5]
 }
 
+const GarageTypesFilter = ({buttonProps, options, ...props}) => (
+  <ButtonGroupFilter
+    strategy="multi"
+    isEmpty={isEmpty}
+    formatLabel={cond([
+      [isEmpty, () => 'Tipo de vaga'],
+      [stubTrue, formatMultiSelect((value) => options.get(value))]
+    ])}
+    {...props}
+  >
+    {Array.from(options).map(([value, label]) => (
+      <FilterButton {...buttonProps} key={value} value={value}>
+        {label}
+      </FilterButton>
+    ))}
+  </ButtonGroupFilter>
+)
+
+GarageTypesFilter.defaultProps = {
+  name: 'garageTypes',
+  title: 'Tipo de vaga',
+  buttonProps: {},
+  options: new Map([['CONTRACT', 'Escritura'], ['CONDOMINIUM', 'Condomínio']])
+}
+
 const TypesFilter = ({buttonProps, ...props}) => (
   <ButtonGroupFilter strategy="multi" isEmpty={isEmpty} {...props}>
     <FilterButton {...buttonProps} value="Casa">
@@ -254,6 +286,7 @@ export {
   RoomsFilter,
   SuitesFilter,
   GarageSpotsFilter,
+  GarageTypesFilter,
   TypesFilter,
   ConstructionYearFilter
 }
