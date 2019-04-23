@@ -6,14 +6,25 @@ import posed from 'react-pose'
 import Track from './Track'
 
 const MarkerTrackAnimation = styled(
-  posed(React.forwardRef((props, ref) => <Track ref={ref} {...props} />))({
+  posed(
+    React.forwardRef(({style, ...props}, ref) => {
+      delete props.x
+      delete props.offset
+      return (
+        <Track
+          ref={ref}
+          style={Object.assign({position: 'absolute'}, style)}
+          {...props}
+        />
+      )
+    })
+  )({
     passive: {
       width: ['x', identity, true],
       left: ['offset', identity, true]
     }
   })
 )`
-  position: absolute;
   margin-top: ${({height}) => -((parseInt(height) || 2) - 2) / 2}px;
 `
 
