@@ -6,7 +6,7 @@ export const MAX_AREA = 500
 
 export const MIN_PRICE = 250000
 
-export const MAX_PRICE = 2000000
+export const MAX_PRICE = 5000000
 
 export const BUTTON_HEIGHT = themeGet('buttonHeight.2')
 
