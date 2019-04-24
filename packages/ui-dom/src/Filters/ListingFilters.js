@@ -11,7 +11,16 @@ import not from 'lodash/fp/negate'
 import stubTrue from 'lodash/fp/stubTrue'
 import abbrev from 'number-abbreviate'
 import curry from 'lodash/fp/curry'
-import {MIN_PRICE, MAX_PRICE, MIN_AREA, MAX_AREA} from './constants'
+import {
+  MIN_PRICE,
+  MAX_PRICE,
+  MIN_AREA,
+  MAX_AREA,
+  PRICE_STEP,
+  MIN_PRICE_PER_AREA,
+  MAX_PRICE_PER_AREA,
+  PRICE_PER_AREA_STEP
+} from './constants'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
 import SliderRangeFilter from './SliderRangeFilter'
@@ -91,7 +100,7 @@ const formatMultiSelect = (getLabel) =>
 
 const PriceFilter = ({...props}) => (
   <SliderRangeFilter
-    formatValue={(value) => Math.round(value / 1000) * 1000}
+    formatValue={(value) => Math.round(value / PRICE_STEP) * PRICE_STEP}
     formatLabel={cond([
       [not(hasValue), () => 'Preço'],
       [stubTrue, formatPriceRange(props.range)]
@@ -110,7 +119,9 @@ PriceFilter.defaultProps = {
 
 const PricePerAreaFilter = ({...props}) => (
   <SliderRangeFilter
-    formatValue={(value) => Math.round(value / 100) * 100}
+    formatValue={(value) =>
+      Math.round(value / PRICE_PER_AREA_STEP) * PRICE_PER_AREA_STEP
+    }
     formatLabel={cond([
       [not(hasValue), () => 'Preço/m²'],
       [stubTrue, formatPriceRange(props.range)]
@@ -119,7 +130,10 @@ const PricePerAreaFilter = ({...props}) => (
   />
 )
 
-PricePerAreaFilter.initialValue = {min: 1000 * 1, max: 1000 * 100}
+PricePerAreaFilter.initialValue = {
+  min: MIN_PRICE_PER_AREA,
+  max: MAX_PRICE_PER_AREA
+}
 
 PricePerAreaFilter.defaultProps = {
   name: 'pricePerArea',

@@ -8,6 +8,14 @@ export const MIN_PRICE = 250000
 
 export const MAX_PRICE = 5000000
 
+export const PRICE_STEP = 1000
+
+export const MIN_PRICE_PER_AREA = 1000
+
+export const MAX_PRICE_PER_AREA = 100000
+
+export const PRICE_PER_AREA_STEP = 100
+
 export const BUTTON_HEIGHT = themeGet('buttonHeight.2')
 
 export const ROW_PADDING = themeGet('space.2')
