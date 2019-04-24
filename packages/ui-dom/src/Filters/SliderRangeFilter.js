@@ -7,7 +7,6 @@ import Text from '../Text'
 export class SliderRange extends PureComponent {
   render() {
     const {
-      value,
       range,
       onChange,
       initialValue,
@@ -15,7 +14,9 @@ export class SliderRange extends PureComponent {
       formatValue,
       formatLabel
     } = this.props
-    const displayValue = currentValue || initialValue
+    const displayValue = Object.assign({}, currentValue || initialValue)
+    if (displayValue.min === undefined) displayValue.min = range[0]
+    if (displayValue.max === undefined) displayValue.max = range[1]
     return (
       <View pr={2} pl={2}>
         {formatLabel && (
@@ -28,7 +29,13 @@ export class SliderRange extends PureComponent {
           range={range}
           initialValue={displayValue}
           formatValue={formatValue}
-          onChange={onChange}
+          onChange={({...value}) => {
+            if (value.min === range[0]) value.min = undefined
+            if (value.max === range[1]) value.max = undefined
+            if (value.max === undefined && value.min === undefined)
+              onChange(undefined)
+            else onChange(value)
+          }}
           trackProps={{bg: 'lightGrey'}}
         >
           <Slider.Marker name="min" />
