@@ -82,12 +82,16 @@ const formatNumRange = (noun) => {
   })
 }
 
-const formatPriceRange = formatSliderRange(
-  (value) =>
-    `R$ ${abbrev(value, 2)
-      .toString()
-      .toUpperCase()
-      .replace('.', ',')}`
+const formatPrice = (value) =>
+  `R$ ${abbrev(value, 2)
+    .toString()
+    .toUpperCase()
+    .replace('.', ',')}`
+
+const formatPriceRange = formatSliderRange(formatPrice)
+
+const formatPricePerAreaRange = formatSliderRange(
+  (value) => `${formatPrice(value)}/m²`
 )
 
 const formatAreaRange = formatSliderRange((value) => `${value} m²`)
@@ -124,7 +128,7 @@ const PricePerAreaFilter = ({...props}) => (
     }
     formatLabel={cond([
       [not(hasValue), () => 'Preço/m²'],
-      [stubTrue, formatPriceRange(props.range)]
+      [stubTrue, formatPricePerAreaRange(props.range)]
     ])}
     {...props}
   />
