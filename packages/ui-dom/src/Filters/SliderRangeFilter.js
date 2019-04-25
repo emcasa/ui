@@ -15,8 +15,10 @@ export class SliderRange extends PureComponent {
       formatLabel
     } = this.props
     const displayValue = Object.assign({}, currentValue || initialValue)
-    if (displayValue.min === undefined) displayValue.min = range[0]
-    if (displayValue.max === undefined) displayValue.max = range[1]
+    if (isNaN(displayValue.min) || displayValue.min === null)
+      displayValue.min = range[0]
+    if (isNaN(displayValue.max) || displayValue.max === null)
+      displayValue.max = range[1]
     return (
       <View pr={2} pl={2}>
         {formatLabel && (
