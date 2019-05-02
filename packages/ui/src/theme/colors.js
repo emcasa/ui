@@ -1,6 +1,6 @@
 export default {
   white: '#ffffff',
-  pink: '#f50057',
+  pink: '#ff2b7f',
   blue: '#1fb6ff',
   red: '#ff4949',
   green: '#13ce66',
