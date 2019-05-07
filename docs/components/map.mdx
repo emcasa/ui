@@ -19,7 +19,7 @@ Map component.
 <Playground>
   <View m={4} height={400}>
     <Map apiKey={GOOGLE_MAPS_API_KEY}>
-      <View {...markers[0]} mt={-25}>
+      <View {...markers[0]} mt={-25} width={25} height={25}>
         <Icon name="map-marker-alt" color="pink" size={25} />
       </View>
     </Map>
@@ -59,7 +59,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
   <View m={4} height={400}>
     <Map cluster apiKey={GOOGLE_MAPS_API_KEY}>
       {['A', 'B', 'C'].map((name) => (
-        <Map.Marker {...markers[0]} key={name}>
+        <Map.Marker {...markers[0]} id={name} key={name}>
           {'Marker ' + name}
         </Map.Marker>
       ))}

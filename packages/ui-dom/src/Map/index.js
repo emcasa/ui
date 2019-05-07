@@ -13,19 +13,7 @@ import noop from 'lodash/noop'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
 import MultiMarker from './MultiMarker'
-
-const getMarkers = ({children}) => {
-  return React.Children.map(
-    children,
-    (node) =>
-      React.isValidElement(node) && {
-        node,
-        id: node.props.id,
-        lat: node.props.lat,
-        lng: node.props.lng
-      }
-  ).filter(Boolean)
-}
+import {Provider} from './Context'
 
 const getOptions = (getDefaultOptions) =>
   cond([
@@ -53,7 +41,7 @@ const getClusters = (
       maxZoom: props.maxZoom,
       radius: props.multiMarkerRadius
     })
-  const clusters = supercluster(markers, clusterOptions)
+  const clusters = supercluster(Object.values(markers), clusterOptions)
   return clusters(mapOptions)
 }
 
@@ -124,55 +112,89 @@ export default class MapContainer extends PureComponent {
   }
 
   state = {
-    markers: undefined,
-    clusters: undefined,
+    loaded: false,
+    hasAggregators: false,
+    markers: [],
+    framedMarkers: [],
+    clusters: [],
+    clusterOptions: {},
     mapOptions: {
       center: {lat: -22.9608099, lng: -43.2096142},
       zoom: 8
-    },
-    hasAggregators: false,
-    loaded: false
+    }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    let {markers, clusters, clusterOptions, hasAggregators} = state
-    const shouldUpdateMarkers =
-      state.children !== props.children || !state.markers
-    if (shouldUpdateMarkers) markers = getMarkers(props, state)
-    if (props.cluster && (shouldUpdateMarkers || !state.clusters)) {
-      clusterOptions = getClusterOptions(props.cluster, props)
-      clusters = getClusterProps(props, {...state, markers, clusterOptions})
-      hasAggregators =
-        clusters.reduce(
-          (prevVal, elem) => (elem.numPoints > 1 ? prevVal + 1 : prevVal),
-          0
-        ) >= 1
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.markers !== prevState.markers) {
+      this.updateClusters()
     }
+  }
+
+  getContext() {
     return {
-      children: props.children,
-      markers,
-      clusters,
-      clusterOptions,
-      hasAggregators
+      ...this.state,
+      getMarkerHighlight: this.getMarkerHighlight,
+      registerMarker: this.registerMarker,
+      unregisterMarker: this.unregisterMarker
     }
   }
 
-  onMapLoaded = ({map, maps}) => {
+  registerMarker = ({id, lat, lng, ...props}) =>
+    this.setState(({markers}) => ({
+      markers: {...markers, [id]: {id, lat, lng, props}}
+    }))
+
+  unregisterMarker = ({id}) =>
+    this.setState(({markers: {...markers}}) => {
+      delete markers[id]
+      return {markers}
+    })
+
+  updateClusters = () => {
+    const nextState = {
+      clusterOptions: {},
+      framedMarkers: [],
+      clusters: [],
+      hasAggregators: false
+    }
+    if (!this.props.cluster) return nextState
+    nextState.clusterOptions = getClusterOptions(this.props.cluster, this.props)
+    nextState.clusters = getClusterProps(this.props, {
+      ...this.state,
+      ...nextState
+    })
+    nextState.hasAggregators = Boolean(
+      nextState.clusters.find((cluster) => cluster.points.length > 1)
+    )
+    nextState.framedMarkers = nextState.clusters
+      .reduce((markers, cluster) => markers.concat(cluster.points), [])
+      .map((marker) => marker.id)
+    this.setState(nextState)
+    return nextState
+  }
+
+  get map() {
+    return this.state.map
+  }
+
+  get maps() {
+    return this.state.maps
+  }
+
+  onMapLoaded = (options) => {
+    const {map, maps} = options
+    const {onMapLoaded, onDragEnd, onZoomChanged} = this.props
     if (map) {
-      const {onDragEnd, onZoomChanged} = this.props
-      this.setState({loaded: true})
-      this.map = map
-      this.maps = maps
-      this.fitMap(this.state.markers)
+      this.setState({loaded: true, map, maps}, this.fitMap)
       if (onDragEnd) map.addListener('dragend', onDragEnd)
       if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
     }
+    if (onMapLoaded) onMapLoaded(options)
   }
 
   onMapChange = ({center, zoom, bounds}) =>
     this.setState(
       {
-        clusters: undefined,
         mapOptions: {
           center,
           zoom,
@@ -199,7 +221,9 @@ export default class MapContainer extends PureComponent {
   }
 
   fitMap = (markers = this.state.markers) => {
-    const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
+    const LatLngList = Object.values(markers).map(
+      (m) => new this.maps.LatLng(m.lat, m.lng)
+    )
 
     const bounds = new this.maps.LatLngBounds()
     for (let i = 0, LtLgLen = LatLngList.length; i < LtLgLen; i++) {
@@ -222,7 +246,9 @@ export default class MapContainer extends PureComponent {
 
   frameCluster = (markers) => {
     const {onFrameCluster} = this.props
-    const LatLngList = markers.map((m) => new this.maps.LatLng(m.lat, m.lng))
+    const LatLngList = Object.values(markers).map(
+      (m) => new this.maps.LatLng(m.lat, m.lng)
+    )
 
     const bounds = new this.maps.LatLngBounds()
     for (let i = 0, LtLgLen = LatLngList.length; i < LtLgLen; i++) {
@@ -254,7 +280,8 @@ export default class MapContainer extends PureComponent {
 
   boundsUpdated() {
     const {onChange} = this.props
-    const {mapOptions, clusters} = this.state
+    const {mapOptions} = this.state
+    const {clusters} = this.updateClusters()
     if (onChange) {
       const framedListings = clusters
         ? flatten(
@@ -292,49 +319,33 @@ export default class MapContainer extends PureComponent {
     }
     const Component =
       mapOptions.zoom > clusterOptions.maxZoom ? MultiMarker : ClusterMarker
-    return <Component {...clusterProps} />
-  }
-
-  renderClusterMarkers = (item) => {
-    return item.points.map((marker) =>
-      React.cloneElement(marker.node, {
-        highlight: this.getMarkerHighlight(marker)
-      })
-    )
+    return <Component cluster={false} {...clusterProps} />
   }
 
   render() {
-    const {
-      children,
-      cluster: shouldCluster,
-      apiKey,
-      libraries,
-      defaultCenter,
-      defaultZoom
-    } = this.props
+    const {children, apiKey, libraries, defaultCenter, defaultZoom} = this.props
     const {hasAggregators, clusters} = this.state
 
     return (
-      <GoogleMapReact
-        bootstrapURLKeys={{
-          key: apiKey,
-          libraries,
-          language: 'pt-BR',
-          region: 'br'
-        }}
-        defaultZoom={defaultZoom}
-        defaultCenter={defaultCenter}
-        options={this.createMapOptions}
-        yesIWantToUseGoogleMapApiInternals
-        onChange={this.onMapChange}
-        onGoogleApiLoaded={this.onMapLoaded}
-      >
-        {!shouldCluster
-          ? children
-          : clusters.map(
-              hasAggregators ? this.renderCluster : this.renderClusterMarkers
-            )}
-      </GoogleMapReact>
+      <Provider value={this.getContext()}>
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: apiKey,
+            libraries,
+            language: 'pt-BR',
+            region: 'br'
+          }}
+          defaultZoom={defaultZoom}
+          defaultCenter={defaultCenter}
+          options={this.createMapOptions}
+          yesIWantToUseGoogleMapApiInternals
+          onChange={this.onMapChange}
+          onGoogleApiLoaded={this.onMapLoaded}
+        >
+          {children}
+          {hasAggregators && clusters.map(this.renderCluster)}
+        </GoogleMapReact>
+      </Provider>
     )
   }
 }
