@@ -33,7 +33,8 @@ export function MarkerContainer({
 
 class MapMarker extends PureComponent {
   static propTypes = {
-    id: PropTypes.any.isRequired
+    id: PropTypes.any.isRequired,
+    minZoom: PropTypes.number
   }
 
   static defaultProps = {
@@ -55,8 +56,18 @@ class MapMarker extends PureComponent {
   }
 
   render() {
-    const {cluster, hasAggregators, isFramed, mapLoaded, ...props} = this.props
-    if (!mapLoaded || (cluster && (hasAggregators || !isFramed))) return null
+    const {
+      cluster,
+      hasAggregators,
+      isFramed,
+      mapLoaded,
+      zoom,
+      minZoom,
+      ...props
+    } = this.props
+    const isClustered = cluster && (hasAggregators || !isFramed)
+    const isZoomedOut = minZoom && zoom > minZoom
+    if (!mapLoaded || isClustered || isZoomedOut) return null
     return <MarkerContainer {...props} highlight={this.isHighlight} />
   }
 }
@@ -64,9 +75,10 @@ class MapMarker extends PureComponent {
 export default withMapContext(
   (
     {
+      loaded,
+      mapOptions,
       framedMarkers,
       hasAggregators,
-      loaded,
       registerMarker,
       unregisterMarker,
       getMarkerHighlight
@@ -78,6 +90,7 @@ export default withMapContext(
     unregisterMarker,
     hasAggregators,
     isFramed: framedMarkers.includes(id),
-    mapLoaded: loaded
+    mapLoaded: loaded,
+    zoom: mapOptions.zoom
   })
 )(MapMarker)
