@@ -7,6 +7,7 @@ import { Playground } from 'docz'
 import View from '@emcasa/ui-dom/components/View'
 import Map from '@emcasa/ui-dom/components/Map'
 import Icon from '@emcasa/ui-dom/components/Icon'
+import PlaceSearch from './PlaceSearch'
 import markers from './markers.json'
 import {GOOGLE_MAPS_API_KEY} from './config'
 
@@ -18,7 +19,7 @@ Map component.
 
 <Playground>
   <View m={4} height={400}>
-    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
       <View {...markers[0]} mt={-25} width={25} height={25}>
         <Icon name="map-marker-alt" color="pink" size={25} />
       </View>
@@ -72,13 +73,35 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
 
 <Playground>
   <View m={4} height={400}>
-    <Map apiKey={GOOGLE_MAPS_API_KEY}>
-      <Map.ButtonControl position="top-center" onClick={console.log}>
-        Custom control
-      </Map.ButtonControl>
-      <View {...markers[0]} mt={-25} width={25} height={25}>
-        <Icon name="map-marker-alt" color="pink" size={25} />
-      </View>
-    </Map>
+    <PlaceSearch type="park">
+      {({active, places, onMapLoaded, onChange, onTogglePlaces}) => (
+        <Map
+          apiKey={GOOGLE_MAPS_API_KEY}
+          libraries={['places']}
+          onMapLoaded={onMapLoaded}
+          onChange={onChange}
+        >
+          <Map.ButtonControl active={active} position="top-center" onClick={onTogglePlaces}>
+            Show nearby parks
+          </Map.ButtonControl>
+          <View {...markers[0]} mt={-25} width={25} height={25}>
+            <Icon name="map-marker-alt" color="pink" size={25} />
+          </View>
+          {active && places.map(({id, name, geometry}) => (
+            <View
+              id={id}
+              key={id}
+              lat={geometry.location.lat()}
+              lng={geometry.location.lng()}
+              mt={-12.5}
+              width={25}
+              height={25}
+            >
+              <Icon name="tree" color="green" size={25} />
+            </View>
+          ))}
+        </Map>
+      )}
+    </PlaceSearch>
   </View>
 </Playground>

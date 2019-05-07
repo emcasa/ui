@@ -190,12 +190,12 @@ export default class MapContainer extends PureComponent {
   onMapLoaded = (options) => {
     const {map, maps} = options
     const {onMapLoaded, onDragEnd, onZoomChanged} = this.props
+    if (onMapLoaded) onMapLoaded(options)
     if (map) {
       this.setState({loaded: true, map, maps}, this.fitMap)
       if (onDragEnd) map.addListener('dragend', onDragEnd)
       if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
     }
-    if (onMapLoaded) onMapLoaded(options)
   }
 
   onMapChange = ({center, zoom, bounds}) =>
@@ -293,7 +293,7 @@ export default class MapContainer extends PureComponent {
               .map((marker) => [...marker.points])
           )
         : []
-      onChange(mapOptions.bounds, framedListings.map((listing) => listing.id))
+      onChange(mapOptions, framedListings.map((listing) => listing.id))
     }
   }
 
@@ -334,7 +334,7 @@ export default class MapContainer extends PureComponent {
         <GoogleMapReact
           bootstrapURLKeys={{
             key: apiKey,
-            libraries,
+            libraries: libraries.join(','),
             language: 'pt-BR',
             region: 'br'
           }}
