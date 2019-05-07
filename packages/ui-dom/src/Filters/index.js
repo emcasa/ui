@@ -265,6 +265,7 @@ const FilterGroup = Group(
                 ref={this.contentRef}
                 visible={Boolean(selectedValue)}
                 row={{expanded: isRowExpanded, visible: isRowVisible}}
+                offset={bodyHeight}
               />
               <Background
                 pose={selectedValue ? 'bgOpen' : 'bgClosed'}
