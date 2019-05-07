@@ -66,3 +66,19 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
     </Map>
   </View>
 </Playground>
+
+## Controls
+
+
+<Playground>
+  <View m={4} height={400}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+      <Map.ButtonControl position="top-center" onClick={console.log}>
+        Custom control
+      </Map.ButtonControl>
+      <View {...markers[0]} mt={-25} width={25} height={25}>
+        <Icon name="map-marker-alt" color="pink" size={25} />
+      </View>
+    </Map>
+  </View>
+</Playground>

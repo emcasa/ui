@@ -13,6 +13,8 @@ import noop from 'lodash/noop'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
 import MultiMarker from './MultiMarker'
+import Control from './Control'
+import ButtonControl from './ButtonControl'
 import {Provider} from './Context'
 
 const getOptions = (getDefaultOptions) =>
@@ -71,6 +73,10 @@ const T = {
 
 export default class MapContainer extends PureComponent {
   static Marker = MapMarker
+
+  static Control = Control
+
+  static ButtonControl = ButtonControl
 
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -269,10 +275,7 @@ export default class MapContainer extends PureComponent {
         position: maps.ControlPosition.RIGHT_TOP,
         style: maps.ZoomControlStyle.SMALL
       },
-      mapTypeControlOptions: {
-        position: maps.ControlPosition.TOP_RIGHT
-      },
-      mapTypeControl: true
+      mapTypeControl: false
     }
     if (typeof options === 'function') return options(maps, mapOptions)
     return Object.assign(mapOptions, options)
