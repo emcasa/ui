@@ -29,6 +29,13 @@ class MapControl extends PureComponent {
   constructor(props) {
     super(props)
     this.control = document.createElement('div')
+    if (this.control.style) this.control.style.cssText = this.style
+  }
+
+  get style() {
+    const {zIndex} = this.props
+    if (zIndex) return `z-index:${zIndex}`
+    return ''
   }
 
   get position() {

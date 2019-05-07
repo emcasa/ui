@@ -15,6 +15,7 @@ import ClusterMarker from './ClusterMarker'
 import MultiMarker from './MultiMarker'
 import Control from './Control'
 import ButtonControl from './ButtonControl'
+import SelectControl from './SelectControl'
 import {Provider} from './Context'
 
 const getOptions = (getDefaultOptions) =>
@@ -77,6 +78,8 @@ export default class MapContainer extends PureComponent {
   static Control = Control
 
   static ButtonControl = ButtonControl
+
+  static SelectControl = SelectControl
 
   static propTypes = {
     children: PropTypes.node.isRequired,

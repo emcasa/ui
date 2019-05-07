@@ -70,6 +70,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
 
 ## Controls
 
+### ButtonControl
 
 <Playground>
   <View m={4} height={400}>
@@ -103,5 +104,34 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
         </Map>
       )}
     </PlaceSearch>
+  </View>
+</Playground>
+
+### SelectControl
+
+<Playground>
+  <View m={4} height={400}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+      <Map.SelectControl
+        label="Select control"
+        height="short"
+        fontSize="small"
+        position="top-right"
+        zIndex={100}
+        onChange={console.log}
+      >
+        <Map.SelectControl.Option key={name} color="extraDarkSmoke" value={null}>
+          Select an option
+        </Map.SelectControl.Option>
+        {['A', 'B','C'].map((name) =>
+          <Map.SelectControl.Checkbox key={name} value={name}>
+            Option {name}
+          </Map.SelectControl.Checkbox>
+        )}
+      </Map.SelectControl>
+      <View {...markers[0]} mt={-25} width={25} height={25}>
+        <Icon name="map-marker-alt" color="pink" size={25} />
+      </View>
+    </Map>
   </View>
 </Playground>
