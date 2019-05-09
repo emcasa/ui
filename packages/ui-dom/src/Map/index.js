@@ -117,7 +117,10 @@ export default class MapContainer extends PureComponent {
     defaultZoom: 8,
     minZoom: 7,
     maxZoom: 20,
-    multiMarkerRadius: 0
+    multiMarkerRadius: 0,
+    get containerRef() {
+      return React.createRef()
+    }
   }
 
   state = {
@@ -131,6 +134,21 @@ export default class MapContainer extends PureComponent {
       center: {lat: -22.9608099, lng: -43.2096142},
       zoom: 8
     }
+  }
+
+  componentDidMount() {
+    document.addEventListener('fullscreenchange', this.onFullScreenChange)
+    document.addEventListener('mozfullscreenchange', this.onFullScreenChange)
+    document.addEventListener('webkitfullscreenchange', this.onFullScreenChange)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('fullscreenchange', this.onFullScreenChange)
+    document.removeEventListener('mozfullscreenchange', this.onFullScreenChange)
+    document.removeEventListener(
+      'webkitfullscreenchange',
+      this.onFullScreenChange
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -188,6 +206,16 @@ export default class MapContainer extends PureComponent {
 
   get maps() {
     return this.state.maps
+  }
+
+  onFullScreenChange = (e) => {
+    const {containerRef, onFullScreenChange} = this.props
+    if (
+      onFullScreenChange &&
+      containerRef.current &&
+      containerRef.current.contains(e.target)
+    )
+      onFullScreenChange(e)
   }
 
   onMapLoaded = (options) => {
@@ -329,29 +357,46 @@ export default class MapContainer extends PureComponent {
   }
 
   render() {
-    const {children, apiKey, libraries, defaultCenter, defaultZoom} = this.props
+    const {
+      children,
+      id,
+      style,
+      className,
+      containerRef,
+      apiKey,
+      libraries,
+      defaultCenter,
+      defaultZoom
+    } = this.props
     const {hasAggregators, clusters} = this.state
 
     return (
-      <Provider value={this.getContext()}>
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: apiKey,
-            libraries: libraries.join(','),
-            language: 'pt-BR',
-            region: 'br'
-          }}
-          defaultZoom={defaultZoom}
-          defaultCenter={defaultCenter}
-          options={this.createMapOptions}
-          yesIWantToUseGoogleMapApiInternals
-          onChange={this.onMapChange}
-          onGoogleApiLoaded={this.onMapLoaded}
-        >
-          {children}
-          {hasAggregators && clusters.map(this.renderCluster)}
-        </GoogleMapReact>
-      </Provider>
+      <div
+        id={id}
+        style={Object.assign({width: '100%', height: '100%'}, style)}
+        className={className}
+        ref={containerRef}
+      >
+        <Provider value={this.getContext()}>
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: apiKey,
+              libraries: libraries.join(','),
+              language: 'pt-BR',
+              region: 'br'
+            }}
+            defaultZoom={defaultZoom}
+            defaultCenter={defaultCenter}
+            options={this.createMapOptions}
+            yesIWantToUseGoogleMapApiInternals
+            onChange={this.onMapChange}
+            onGoogleApiLoaded={this.onMapLoaded}
+          >
+            {children}
+            {hasAggregators && clusters.map(this.renderCluster)}
+          </GoogleMapReact>
+        </Provider>
+      </div>
     )
   }
 }
