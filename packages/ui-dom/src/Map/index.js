@@ -20,8 +20,8 @@ import {Provider} from './Context'
 
 const getOptions = (getDefaultOptions) =>
   cond([
-    [isFunction, identity],
-    [isObject, constant],
+    [isFunction, (fun) => fun(getDefaultOptions())],
+    [isObject, (options) => options],
     [stubTrue, getDefaultOptions]
   ])
 
