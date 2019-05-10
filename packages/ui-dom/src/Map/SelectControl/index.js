@@ -61,6 +61,8 @@ export default class SelectControl extends PureComponent {
 
   render() {
     const {
+      style,
+      className,
       position,
       m,
       mt,
@@ -77,7 +79,7 @@ export default class SelectControl extends PureComponent {
       strategy
     } = this.props
     const {expanded, listHeight} = this.state
-    const controlProps = {position, m, mt, mb, mr, ml, zIndex}
+    const controlProps = {position, style, className, m, mt, mb, mr, ml, zIndex}
     const buttonProps = {height, fontSize}
     const groupProps = {strategy, onChange, selectedValue}
     return (

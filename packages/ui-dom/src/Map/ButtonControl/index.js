@@ -3,6 +3,8 @@ import Button from './styles'
 import Control from '../Control'
 
 export default function ButtonControl({
+  style,
+  className,
   position,
   m,
   mt,
@@ -13,7 +15,19 @@ export default function ButtonControl({
   ...props
 }) {
   return (
-    <Control {...{position, m, mt, mb, mr, ml, zIndex}}>
+    <Control
+      {...{
+        position,
+        style,
+        className,
+        m,
+        mt,
+        mb,
+        mr,
+        ml,
+        zIndex
+      }}
+    >
       <Button {...props} />
     </Control>
   )
