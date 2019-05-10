@@ -118,6 +118,7 @@ const FilterGroup = Group(
         window.addEventListener('keyup', this.onKeyPress)
         window.addEventListener('resize', this.measureBody)
       }
+      if (this.props.onLayout) this.props.onLayout(this.state)
     }
 
     componentWillUnmount() {
@@ -130,9 +131,14 @@ const FilterGroup = Group(
     measureBody = throttle(() => {
       const element = this.bodyRef.current
       if (element)
-        this.setState({
-          bodyHeight: element.offsetHeight || element.height
-        })
+        this.setState(
+          {
+            bodyHeight: element.offsetHeight || element.height
+          },
+          () => {
+            if (this.props.onLayout) this.props.onLayout(this.state)
+          }
+        )
     }, 100)
 
     onKeyPress = (e) => {
