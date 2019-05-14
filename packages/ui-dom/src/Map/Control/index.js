@@ -26,8 +26,7 @@ class MapControl extends PureComponent {
     m: 2
   }
 
-  constructor(props) {
-    super(props)
+  componentDidMount() {
     this.control = document.createElement('div')
     if (this.control.style) this.control.style.cssText = this.style
   }
@@ -70,6 +69,7 @@ class MapControl extends PureComponent {
     delete props.position
     delete props.map
     delete props.maps
+    if (!this.control) return null
     return ReactDOM.createPortal(
       <View {...props}>{children}</View>,
       this.control
