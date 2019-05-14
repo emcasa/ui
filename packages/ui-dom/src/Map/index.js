@@ -118,6 +118,7 @@ export default class MapContainer extends PureComponent {
     minZoom: 7,
     maxZoom: 20,
     multiMarkerRadius: 0,
+    getClusterProps: (props) => props,
     get containerRef() {
       return React.createRef()
     }
@@ -161,17 +162,17 @@ export default class MapContainer extends PureComponent {
     return {
       ...this.state,
       getMarkerHighlight: this.getMarkerHighlight,
-      registerMarker: this.registerMarker,
-      unregisterMarker: this.unregisterMarker
+      setMarker: this.setMarker,
+      unsetMarker: this.unsetMarker
     }
   }
 
-  registerMarker = ({id, lat, lng, ...props}) =>
+  setMarker = (id, state) =>
     this.setState(({markers}) => ({
-      markers: {...markers, [id]: {id, lat, lng, props}}
+      markers: {...markers, [id]: {...(markers[id] || {}), ...state}}
     }))
 
-  unregisterMarker = ({id}) =>
+  unsetMarker = (id) =>
     this.setState(({markers: {...markers}}) => {
       delete markers[id]
       return {markers}
@@ -343,7 +344,9 @@ export default class MapContainer extends PureComponent {
 
   renderCluster = (cluster) => {
     const {mapOptions, clusterOptions} = this.state
+    const isMultiMarker = mapOptions.zoom > clusterOptions.maxZoom
     const clusterProps = {
+      isMultiMarker,
       key: cluster.id,
       lat: cluster.lat,
       lng: cluster.lng,
@@ -351,9 +354,8 @@ export default class MapContainer extends PureComponent {
       onClick: this.frameCluster,
       highlight: this.getClusterHighlight(cluster)
     }
-    const Component =
-      mapOptions.zoom > clusterOptions.maxZoom ? MultiMarker : ClusterMarker
-    return <Component cluster={false} {...clusterProps} />
+    const Component = isMultiMarker ? MultiMarker : ClusterMarker
+    return <Component cluster={false} {...getClusterProps(clusterProps)} />
   }
 
   render() {

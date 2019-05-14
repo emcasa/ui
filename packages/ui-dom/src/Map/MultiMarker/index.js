@@ -1,9 +1,27 @@
 import React, {PureComponent} from 'react'
 import classNames from 'classnames'
-import {MarkerContainer} from '../Marker'
+import View from '../../View'
 import Marker, {List} from './styles'
+import {withMapContext} from '../Context'
 
-export default class MultiMarker extends PureComponent {
+class MultiMarker extends PureComponent {
+  markers = {}
+  componentDidMount() {
+    Object.entries(this.markers).map(([id, ref]) =>
+      this.props.setMarker(id, {container: ref})
+    )
+  }
+
+  componentWillUnmount() {
+    Object.entries(this.markers).map(([id]) => {
+      this.props.setMarker(id, {container: undefined})
+    })
+  }
+
+  containerRef = (id) => (ref) => {
+    this.markers[id] = ref
+  }
+
   render() {
     const {
       className,
@@ -25,15 +43,15 @@ export default class MultiMarker extends PureComponent {
         className={classNames(className, {highlight: highlight.length > 0})}
       >
         <List>
-          {points.map((marker) => (
-            <MarkerContainer
-              key={marker.id}
-              highlight={highlight.indexOf(marker.id) !== -1}
-              {...marker.props}
-            />
+          {points.map(({id}) => (
+            <View key={id} ref={this.containerRef(id)} />
           ))}
         </List>
       </Marker>
     )
   }
 }
+
+export default withMapContext(({setMarker}) => ({
+  setMarker
+}))(MultiMarker)
