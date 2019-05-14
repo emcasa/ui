@@ -24,6 +24,7 @@ class MultiMarker extends PureComponent {
 
   render() {
     const {
+      style,
       className,
       points,
       onClick,
@@ -40,6 +41,7 @@ class MultiMarker extends PureComponent {
         cluster={false}
         highlight={false}
         onClick={onClick && onClick.bind(null, points)}
+        style={style}
         className={classNames(className, {highlight: highlight.length > 0})}
       >
         <List>

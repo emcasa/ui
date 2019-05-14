@@ -48,7 +48,7 @@ const getClusters = (
   return clusters(mapOptions)
 }
 
-const getClusterProps = (props, state) => {
+const getClusterState = (props, state) => {
   if (!state.mapOptions.bounds) return []
   else
     return getClusters(props, state).map(({wx, wy, numPoints, points}) => ({
@@ -187,7 +187,7 @@ export default class MapContainer extends PureComponent {
     }
     if (!this.props.cluster) return nextState
     nextState.clusterOptions = getClusterOptions(this.props.cluster, this.props)
-    nextState.clusters = getClusterProps(this.props, {
+    nextState.clusters = getClusterState(this.props, {
       ...this.state,
       ...nextState
     })
@@ -343,6 +343,7 @@ export default class MapContainer extends PureComponent {
   }
 
   renderCluster = (cluster) => {
+    const {getClusterProps} = this.props
     const {mapOptions, clusterOptions} = this.state
     const isMultiMarker = mapOptions.zoom > clusterOptions.maxZoom
     const clusterProps = {

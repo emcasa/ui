@@ -24,14 +24,11 @@ export function MarkerContainer({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       style={style}
-      className={classNames(
-        {
-          highlight,
-          text: typeof children === 'string',
-          clickable: Boolean(onClick)
-        },
-        className
-      )}
+      className={classNames(className, {
+        highlight,
+        text: typeof children === 'string',
+        clickable: Boolean(onClick)
+      })}
     >
       {children}
     </Container>
