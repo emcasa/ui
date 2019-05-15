@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react'
 import classNames from 'classnames'
-import View from '../../View'
-import Marker, {List} from './styles'
+import Marker, {List, ListItem} from './styles'
 import {withMapContext} from '../Context'
 
 class MultiMarker extends PureComponent {
@@ -42,11 +41,13 @@ class MultiMarker extends PureComponent {
         highlight={false}
         onClick={onClick && onClick.bind(null, points)}
         style={style}
-        className={classNames(className, {highlight: highlight.length > 0})}
+        className={classNames(className, 'multi-marker', {
+          highlight: highlight.length > 0
+        })}
       >
         <List>
           {points.map(({id}) => (
-            <View key={id} ref={this.containerRef(id)} />
+            <ListItem key={id} ref={this.containerRef(id)} />
           ))}
         </List>
       </Marker>
