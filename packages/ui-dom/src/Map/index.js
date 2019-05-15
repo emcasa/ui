@@ -112,11 +112,11 @@ export default class MapContainer extends PureComponent {
     /** Called after clicking a map cluster */
     onFrameCluster: PropTypes.func,
     /** Modify cluster props */
-    getClusterProps: PropTypes.func.isRequired,
+    getClusterProps: PropTypes.func,
     /** Cluster marker component */
-    ClusterMarker: PropTypes.elementType.isRequired,
+    ClusterMarker: PropTypes.elementType,
     /** Multi marker component */
-    MultiMarker: PropTypes.elementType.isRequired
+    MultiMarker: PropTypes.elementType
   }
 
   static defaultProps = {
