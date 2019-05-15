@@ -1,7 +1,5 @@
 import cond from 'lodash/cond'
 import stubTrue from 'lodash/stubTrue'
-import constant from 'lodash/constant'
-import identity from 'lodash/identity'
 import flatten from 'lodash/flatten'
 import isObject from 'lodash/isObject'
 import isFunction from 'lodash/isFunction'
@@ -81,6 +79,10 @@ export default class MapContainer extends PureComponent {
 
   static SelectControl = SelectControl
 
+  static ClusterMarker = ClusterMarker
+
+  static MultiMarker = MultiMarker
+
   static propTypes = {
     children: PropTypes.node.isRequired,
     apiKey: PropTypes.string,
@@ -108,10 +110,18 @@ export default class MapContainer extends PureComponent {
     /** Called on map zoom change */
     onZoomChanged: PropTypes.func,
     /** Called after clicking a map cluster */
-    onFrameCluster: PropTypes.func
+    onFrameCluster: PropTypes.func,
+    /** Modify cluster props */
+    getClusterProps: PropTypes.func.isRequired,
+    /** Cluster marker component */
+    ClusterMarker: PropTypes.elementType.isRequired,
+    /** Multi marker component */
+    MultiMarker: PropTypes.elementType.isRequired
   }
 
   static defaultProps = {
+    ClusterMarker,
+    MultiMarker,
     libraries: [],
     defaultCenter: {lat: -22.9608099, lng: -43.2096142},
     defaultZoom: 8,
@@ -162,6 +172,7 @@ export default class MapContainer extends PureComponent {
     return {
       ...this.state,
       getMarkerHighlight: this.getMarkerHighlight,
+      setMarkerContainer: (id, container) => this.setMarker(id, {container}),
       setMarker: this.setMarker,
       unsetMarker: this.unsetMarker
     }
@@ -343,7 +354,7 @@ export default class MapContainer extends PureComponent {
   }
 
   renderCluster = (cluster) => {
-    const {getClusterProps} = this.props
+    const {getClusterProps, MultiMarker, ClusterMarker} = this.props
     const {mapOptions, clusterOptions} = this.state
     const isMultiMarker = mapOptions.zoom > clusterOptions.maxZoom
     const clusterProps = {

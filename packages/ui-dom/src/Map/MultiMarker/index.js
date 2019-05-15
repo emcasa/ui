@@ -5,16 +5,21 @@ import {withMapContext} from '../Context'
 
 class MultiMarker extends PureComponent {
   markers = {}
+
   componentDidMount() {
-    Object.entries(this.markers).map(([id, ref]) =>
-      this.props.setMarker(id, {container: ref})
-    )
+    if (this.props.setMarkerContainer) {
+      Object.entries(this.markers).map(([id, ref]) =>
+        this.props.setMarkerContainer(id, ref)
+      )
+    }
   }
 
   componentWillUnmount() {
-    Object.entries(this.markers).map(([id]) => {
-      this.props.setMarker(id, {container: undefined})
-    })
+    if (this.props.setMarkerContainer) {
+      Object.entries(this.markers).map(([id]) => {
+        this.props.setMarkerContainer(id, undefined)
+      })
+    }
   }
 
   containerRef = (id) => (ref) => {
@@ -55,6 +60,6 @@ class MultiMarker extends PureComponent {
   }
 }
 
-export default withMapContext(({setMarker}) => ({
-  setMarker
+export default withMapContext(({setMarkerContainer}) => ({
+  setMarkerContainer
 }))(MultiMarker)
