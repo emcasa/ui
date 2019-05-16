@@ -64,20 +64,18 @@ class MapMarker extends PureComponent {
   render() {
     const {
       marker,
-      cluster,
-      hasAggregators,
+      isClustered,
       isFramed,
       mapLoaded,
       zoom,
       minZoom,
       ...props
     } = this.props
-    const isClustered = cluster && (hasAggregators || !isFramed)
     const isZoomedOut = minZoom && zoom > minZoom
     const children = <MarkerContainer {...props} highlight={this.isHighlight} />
     if (marker.container)
       return ReactDOM.createPortal(children, marker.container)
-    if (!mapLoaded || isClustered || isZoomedOut) return null
+    if (!mapLoaded || !isFramed || isClustered || isZoomedOut) return null
     else return children
   }
 }
@@ -89,7 +87,7 @@ export default withMapContext(
       loaded,
       mapOptions,
       framedMarkers,
-      hasAggregators,
+      clusteredMarkers,
       setMarker,
       unsetMarker,
       getMarkerHighlight
@@ -100,8 +98,8 @@ export default withMapContext(
     getMarkerHighlight,
     setMarker,
     unsetMarker,
-    hasAggregators,
-    isFramed: framedMarkers.includes(id),
+    isFramed: framedMarkers.indexOf(id) !== -1,
+    isClustered: clusteredMarkers.indexOf(id) !== -1,
     mapLoaded: loaded,
     zoom: mapOptions.zoom
   })

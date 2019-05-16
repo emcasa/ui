@@ -3,7 +3,14 @@ import MarkerCounter from './styles'
 
 export default class ClusterMarker extends PureComponent {
   render() {
-    const {style, className, points, onClick, highlight = []} = this.props
+    const {
+      children,
+      style,
+      className,
+      points,
+      onClick,
+      highlight = []
+    } = this.props
     return (
       <MarkerCounter
         onClick={onClick && onClick.bind(null, points)}
@@ -12,6 +19,7 @@ export default class ClusterMarker extends PureComponent {
         className={className}
       >
         <span>{points.length}</span>
+        {children}
       </MarkerCounter>
     )
   }

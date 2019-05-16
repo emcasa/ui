@@ -28,6 +28,7 @@ class MultiMarker extends PureComponent {
 
   render() {
     const {
+      children,
       style,
       className,
       points,
@@ -55,6 +56,7 @@ class MultiMarker extends PureComponent {
             <ListItem key={id} ref={this.containerRef(id)} />
           ))}
         </List>
+        {children}
       </Marker>
     )
   }

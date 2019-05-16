@@ -1,4 +1,5 @@
 import cond from 'lodash/cond'
+import debounce from 'lodash/debounce'
 import stubTrue from 'lodash/stubTrue'
 import flatten from 'lodash/flatten'
 import isObject from 'lodash/isObject'
@@ -139,6 +140,7 @@ export default class MapContainer extends PureComponent {
     hasAggregators: false,
     markers: [],
     framedMarkers: [],
+    clusteredMarkers: [],
     clusters: [],
     clusterOptions: {},
     mapOptions: {
@@ -193,21 +195,40 @@ export default class MapContainer extends PureComponent {
     const nextState = {
       clusterOptions: {},
       framedMarkers: [],
+      clusteredMarkers: [],
       clusters: [],
       hasAggregators: false
     }
     if (!this.props.cluster) return nextState
+    const getMarkerIds = (clusters) =>
+      clusters
+        .reduce((markers, cluster) => markers.concat(cluster.points), [])
+        .map((marker) => marker.id)
+
     nextState.clusterOptions = getClusterOptions(this.props.cluster, this.props)
+
+    const isMultiMarker =
+      this.state.mapOptions.zoom > nextState.clusterOptions.maxZoom
+
     nextState.clusters = getClusterState(this.props, {
       ...this.state,
       ...nextState
     })
-    nextState.hasAggregators = Boolean(
-      nextState.clusters.find((cluster) => cluster.points.length > 1)
-    )
-    nextState.framedMarkers = nextState.clusters
-      .reduce((markers, cluster) => markers.concat(cluster.points), [])
-      .map((marker) => marker.id)
+    nextState.framedMarkers = getMarkerIds(nextState.clusters)
+
+    if (isMultiMarker) {
+      nextState.clusters = nextState.clusters.filter(
+        (cluster) => cluster.points.length > 1
+      )
+      nextState.hasAggregators = nextState.clusters.length > 0
+      nextState.clusteredMarkers = getMarkerIds(nextState.clusters)
+    } else {
+      nextState.hasAggregators = Boolean(
+        nextState.clusters.find((cluster) => cluster.points.length > 1)
+      )
+      nextState.clusteredMarkers = nextState.framedMarkers
+    }
+
     this.setState(nextState)
     return nextState
   }
@@ -235,23 +256,31 @@ export default class MapContainer extends PureComponent {
     const {onMapLoaded, onDragEnd, onZoomChanged} = this.props
     if (onMapLoaded) onMapLoaded(options)
     if (map) {
-      this.setState({loaded: true, map, maps}, this.fitMap)
+      this.setState({loaded: true, map, maps}, () => {
+        const {clusters} = this.updateClusters()
+        this.fitMap(clusters)
+      })
       if (onDragEnd) map.addListener('dragend', onDragEnd)
       if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
     }
   }
 
-  onMapChange = ({center, zoom, bounds}) =>
-    this.setState(
-      {
-        mapOptions: {
-          center,
-          zoom,
-          bounds
-        }
-      },
-      this.boundsUpdated
-    )
+  onMapChange = debounce(
+    ({center, zoom, bounds}) => {
+      this.setState(
+        {
+          mapOptions: {
+            center,
+            zoom,
+            bounds
+          }
+        },
+        this.boundsUpdated
+      )
+    },
+    100,
+    {trailing: true, leading: true}
+  )
 
   panTo(...args) {
     return (this.map ? this.map.panTo : noop).call(this.map, ...args)
@@ -355,8 +384,8 @@ export default class MapContainer extends PureComponent {
 
   renderCluster = (cluster) => {
     const {getClusterProps, MultiMarker, ClusterMarker} = this.props
-    const {mapOptions, clusterOptions} = this.state
-    const isMultiMarker = mapOptions.zoom > clusterOptions.maxZoom
+    const isMultiMarker =
+      this.state.mapOptions.zoom > this.state.clusterOptions.maxZoom
     const clusterProps = {
       isMultiMarker,
       key: cluster.id,
