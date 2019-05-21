@@ -1,5 +1,11 @@
 import styled, {css} from 'styled-components'
-import {themeGet} from 'styled-system'
+import {borderRadius, zIndex, space} from 'styled-system'
+import View from '../../View'
+
+export const getColor = (prop, defaultColor = undefined) => ({
+  theme: {colors},
+  ...props
+}) => colors[props[prop]] || props[prop] || colors[defaultColor] || defaultColor
 
 export const markerTipStyle = css`
   bottom: -6px;
@@ -11,16 +17,16 @@ export const markerTipStyle = css`
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 8px solid ${themeGet('colors.pink')};
+  border-top: 8px solid ${getColor('bg', 'pink')};
 `
 
 export const markerTipHighlightStyle = css`
-  border-top: 8px solid white;
+  border-top: 8px solid ${getColor('bg', 'white')};
 `
 
-export default styled.div`
-  background: ${themeGet('colors.pink')};
-  color: white;
+export default styled(View)`
+  background: ${getColor('bg', 'pink')};
+  color: ${getColor('color', 'white')};
   border-radius: 4px;
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.3);
   font-size: 12px;
@@ -33,6 +39,9 @@ export default styled.div`
   transition: transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: ${({highlight}) => (highlight ? 1 : 0)};
   white-space: nowrap;
+  ${borderRadius};
+  ${space};
+  ${zIndex};
   &:after {
     ${markerTipStyle};
   }
@@ -46,8 +55,8 @@ export default styled.div`
   }
   &.text:hover,
   &.text.highlight {
-    background: white;
-    color: ${themeGet('colors.pink')};
+    background: ${getColor('bg', 'white')};
+    color: ${getColor('color', 'pink')};
     &:after {
       ${markerTipHighlightStyle};
     }

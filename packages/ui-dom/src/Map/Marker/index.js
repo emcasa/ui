@@ -16,7 +16,8 @@ export function MarkerContainer({
   onSelect,
   onClick = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
   onMouseEnter = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
-  onMouseLeave = onSelect ? () => onSelect(id, {lat, lng}) : undefined
+  onMouseLeave = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
+  ...props
 }) {
   return (
     <Container
@@ -29,6 +30,7 @@ export function MarkerContainer({
         text: typeof children === 'string',
         clickable: Boolean(onClick)
       })}
+      {...props}
     >
       {children}
     </Container>

@@ -1,14 +1,12 @@
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
-import Marker, {markerTipStyle, markerTipHighlightStyle} from '../Marker/styles'
+import {borderRadius} from 'styled-system'
+import Marker, {getColor, markerTipHighlightStyle} from '../Marker/styles'
 
-export default styled.div`
+export default styled(Marker)`
   position: absolute;
-  transform: translate(-50%, -100%);
-  border: 2px solid ${themeGet('colors.pink')};
-  border-radius: 4px;
-  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.3);
-  background: ${themeGet('colors.pink')};
+  border: 2px solid ${getColor('borderColor', 'pink')};
+  background: ${getColor('bg', 'pink')};
+  padding: 0;
   &:before {
     z-index: 2;
     position: absolute;
@@ -18,17 +16,16 @@ export default styled.div`
     left: 0;
     right: 0;
     border-radius: 4px;
-    border: 1px solid ${themeGet('colors.pink')};
+    border: 1px solid ${getColor('borderColor', 'pink')};
     pointer-events: none;
+    ${borderRadius};
   }
   &:after {
-    ${markerTipStyle};
     margin-bottom: -2px;
   }
   &.highlight,
   &:hover {
-    border-color: white;
-    background: white;
+    border-color: ${getColor('borderColor', 'white')};
     &:after {
       ${markerTipHighlightStyle};
     }
@@ -57,6 +54,7 @@ export const List = styled.ul`
   overflow: hidden;
   margin: 0;
   padding: 0;
+  ${borderRadius};
 `
 
 export const ListItem = styled.li`

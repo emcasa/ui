@@ -36,7 +36,8 @@ class MultiMarker extends PureComponent {
       highlight = [],
       id,
       lat,
-      lng
+      lng,
+      ...props
     } = this.props
     return (
       <Marker
@@ -50,8 +51,9 @@ class MultiMarker extends PureComponent {
         className={classNames(className, 'multi-marker', {
           highlight: highlight.length > 0
         })}
+        {...props}
       >
-        <List>
+        <List borderRadius={props.borderRadius}>
           {points.map(({id}) => (
             <ListItem key={id} ref={this.containerRef(id)} />
           ))}
