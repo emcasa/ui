@@ -1,11 +1,35 @@
 import React, {PureComponent} from 'react'
 import classNames from 'classnames'
-import {MarkerContainer} from '../Marker'
-import Marker, {List} from './styles'
+import Marker, {List, ListItem} from './styles'
+import {withMapContext} from '../Context'
 
-export default class MultiMarker extends PureComponent {
+class MultiMarker extends PureComponent {
+  markers = {}
+
+  componentDidMount() {
+    if (this.props.setMarkerContainer) {
+      Object.entries(this.markers).map(([id, ref]) =>
+        this.props.setMarkerContainer(id, ref)
+      )
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.setMarkerContainer) {
+      Object.entries(this.markers).map(([id]) => {
+        this.props.setMarkerContainer(id, undefined)
+      })
+    }
+  }
+
+  containerRef = (id) => (ref) => {
+    this.markers[id] = ref
+  }
+
   render() {
     const {
+      children,
+      style,
       className,
       points,
       onClick,
@@ -22,18 +46,22 @@ export default class MultiMarker extends PureComponent {
         cluster={false}
         highlight={false}
         onClick={onClick && onClick.bind(null, points)}
-        className={classNames(className, {highlight: highlight.length > 0})}
+        style={style}
+        className={classNames(className, 'multi-marker', {
+          highlight: highlight.length > 0
+        })}
       >
         <List>
-          {points.map((marker) => (
-            <MarkerContainer
-              key={marker.id}
-              highlight={highlight.indexOf(marker.id) !== -1}
-              {...marker.props}
-            />
+          {points.map(({id}) => (
+            <ListItem key={id} ref={this.containerRef(id)} />
           ))}
         </List>
+        {children}
       </Marker>
     )
   }
 }
+
+export default withMapContext(({setMarkerContainer}) => ({
+  setMarkerContainer
+}))(MultiMarker)

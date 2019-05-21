@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Container from './styles'
@@ -6,6 +7,8 @@ import {withMapContext} from '../Context'
 
 export function MarkerContainer({
   id,
+  className,
+  style,
   lat,
   lng,
   highlight,
@@ -20,7 +23,8 @@ export function MarkerContainer({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={classNames({
+      style={style}
+      className={classNames(className, {
         highlight,
         text: typeof children === 'string',
         clickable: Boolean(onClick)
@@ -33,7 +37,8 @@ export function MarkerContainer({
 
 class MapMarker extends PureComponent {
   static propTypes = {
-    id: PropTypes.any.isRequired
+    id: PropTypes.any.isRequired,
+    minZoom: PropTypes.number
   }
 
   static defaultProps = {
@@ -41,11 +46,13 @@ class MapMarker extends PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.cluster) this.props.registerMarker(this.props)
+    const {setMarker, cluster, id, lat, lng} = this.props
+    if (cluster) setMarker(id, {id, lat, lng})
   }
 
   componentWillUnmount() {
-    if (this.props.cluster) this.props.unregisterMarker(this.props)
+    const {unsetMarker, cluster, id, lat, lng} = this.props
+    if (cluster) unsetMarker(id, {id, lat, lng})
   }
 
   get isHighlight() {
@@ -55,29 +62,45 @@ class MapMarker extends PureComponent {
   }
 
   render() {
-    const {cluster, hasAggregators, isFramed, mapLoaded, ...props} = this.props
-    if (!mapLoaded || (cluster && (hasAggregators || !isFramed))) return null
-    return <MarkerContainer {...props} highlight={this.isHighlight} />
+    const {
+      marker,
+      isClustered,
+      isFramed,
+      mapLoaded,
+      zoom,
+      minZoom,
+      ...props
+    } = this.props
+    const isZoomedOut = minZoom && zoom > minZoom
+    const children = <MarkerContainer {...props} highlight={this.isHighlight} />
+    if (marker.container)
+      return ReactDOM.createPortal(children, marker.container)
+    if (!mapLoaded || !isFramed || isClustered || isZoomedOut) return null
+    else return children
   }
 }
 
 export default withMapContext(
   (
     {
-      framedMarkers,
-      hasAggregators,
+      markers,
       loaded,
-      registerMarker,
-      unregisterMarker,
+      mapOptions,
+      framedMarkers,
+      clusteredMarkers,
+      setMarker,
+      unsetMarker,
       getMarkerHighlight
     },
     {id}
   ) => ({
+    marker: markers[id] || {},
     getMarkerHighlight,
-    registerMarker,
-    unregisterMarker,
-    hasAggregators,
-    isFramed: framedMarkers.includes(id),
-    mapLoaded: loaded
+    setMarker,
+    unsetMarker,
+    isFramed: framedMarkers.indexOf(id) !== -1,
+    isClustered: clusteredMarkers.indexOf(id) !== -1,
+    mapLoaded: loaded,
+    zoom: mapOptions.zoom
   })
 )(MapMarker)

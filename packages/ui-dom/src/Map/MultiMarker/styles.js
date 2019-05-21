@@ -47,11 +47,18 @@ export default styled.div`
   }
 `
 
-export const List = styled.div`
+export const List = styled.ul`
+  list-style: none;
   z-index: 1;
   position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
+`
+
+export const ListItem = styled.li`
+  list-style: none;
 `

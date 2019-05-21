@@ -7,6 +7,7 @@ import { Playground } from 'docz'
 import View from '@emcasa/ui-dom/components/View'
 import Map from '@emcasa/ui-dom/components/Map'
 import Icon from '@emcasa/ui-dom/components/Icon'
+import PlaceSearch from './PlaceSearch'
 import markers from './markers.json'
 import {GOOGLE_MAPS_API_KEY} from './config'
 
@@ -18,7 +19,7 @@ Map component.
 
 <Playground>
   <View m={4} height={400}>
-    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
       <View {...markers[0]} mt={-25} width={25} height={25}>
         <Icon name="map-marker-alt" color="pink" size={25} />
       </View>
@@ -63,6 +64,74 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
           {'Marker ' + name}
         </Map.Marker>
       ))}
+    </Map>
+  </View>
+</Playground>
+
+## Controls
+
+### ButtonControl
+
+<Playground>
+  <View m={4} height={400}>
+    <PlaceSearch type="park">
+      {({active, places, onMapLoaded, onChange, onTogglePlaces}) => (
+        <Map
+          apiKey={GOOGLE_MAPS_API_KEY}
+          libraries={['places']}
+          onMapLoaded={onMapLoaded}
+          onChange={onChange}
+        >
+          <Map.ButtonControl active={active} position="top-center" onClick={onTogglePlaces}>
+            Show nearby parks
+          </Map.ButtonControl>
+          <View {...markers[0]} mt={-25} width={25} height={25}>
+            <Icon name="map-marker-alt" color="pink" size={25} />
+          </View>
+          {active && places.map(({id, name, geometry}) => (
+            <View
+              id={id}
+              key={id}
+              lat={geometry.location.lat()}
+              lng={geometry.location.lng()}
+              mt={-12.5}
+              width={25}
+              height={25}
+            >
+              <Icon name="tree" color="green" size={25} />
+            </View>
+          ))}
+        </Map>
+      )}
+    </PlaceSearch>
+  </View>
+</Playground>
+
+### SelectControl
+
+<Playground>
+  <View m={4} height={400}>
+    <Map apiKey={GOOGLE_MAPS_API_KEY}>
+      <Map.SelectControl
+        label="Select control"
+        height="short"
+        fontSize="small"
+        position="top-right"
+        zIndex={100}
+        onChange={console.log}
+      >
+        <Map.SelectControl.Option key={name} color="extraDarkSmoke" value={null}>
+          Select an option
+        </Map.SelectControl.Option>
+        {['A', 'B','C'].map((name) =>
+          <Map.SelectControl.Checkbox key={name} value={name}>
+            Option {name}
+          </Map.SelectControl.Checkbox>
+        )}
+      </Map.SelectControl>
+      <View {...markers[0]} mt={-25} width={25} height={25}>
+        <Icon name="map-marker-alt" color="pink" size={25} />
+      </View>
     </Map>
   </View>
 </Playground>

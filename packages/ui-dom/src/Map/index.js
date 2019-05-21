@@ -1,7 +1,6 @@
 import cond from 'lodash/cond'
+import debounce from 'lodash/debounce'
 import stubTrue from 'lodash/stubTrue'
-import constant from 'lodash/constant'
-import identity from 'lodash/identity'
 import flatten from 'lodash/flatten'
 import isObject from 'lodash/isObject'
 import isFunction from 'lodash/isFunction'
@@ -13,12 +12,15 @@ import noop from 'lodash/noop'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
 import MultiMarker from './MultiMarker'
+import Control from './Control'
+import ButtonControl from './ButtonControl'
+import SelectControl from './SelectControl'
 import {Provider} from './Context'
 
 const getOptions = (getDefaultOptions) =>
   cond([
-    [isFunction, identity],
-    [isObject, constant],
+    [isFunction, (fun) => fun(getDefaultOptions())],
+    [isObject, (options) => options],
     [stubTrue, getDefaultOptions]
   ])
 
@@ -45,7 +47,7 @@ const getClusters = (
   return clusters(mapOptions)
 }
 
-const getClusterProps = (props, state) => {
+const getClusterState = (props, state) => {
   if (!state.mapOptions.bounds) return []
   else
     return getClusters(props, state).map(({wx, wy, numPoints, points}) => ({
@@ -71,6 +73,16 @@ const T = {
 
 export default class MapContainer extends PureComponent {
   static Marker = MapMarker
+
+  static Control = Control
+
+  static ButtonControl = ButtonControl
+
+  static SelectControl = SelectControl
+
+  static ClusterMarker = ClusterMarker
+
+  static MultiMarker = MultiMarker
 
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -99,16 +111,28 @@ export default class MapContainer extends PureComponent {
     /** Called on map zoom change */
     onZoomChanged: PropTypes.func,
     /** Called after clicking a map cluster */
-    onFrameCluster: PropTypes.func
+    onFrameCluster: PropTypes.func,
+    /** Modify cluster props */
+    getClusterProps: PropTypes.func,
+    /** Cluster marker component */
+    ClusterMarker: PropTypes.elementType,
+    /** Multi marker component */
+    MultiMarker: PropTypes.elementType
   }
 
   static defaultProps = {
+    ClusterMarker,
+    MultiMarker,
     libraries: [],
     defaultCenter: {lat: -22.9608099, lng: -43.2096142},
     defaultZoom: 8,
     minZoom: 7,
     maxZoom: 20,
-    multiMarkerRadius: 0
+    multiMarkerRadius: 0,
+    getClusterProps: (props) => props,
+    get containerRef() {
+      return React.createRef()
+    }
   }
 
   state = {
@@ -116,12 +140,28 @@ export default class MapContainer extends PureComponent {
     hasAggregators: false,
     markers: [],
     framedMarkers: [],
+    clusteredMarkers: [],
     clusters: [],
     clusterOptions: {},
     mapOptions: {
       center: {lat: -22.9608099, lng: -43.2096142},
       zoom: 8
     }
+  }
+
+  componentDidMount() {
+    document.addEventListener('fullscreenchange', this.onFullScreenChange)
+    document.addEventListener('mozfullscreenchange', this.onFullScreenChange)
+    document.addEventListener('webkitfullscreenchange', this.onFullScreenChange)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('fullscreenchange', this.onFullScreenChange)
+    document.removeEventListener('mozfullscreenchange', this.onFullScreenChange)
+    document.removeEventListener(
+      'webkitfullscreenchange',
+      this.onFullScreenChange
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -134,17 +174,18 @@ export default class MapContainer extends PureComponent {
     return {
       ...this.state,
       getMarkerHighlight: this.getMarkerHighlight,
-      registerMarker: this.registerMarker,
-      unregisterMarker: this.unregisterMarker
+      setMarkerContainer: (id, container) => this.setMarker(id, {container}),
+      setMarker: this.setMarker,
+      unsetMarker: this.unsetMarker
     }
   }
 
-  registerMarker = ({id, lat, lng, ...props}) =>
+  setMarker = (id, state) =>
     this.setState(({markers}) => ({
-      markers: {...markers, [id]: {id, lat, lng, props}}
+      markers: {...markers, [id]: {...(markers[id] || {}), ...state}}
     }))
 
-  unregisterMarker = ({id}) =>
+  unsetMarker = (id) =>
     this.setState(({markers: {...markers}}) => {
       delete markers[id]
       return {markers}
@@ -154,21 +195,40 @@ export default class MapContainer extends PureComponent {
     const nextState = {
       clusterOptions: {},
       framedMarkers: [],
+      clusteredMarkers: [],
       clusters: [],
       hasAggregators: false
     }
     if (!this.props.cluster) return nextState
+    const getMarkerIds = (clusters) =>
+      clusters
+        .reduce((markers, cluster) => markers.concat(cluster.points), [])
+        .map((marker) => marker.id)
+
     nextState.clusterOptions = getClusterOptions(this.props.cluster, this.props)
-    nextState.clusters = getClusterProps(this.props, {
+
+    const isMultiMarker =
+      this.state.mapOptions.zoom > nextState.clusterOptions.maxZoom
+
+    nextState.clusters = getClusterState(this.props, {
       ...this.state,
       ...nextState
     })
-    nextState.hasAggregators = Boolean(
-      nextState.clusters.find((cluster) => cluster.points.length > 1)
-    )
-    nextState.framedMarkers = nextState.clusters
-      .reduce((markers, cluster) => markers.concat(cluster.points), [])
-      .map((marker) => marker.id)
+    nextState.framedMarkers = getMarkerIds(nextState.clusters)
+
+    if (isMultiMarker) {
+      nextState.clusters = nextState.clusters.filter(
+        (cluster) => cluster.points.length > 1
+      )
+      nextState.hasAggregators = nextState.clusters.length > 0
+      nextState.clusteredMarkers = getMarkerIds(nextState.clusters)
+    } else {
+      nextState.hasAggregators = Boolean(
+        nextState.clusters.find((cluster) => cluster.points.length > 1)
+      )
+      nextState.clusteredMarkers = nextState.framedMarkers
+    }
+
     this.setState(nextState)
     return nextState
   }
@@ -181,28 +241,46 @@ export default class MapContainer extends PureComponent {
     return this.state.maps
   }
 
+  onFullScreenChange = (e) => {
+    const {containerRef, onFullScreenChange} = this.props
+    if (
+      onFullScreenChange &&
+      containerRef.current &&
+      containerRef.current.contains(e.target)
+    )
+      onFullScreenChange(e)
+  }
+
   onMapLoaded = (options) => {
     const {map, maps} = options
     const {onMapLoaded, onDragEnd, onZoomChanged} = this.props
+    if (onMapLoaded) onMapLoaded(options)
     if (map) {
-      this.setState({loaded: true, map, maps}, this.fitMap)
+      this.setState({loaded: true, map, maps}, () => {
+        const {clusters} = this.updateClusters()
+        this.fitMap(clusters)
+      })
       if (onDragEnd) map.addListener('dragend', onDragEnd)
       if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
     }
-    if (onMapLoaded) onMapLoaded(options)
   }
 
-  onMapChange = ({center, zoom, bounds}) =>
-    this.setState(
-      {
-        mapOptions: {
-          center,
-          zoom,
-          bounds
-        }
-      },
-      this.boundsUpdated
-    )
+  onMapChange = debounce(
+    ({center, zoom, bounds}) => {
+      this.setState(
+        {
+          mapOptions: {
+            center,
+            zoom,
+            bounds
+          }
+        },
+        this.boundsUpdated
+      )
+    },
+    100,
+    {trailing: true, leading: true}
+  )
 
   panTo(...args) {
     return (this.map ? this.map.panTo : noop).call(this.map, ...args)
@@ -269,10 +347,7 @@ export default class MapContainer extends PureComponent {
         position: maps.ControlPosition.RIGHT_TOP,
         style: maps.ZoomControlStyle.SMALL
       },
-      mapTypeControlOptions: {
-        position: maps.ControlPosition.TOP_RIGHT
-      },
-      mapTypeControl: true
+      mapTypeControl: false
     }
     if (typeof options === 'function') return options(maps, mapOptions)
     return Object.assign(mapOptions, options)
@@ -290,7 +365,7 @@ export default class MapContainer extends PureComponent {
               .map((marker) => [...marker.points])
           )
         : []
-      onChange(mapOptions.bounds, framedListings.map((listing) => listing.id))
+      onChange(mapOptions, framedListings.map((listing) => listing.id))
     }
   }
 
@@ -308,8 +383,11 @@ export default class MapContainer extends PureComponent {
   }
 
   renderCluster = (cluster) => {
-    const {mapOptions, clusterOptions} = this.state
+    const {getClusterProps, MultiMarker, ClusterMarker} = this.props
+    const isMultiMarker =
+      this.state.mapOptions.zoom > this.state.clusterOptions.maxZoom
     const clusterProps = {
+      isMultiMarker,
       key: cluster.id,
       lat: cluster.lat,
       lng: cluster.lng,
@@ -317,35 +395,51 @@ export default class MapContainer extends PureComponent {
       onClick: this.frameCluster,
       highlight: this.getClusterHighlight(cluster)
     }
-    const Component =
-      mapOptions.zoom > clusterOptions.maxZoom ? MultiMarker : ClusterMarker
-    return <Component cluster={false} {...clusterProps} />
+    const Component = isMultiMarker ? MultiMarker : ClusterMarker
+    return <Component cluster={false} {...getClusterProps(clusterProps)} />
   }
 
   render() {
-    const {children, apiKey, libraries, defaultCenter, defaultZoom} = this.props
+    const {
+      children,
+      id,
+      style,
+      className,
+      containerRef,
+      apiKey,
+      libraries,
+      defaultCenter,
+      defaultZoom
+    } = this.props
     const {hasAggregators, clusters} = this.state
 
     return (
-      <Provider value={this.getContext()}>
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: apiKey,
-            libraries,
-            language: 'pt-BR',
-            region: 'br'
-          }}
-          defaultZoom={defaultZoom}
-          defaultCenter={defaultCenter}
-          options={this.createMapOptions}
-          yesIWantToUseGoogleMapApiInternals
-          onChange={this.onMapChange}
-          onGoogleApiLoaded={this.onMapLoaded}
-        >
-          {children}
-          {hasAggregators && clusters.map(this.renderCluster)}
-        </GoogleMapReact>
-      </Provider>
+      <div
+        id={id}
+        style={Object.assign({width: '100%', height: '100%'}, style)}
+        className={className}
+        ref={containerRef}
+      >
+        <Provider value={this.getContext()}>
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: apiKey,
+              libraries: libraries.join(','),
+              language: 'pt-BR',
+              region: 'br'
+            }}
+            defaultZoom={defaultZoom}
+            defaultCenter={defaultCenter}
+            options={this.createMapOptions}
+            yesIWantToUseGoogleMapApiInternals
+            onChange={this.onMapChange}
+            onGoogleApiLoaded={this.onMapLoaded}
+          >
+            {children}
+            {hasAggregators && clusters.map(this.renderCluster)}
+          </GoogleMapReact>
+        </Provider>
+      </div>
     )
   }
 }

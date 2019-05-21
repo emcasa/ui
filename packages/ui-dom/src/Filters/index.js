@@ -81,6 +81,10 @@ const FilterGroup = Group(
 
     componentDidUpdate(prevProps, prevState) {
       if (prevState.isFilterExpanded !== this.state.isFilterExpanded) {
+        const callback = this.state.isFilterExpanded
+          ? this.props.onExpandFilter
+          : this.props.onCollapseFilter
+        if (callback) callback(this.state)
         // Collapse row when mobile filter closes
         if (this.state.isRowExpanded) {
           requestAnimationFrame(() => this.setState({isRowExpanded: false}))
@@ -91,6 +95,12 @@ const FilterGroup = Group(
           if (this.state.isFilterExpanded) classNames.add('noscroll')
           else classNames.remove('noscroll')
         }
+      }
+      if (prevState.isRowExpanded !== this.state.isRowExpanded) {
+        const callback = this.state.isRowExpanded
+          ? this.props.onExpandRow
+          : this.props.onCollapseRow
+        if (callback) callback(this.state)
       }
       // Update expanded row height
       if (prevProps.selectedValue !== this.props.selectedValue) {
@@ -108,6 +118,7 @@ const FilterGroup = Group(
         window.addEventListener('keyup', this.onKeyPress)
         window.addEventListener('resize', this.measureBody)
       }
+      if (this.props.onLayout) this.props.onLayout(this.state)
     }
 
     componentWillUnmount() {
@@ -120,9 +131,14 @@ const FilterGroup = Group(
     measureBody = throttle(() => {
       const element = this.bodyRef.current
       if (element)
-        this.setState({
-          bodyHeight: element.offsetHeight || element.height
-        })
+        this.setState(
+          {
+            bodyHeight: element.offsetHeight || element.height
+          },
+          () => {
+            if (this.props.onLayout) this.props.onLayout(this.state)
+          }
+        )
     }, 100)
 
     onKeyPress = (e) => {
