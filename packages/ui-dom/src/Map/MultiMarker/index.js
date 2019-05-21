@@ -2,13 +2,12 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Marker, {List, ListItem} from './styles'
-import {MarkerBase} from '../Marker'
 import {withMapContext} from '../Context'
 
 export class MultiMarkerBase extends PureComponent {
   static propTypes = {
     points: PropTypes.array.isRequired,
-    ...MarkerBase.propTypes
+    highlight: PropTypes.array
   }
 
   markers = {}

@@ -1,11 +1,16 @@
+import curry from 'lodash/curry'
 import styled, {css} from 'styled-components'
 import {borderRadius, zIndex, space} from 'styled-system'
 import View from '../../View'
 
-export const getColor = (prop, defaultColor = undefined) => ({
-  theme: {colors},
-  ...props
-}) => colors[props[prop]] || props[prop] || colors[defaultColor] || defaultColor
+export const getColor = curry((prop, defaultColor, props) => {
+  const {
+    theme: {colors}
+  } = props
+  return (
+    colors[props[prop]] || props[prop] || colors[defaultColor] || defaultColor
+  )
+})
 
 export const markerTipStyle = css`
   bottom: -6px;

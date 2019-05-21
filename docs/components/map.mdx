@@ -41,6 +41,12 @@ All markers must be direct children of `<Map />` and should have `lat` and `lng`
 
 `Map.Marker`s get clustered according to the parent `Map`'s supercluster options.
 
+When clustering is enabled and the zoom level is greater than `cluster.maxZoom` (defaults to `17`), markers on the same spot are clustered into multi markers.
+
+Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups markers in the same coordinates.
+
+### Basic usage
+
 <Playground>
   <View m={4} height={400}>
     <Map
@@ -62,25 +68,30 @@ All markers must be direct children of `<Map />` and should have `lat` and `lng`
   </View>
 </Playground>
 
-When clustering is enabled and the zoom level is greater than `cluster.maxZoom` (defaults to `17`), markers on the same spot are clustered into multi markers.
-
-Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups markers in the same coordinates.
+### Configuring cluster components
 
 <Playground>
   <View m={4} height={400}>
-    <Map cluster apiKey={GOOGLE_MAPS_API_KEY}>
-      {['A', 'B', 'C'].map((name) => (
-        <Map.Marker {...markers[0]} id={name} key={name}>
-          {'Marker ' + name}
+    <Map
+      cluster
+      apiKey={GOOGLE_MAPS_API_KEY}
+      ClusterMarker={(props) => <Map.ClusterMarker {...props} bg="blue" color="yellow" />}
+      MultiMarker={(props) => <Map.MultiMarker {...props} />}
+    >
+      {[
+        'https://bit.ly/2VQOSeF',
+        'https://bit.ly/30IXSBs',
+        'https://bit.ly/2JwCtWu'
+      ].map((url) => (
+        <Map.Marker {...markers[0]} id={url} key={url} width={200} height={200}>
+          <img src={url} style={{objectFit: 'cover', width: '100%', height: '100%'}} />
         </Map.Marker>
       ))}
     </Map>
   </View>
 </Playground>
 
-## Controls
-
-### ButtonControl
+## Map.ButtonControl
 
 <Playground>
   <View m={4} height={400}>
@@ -117,7 +128,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
   </View>
 </Playground>
 
-### SelectControl
+## Map.SelectControl
 
 <Playground>
   <View m={4} height={400}>

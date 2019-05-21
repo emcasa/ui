@@ -9,7 +9,8 @@ export default class ClusterMarker extends PureComponent {
       className,
       points,
       onClick,
-      highlight = []
+      highlight = [],
+      ...props
     } = this.props
     return (
       <MarkerCounter
@@ -17,6 +18,7 @@ export default class ClusterMarker extends PureComponent {
         highlight={highlight.length > 0}
         style={style}
         className={className}
+        {...props}
       >
         <span>{points.length}</span>
         {children}

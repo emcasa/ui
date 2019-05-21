@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
+import {getColor} from '../Marker/styles'
 
 export default styled.div`
   box-sizing: border-box;
@@ -8,10 +8,10 @@ export default styled.div`
   margin-left: -10px;
   text-align: center;
   font-size: 14px;
-  color: #fff;
-  border: 2px solid #fff;
+  color: ${getColor('color', 'white')};
+  border: 2px solid ${getColor('color', 'white')};
   border-radius: 100%;
-  background-color: ${themeGet('colors.pink')};
+  background-color: ${getColor('bg', 'pink')};
   box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.3);
   transform: translate(-50%, -50%);
 
@@ -25,15 +25,17 @@ export default styled.div`
     align-items: center;
   }
 
-  ${({highlight, theme}) =>
+  ${({highlight, ...props}) =>
     highlight
-      ? `background-color: white; color: ${
-          theme.colors.pink
-        }; border: 2px solid ${theme.colors.pink};`
-      : ''};
-  :hover {
+      ? {
+          backgroundColor: getColor('bg', 'white', props),
+          borderColor: getColor('color', 'pink', props),
+          color: getColor('color', 'pink', props)
+        }
+      : {}};
+  &:hover {
     cursor: pointer;
-    color: ${themeGet('colors.pink')};
-    background-color: white;
+    color: ${getColor('color', 'pink')};
+    background-color: ${getColor('bg', 'white')};
   }
 `

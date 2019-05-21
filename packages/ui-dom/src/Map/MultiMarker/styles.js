@@ -4,7 +4,7 @@ import Marker, {getColor, markerTipHighlightStyle} from '../Marker/styles'
 
 export default styled(Marker)`
   position: absolute;
-  border: 2px solid ${getColor('borderColor', 'pink')};
+  border: 2px solid ${getColor('bg', 'pink')};
   background: ${getColor('bg', 'pink')};
   padding: 0;
   &:before {
@@ -16,7 +16,7 @@ export default styled(Marker)`
     left: 0;
     right: 0;
     border-radius: 4px;
-    border: 1px solid ${getColor('borderColor', 'pink')};
+    border: 1px solid ${getColor('color', 'pink')};
     pointer-events: none;
     ${borderRadius};
   }
@@ -25,7 +25,7 @@ export default styled(Marker)`
   }
   &.highlight,
   &:hover {
-    border-color: ${getColor('borderColor', 'white')};
+    border-color: ${getColor('bg', 'white')};
     &:after {
       ${markerTipHighlightStyle};
     }
