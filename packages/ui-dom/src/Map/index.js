@@ -85,10 +85,15 @@ export default class MapContainer extends PureComponent {
   static MultiMarker = MultiMarker
 
   static propTypes = {
+    /** Markers should be direct children of the Map component */
     children: PropTypes.node.isRequired,
+    /** Google maps api key */
     apiKey: PropTypes.string,
+    /** Google maps libraries to load */
     libraries: PropTypes.array,
+    /** Highlighted marker coordinates */
     highlight: T.Coordinates,
+    /** Get a marker's highlight state given it's {lng, lat, id} */
     isHighlight: PropTypes.func,
     minZoom: PropTypes.number.isRequired,
     maxZoom: PropTypes.number.isRequired,
@@ -98,7 +103,7 @@ export default class MapContainer extends PureComponent {
     multiMarkerRadius: PropTypes.number.isRequired,
     /** google-map-react options */
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    /** Enable/disable marker clustering */
+    /** Supercluster options or true/false to enable clustering with the default options */
     cluster: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.func,

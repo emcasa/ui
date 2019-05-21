@@ -1,9 +1,16 @@
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Marker, {List, ListItem} from './styles'
+import {MarkerBase} from '../Marker'
 import {withMapContext} from '../Context'
 
-class MultiMarker extends PureComponent {
+export class MultiMarkerBase extends PureComponent {
+  static propTypes = {
+    points: PropTypes.array.isRequired,
+    ...MarkerBase.propTypes
+  }
+
   markers = {}
 
   componentDidMount() {
@@ -34,18 +41,14 @@ class MultiMarker extends PureComponent {
       points,
       onClick,
       highlight = [],
-      id,
-      lat,
-      lng,
       ...props
     } = this.props
+    delete props.id
+    delete props.lat
+    delete props.lng
+    delete props.cluster
     return (
       <Marker
-        id={id}
-        lat={lat}
-        lng={lng}
-        cluster={false}
-        highlight={false}
         onClick={onClick && onClick.bind(null, points)}
         style={style}
         className={classNames(className, 'multi-marker', {
@@ -66,4 +69,4 @@ class MultiMarker extends PureComponent {
 
 export default withMapContext(({setMarkerContainer}) => ({
   setMarkerContainer
-}))(MultiMarker)
+}))(MultiMarkerBase)
