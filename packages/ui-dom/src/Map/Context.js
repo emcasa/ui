@@ -10,6 +10,7 @@ const {Consumer, Provider} = React.createContext({
   clusteredMarkers: [],
   clusterOptions: {},
   mapOptions: {},
+  getMarkerHighlight: () => false,
   setMarkerContainer: () => null,
   setMarker: () => null,
   unsetMarker: () => null
