@@ -88,7 +88,6 @@ export default class MapContainer extends PureComponent {
   static PaginatedMultiMarker = PaginatedMultiMarker
 
   static propTypes = {
-    /** Markers should be direct children of the Map component */
     children: PropTypes.node.isRequired,
     /** Google maps api key */
     apiKey: PropTypes.string,
@@ -117,7 +116,9 @@ export default class MapContainer extends PureComponent {
     /** Called on map drag end */
     onDragEnd: PropTypes.func,
     /** Called on map zoom change */
-    onZoomChanged: PropTypes.func,
+    onZoomChange: PropTypes.func,
+    /** Called when map element enters or exists full screen mode */
+    onFullScreenChange: PropTypes.func,
     /** Called after clicking a map cluster */
     onFrameCluster: PropTypes.func,
     /** Modify cluster props */
@@ -255,13 +256,20 @@ export default class MapContainer extends PureComponent {
       onFullScreenChange &&
       containerRef.current &&
       containerRef.current.contains(e.target)
-    )
-      onFullScreenChange(e)
+    ) {
+      const fullscreenElement =
+        document.fullscreenElement ||
+        document.mozFullScreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+
+      onFullScreenChange(e, Boolean(fullscreenElement))
+    }
   }
 
   onMapLoaded = (options) => {
     const {map, maps} = options
-    const {onMapLoaded, onDragEnd, onZoomChanged} = this.props
+    const {onMapLoaded, onDragEnd, onZoomChange} = this.props
     if (onMapLoaded) onMapLoaded(options)
     if (map) {
       this.setState({loaded: true, map, maps}, () => {
@@ -269,7 +277,7 @@ export default class MapContainer extends PureComponent {
         this.fitMap(clusters)
       })
       if (onDragEnd) map.addListener('dragend', onDragEnd)
-      if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
+      if (onZoomChange) map.addListener('zoom_changed', onZoomChange)
     }
   }
 

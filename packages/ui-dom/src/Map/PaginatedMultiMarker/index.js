@@ -1,11 +1,23 @@
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import MultiMarker from '../MultiMarker'
 import Pagination from './Pagination'
 
 export default class PaginatedMultiMarker extends PureComponent {
+  static propTypes = {
+    points: PropTypes.array.isRequired,
+    highlight: PropTypes.array,
+    currentIndex: PropTypes.number,
+    onClick: PropTypes.func,
+    onChangePage: PropTypes.func,
+    /** Get props for child marker container elements */
+    getMarkerProps: PropTypes.func
+  }
+
   static defaultProps = {
     color: 'pink',
-    getMarkerProps: () => ({})
+    onChangePage: (currentPoint, currentIndex) => null,
+    getMarkerProps: (point, index) => ({})
   }
 
   state = {

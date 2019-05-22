@@ -8,6 +8,7 @@ import View from '@emcasa/ui-dom/src/View'
 import Map from '@emcasa/ui-dom/src/Map'
 import {MarkerBase} from '@emcasa/ui-dom/src/Map/Marker'
 import {MultiMarkerBase} from '@emcasa/ui-dom/src/Map/MultiMarker'
+import PaginatedMultiMarker from '@emcasa/ui-dom/src/Map/PaginatedMultiMarker'
 import ButtonControl from '@emcasa/ui-dom/src/Map/ButtonControl'
 import SelectControl from '@emcasa/ui-dom/src/Map/SelectControl'
 import Icon from '@emcasa/ui-dom/src/Icon'
@@ -69,6 +70,14 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
   </View>
 </Playground>
 
+## Map.MultiMarker
+
+<Props of={MultiMarkerBase} />
+
+## Map.PaginatedMultiMarker
+
+<Props of={PaginatedMultiMarker} />
+
 ### Configuring cluster components
 
 <Playground>
@@ -80,6 +89,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
       MultiMarker={(props) => (
         <Map.PaginatedMultiMarker
           {...props}
+          borderRadius={10}
           onChangePage={(point, index) => console.log('onChangePage', point, index)}
         />
       )}

@@ -44,17 +44,22 @@ export default styled(Marker)`
   }
 `
 
+export const Body = styled.div`
+  overflow: hidden;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  ${borderRadius};
+`
+
 export const List = styled.ul`
   list-style: none;
   z-index: 1;
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
-  overflow: hidden;
   margin: 0;
   padding: 0;
-  ${borderRadius};
 `
 
 export const ListItem = styled.li`
