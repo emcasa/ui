@@ -10,6 +10,10 @@ export class MultiMarkerBase extends PureComponent {
     highlight: PropTypes.array
   }
 
+  static defaultProps = {
+    getMarkerProps: () => ({})
+  }
+
   markers = {}
 
   componentDidMount() {
@@ -40,6 +44,7 @@ export class MultiMarkerBase extends PureComponent {
       points,
       onClick,
       highlight = [],
+      getMarkerProps,
       ...props
     } = this.props
     delete props.id
@@ -56,8 +61,15 @@ export class MultiMarkerBase extends PureComponent {
         {...props}
       >
         <List borderRadius={props.borderRadius}>
-          {points.map(({id}) => (
-            <ListItem key={id} ref={this.containerRef(id)} />
+          {points.map((point, index) => (
+            <ListItem
+              key={point.id}
+              ref={this.containerRef(point.id)}
+              {...getMarkerProps(
+                {...point, highlight: highlight.indexOf(point.id) !== -1},
+                index
+              )}
+            />
           ))}
         </List>
         {children}

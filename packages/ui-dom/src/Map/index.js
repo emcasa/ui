@@ -12,6 +12,7 @@ import noop from 'lodash/noop'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
 import MultiMarker from './MultiMarker'
+import PaginatedMultiMarker from './PaginatedMultiMarker'
 import Control from './Control'
 import ButtonControl from './ButtonControl'
 import SelectControl from './SelectControl'
@@ -83,6 +84,8 @@ export default class MapContainer extends PureComponent {
   static ClusterMarker = ClusterMarker
 
   static MultiMarker = MultiMarker
+
+  static PaginatedMultiMarker = PaginatedMultiMarker
 
   static propTypes = {
     /** Markers should be direct children of the Map component */
@@ -397,7 +400,7 @@ export default class MapContainer extends PureComponent {
       lat: cluster.lat,
       lng: cluster.lng,
       points: cluster.points,
-      onClick: this.frameCluster,
+      onClick: () => this.frameCluster(cluster.points),
       highlight: this.getClusterHighlight(cluster)
     }
     const Component = isMultiMarker ? MultiMarker : ClusterMarker
