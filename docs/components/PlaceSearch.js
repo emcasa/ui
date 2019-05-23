@@ -60,7 +60,10 @@ export default class PlaceSearch extends PureComponent {
   onTogglePlaces = () => this.setState({active: !this.state.active})
 
   onMapLoaded = ({map, maps}) => {
-    if (!maps.places) throw new Error('Google places library not found.')
+    if (!maps || !maps.places) {
+      console.error('Google places library not found.')
+      return
+    }
     this.maps = maps
     this.service = new maps.places.PlacesService(map)
   }

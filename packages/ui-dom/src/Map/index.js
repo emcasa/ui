@@ -12,6 +12,7 @@ import noop from 'lodash/noop'
 import MapMarker from './Marker'
 import ClusterMarker from './ClusterMarker'
 import MultiMarker from './MultiMarker'
+import PaginatedMultiMarker from './PaginatedMultiMarker'
 import Control from './Control'
 import ButtonControl from './ButtonControl'
 import SelectControl from './SelectControl'
@@ -84,11 +85,17 @@ export default class MapContainer extends PureComponent {
 
   static MultiMarker = MultiMarker
 
+  static PaginatedMultiMarker = PaginatedMultiMarker
+
   static propTypes = {
     children: PropTypes.node.isRequired,
+    /** Google maps api key */
     apiKey: PropTypes.string,
+    /** Google maps libraries to load */
     libraries: PropTypes.array,
+    /** Highlighted marker coordinates */
     highlight: T.Coordinates,
+    /** Get a marker's highlight state given it's {lng, lat, id} */
     isHighlight: PropTypes.func,
     minZoom: PropTypes.number.isRequired,
     maxZoom: PropTypes.number.isRequired,
@@ -98,7 +105,7 @@ export default class MapContainer extends PureComponent {
     multiMarkerRadius: PropTypes.number.isRequired,
     /** google-map-react options */
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    /** Enable/disable marker clustering */
+    /** Supercluster options or true/false to enable clustering with the default options */
     cluster: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.func,
@@ -109,7 +116,9 @@ export default class MapContainer extends PureComponent {
     /** Called on map drag end */
     onDragEnd: PropTypes.func,
     /** Called on map zoom change */
-    onZoomChanged: PropTypes.func,
+    onZoomChange: PropTypes.func,
+    /** Called when map element enters or exists full screen mode */
+    onFullScreenChange: PropTypes.func,
     /** Called after clicking a map cluster */
     onFrameCluster: PropTypes.func,
     /** Modify cluster props */
@@ -247,13 +256,20 @@ export default class MapContainer extends PureComponent {
       onFullScreenChange &&
       containerRef.current &&
       containerRef.current.contains(e.target)
-    )
-      onFullScreenChange(e)
+    ) {
+      const fullscreenElement =
+        document.fullscreenElement ||
+        document.mozFullScreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+
+      onFullScreenChange(e, Boolean(fullscreenElement))
+    }
   }
 
   onMapLoaded = (options) => {
     const {map, maps} = options
-    const {onMapLoaded, onDragEnd, onZoomChanged} = this.props
+    const {onMapLoaded, onDragEnd, onZoomChange} = this.props
     if (onMapLoaded) onMapLoaded(options)
     if (map) {
       this.setState({loaded: true, map, maps}, () => {
@@ -261,7 +277,7 @@ export default class MapContainer extends PureComponent {
         this.fitMap(clusters)
       })
       if (onDragEnd) map.addListener('dragend', onDragEnd)
-      if (onZoomChanged) map.addListener('zoom_changed', onZoomChanged)
+      if (onZoomChange) map.addListener('zoom_changed', onZoomChange)
     }
   }
 
@@ -392,7 +408,7 @@ export default class MapContainer extends PureComponent {
       lat: cluster.lat,
       lng: cluster.lng,
       points: cluster.points,
-      onClick: this.frameCluster,
+      onClick: () => this.frameCluster(cluster.points),
       highlight: this.getClusterHighlight(cluster)
     }
     const Component = isMultiMarker ? MultiMarker : ClusterMarker

@@ -16,7 +16,8 @@ export function MarkerContainer({
   onSelect,
   onClick = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
   onMouseEnter = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
-  onMouseLeave = onSelect ? () => onSelect(id, {lat, lng}) : undefined
+  onMouseLeave = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
+  ...props
 }) {
   return (
     <Container
@@ -29,16 +30,25 @@ export function MarkerContainer({
         text: typeof children === 'string',
         clickable: Boolean(onClick)
       })}
+      {...props}
     >
       {children}
     </Container>
   )
 }
 
-class MapMarker extends PureComponent {
+export class MarkerBase extends PureComponent {
   static propTypes = {
+    /** Marker's unique identifier */
     id: PropTypes.any.isRequired,
-    minZoom: PropTypes.number
+    highlight: PropTypes.bool,
+    /** Minimum zoom to show this marker */
+    minZoom: PropTypes.number,
+    onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    /** Callback for onClick, onMouseEnter and onMouseLeave */
+    onSelect: PropTypes.func
   }
 
   static defaultProps = {
@@ -103,4 +113,4 @@ export default withMapContext(
     mapLoaded: loaded,
     zoom: mapOptions.zoom
   })
-)(MapMarker)
+)(MarkerBase)
