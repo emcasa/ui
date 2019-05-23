@@ -78,10 +78,8 @@ export default class MapContainer extends PureComponent {
     apiKey: PropTypes.string,
     /** Google maps libraries to load */
     libraries: PropTypes.array,
-    /** Highlighted marker coordinates */
-    highlight: T.Coordinates,
-    /** Get a marker's highlight state given it's {lng, lat, id} */
-    isHighlight: PropTypes.func,
+    /** Highlighted marker coordinates or getter */
+    highlight: PropTypes.oneOfType([PropTypes.func, T.Coordinates]),
     minZoom: PropTypes.number.isRequired,
     maxZoom: PropTypes.number.isRequired,
     defaultZoom: PropTypes.number.isRequired,
@@ -121,6 +119,7 @@ export default class MapContainer extends PureComponent {
     minZoom: 7,
     maxZoom: 20,
     multiMarkerRadius: 10,
+    highlight: ({lng, lat, id}) => false,
     getClusterProps: (props) => props,
     getInitialFrame: ({clusters, markers}) => clusters,
     get containerRef() {
@@ -246,7 +245,6 @@ export default class MapContainer extends PureComponent {
     const bbox = [nw.lng - x, se.lat - x, se.lng + x, nw.lat + x]
     if (!this.supercluster) return []
     const clusters = this.supercluster.getClusters(bbox, zoom)
-    console.log(zoom, clusters, this.supercluster)
     return clusters.map(Cluster(this.supercluster))
   }
 
@@ -405,7 +403,7 @@ export default class MapContainer extends PureComponent {
     const {onChange} = this.props
     const {mapOptions} = this.state
     await this.updateClusters()
-    if (onChange) onChange(mapOptions, this.state.framedListings)
+    if (onChange) onChange(mapOptions, this.state.framedMarkers)
   }
 
   getMarker = (id) => {
@@ -413,11 +411,11 @@ export default class MapContainer extends PureComponent {
   }
 
   isHighlight = (id) => {
-    const {highlight, isHighlight} = this.props
+    const {highlight} = this.props
     const marker = this.state.markers[id]
     if (!marker) return false
     const {lat, lng} = marker
-    if (typeof isHighlight === 'function') return isHighlight({id, lat, lng})
+    if (typeof highlight === 'function') return highlight({id, lat, lng})
     else if (highlight) return highlight.lat == lat && highlight.lng == lng
     else return false
   }
