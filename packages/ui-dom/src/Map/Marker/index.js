@@ -16,7 +16,8 @@ export function MarkerContainer({
   onSelect,
   onClick = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
   onMouseEnter = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
-  onMouseLeave = onSelect ? () => onSelect(id, {lat, lng}) : undefined
+  onMouseLeave = onSelect ? () => onSelect(id, {lat, lng}) : undefined,
+  ...props
 }) {
   return (
     <Container
@@ -29,16 +30,25 @@ export function MarkerContainer({
         text: typeof children === 'string',
         clickable: Boolean(onClick)
       })}
+      {...props}
     >
       {children}
     </Container>
   )
 }
 
-class MapMarker extends PureComponent {
+export class MarkerBase extends PureComponent {
   static propTypes = {
+    /** Marker's unique identifier */
     id: PropTypes.any.isRequired,
-    minZoom: PropTypes.number
+    highlight: PropTypes.bool,
+    /** Minimum zoom to show this marker */
+    minZoom: PropTypes.number,
+    onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    /** Callback for onClick, onMouseEnter and onMouseLeave */
+    onSelect: PropTypes.func
   }
 
   static defaultProps = {
@@ -55,12 +65,6 @@ class MapMarker extends PureComponent {
     if (cluster) unsetMarker(id, {id, lat, lng})
   }
 
-  get isHighlight() {
-    return typeof this.props.highlight !== 'undefined'
-      ? this.props.highlight
-      : this.props.getMarkerHighlight(this.props)
-  }
-
   render() {
     const {
       marker,
@@ -72,7 +76,7 @@ class MapMarker extends PureComponent {
       ...props
     } = this.props
     const isZoomedOut = minZoom && zoom > minZoom
-    const children = <MarkerContainer {...props} highlight={this.isHighlight} />
+    const children = <MarkerContainer {...props} />
     if (marker.container)
       return ReactDOM.createPortal(children, marker.container)
     if (!mapLoaded || !isFramed || isClustered || isZoomedOut) return null
@@ -88,19 +92,20 @@ export default withMapContext(
       mapOptions,
       framedMarkers,
       clusteredMarkers,
+      hasAggregators,
       setMarker,
       unsetMarker,
-      getMarkerHighlight
+      isHighlight
     },
-    {id}
+    {id, highlight}
   ) => ({
     marker: markers[id] || {},
-    getMarkerHighlight,
     setMarker,
     unsetMarker,
     isFramed: framedMarkers.indexOf(id) !== -1,
-    isClustered: clusteredMarkers.indexOf(id) !== -1,
+    isClustered: hasAggregators && clusteredMarkers.indexOf(id) !== -1,
+    highlight: typeof highlight === 'undefined' ? isHighlight(id) : highlight,
     mapLoaded: loaded,
     zoom: mapOptions.zoom
   })
-)(MapMarker)
+)(MarkerBase)

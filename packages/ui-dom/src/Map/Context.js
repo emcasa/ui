@@ -4,12 +4,13 @@ import hoistStatics from 'hoist-non-react-statics'
 const {Consumer, Provider} = React.createContext({
   loaded: false,
   hasAggregators: false,
-  markers: [],
+  markers: {},
   clusters: [],
   framedMarkers: [],
   clusteredMarkers: [],
   clusterOptions: {},
   mapOptions: {},
+  isHighlight: () => false,
   setMarkerContainer: () => null,
   setMarker: () => null,
   unsetMarker: () => null

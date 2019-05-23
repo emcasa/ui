@@ -1,9 +1,22 @@
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Marker, {List, ListItem} from './styles'
+import Marker, {Body, List, ListItem} from './styles'
 import {withMapContext} from '../Context'
 
-class MultiMarker extends PureComponent {
+export class MultiMarkerBase extends PureComponent {
+  static propTypes = {
+    points: PropTypes.array.isRequired,
+    highlight: PropTypes.array,
+    onClick: PropTypes.func,
+    /** Get props for child marker container elements */
+    getMarkerProps: PropTypes.func
+  }
+
+  static defaultProps = {
+    getMarkerProps: (point, index) => ({})
+  }
+
   markers = {}
 
   componentDidMount() {
@@ -34,29 +47,33 @@ class MultiMarker extends PureComponent {
       points,
       onClick,
       highlight = [],
-      id,
-      lat,
-      lng
+      getMarkerProps,
+      ...props
     } = this.props
     return (
       <Marker
-        id={id}
-        lat={lat}
-        lng={lng}
-        cluster={false}
-        highlight={false}
-        onClick={onClick && onClick.bind(null, points)}
+        onClick={onClick}
         style={style}
         className={classNames(className, 'multi-marker', {
           highlight: highlight.length > 0
         })}
+        {...props}
       >
-        <List>
-          {points.map(({id}) => (
-            <ListItem key={id} ref={this.containerRef(id)} />
-          ))}
-        </List>
-        {children}
+        <Body borderRadius={props.borderRadius}>
+          <List>
+            {points.map((point, index) => (
+              <ListItem
+                key={point.id}
+                ref={this.containerRef(point.id)}
+                {...getMarkerProps(
+                  {...point, highlight: highlight.indexOf(point.id) !== -1},
+                  index
+                )}
+              />
+            ))}
+          </List>
+          {children}
+        </Body>
       </Marker>
     )
   }
@@ -64,4 +81,4 @@ class MultiMarker extends PureComponent {
 
 export default withMapContext(({setMarkerContainer}) => ({
   setMarkerContainer
-}))(MultiMarker)
+}))(MultiMarkerBase)
