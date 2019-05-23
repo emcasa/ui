@@ -102,8 +102,10 @@ export default class MapContainer extends PureComponent {
     onFullScreenChange: PropTypes.func,
     /** Called after clicking a map cluster */
     onFrameCluster: PropTypes.func,
+    /** Get points to frame when the map is loaded */
+    getInitialFrame: PropTypes.func.isRequired,
     /** Modify cluster props */
-    getClusterProps: PropTypes.func,
+    getClusterProps: PropTypes.func.isRequired,
     /** Cluster marker component */
     ClusterMarker: PropTypes.elementType,
     /** Multi marker component */
@@ -120,6 +122,7 @@ export default class MapContainer extends PureComponent {
     maxZoom: 20,
     multiMarkerRadius: 10,
     getClusterProps: (props) => props,
+    getInitialFrame: ({clusters, markers}) => clusters,
     get containerRef() {
       return React.createRef()
     }
@@ -297,13 +300,13 @@ export default class MapContainer extends PureComponent {
 
   onMapLoaded = (options) => {
     const {map, maps} = options
-    const {onMapLoaded, onDragEnd, onZoomChange} = this.props
+    const {onMapLoaded, onDragEnd, onZoomChange, getInitialFrame} = this.props
     if (onMapLoaded) onMapLoaded(options)
     if (map) {
       this.setState({loaded: true, map, maps}, () => {
         const clusters = this.getClusters()
         this.updateClusters(clusters)
-        this.fitMap(clusters)
+        this.fitMap(getInitialFrame({clusters, markers: this.state.markers}))
       })
       if (onDragEnd) map.addListener('dragend', onDragEnd)
       if (onZoomChange) map.addListener('zoom_changed', onZoomChange)
