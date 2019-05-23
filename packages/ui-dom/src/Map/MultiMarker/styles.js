@@ -26,6 +26,7 @@ export default styled(Marker)`
   &.highlight,
   &:hover {
     border-color: ${getColor('bg', 'white')};
+    background: ${getColor('bg', 'white')};
     &:after {
       ${markerTipHighlightStyle};
     }
@@ -49,6 +50,7 @@ export const Body = styled.div`
   flex: 1;
   height: 100%;
   width: 100%;
+  border-radius: 4px;
   ${borderRadius};
 `
 
