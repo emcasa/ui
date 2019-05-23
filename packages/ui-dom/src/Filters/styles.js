@@ -79,7 +79,7 @@ export const PanelButton = styled(Button).attrs((props) => ({
   }
   @media screen and ${breakpoint.up('desktop')} {
     color: ${({active, theme: {colors}}) =>
-      active ? colors.pink : colors.grey};
+      active ? colors.blue : colors.grey};
     background-color: transparent !important;
     padding: 0;
     height: auto;
