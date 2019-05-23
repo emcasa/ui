@@ -1,7 +1,7 @@
 {
   "name": "@emcasa/storybook-native",
   "main": "node_modules/expo/AppEntry.js",
-  "version": "2.0.13",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "bash -c 'concurrently \"yarn expo --dev --no-minify\" \"yarn storybook\"'",
@@ -14,8 +14,8 @@
     "publish-expo": "./scripts/publish.sh"
   },
   "dependencies": {
-    "@emcasa/ui": "^2.0.13",
-    "@emcasa/ui-native": "^2.0.13",
+    "@emcasa/ui": "^2.1.0",
+    "@emcasa/ui-native": "^2.1.0",
     "expo": "31.0.5",
     "lodash": "^4.17.11",
     "react": "16.6.0-alpha.8af6728",
