@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Button from '../Button'
+import Icon from '../Icon'
 import {BUTTON_HEIGHT} from './constants'
 
 const FilterButton = styled(({active, selected, ...props}) => {
@@ -13,19 +14,26 @@ const FilterButton = styled(({active, selected, ...props}) => {
   transition: ${['color', 'border-color', 'opacity']
     .map((prop) => `${prop} 200ms ease-in-out`)
     .join()};
-  border-color: ${({theme: {colors}}) => colors.blue};
+
+  border-color: ${({active, selected, disabled, theme: {colors}}) =>
+    (active || selected) && !disabled ? colors.blue : colors.lightGrey};
   background-color: ${({active, selected, disabled, theme: {colors}}) =>
     (active || selected) && !disabled ? colors.blue : colors.white};
   color: ${({active, selected, disabled, link, theme: {colors}}) => {
     if (disabled) return colors.disabled
     else if (link) return colors.blue
     else if (active || selected) return colors.white
-    else return colors.blue
+    else return colors.dark
   }};
+
+  ${Icon} {
+    display: ${({active, selected}) => (active || selected ? 'none' : 'block')};
+  }
 `
 
 FilterButton.defaultProps = {
   type: 'button',
+  height: 'medium',
   fontSize: 'small'
 }
 
