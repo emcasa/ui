@@ -65,12 +65,6 @@ export class MarkerBase extends PureComponent {
     if (cluster) unsetMarker(id, {id, lat, lng})
   }
 
-  get isHighlight() {
-    return typeof this.props.highlight !== 'undefined'
-      ? this.props.highlight
-      : this.props.getMarkerHighlight(this.props)
-  }
-
   render() {
     const {
       marker,
@@ -82,7 +76,7 @@ export class MarkerBase extends PureComponent {
       ...props
     } = this.props
     const isZoomedOut = minZoom && zoom > minZoom
-    const children = <MarkerContainer {...props} highlight={this.isHighlight} />
+    const children = <MarkerContainer {...props} />
     if (marker.container)
       return ReactDOM.createPortal(children, marker.container)
     if (!mapLoaded || !isFramed || isClustered || isZoomedOut) return null
@@ -98,18 +92,19 @@ export default withMapContext(
       mapOptions,
       framedMarkers,
       clusteredMarkers,
+      hasAggregators,
       setMarker,
       unsetMarker,
-      getMarkerHighlight
+      isHighlight
     },
-    {id}
+    {id, highlight}
   ) => ({
     marker: markers[id] || {},
-    getMarkerHighlight,
     setMarker,
     unsetMarker,
     isFramed: framedMarkers.indexOf(id) !== -1,
-    isClustered: clusteredMarkers.indexOf(id) !== -1,
+    isClustered: hasAggregators && clusteredMarkers.indexOf(id) !== -1,
+    highlight: typeof highlight === 'undefined' ? isHighlight(id) : highlight,
     mapLoaded: loaded,
     zoom: mapOptions.zoom
   })

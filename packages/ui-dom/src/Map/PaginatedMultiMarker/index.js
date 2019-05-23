@@ -55,6 +55,7 @@ export default class PaginatedMultiMarker extends PureComponent {
       <MultiMarker
         bg="white"
         {...this.props}
+        onChangePage={undefined}
         getMarkerProps={this.getMarkerProps}
       >
         <Pagination
