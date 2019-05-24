@@ -43,6 +43,7 @@ const FilterGroup = Group(
       contentRect: {bounds: {}},
       strategy: 'switchable',
       showMobileHeader: false,
+      startExpanded: false,
       onSubmit: () => null,
       order: ({value, initialValue, selected}) =>
         selected ? 2 : value && !isEqual(value, initialValue) ? 1 : 0,
@@ -73,7 +74,7 @@ const FilterGroup = Group(
         rowHeight,
         rowCount,
         isFilterExpanded: props.isMobile && Boolean(props.selectedValue),
-        isRowExpanded: rowCount > 1 ? state.isRowExpanded : false,
+        isRowExpanded: rowCount > 1 ? state.isRowExpanded : props.startExpanded,
         initialValues:
           props.values || state.initialValues || props.initialValues || {}
       }
