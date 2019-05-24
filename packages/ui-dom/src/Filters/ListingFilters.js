@@ -19,7 +19,10 @@ import {
   PRICE_STEP,
   MIN_PRICE_PER_AREA,
   MAX_PRICE_PER_AREA,
-  PRICE_PER_AREA_STEP
+  PRICE_PER_AREA_STEP,
+  MIN_MAINTENANCE_FEE,
+  MAX_MAINTENANCE_FEE,
+  MAINTENANCE_FEE_STEP
 } from './constants'
 import ButtonGroupFilter from './ButtonGroupFilter'
 import ButtonRangeFilter from './ButtonRangeFilter'
@@ -28,7 +31,7 @@ import FilterButton from './FilterButton'
 
 const hasValue = (value) => typeof value !== 'undefined'
 
-const formatRange = (formatOptions) => {
+export const formatRange = (formatOptions) => {
   const formatFn =
     (isFunction(formatOptions) ? formatOptions : formatOptions.format) ||
     identity
@@ -51,7 +54,7 @@ const formatRange = (formatOptions) => {
   ])
 }
 
-const formatSliderRange = curry((format, range) =>
+export const formatSliderRange = curry((format, range) =>
   flow(
     (value) => {
       if (!value) return value
@@ -70,7 +73,7 @@ const formatSliderRange = curry((format, range) =>
   )
 )
 
-const formatNumRange = (noun) => {
+export const formatNumRange = (noun) => {
   const singular = noun
   const plural = `${noun}s`
   return formatRange({
@@ -82,7 +85,7 @@ const formatNumRange = (noun) => {
   })
 }
 
-const formatPrice = (value) =>
+export const formatPrice = (value) =>
   `R$ ${abbrev(value, 2)
     .toString()
     .toUpperCase()
@@ -102,11 +105,11 @@ const formatMultiSelect = (getLabel) =>
     join(', ')
   )
 
-const PriceFilter = ({...props}) => (
+const PriceFilter = ({step, ...props}) => (
   <SliderRangeFilter
-    formatValue={(value) => Math.round(value / PRICE_STEP) * PRICE_STEP}
+    formatValue={(value) => Math.round(value / step) * step}
     formatLabel={cond([
-      [not(hasValue), () => 'Preço'],
+      [not(hasValue), () => props.title],
       [stubTrue, formatPriceRange(props.range)]
     ])}
     {...props}
@@ -118,16 +121,15 @@ PriceFilter.initialValue = {min: MIN_PRICE, max: MAX_PRICE}
 PriceFilter.defaultProps = {
   name: 'price',
   title: 'Preço',
+  step: PRICE_STEP,
   range: [PriceFilter.initialValue.min, PriceFilter.initialValue.max]
 }
 
-const PricePerAreaFilter = ({...props}) => (
+const PricePerAreaFilter = ({step, ...props}) => (
   <SliderRangeFilter
-    formatValue={(value) =>
-      Math.round(value / PRICE_PER_AREA_STEP) * PRICE_PER_AREA_STEP
-    }
+    formatValue={(value) => Math.round(value / step) * step}
     formatLabel={cond([
-      [not(hasValue), () => 'Preço/m²'],
+      [not(hasValue), () => props.title],
       [stubTrue, formatPricePerAreaRange(props.range)]
     ])}
     {...props}
@@ -142,9 +144,27 @@ PricePerAreaFilter.initialValue = {
 PricePerAreaFilter.defaultProps = {
   name: 'pricePerArea',
   title: 'Preço/m²',
+  step: PRICE_PER_AREA_STEP,
   range: [
     PricePerAreaFilter.initialValue.min,
     PricePerAreaFilter.initialValue.max
+  ]
+}
+
+const MaintenanceFeeFilter = (props) => <PriceFilter {...props} />
+
+MaintenanceFeeFilter.initialValue = {
+  min: MIN_MAINTENANCE_FEE,
+  max: MAX_MAINTENANCE_FEE
+}
+
+MaintenanceFeeFilter.defaultProps = {
+  name: 'maintenanceFee',
+  title: 'Condomínio',
+  step: MAINTENANCE_FEE_STEP,
+  range: [
+    MaintenanceFeeFilter.initialValue.min,
+    MaintenanceFeeFilter.initialValue.max
   ]
 }
 
@@ -300,6 +320,7 @@ ConstructionYearFilter.defaultProps = {
 export {
   PriceFilter,
   PricePerAreaFilter,
+  MaintenanceFeeFilter,
   AreaFilter,
   RoomsFilter,
   SuitesFilter,
