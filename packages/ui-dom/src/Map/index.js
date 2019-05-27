@@ -82,8 +82,8 @@ export default class MapContainer extends PureComponent {
     highlight: PropTypes.oneOfType([PropTypes.func, T.Coordinates]),
     minZoom: PropTypes.number.isRequired,
     maxZoom: PropTypes.number.isRequired,
-    defaultZoom: PropTypes.number.isRequired,
-    defaultCenter: T.Coordinates.isRequired,
+    defaultZoom: PropTypes.number,
+    defaultCenter: T.Coordinates,
     /** Radius to cluster multi markers in pixels. Use 0 to only cluster markers in the same coordinates */
     multiMarkerRadius: PropTypes.number.isRequired,
     /** google-map-react options */
@@ -115,7 +115,6 @@ export default class MapContainer extends PureComponent {
     MultiMarker,
     libraries: [],
     defaultCenter: {lat: -22.9608099, lng: -43.2096142},
-    defaultZoom: 8,
     minZoom: 7,
     maxZoom: 20,
     multiMarkerRadius: 10,
@@ -298,13 +297,22 @@ export default class MapContainer extends PureComponent {
 
   onMapLoaded = (options) => {
     const {map, maps} = options
-    const {onMapLoaded, onDragEnd, onZoomChange, getInitialFrame} = this.props
+    const {
+      onMapLoaded,
+      onDragEnd,
+      onZoomChange,
+      getInitialFrame,
+      defaultZoom
+    } = this.props
     if (onMapLoaded) onMapLoaded(options)
     if (map) {
       this.setState({loaded: true, map, maps}, () => {
         const clusters = this.getClusters()
         this.updateClusters(clusters)
-        this.fitMap(getInitialFrame({clusters, markers: this.state.markers}))
+        this.fitMap(
+          getInitialFrame({clusters, markers: this.state.markers}),
+          defaultZoom
+        )
       })
       if (onDragEnd) map.addListener('dragend', onDragEnd)
       if (onZoomChange) map.addListener('zoom_changed', onZoomChange)
@@ -344,28 +352,26 @@ export default class MapContainer extends PureComponent {
     return (this.map ? this.map.setZoom : noop).call(this.map, ...args)
   }
 
-  fitMap = (markers = this.state.markers) => {
-    const LatLngList = Object.values(markers).map(
+  fitMap = (_markers = this.state.markers, _zoom = undefined) => {
+    let zoom = _zoom
+    let markers = Object.values(_markers).map(
       (m) => new this.maps.LatLng(m.lat, m.lng)
     )
-
-    const bounds = new this.maps.LatLngBounds()
-    for (let i = 0, LtLgLen = LatLngList.length; i < LtLgLen; i++) {
-      bounds.extend(LatLngList[i])
-    }
-    this.fitBounds(bounds)
-
-    if (markers.length === 1) {
-      this.setZoom(15)
-    }
-
     if (markers.length === 0) {
-      const {
-        mapOptions: {center}
-      } = this.state
+      const center = this.props.defaultCenter || this.state.mapOptions.center
       this.setCenter(new this.maps.LatLng(center.lat, center.lng))
-      this.setZoom(13)
+      if (isNaN(zoom)) zoom = 13
+    } else if (markers.length === 1) {
+      this.setCenter(markers[0])
+      if (isNaN(zoom)) zoom = 15
+    } else {
+      const bounds = new this.maps.LatLngBounds()
+      for (let i = 0, len = markers.length; i < len; i++) {
+        bounds.extend(markers[i])
+      }
+      this.fitBounds(bounds)
     }
+    this.setZoom(zoom)
   }
 
   frameCluster = (markers) => {
@@ -383,10 +389,8 @@ export default class MapContainer extends PureComponent {
   }
 
   createMapOptions = (maps) => {
-    const {options, minZoom, maxZoom, defaultZoom, defaultCenter} = this.props
+    const {options, minZoom, maxZoom} = this.props
     const mapOptions = {
-      defaultZoom,
-      defaultCenter,
       maxZoom,
       minZoom,
       zoomControlOptions: {
@@ -466,7 +470,7 @@ export default class MapContainer extends PureComponent {
               language: 'pt-BR',
               region: 'br'
             }}
-            defaultZoom={defaultZoom}
+            defaultZoom={defaultZoom || 8}
             defaultCenter={defaultCenter}
             options={this.createMapOptions}
             yesIWantToUseGoogleMapApiInternals
