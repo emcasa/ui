@@ -19,14 +19,6 @@ install:
 script:
   - yarn build
   - yarn docz
-  - >
-    if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-      echo "Publishing expo preview...";
-      export EXP_PRIVACY=unlisted;
-      export EXP_CHANNEL=$TRAVIS_PULL_REQUEST_BRANCH;
-      export GIT_STATUS=true;
-      lerna run publish-expo --scope @emcasa/storybook-native --stream;
-    fi
 
 before_deploy:
   - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
@@ -38,12 +30,6 @@ deploy:
     on:
       tags: true
       repo: emcasa/ui
-  - provider: script
-    skip_cleanup: true
-    keep-history: true
-    script: lerna run publish-expo --scope @emcasa/storybook-native --stream
-    on:
-      branch: master
   - provider: pages
     local-dir: dist
     skip-cleanup: true
