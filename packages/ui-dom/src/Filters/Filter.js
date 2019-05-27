@@ -98,7 +98,7 @@ export default class Filter extends PureComponent {
           onClick={onSelect}
         >
           <Row>
-            {formatLabel ? <Icon mr={2} name={'angle-down'} color={'blue'} /> : ''}
+            <Icon mr={2} name={selected ? 'angle-up' : 'angle-down'} color={selected || hasValue ? 'white': 'blue'} />
             <span>{formatLabel ? formatLabel(value, hasValue) : label}</span>
           </Row>
         </FilterButton>

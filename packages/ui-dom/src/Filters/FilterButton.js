@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import Button from '../Button'
-import Icon from '../Icon'
 import {BUTTON_HEIGHT} from './constants'
 
 const FilterButton = styled(({active, selected, ...props}) => {
@@ -25,10 +24,6 @@ const FilterButton = styled(({active, selected, ...props}) => {
     else if (active || selected) return colors.white
     else return colors.dark
   }};
-
-  ${Icon} {
-    display: ${({active, selected}) => (active || selected ? 'none' : 'block')};
-  }
 `
 
 FilterButton.defaultProps = {
