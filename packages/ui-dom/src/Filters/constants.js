@@ -22,7 +22,7 @@ export const MAX_MAINTENANCE_FEE = 5000
 
 export const MAINTENANCE_FEE_STEP = 100
 
-export const BUTTON_HEIGHT = themeGet('buttonHeight.2')
+export const BUTTON_HEIGHT = themeGet('buttonHeight.1')
 
 export const ROW_PADDING = themeGet('space.2')
 
