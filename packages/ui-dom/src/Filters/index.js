@@ -306,11 +306,13 @@ const FilterGroup = Group(
 )
 
 export default compose(
+  (Target) =>
+    React.forwardRef((props, ref) => <Target innerRef={ref} {...props} />),
   mapProps(({onSelectFilter, selectedFilter, ...props}) => ({
     onChange: onSelectFilter,
     selectedValue: selectedFilter,
     ...props
   })),
   withBreakpoint(),
-  withTheme
+  withTheme,
 )(FilterGroup)
