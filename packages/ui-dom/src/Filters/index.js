@@ -71,6 +71,7 @@ const FilterGroup = Group(
         typeof props.sort === 'undefined' ? props.isMobile : props.sort
       return {
         sort,
+        height: state.isRowExpanded ? state.bodyHeight : rowHeight,
         rowHeight,
         rowCount,
         isFilterExpanded: props.isMobile && Boolean(props.selectedValue),
@@ -103,6 +104,14 @@ const FilterGroup = Group(
           : this.props.onCollapseRow
         if (callback) callback(this.state)
       }
+      if (
+        this.props.onLayout &&
+        (prevState.height !== this.state.height ||
+          prevState.bodyHeight !== this.state.bodyHeight)
+      ) {
+        // Trigger onLayout when height changes
+        this.props.onLayout(this.state)
+      }
       // Update expanded row height
       if (prevProps.selectedValue !== this.props.selectedValue) {
         requestAnimationFrame(this.measureBody)
@@ -132,14 +141,9 @@ const FilterGroup = Group(
     measureBody = throttle(() => {
       const element = this.bodyRef.current
       if (element)
-        this.setState(
-          {
-            bodyHeight: element.offsetHeight || element.height
-          },
-          () => {
-            if (this.props.onLayout) this.props.onLayout(this.state)
-          }
-        )
+        this.setState({
+          bodyHeight: element.offsetHeight || element.height
+        })
     }, 100)
 
     onKeyPress = (e) => {
