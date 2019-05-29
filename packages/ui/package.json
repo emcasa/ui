@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/ui",
-  "version": "2.1.3",
+  "version": "2.1.5",
   "description": "EmCasa's UI library",
   "license": "MIT",
   "main": "lib/index.js",
