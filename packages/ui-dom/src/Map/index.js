@@ -162,6 +162,7 @@ export default class MapContainer extends PureComponent {
     ) {
       if (this.props.cluster) {
         this.initSupercluster()
+        if (this.state.maps) this.updateClusters()
       } else {
         this.supercluster = undefined
       }
@@ -211,6 +212,11 @@ export default class MapContainer extends PureComponent {
     return this.multiMarkerEnabled
       ? this.multiMarkerSupercluster
       : this.originalSupercluster
+  }
+
+  set supercluster(value) {
+    this.originalSupercluster = value
+    this.multiMarkerSupercluster = value
   }
 
   initSupercluster() {
