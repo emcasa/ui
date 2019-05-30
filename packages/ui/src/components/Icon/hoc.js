@@ -2,15 +2,17 @@ import React from 'react'
 import {withTheme} from 'styled-components'
 import {ICON_SIZE} from '../../theme/measures'
 
-const getIcon = ({type, name}, {icons, defaultIcon}) => {
+const getIcon = (props, {icons, defaultIcon}) => {
+  const {type, name} = props
   const findIcon = (iconName, key = type) => {
     if (!(key in icons)) return undefined
     const values = Object.keys(icons[key]).map((item) => icons[key][item])
-    for (const icon of values)
-      if (icon.iconName == iconName) return icon
+    for (const icon of values) if (icon.iconName == iconName) return icon
   }
   const icon = findIcon(name) || findIcon(defaultIcon, 'default')
   return {
+    props: typeof icon.props === 'function' ? icon.props(props) : icon.props,
+    render: icon.render,
     width: icon.icon[0],
     height: icon.icon[1],
     path: icon.icon[4]
