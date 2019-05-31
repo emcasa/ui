@@ -14,7 +14,11 @@ const IconComponent = styled(
         x={0}
         y={0}
       >
-        <path d={icon.path} fill={color} {...props} />
+        {icon.render ? (
+          icon.render({...props, color})
+        ) : (
+          <path d={icon.path} fill={color} {...icon.props} {...props} />
+        )}
       </svg>
     </div>
   ))
