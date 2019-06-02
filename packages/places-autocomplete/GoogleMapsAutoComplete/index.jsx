@@ -15,28 +15,32 @@ export default class GoogleMapsAutoComplete extends PureComponent {
   static propTypes = {
     /** Url to /autocomplete endpoint */
     apiUrl: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
-    headers: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+    options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     renderLoading: PropTypes.func,
     renderEmpty: PropTypes.func,
     renderPrediction: PropTypes.func.isRequired,
+    /** Called when the input text changes */
     onChangeText: PropTypes.func,
+    /** Called places predictions are loaded */
     onLoadPredictions: PropTypes.func,
+    /** Called the user selects a place from the predictions */
     onSelect: PropTypes.func,
+    /** Ref for the <Input/> */
     inputRef: PropTypes.any
   }
 
   static defaultProps = {
     apiUrl: '/maps',
-    headers: {mode: 'same-origin'},
+    options: {mode: 'same-origin'},
     height: 'medium',
     icon: 'map-marker-alt',
     renderLoading: () => <div />,
     renderEmpty: ({value}) => (
       <Text inline>
         {value
-          ? 'Digite um endereço para buscar.'
-          : 'Endereço não encontrado. Tente outros termos.'}
+          ? 'Endereço não encontrado. Tente outros termos.'
+          : 'Digite um endereço para buscar.'}
       </Text>
     ),
     renderPrediction: ({description, place_id}) => (
@@ -68,24 +72,25 @@ export default class GoogleMapsAutoComplete extends PureComponent {
   }
 
   loadPredictions = debounce(async () => {
-    const {apiUrl, headers, sessionToken, onLoadPredictions} = this.props
+    const {apiUrl, options, sessionToken, onLoadPredictions} = this.props
     const {value, loading} = this.state
     if (!value) return
     if (loading) this.abort()
     else this.setState({loading: true, error: undefined})
     try {
       if (ABORT_CONTROLLER_SUPPORT) this.fetchController = new AbortController()
-      const url =
+
+      const queryString = () =>
+        `autocomplete?q=${encodeURI(value)}&sessionToken=${sessionToken}`
+      const fetchUrl =
         typeof apiUrl === 'function'
           ? apiUrl({sessionToken, ...this.state})
-          : `${apiUrl}/autocomplete?q=${encodeURI(
-              value
-            )}&sessionToken=${sessionToken}`
-      const response = await window.fetch(
-        url,
-        typeof headers === 'function' ? headers(this.state) : headers
-      )
-      const {predictions = []} = (await response.json()).json
+          : `${apiUrl}/${queryString()}`
+      const fetchOptions =
+        typeof options === 'function' ? options(this.state) : options
+
+      const response = await window.fetch(fetchUrl, fetchOptions)
+      const {predictions = []} = await response.json()
       if (onLoadPredictions) onLoadPredictions(predictions, value)
       this.setState({loading: false, predictions})
     } catch (error) {

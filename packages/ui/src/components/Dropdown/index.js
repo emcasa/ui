@@ -140,7 +140,7 @@ export const option = css`
   ${row};
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 100%;
+  flex-basis: auto;
 `
 
 option.text = css`

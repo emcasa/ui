@@ -1,0 +1,20 @@
+---
+name: GoogleMapsAutoComplete
+menu: Places Autocomplete
+---
+
+import { Playground } from 'docz'
+import GoogleMapsAutoComplete from '@emcasa/places-autocomplete/GoogleMapsAutoComplete'
+import {GOOGLE_MAPS_API_KEY} from '../config'
+
+# GoogleMapsAutoComplete
+
+## Basic usage
+
+<Playground style={{minHeight: "250px"}}>
+  <GoogleMapsAutoComplete
+    options={{mode: 'cors'}}
+    apiUrl={({value}) => `https://api.myjson.com/bins/8ur2v`}
+    onSelect={(value) => console.log('selected', value)}
+  />
+</Playground>

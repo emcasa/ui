@@ -27,7 +27,7 @@ export default function createMiddleware({
           sessiontoken: sessionToken
         })
         .asPromise()
-      res.status(200).send(result)
+      res.status(200).send(result.json)
     } catch (e) {
       res.status(500).send({error: e})
     }
@@ -42,7 +42,7 @@ export default function createMiddleware({
           language
         })
         .asPromise()
-      res.status(200).send(result)
+      res.status(200).send(result.json)
     } catch (e) {
       res.status(500).send({error: e})
     }
