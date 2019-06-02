@@ -15,7 +15,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
   static API_ENDPOINT = 'autocomplete'
 
   static propTypes = {
-    /** Base url to /autocomplete endpoint */
+    /** Base url where the maps middleware is mounted */
     apiUrl: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
     /** Fetch options */
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
@@ -87,28 +87,31 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     }
   }
 
+  getUrl() {
+    const {apiUrl, sessionToken} = this.props
+    const {value} = this.state
+    const endpoint = this.constructor.API_ENDPOINT
+    if (typeof apiUrl === 'function')
+      return apiUrl({sessionToken, endpoint, ...this.state})
+    const queryString = `q=${encodeURI(value)}&sessionToken=${sessionToken}`
+    return `${apiUrl}/${endpoint}?${queryString}`
+  }
+
   loadPredictions = debounce(async () => {
-    const {apiUrl, options, sessionToken, onLoadPredictions} = this.props
+    const {options, onLoadPredictions} = this.props
     const {value, loading} = this.state
+    const endpoint = this.constructor.API_ENDPOINT
     if (!value) return
     if (loading) this.abort()
     else this.setState({loading: true, error: undefined})
     try {
       if (ABORT_CONTROLLER_SUPPORT) this.fetchController = new AbortController()
-
-      const endpoint = this.constructor.API_ENDPOINT
-      const queryString = () =>
-        `q=${encodeURI(value)}&sessionToken=${sessionToken}`
-      const fetchUrl =
-        typeof apiUrl === 'function'
-          ? apiUrl({sessionToken, endpoint, ...this.state})
-          : `${apiUrl}/${endpoint}?${queryString()}`
-      const fetchOptions =
+      const response = await window.fetch(
+        this.getUrl(),
         typeof options === 'function'
           ? options({endpoint, ...this.state})
           : options
-
-      const response = await window.fetch(fetchUrl, fetchOptions)
+      )
       const {predictions = []} = await response.json()
       if (onLoadPredictions) onLoadPredictions(predictions, value)
       this.setState({loading: false, predictions})
@@ -139,6 +142,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
   changeText = (e) => {
     const value = isObject(e) ? e.target.value : e
     if (this.props.onChangeText) this.props.onChangeText(value)
+    if (!this.state.focused) this.props.onFocus()
     this.setState({value, focused: true}, this.loadPredictions)
   }
 

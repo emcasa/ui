@@ -2,8 +2,11 @@ import React, {PureComponent} from 'react'
 import {filterComponent} from '../helpers'
 import GoogleMapsAutoComplete from '../GoogleMapsAutoComplete'
 
-export default class AddressAutoComplete extends PureComponent {
+export class AddressAutoComplete extends PureComponent {
+  static API_ENDPOINT = 'placeDetail'
+
   static defaultProps = {
+    apiUrl: '/maps',
     format({structured_formatting}) {
       return (
         structured_formatting.main_text +
@@ -15,8 +18,6 @@ export default class AddressAutoComplete extends PureComponent {
       return React.createRef()
     }
   }
-
-  static API_ENDPOINT = 'placeDetail'
 
   state = {
     focused: false,
@@ -38,21 +39,25 @@ export default class AddressAutoComplete extends PureComponent {
     }
   }
 
+  getUrl(place) {
+    const {apiUrl} = this.props
+    const endpoint = this.constructor.API_ENDPOINT
+    if (typeof apiUrl === 'function')
+      return apiUrl({endpoint, place, ...this.state})
+    else return `${apiUrl}/${endpoint}?q=${place.place_id}`
+  }
+
   loadPlace = async (place) => {
-    const {format, options, apiUrl, onSelect} = this.props
+    const {format, options, onSelect} = this.props
+    const endpoint = this.constructor.API_ENDPOINT
     this.setState({loading: true, error: undefined})
     try {
-      const endpoint = this.constructor.API_ENDPOINT
-      const fetchUrl =
-        typeof apiUrl === 'function'
-          ? apiUrl({endpoint, place, ...this.state})
-          : `${apiUrl}/${endpoint}?q=${place.place_id}`
-      const fetchOptions =
+      const response = await fetch(
+        this.getUrl(place),
         typeof options === 'function'
-          ? options({endpoint, place, ...this.state})
+          ? options({endpoint, ...this.state})
           : options
-
-      const response = await fetch(fetchUrl, fetchOptions)
+      )
       const {result} = await response.json()
       const streetNumber = filterComponent(
         result.address_components,
@@ -66,7 +71,7 @@ export default class AddressAutoComplete extends PureComponent {
         throw new Error('Não encontramos um endereço válido com esse número.')
       const value = format(result)
       this.setState({value, focused: false}, () => {
-        if (onSelect) onSelect(place, response, value)
+        if (onSelect) onSelect(place, result, value)
       })
     } catch (error) {
       this.setState({error, focused: true})
@@ -106,10 +111,12 @@ export default class AddressAutoComplete extends PureComponent {
   }
 
   render() {
+    const {autoCompleteRef, ...props} = this.props
     const {focused, value, error} = this.state
     return (
       <GoogleMapsAutoComplete
-        {...this.props}
+        {...props}
+        ref={autoCompleteRef}
         error={error}
         value={value}
         focused={focused}
@@ -121,3 +128,7 @@ export default class AddressAutoComplete extends PureComponent {
     )
   }
 }
+
+export default React.forwardRef((props, ref) => (
+  <AddressAutoComplete autoCompleteRef={ref} {...props} />
+))

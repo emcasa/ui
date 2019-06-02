@@ -4,6 +4,7 @@ import googleMaps from '@google/maps'
 export default function createMiddleware({
   apiKey,
   language = 'pt-BR',
+  country = 'br',
   ...options
 }) {
   const router = express.Router()
@@ -22,7 +23,7 @@ export default function createMiddleware({
         .placesAutoComplete({
           input: q,
           language,
-          components: {country: 'br'},
+          components: {country},
           types: ['address'],
           sessiontoken: sessionToken
         })
