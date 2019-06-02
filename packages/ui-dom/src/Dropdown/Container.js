@@ -14,14 +14,14 @@ export default styled(
     }
 
     componentDidMount() {
-      document.addEventListener('click', this.onDocumentClick, false)
-      document.addEventListener('touchend', this.onDocumentClick, false)
+      document.addEventListener('click', this.onDocumentClick)
+      document.addEventListener('touchend', this.onDocumentClick)
       document.addEventListener('focus', this.onDocumentFocus, true)
     }
 
     componentWillUnmount() {
-      document.removeEventListener('click', this.onDocumentClick, false)
-      document.removeEventListener('touchend', this.onDocumentClick, false)
+      document.removeEventListener('click', this.onDocumentClick)
+      document.removeEventListener('touchend', this.onDocumentClick)
       document.removeEventListener('focus', this.onDocumentFocus, true)
     }
 

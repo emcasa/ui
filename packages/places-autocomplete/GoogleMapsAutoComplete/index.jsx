@@ -12,19 +12,32 @@ import {Input} from './styles'
 const ABORT_CONTROLLER_SUPPORT = process.browser && 'AbortController' in window
 
 export default class GoogleMapsAutoComplete extends PureComponent {
+  static API_ENDPOINT = 'autocomplete'
+
   static propTypes = {
-    /** Url to /autocomplete endpoint */
+    /** Base url to /autocomplete endpoint */
     apiUrl: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
+    /** Fetch options */
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+    /** Dropdown height */
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    /** Render dropdown content when predictions are loading */
     renderLoading: PropTypes.func,
+    /** Render dropdown content for empty results */
     renderEmpty: PropTypes.func,
+    /** Render prediction dropdown option */
     renderPrediction: PropTypes.func.isRequired,
+    /** Render components to the right side of the input */
+    renderControls: PropTypes.func,
+    /** Input blur event */
+    onBlur: PropTypes.func,
+    /** Input focus event */
+    onFocus: PropTypes.func,
     /** Called when the input text changes */
     onChangeText: PropTypes.func,
     /** Called places predictions are loaded */
     onLoadPredictions: PropTypes.func,
-    /** Called the user selects a place from the predictions */
+    /** Called when a place is selected from from the predictions */
     onSelect: PropTypes.func,
     /** Ref for the <Input/> */
     inputRef: PropTypes.any
@@ -59,6 +72,8 @@ export default class GoogleMapsAutoComplete extends PureComponent {
   state = {
     predictions: [],
     focus: false,
+    error: undefined,
+    loading: false,
     value: ''
   }
 
@@ -66,6 +81,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     return {
       focused:
         typeof props.focused !== 'undefined' ? props.focused : state.focused,
+      error: typeof props.error !== 'undefined' ? props.error : state.error,
       predictions: props.predictions || state.predictions,
       value: props.value || state.value
     }
@@ -80,14 +96,17 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     try {
       if (ABORT_CONTROLLER_SUPPORT) this.fetchController = new AbortController()
 
+      const endpoint = this.constructor.API_ENDPOINT
       const queryString = () =>
-        `autocomplete?q=${encodeURI(value)}&sessionToken=${sessionToken}`
+        `q=${encodeURI(value)}&sessionToken=${sessionToken}`
       const fetchUrl =
         typeof apiUrl === 'function'
-          ? apiUrl({sessionToken, ...this.state})
-          : `${apiUrl}/${queryString()}`
+          ? apiUrl({sessionToken, endpoint, ...this.state})
+          : `${apiUrl}/${endpoint}?${queryString()}`
       const fetchOptions =
-        typeof options === 'function' ? options(this.state) : options
+        typeof options === 'function'
+          ? options({endpoint, ...this.state})
+          : options
 
       const response = await window.fetch(fetchUrl, fetchOptions)
       const {predictions = []} = await response.json()
@@ -159,7 +178,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
           <Row mr="-10px" flex={1} justifyContent="center" alignItems="center">
             <Col flex={1}>
               <Input
-                ref={this.inputRef}
+                ref={this.props.inputRef}
                 height={height}
                 autoComplete="new-password"
                 value={value}
