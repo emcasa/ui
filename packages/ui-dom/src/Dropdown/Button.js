@@ -50,8 +50,8 @@ const DropdownButton = styled(
             color="dark"
             size={18}
             height={height}
-            style={{alignSelf: 'flex-start'}}
             {...iconProps}
+            style={Object.assign({alignSelf: 'flex-start'}, iconProps.style)}
           />
           <ButtonText {...props}>{children}</ButtonText>
         </div>
