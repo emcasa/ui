@@ -24,7 +24,9 @@
     "jest": "23.6.0",
     "prop-types": "^15.7.2"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "react-spinners": "^0.5.4"
+  },
   "publishConfig": {
     "access": "public"
   }

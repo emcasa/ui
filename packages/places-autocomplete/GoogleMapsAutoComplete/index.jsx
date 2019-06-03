@@ -7,7 +7,8 @@ import View from '@emcasa/ui-dom/components/View'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
-import {Input} from './styles'
+import Spinner from './Spinner'
+import Input from './Input'
 
 const ABORT_CONTROLLER_SUPPORT = process.browser && 'AbortController' in window
 
@@ -37,7 +38,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     onChangeText: PropTypes.func,
     /** Called places predictions are loaded */
     onLoadPredictions: PropTypes.func,
-    /** Called when a place is selected from from the predictions */
+    /** Called when a place is selected from the predictions */
     onSelect: PropTypes.func,
     /** Ref for the <Input/> */
     inputRef: PropTypes.any
@@ -48,7 +49,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     options: {mode: 'same-origin'},
     height: 'medium',
     icon: 'map-marker-alt',
-    renderLoading: () => <div />,
+    renderLoading: () => <Spinner />,
     renderEmpty: ({value}) => (
       <Text inline>
         {value

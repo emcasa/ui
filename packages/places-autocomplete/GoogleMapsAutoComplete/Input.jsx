@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import BaseInput from '@emcasa/ui-dom/components/Input'
 
-export const Input = styled(BaseInput).attrs({
+export default styled(BaseInput).attrs({
   hideErrorView: true,
   hideLabelView: true
 })`
