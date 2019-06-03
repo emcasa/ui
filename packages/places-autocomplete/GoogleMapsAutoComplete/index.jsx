@@ -22,6 +22,10 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
     /** Dropdown height */
     height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    /** Dropdown icon name */
+    icon: PropTypes.string,
+    /** Dropdown Icon component props */
+    iconProps: PropTypes.object,
     /** Render dropdown content when predictions are loading */
     renderLoading: PropTypes.func,
     /** Render dropdown content for empty results */
@@ -34,13 +38,13 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     onBlur: PropTypes.func,
     /** Input focus event */
     onFocus: PropTypes.func,
-    /** Called when the input text changes */
+    /** Input onChange event */
     onChangeText: PropTypes.func,
-    /** Called places predictions are loaded */
+    /** Called place predictions are loaded */
     onLoadPredictions: PropTypes.func,
-    /** Called when a place is selected from the predictions */
+    /** Called when a place is selected from the dropdown */
     onSelect: PropTypes.func,
-    /** Ref for the <Input/> */
+    /** Input component ref */
     inputRef: PropTypes.any
   }
 

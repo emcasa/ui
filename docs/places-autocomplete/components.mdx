@@ -44,7 +44,7 @@ Google place autocomplete dropdown with additional data from place details api.
 
 # AddressAutoComplete
 
-Google place autocomplete dropdown with additional data from place details api.
+Validates street number and postal code in addition to fetching place details.
 
 <Playground style={{minHeight: "250px"}}>
   <AddressAutoComplete
@@ -56,6 +56,6 @@ Google place autocomplete dropdown with additional data from place details api.
         // mock /details endpoint
         : `https://api.myjson.com/bins/8ur2v`
     )}
-    onSelect={(prediction, place) => console.log({prediction, place})}
+    onSelect={(prediction, place, input) => console.log({prediction, place, input})}
   />
 </Playground>
