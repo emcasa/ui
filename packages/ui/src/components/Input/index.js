@@ -1,5 +1,12 @@
 import {css} from 'styled-components'
-import {themeGet, color, border, borderColor, fontFamily} from 'styled-system'
+import {
+  themeGet,
+  color,
+  border,
+  borderColor,
+  fontFamily,
+  space
+} from 'styled-system'
 
 import {
   letterSpacing,
@@ -23,6 +30,7 @@ export const container = css`
   ${buttonHeight};
   ${border};
   ${borderColor};
+  ${space};
 `
 
 container.propTypes = {

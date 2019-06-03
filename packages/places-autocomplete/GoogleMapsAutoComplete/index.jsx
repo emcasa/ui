@@ -1,5 +1,6 @@
 import debounce from 'lodash/debounce'
 import isObject from 'lodash/isObject'
+import pick from 'lodash/pick'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Dropdown from '@emcasa/ui-dom/components/Dropdown'
@@ -11,6 +12,18 @@ import Spinner from './Spinner'
 import Input from './Input'
 
 const ABORT_CONTROLLER_SUPPORT = process.browser && 'AbortController' in window
+
+const spaceProps = ['p', 'pr', 'pl', 'pb', 'pt', 'm', 'mr', 'ml', 'mb', 'mt']
+const dropdownProps = [
+  'style',
+  'className',
+  'width',
+  'height',
+  'icon',
+  'iconProps',
+  ...spaceProps
+]
+const inputProps = ['height', 'color', 'fonSize', 'placeholder']
 
 export default class GoogleMapsAutoComplete extends PureComponent {
   static API_ENDPOINT = 'autocomplete'
@@ -162,38 +175,25 @@ export default class GoogleMapsAutoComplete extends PureComponent {
 
   render() {
     const {
-      style,
-      className,
-      icon,
-      height,
-      width,
-      placeholder,
-      iconProps,
       renderLoading,
       renderEmpty,
       renderPrediction,
-      renderControls
+      renderControls,
+      ...props
     } = this.props
     const {focused, loading, value, error, predictions} = this.state
     return (
       <Dropdown
         focused={focused}
-        icon={icon}
-        height={height}
-        width={width}
-        style={style}
-        className={className}
-        iconProps={iconProps}
         label={
           <Row mr="-10px" flex={1} justifyContent="center" alignItems="center">
             <Col flex={1}>
               <Input
                 ref={this.props.inputRef}
-                height={height}
                 autoComplete="new-password"
                 value={value}
-                placeholder={placeholder}
                 onChange={this.changeText}
+                {...pick(props, inputProps)}
               />
             </Col>
             {renderControls && renderControls(this.state)}
@@ -202,6 +202,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
         onFocus={this.focus}
         onBlur={this.blur}
         onChange={this.selectPlace}
+        {...pick(props, dropdownProps)}
       >
         {error && (
           <View m="5px 15px 10px">
