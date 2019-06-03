@@ -167,6 +167,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
       icon,
       height,
       width,
+      placeholder,
       iconProps,
       renderLoading,
       renderEmpty,
@@ -191,6 +192,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
                 height={height}
                 autoComplete="new-password"
                 value={value}
+                placeholder={placeholder}
                 onChange={this.changeText}
               />
             </Col>
