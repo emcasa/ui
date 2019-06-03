@@ -3,7 +3,7 @@ import {filterComponent} from '../helpers'
 import GoogleMapsAutoComplete from '../GoogleMapsAutoComplete'
 
 export class AddressAutoComplete extends PureComponent {
-  static API_ENDPOINT = 'placeDetail'
+  static API_ENDPOINT = 'details'
 
   static defaultProps = {
     apiUrl: '/maps',

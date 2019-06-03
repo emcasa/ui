@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import GoogleMapsAutoComplete from '../GoogleMapsAutoComplete'
 
 export class PlaceAutoComplete extends PureComponent {
-  static API_ENDPOINT = 'placeDetail'
+  static API_ENDPOINT = 'details'
 
   static defaultProps = {
     apiUrl: '/maps'
@@ -38,6 +38,7 @@ export class PlaceAutoComplete extends PureComponent {
           ? options({endpoint, ...this.state})
           : options
       )
+      console.log(this.getUrl(place))
       const {result} = await response.json()
       if (onSelect) onSelect(place, result)
     } catch (error) {
@@ -53,12 +54,13 @@ export class PlaceAutoComplete extends PureComponent {
 
   render() {
     const {autoCompleteRef, ...props} = this.props
-    const {focused} = this.state
+    const {focused, error} = this.state
     return (
       <GoogleMapsAutoComplete
         {...props}
         ref={autoCompleteRef}
         focused={focused}
+        error={error}
         onFocus={this.focus}
         onBlur={this.blur}
         onSelect={this.loadPlace}

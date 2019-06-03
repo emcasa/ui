@@ -34,7 +34,7 @@ export default function createMiddleware({
     }
   })
 
-  router.get('/placeDetail', async (req, res) => {
+  router.get('/details', async (req, res) => {
     const {q} = req.query
     try {
       const result = await client

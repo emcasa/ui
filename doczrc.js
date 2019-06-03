@@ -20,6 +20,9 @@ export default {
       link: '#1fb6ff'
     }
   },
+  notUseSpecifiers: true,
+  filterComponents: (files) =>
+    files.filter((filepath) => /w*.(jsx?|tsx?)$/.test(filepath)),
   modifyBundlerConfig(config) {
     config.plugins.unshift(
       new webpack.EnvironmentPlugin({

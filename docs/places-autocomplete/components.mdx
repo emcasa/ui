@@ -3,13 +3,15 @@ name: Components
 menu: Places Autocomplete
 ---
 
-import { Playground } from 'docz'
-import GoogleMapsAutoComplete from '@emcasa/places-autocomplete/GoogleMapsAutoComplete'
+import {Playground, Props} from 'docz'
+import GoogleMapsAutoComplete from '@emcasa/places-autocomplete/GoogleMapsAutoComplete/index.jsx'
 import PlaceAutoComplete from '@emcasa/places-autocomplete/PlaceAutoComplete'
 import AddressAutoComplete from '@emcasa/places-autocomplete/AddressAutoComplete'
 import {GOOGLE_MAPS_API_KEY} from '../config'
 
 # GoogleMapsAutoComplete
+
+<Props of={GoogleMapsAutoComplete} />
 
 Select predictions from google places autocomplete api.
 
@@ -17,7 +19,7 @@ Select predictions from google places autocomplete api.
   <GoogleMapsAutoComplete
     options={{mode: 'cors'}}
     // mock /autocomplete api
-    apiUrl={({value}) => `https://api.myjson.com/bins/8ur2v`}
+    apiUrl={() => `https://api.myjson.com/bins/8ur2v`}
     onSelect={(prediction) => console.log({prediction})}
   />
 </Playground>
@@ -29,10 +31,10 @@ Google place autocomplete dropdown with additional data from place details api.
 <Playground style={{minHeight: "250px"}}>
   <PlaceAutoComplete
     options={{mode: 'cors'}}
-    apiUrl={({endpoint, value}) => (
-      endpoint === PlaceAutoComplete.API_ENDPOINT
+    apiUrl={({endpoint}) => (
+      endpoint === 'details'
         // mock /autocomplete endpoint
-        ? `http://myjson.com/tiphj`
+        ? `https://api.myjson.com/bins/tiphj`
         // mock /details endpoint
         : `https://api.myjson.com/bins/8ur2v`
     )}
