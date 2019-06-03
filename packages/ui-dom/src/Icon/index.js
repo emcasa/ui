@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import Icon, * as styles from '@emcasa/ui/lib/components/Icon'
 
 const IconComponent = styled(
-  Icon(({icon, size, color, style, className, id, ref, ...props}) => (
-    <div style={style} className={className} id={id}>
+  Icon(({icon, size, color, style, className, id, ref, onClick, ...props}) => (
+    <div style={style} className={className} id={id} onClick={onClick}>
       <svg
         ref={ref}
         height={size}

@@ -21,6 +21,7 @@ const dropdownProps = [
   'height',
   'icon',
   'iconProps',
+  'containerProps',
   ...spaceProps
 ]
 const inputProps = ['height', 'color', 'fonSize', 'placeholder']
@@ -39,6 +40,10 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     icon: PropTypes.string,
     /** Dropdown Icon component props */
     iconProps: PropTypes.object,
+    /** Dropdown container props */
+    containerProps: PropTypes.object,
+    /** Input component props */
+    inputProps: PropTypes.object,
     /** Render dropdown content when predictions are loading */
     renderLoading: PropTypes.func,
     /** Render dropdown content for empty results */
@@ -66,6 +71,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     options: {mode: 'same-origin'},
     height: 'medium',
     icon: 'map-marker-alt',
+    inputProps: {},
     renderLoading: () => <Spinner />,
     renderEmpty: ({value}) => (
       <Text inline>
@@ -194,6 +200,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
                 value={value}
                 onChange={this.changeText}
                 {...pick(props, inputProps)}
+                {...props.inputProps}
               />
             </Col>
             {renderControls && renderControls(this.state)}

@@ -69,7 +69,7 @@ export class AddressAutoComplete extends PureComponent {
       ).long_name
       if (!streetNumber || !postalCode)
         throw new Error('Não encontramos um endereço válido com esse número.')
-      const value = format(result)
+      const value = format(place, result)
       this.setState({value, focused: false}, () => {
         if (onSelect) onSelect(place, result, value)
       })
