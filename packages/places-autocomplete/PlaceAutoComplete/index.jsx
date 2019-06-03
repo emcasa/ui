@@ -61,6 +61,7 @@ export class PlaceAutoComplete extends PureComponent {
         focused={focused}
         onFocus={this.focus}
         onBlur={this.blur}
+        onSelect={this.loadPlace}
       />
     )
   }

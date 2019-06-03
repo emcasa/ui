@@ -1,0 +1,17 @@
+---
+name: Middleware
+menu: Places Autocomplete
+---
+
+```js
+import express from 'express'
+import googleMapsMiddleware from '@emcasa/places-autocomplete/middleware'
+
+const server = express()
+
+server.use('/maps', googleMapsMiddleware({
+  apiKey: '...',
+  // ... @google/maps client options
+}))
+
+```
