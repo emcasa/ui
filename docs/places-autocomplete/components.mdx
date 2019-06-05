@@ -1,0 +1,61 @@
+---
+name: Components
+menu: Places Autocomplete
+---
+
+import {Playground, Props} from 'docz'
+import GoogleMapsAutoComplete from '@emcasa/places-autocomplete/GoogleMapsAutoComplete/index.jsx'
+import PlaceAutoComplete from '@emcasa/places-autocomplete/PlaceAutoComplete'
+import AddressAutoComplete from '@emcasa/places-autocomplete/AddressAutoComplete'
+import {GOOGLE_MAPS_API_KEY} from '../config'
+
+# GoogleMapsAutoComplete
+
+<Props of={GoogleMapsAutoComplete} />
+
+Select predictions from google places autocomplete api.
+
+<Playground style={{minHeight: "250px"}}>
+  <GoogleMapsAutoComplete
+    options={{mode: 'cors'}}
+    // mock /autocomplete api
+    apiUrl={() => `https://api.myjson.com/bins/8ur2v`}
+    onSelect={(prediction) => console.log({prediction})}
+  />
+</Playground>
+
+# PlaceAutoComplete
+
+Google place autocomplete dropdown with additional data from place details api.
+
+<Playground style={{minHeight: "250px"}}>
+  <PlaceAutoComplete
+    options={{mode: 'cors'}}
+    apiUrl={({endpoint}) => (
+      endpoint === 'details'
+        // mock /autocomplete endpoint
+        ? `https://api.myjson.com/bins/tiphj`
+        // mock /details endpoint
+        : `https://api.myjson.com/bins/8ur2v`
+    )}
+    onSelect={(prediction, place) => console.log({prediction, place})}
+  />
+</Playground>
+
+# AddressAutoComplete
+
+Validates street number and postal code in addition to fetching place details.
+
+<Playground style={{minHeight: "250px"}}>
+  <AddressAutoComplete
+    options={{mode: 'cors'}}
+    apiUrl={({endpoint, value}) => (
+      endpoint === PlaceAutoComplete.API_ENDPOINT
+        // mock /autocomplete endpoint
+        ? `http://myjson.com/tiphj`
+        // mock /details endpoint
+        : `https://api.myjson.com/bins/8ur2v`
+    )}
+    onSelect={(prediction, place, input) => console.log({prediction, place, input})}
+  />
+</Playground>

@@ -1,0 +1,33 @@
+{
+  "name": "@emcasa/places-autocomplete",
+  "version": "2.1.7",
+  "description": "EmCasa's places autocomplete input component",
+  "license": "MIT",
+  "main": "components/index.js",
+  "author": "EmCasa <dev@emcasa.com>",
+  "scripts": {
+    "clean": "rm -rf components",
+    "build": "babel . -d . --ignore \"**/*.js\"",
+    "watch": "yarn build --watch",
+    "test": "jest",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {
+    "@emcasa/ui": "^2.1.7",
+    "@emcasa/ui-dom": "^2.1.7",
+    "@google/maps": "^0.5.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "jest": "23.6.0",
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "react-spinners": "^0.5.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -34,6 +34,8 @@ const DropdownButton = styled(
     iconProps = {},
     ...props
   }) => {
+    const iconName =
+      typeof icon !== 'undefined' ? icon : focused ? 'caret-up' : 'caret-down'
     return (
       <div>
         <div
@@ -44,15 +46,17 @@ const DropdownButton = styled(
           onMouseDown={() => setTimeout(onFocusChange, 0)}
           onClick={onClick}
         >
-          <Icon
-            name={icon ? icon : focused ? 'caret-up' : 'caret-down'}
-            type={type}
-            color="dark"
-            size={18}
-            height={height}
-            style={{alignSelf: 'flex-start'}}
-            {...iconProps}
-          />
+          {Boolean(iconName) && (
+            <Icon
+              name={iconName}
+              type={type}
+              color="dark"
+              size={18}
+              height={height}
+              {...iconProps}
+              style={Object.assign({alignSelf: 'flex-start'}, iconProps.style)}
+            />
+          )}
           <ButtonText {...props}>{children}</ButtonText>
         </div>
         {focused && <ButtonBackground />}
