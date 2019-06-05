@@ -126,10 +126,12 @@ export default class MarkerHandler extends PureComponent {
       value,
       sliderLayout,
       index,
-      zIndex,
+      disabled,
       animatedValues
     } = this.props
     const {layout, focus} = this.state
+    let zIndex = (disabled ? -1 : index) + this.props.zIndex
+    if (focus) zIndex += 100
     return (
       <Measure onResize={this.onResize}>
         {({measureRef}) => (
@@ -137,7 +139,7 @@ export default class MarkerHandler extends PureComponent {
             ref={measureRef}
             bounds={bounds}
             tabIndex={0}
-            zIndex={index + zIndex}
+            zIndex={zIndex}
             hitSlop={hitSlop}
             layout={layout}
             sliderLayout={sliderLayout}

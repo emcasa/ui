@@ -222,6 +222,7 @@ export default ({
       return (
         <MarkerHandler
           {...state}
+          disabled={state.bounds.left == state.bounds.right}
           key={key}
           index={index}
           name={key}
