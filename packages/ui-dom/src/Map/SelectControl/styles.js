@@ -1,6 +1,6 @@
 import curry from 'lodash/curry'
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
+import {themeGet, zIndex} from 'styled-system'
 import {buttonHeight} from '@emcasa/ui/lib/styles'
 import BaseButton from '../../Button'
 
@@ -46,4 +46,5 @@ export const Button = styled(BaseButton)`
   background-color: ${(props) =>
     props.expanded ? props.theme.colors.darkSnow : 'white'};
   border: none;
+  ${zIndex};
 `

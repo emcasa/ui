@@ -38,10 +38,15 @@ class MapControl extends PureComponent {
   }
 
   registerControl(position) {
-    const {map, index} = this.props
+    const {map, index, onControlReady} = this.props
     this.controlIndex = map.controls[position].length
     if (!isNaN(index)) this.control.index = index
     map.controls[position].push(this.control)
+    if (onControlReady)
+      onControlReady({
+        control: this.control,
+        element: map.controls[position].getAt(this.controlIndex)
+      })
   }
 
   unregisterControl(position) {
@@ -72,6 +77,8 @@ class MapControl extends PureComponent {
     delete props.position
     delete props.map
     delete props.maps
+    delete props.onControlReady
+    delete props.index
     if (!this.control) return null
     return ReactDOM.createPortal(
       <View {...props}>{children}</View>,

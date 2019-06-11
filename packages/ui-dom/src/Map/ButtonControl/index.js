@@ -12,6 +12,8 @@ export default function ButtonControl({
   mr,
   ml,
   zIndex,
+  index,
+  onControlReady,
   ...props
 }) {
   return (
@@ -25,7 +27,9 @@ export default function ButtonControl({
         mb,
         mr,
         ml,
-        zIndex
+        zIndex,
+        index,
+        onControlReady
       }}
     >
       <Button {...props} />

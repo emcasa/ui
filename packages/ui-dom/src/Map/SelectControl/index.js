@@ -67,10 +67,11 @@ export class SelectInput extends PureComponent {
       children,
       onChange,
       selectedValue,
-      strategy
+      strategy,
+      zIndex
     } = this.props
     const {expanded, listHeight} = this.state
-    const buttonProps = {height, fontSize}
+    const buttonProps = {height, fontSize, zIndex}
     const groupProps = {strategy, onChange, selectedValue}
     return (
       <Container
@@ -103,9 +104,23 @@ export default function SelectControl({
   mr,
   ml,
   zIndex,
+  index,
+  onControlReady,
   ...props
 }) {
-  const controlProps = {position, style, className, m, mt, mb, mr, ml, zIndex}
+  const controlProps = {
+    position,
+    style,
+    className,
+    m,
+    mt,
+    mb,
+    mr,
+    ml,
+    zIndex,
+    index,
+    onControlReady
+  }
   return (
     <Control {...controlProps}>
       <SelectInput {...props} />
