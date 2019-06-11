@@ -4,6 +4,11 @@ import PropTypes from 'prop-types'
 import {withMapContext} from '../Context'
 import View from '../../View'
 
+const getPosition = ({position, maps}) => {
+  const key = position ? position.toUpperCase().replace('-', '_') : 'TOP_CENTER'
+  return maps.ControlPosition[key]
+}
+
 class MapControl extends PureComponent {
   static propTypes = {
     position: PropTypes.oneOf([
@@ -26,42 +31,40 @@ class MapControl extends PureComponent {
     m: 2
   }
 
-  componentDidMount() {
-    this.control = document.createElement('div')
-    if (this.control.style) this.control.style.cssText = this.style
-  }
-
   get style() {
     const {zIndex} = this.props
     if (zIndex) return `z-index:${zIndex}`
     return ''
   }
 
-  get position() {
-    const {position, maps} = this.props
-    const key = position
-      ? position.toUpperCase().replace('-', '_')
-      : 'TOP_CENTER'
-    return maps.ControlPosition[key]
+  registerControl(position) {
+    const {map, index} = this.props
+    this.controlIndex = map.controls[position].length
+    if (!isNaN(index)) this.control.index = index
+    map.controls[position].push(this.control)
   }
 
-  registerControl() {
+  unregisterControl(position) {
     const {map} = this.props
-    this.controlIndex = map.controls[this.position].length
-    map.controls[this.position].push(this.control)
+    map.controls[position].removeAt(this.controlIndex)
   }
 
-  unregisterControl() {
-    const {map} = this.props
-    map.controls[this.position].removeAt(this.controlIndex)
+  componentDidMount() {
+    this.control = document.createElement('div')
+    if (this.control.style) this.control.style.cssText = this.style
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.map !== this.props.map) this.registerControl()
+    if (prevProps.map !== this.props.map)
+      this.registerControl(getPosition(this.props))
+    if (prevProps.position !== this.props.position) {
+      this.unregisterControl(getPosition(prevProps))
+      this.registerControl(getPosition(this.props))
+    }
   }
 
   componentWillUnmount() {
-    if (this.props.map) this.unregisterControl()
+    if (this.props.map) this.unregisterControl(getPosition(this.props))
   }
 
   render() {
