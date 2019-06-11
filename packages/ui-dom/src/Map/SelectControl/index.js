@@ -36,7 +36,7 @@ function SelectCheckbox({children, ...props}) {
   )
 }
 
-export default class SelectControl extends PureComponent {
+export class SelectInput extends PureComponent {
   static Option = SelectOption
 
   static Checkbox = SelectCheckbox
@@ -61,15 +61,6 @@ export default class SelectControl extends PureComponent {
 
   render() {
     const {
-      style,
-      className,
-      position,
-      m,
-      mt,
-      mb,
-      mr,
-      ml,
-      zIndex,
       height,
       fontSize,
       label,
@@ -79,28 +70,49 @@ export default class SelectControl extends PureComponent {
       strategy
     } = this.props
     const {expanded, listHeight} = this.state
-    const controlProps = {position, style, className, m, mt, mb, mr, ml, zIndex}
     const buttonProps = {height, fontSize}
     const groupProps = {strategy, onChange, selectedValue}
     return (
-      <Control {...controlProps}>
-        <Container
-          height={height}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-        >
-          <Button expanded={expanded} {...buttonProps}>
-            {label}
-          </Button>
-          <List offset={height} expanded={expanded} height={listHeight}>
-            <div ref={this.listRef}>
-              <OptionGroup {...buttonProps} {...groupProps}>
-                {children}
-              </OptionGroup>
-            </div>
-          </List>
-        </Container>
-      </Control>
+      <Container
+        height={height}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+      >
+        <Button expanded={expanded} {...buttonProps}>
+          {label}
+        </Button>
+        <List offset={height} expanded={expanded} height={listHeight}>
+          <div ref={this.listRef}>
+            <OptionGroup {...buttonProps} {...groupProps}>
+              {children}
+            </OptionGroup>
+          </div>
+        </List>
+      </Container>
     )
   }
 }
+
+export default function SelectControl({
+  style,
+  className,
+  position,
+  m,
+  mt,
+  mb,
+  mr,
+  ml,
+  zIndex,
+  ...props
+}) {
+  const controlProps = {position, style, className, m, mt, mb, mr, ml, zIndex}
+  return (
+    <Control {...controlProps}>
+      <SelectInput {...props} />
+    </Control>
+  )
+}
+
+SelectControl.Option = SelectOption
+
+SelectControl.Checkbox = SelectCheckbox
