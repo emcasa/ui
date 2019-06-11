@@ -40,8 +40,8 @@ export class SliderRange extends PureComponent {
           }}
           trackProps={{bg: 'lightGrey'}}
         >
-          <Slider.Marker name="min" bg="blue" />
-          <Slider.Marker name="max" trackProps={{bg: 'blue'}} bg="blue" />
+          <Slider.Marker name="min" />
+          <Slider.Marker name="max" trackProps={{bg: 'pink'}} />
         </Slider>
       </View>
     )
