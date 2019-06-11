@@ -10,7 +10,6 @@ import {PanelButton, Panel, Title} from './styles'
 import View from '../View'
 import Row from '../Row'
 import FilterButton from './FilterButton'
-import Icon from '../Icon'
 
 const popperModifiers = {
   offset: {
@@ -97,10 +96,7 @@ export default class Filter extends PureComponent {
           disabled={selectedValue && !selected}
           onClick={onSelect}
         >
-          <Row>
-            <Icon mr={2} name={selected ? 'angle-up' : 'angle-down'} color={selected || hasValue ? 'white': 'blue'} />
-            <span>{formatLabel ? formatLabel(value, hasValue) : label}</span>
-          </Row>
+          {formatLabel ? formatLabel(value, hasValue) : label}
         </FilterButton>
       </View>
     )

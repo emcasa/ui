@@ -29,7 +29,7 @@ const TagFilterInput = styled(TagInput).attrs({
   ${maxHeight};
 `
 
-const TagsFilter = withTheme(({theme, ...props}) => (
+const TagsFilter = withTheme(({theme, onChangeText, ...props}) => (
   <ControlledFilter
     isEmpty={isEmpty}
     panelProps={{width: parseInt(theme.breakpoints[1])}}
@@ -40,6 +40,7 @@ const TagsFilter = withTheme(({theme, ...props}) => (
         {...props}
         selectedValue={field.currentValue || []}
         onChange={field.onChange}
+        onChangeText={onChangeText}
       />
     )}
   </ControlledFilter>
