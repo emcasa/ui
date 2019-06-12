@@ -10,6 +10,7 @@ import Col from '@emcasa/ui-dom/components/Col'
 import Text from '@emcasa/ui-dom/components/Text'
 import Spinner from './Spinner'
 import Input from './Input'
+import {placesAutoCompleteSessionToken} from '@google/maps/lib/util'
 
 const ABORT_CONTROLLER_SUPPORT = process.browser && 'AbortController' in window
 
@@ -85,9 +86,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
         {description}
       </Dropdown.Option>
     ),
-    sessionToken: new require(
-      '@google/maps'
-    ).util.placesAutoCompleteSessionToken(),
+    sessionToken: placesAutoCompleteSessionToken(),
     get inputRef() {
       return React.createRef()
     }
