@@ -22,9 +22,10 @@ export class PlaceAutoComplete extends PureComponent {
   getUrl(place) {
     const {apiUrl} = this.props
     const endpoint = this.constructor.API_ENDPOINT
+    const queryString = `q=${place.place_id}`
     if (typeof apiUrl === 'function')
-      return apiUrl({endpoint, place, ...this.state})
-    else return `${apiUrl}/${endpoint}?q=${place.place_id}`
+      return apiUrl({endpoint, place, queryString, ...this.state})
+    else return `${apiUrl}/${endpoint}?${queryString}`
   }
 
   loadPlace = async (place) => {
@@ -38,9 +39,8 @@ export class PlaceAutoComplete extends PureComponent {
           ? options({endpoint, ...this.state})
           : options
       )
-      console.log(this.getUrl(place))
       const {result} = await response.json()
-      if (onSelect) onSelect(place, result)
+      if (onSelect) onSelect(place, result, place.description)
     } catch (error) {
       this.setState({focused: true, error})
     } finally {

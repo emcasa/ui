@@ -115,9 +115,9 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     const {apiUrl, sessionToken} = this.props
     const {value} = this.state
     const endpoint = this.constructor.API_ENDPOINT
-    if (typeof apiUrl === 'function')
-      return apiUrl({sessionToken, endpoint, ...this.state})
     const queryString = `q=${encodeURI(value)}&sessionToken=${sessionToken}`
+    if (typeof apiUrl === 'function')
+      return apiUrl({sessionToken, endpoint, queryString, ...this.state})
     return `${apiUrl}/${endpoint}?${queryString}`
   }
 
