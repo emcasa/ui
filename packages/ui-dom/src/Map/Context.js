@@ -20,10 +20,12 @@ export {Consumer, Provider}
 
 export const withMapContext = (mapStateToProps) => (Target) =>
   hoistStatics(
-    (props) => (
+    React.forwardRef((props, ref) => (
       <Consumer>
-        {(ctx) => <Target {...props} {...mapStateToProps(ctx, props)} />}
+        {(ctx) => (
+          <Target ref={ref} {...props} {...mapStateToProps(ctx, props)} />
+        )}
       </Consumer>
-    ),
+    )),
     Target
   )
