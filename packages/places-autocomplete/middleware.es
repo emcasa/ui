@@ -2,7 +2,7 @@ import isArray from 'lodash/isArray'
 import express from 'express'
 import googleMaps from '@google/maps'
 
-const isValidRadius = (radius) => !radius || isNaN(radius)
+const isValidRadius = (radius) => radius && !isNaN(radius)
 const isValidLocation = (location) =>
   isArray(location) && location.length === 2 && location.findIndex(isNaN) === -1
 
