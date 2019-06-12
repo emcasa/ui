@@ -42,9 +42,10 @@ export class AddressAutoComplete extends PureComponent {
   getUrl(place) {
     const {apiUrl} = this.props
     const endpoint = this.constructor.API_ENDPOINT
+    const queryString = `q=${place.place_id}`
     if (typeof apiUrl === 'function')
-      return apiUrl({endpoint, place, ...this.state})
-    else return `${apiUrl}/${endpoint}?q=${place.place_id}`
+      return apiUrl({endpoint, place, queryString, ...this.state})
+    else return `${apiUrl}/${endpoint}?${queryString}`
   }
 
   loadPlace = async (place) => {
