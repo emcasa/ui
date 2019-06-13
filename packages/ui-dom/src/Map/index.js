@@ -433,7 +433,8 @@ export default class MapContainer extends PureComponent {
   renderCluster = (cluster) => {
     const {getClusterProps, MultiMarker, ClusterMarker} = this.props
     const isMultiMarker = this.multiMarkerEnabled
-    const points = cluster.points.map(this.getMarker)
+    const points = cluster.points.map(this.getMarker).filter(Boolean)
+    if (!points.length) return null
     const clusterProps = {
       isMultiMarker,
       points,
