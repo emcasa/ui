@@ -173,7 +173,9 @@ export default class MapContainer extends PureComponent {
     return {
       ...this.state,
       isHighlight: this.isHighlight,
-      setMarkerContainer: (id, container) => this.setMarker(id, {container}),
+      setMarkerContainer: (id, container) => {
+        if (this.state.markers[id]) this.setMarker(id, {container})
+      },
       setMarker: this.setMarker,
       unsetMarker: this.unsetMarker
     }
