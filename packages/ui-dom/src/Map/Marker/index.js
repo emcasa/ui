@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Container from './styles'
 
@@ -36,4 +37,19 @@ export default function Marker({
 
 Marker.defaultProps = {
   cluster: true
+}
+
+Marker.propTypes = {
+  lat: PropTypes.number.isRequired,
+  lng: PropTypes.number.isRequired,
+  highlight: PropTypes.bool,
+  /** Enable clustering this marker */
+  cluster: PropTypes.bool,
+  /** Marker's unique id, required for clustering */
+  id: PropTypes.any,
+  /** Called on all mouse interaction: inClick, onMouseEnter, onMouseLeave */
+  onSelect: PropTypes.func,
+  onClick: PropTypes.func,
+  onMuseEnter: PropTypes.func,
+  onMuseLeave: PropTypes.func
 }
