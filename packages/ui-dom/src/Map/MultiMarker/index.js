@@ -17,34 +17,13 @@ export class MultiMarkerBase extends PureComponent {
     getMarkerProps: (point, index) => ({})
   }
 
-  markers = {}
-
-  componentDidMount() {
-    if (this.props.setMarkerContainer) {
-      Object.entries(this.markers).map(([id, ref]) =>
-        this.props.setMarkerContainer(id, ref)
-      )
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.setMarkerContainer) {
-      Object.entries(this.markers).map(([id]) => {
-        this.props.setMarkerContainer(id, undefined)
-      })
-    }
-  }
-
-  containerRef = (id) => (ref) => {
-    this.markers[id] = ref
-  }
-
   render() {
     const {
       children,
       style,
       className,
       points,
+      markers,
       onClick,
       highlight = [],
       getMarkerProps,
@@ -64,12 +43,13 @@ export class MultiMarkerBase extends PureComponent {
             {points.map((point, index) => (
               <ListItem
                 key={point.id}
-                ref={this.containerRef(point.id)}
                 {...getMarkerProps(
                   {...point, highlight: highlight.indexOf(point.id) !== -1},
                   index
                 )}
-              />
+              >
+                {markers[point.index]}
+              </ListItem>
             ))}
           </List>
           {children}
@@ -79,6 +59,7 @@ export class MultiMarkerBase extends PureComponent {
   }
 }
 
-export default withMapContext(({setMarkerContainer}) => ({
+export default withMapContext(({setMarkerContainer, markers}) => ({
+  markers,
   setMarkerContainer
 }))(MultiMarkerBase)

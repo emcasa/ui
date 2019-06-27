@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import curry from 'lodash/curry'
 import debounce from 'lodash/debounce'
+import partition from 'lodash/fp/partition'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
@@ -16,7 +17,12 @@ import ButtonControl from './ButtonControl'
 import SelectControl from './SelectControl'
 import {Provider} from './Context'
 
-const Point = ({id, lat, lng, ...props}) => turf.point([lng, lat], props, {id})
+const shouldCluster = (child) => child && child.props && child.props.cluster
+
+const partitionMarkers = partition(shouldCluster)
+
+const Point = ({id, lat, lng}, index) =>
+  turf.point([lng, lat], {id, lat, lng, index}, {id})
 
 const Cluster = curry(
   (
@@ -36,14 +42,19 @@ const Cluster = curry(
       id: `${isCluster ? 'c' : 'p'}.${id}`,
       clusterId: properties.cluster_id,
       points: isCluster
-        ? supercluster.getLeaves(id, Infinity).map(({id}) => id)
-        : [id]
+        ? supercluster.getLeaves(id, Infinity).map(({properties}) => properties)
+        : [properties]
     }
   }
 )
 
-const getClusterPoints = (clusters) =>
-  clusters.reduce((markers, cluster) => markers.concat(cluster.points), [])
+const getClusterPointIds = (clusters) =>
+  new Set(
+    clusters.reduce(
+      (markers, cluster) => markers.concat(cluster.points.map(({id}) => id)),
+      []
+    )
+  )
 
 const T = {
   Coordinates: PropTypes.shape({
@@ -129,11 +140,11 @@ export default class MapContainer extends PureComponent {
   state = {
     loaded: false,
     hasAggregators: false,
-    markers: {},
-    framedMarkers: [],
-    clusteredMarkers: [],
+    markers: [],
+    children: [],
+    framedMarkers: getClusterPointIds([]),
+    clusteredMarkers: getClusterPointIds([]),
     clusters: [],
-    clusterOptions: {},
     mapOptions: {
       center: {lat: -22.9608099, lng: -43.2096142},
       zoom: 8
@@ -141,6 +152,7 @@ export default class MapContainer extends PureComponent {
   }
 
   componentDidMount() {
+    this.initSupercluster()
     document.addEventListener('fullscreenchange', this.onFullScreenChange)
     document.addEventListener('mozfullscreenchange', this.onFullScreenChange)
     document.addEventListener('webkitfullscreenchange', this.onFullScreenChange)
@@ -155,42 +167,22 @@ export default class MapContainer extends PureComponent {
     )
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.cluster !== prevProps.cluster ||
-      this.state.markers !== prevState.markers
-    ) {
-      if (this.props.cluster) {
-        this.initSupercluster()
-        if (this.state.maps) this.updateClusters()
-      } else {
-        this.supercluster = undefined
-      }
+  componentDidUpdate(prevProps) {
+    if (this.props.cluster !== prevProps.cluster) {
+      this.supercluster = undefined
+      this.initSupercluster()
+      if (this.state.maps) this.updateClusters()
+    } else if (this.props.children !== prevProps.children) {
+      this.loadMarkersToCluster()
     }
   }
 
   getContext() {
     return {
       ...this.state,
-      isHighlight: this.isHighlight,
-      setMarkerContainer: (id, container) => {
-        if (this.state.markers[id]) this.setMarker(id, {container})
-      },
-      setMarker: this.setMarker,
-      unsetMarker: this.unsetMarker
+      isHighlight: this.isHighlight
     }
   }
-
-  setMarker = (id, state) =>
-    this.setState(({markers}) => ({
-      markers: {...markers, [id]: {...(markers[id] || {}), ...state}}
-    }))
-
-  unsetMarker = (id) =>
-    this.setState(({markers: {...markers}}) => {
-      delete markers[id]
-      return {markers}
-    })
 
   get clusterOptions() {
     const {cluster} = this.props
@@ -205,7 +197,7 @@ export default class MapContainer extends PureComponent {
 
   get multiMarkerEnabled() {
     const {cluster} = this.props
-    if (!cluster) return false
+    if (!cluster) return true
     const minZoom = get(cluster, 'maxZoom', 17)
     return this.state.mapOptions.zoom > minZoom
   }
@@ -222,23 +214,26 @@ export default class MapContainer extends PureComponent {
   }
 
   initSupercluster() {
-    const {maxZoom, multiMarkerRadius} = this.props
-    const {markers} = this.state
+    const {cluster, maxZoom, multiMarkerRadius} = this.props
     const clusterOptions = this.clusterOptions
-    const points = Object.values(markers).map(Point)
-    this.originalSupercluster = new Supercluster(clusterOptions)
-    this.originalSupercluster.load(points)
-    if (clusterOptions.maxZoom < maxZoom) {
-      this.multiMarkerSupercluster = new Supercluster({
-        ...clusterOptions,
-        maxZoom,
-        minZoom: clusterOptions.maxZoom,
-        radius: multiMarkerRadius
-      })
-      this.multiMarkerSupercluster.load(points)
-    } else {
-      this.multiMarkerSupercluster = this.originalSupercluster
-    }
+    if (cluster) this.originalSupercluster = new Supercluster(clusterOptions)
+    this.multiMarkerSupercluster = new Supercluster({
+      ...clusterOptions,
+      maxZoom,
+      minZoom: clusterOptions.maxZoom || 0,
+      radius: cluster ? multiMarkerRadius : 0
+    })
+    this.loadMarkersToCluster()
+  }
+
+  loadMarkersToCluster() {
+    const [markers, children] = partitionMarkers(
+      React.Children.toArray(this.props.children)
+    )
+    this.setState({markers, children})
+    const points = markers.map((child, index) => Point(child.props, index))
+    this.multiMarkerSupercluster.load(points)
+    if (this.originalSupercluster) this.originalSupercluster.load(points)
   }
 
   getClusters() {
@@ -250,18 +245,16 @@ export default class MapContainer extends PureComponent {
     } = this.state
     const x = 0.01
     const bbox = [nw.lng - x, se.lat - x, se.lng + x, nw.lat + x]
-    if (!this.supercluster) return []
     const clusters = this.supercluster.getClusters(bbox, zoom)
     return clusters.map(Cluster(this.supercluster))
   }
 
   updateClusters = async (_clusters) => {
-    if (!this.props.cluster) return
     let clusters = _clusters || this.getClusters()
-    const framedMarkers = getClusterPoints(clusters)
+    const framedMarkers = getClusterPointIds(clusters)
     if (this.multiMarkerEnabled)
       clusters = clusters.filter((cluster) => cluster.points.length > 1)
-    const clusteredMarkers = getClusterPoints(clusters)
+    const clusteredMarkers = getClusterPointIds(clusters)
     const hasAggregators = Boolean(
       clusters.find((cluster) => cluster.points.length > 1)
     )
@@ -382,18 +375,16 @@ export default class MapContainer extends PureComponent {
     this.setZoom(zoom)
   }
 
-  frameCluster = (markers) => {
+  frameCluster = (points) => {
     const {onFrameCluster} = this.props
-    const LatLngList = Object.values(markers).map(
-      (m) => new this.maps.LatLng(m.lat, m.lng)
-    )
+    const LatLngList = points.map((m) => new this.maps.LatLng(m.lat, m.lng))
 
     const bounds = new this.maps.LatLngBounds()
     for (let i = 0, LtLgLen = LatLngList.length; i < LtLgLen; i++) {
       bounds.extend(LatLngList[i])
     }
     this.fitBounds(bounds)
-    if (onFrameCluster) onFrameCluster(bounds, markers)
+    if (onFrameCluster) onFrameCluster(bounds, points)
   }
 
   createMapOptions = (maps) => {
@@ -415,12 +406,14 @@ export default class MapContainer extends PureComponent {
     const {onChange} = this.props
     const {mapOptions} = this.state
     await this.updateClusters()
-    if (onChange) onChange(mapOptions, this.state.framedMarkers)
+    if (onChange) onChange(mapOptions, Array.from(this.state.framedMarkers))
   }
 
   getMarker = (id) => {
     return this.state.markers[id]
   }
+
+  isFramed = ({id}) => this.state.framedMarkers.has(id)
 
   isHighlight = (id) => {
     const {highlight} = this.props
@@ -435,15 +428,13 @@ export default class MapContainer extends PureComponent {
   renderCluster = (cluster) => {
     const {getClusterProps, MultiMarker, ClusterMarker} = this.props
     const isMultiMarker = this.multiMarkerEnabled
-    const points = cluster.points.map(this.getMarker).filter(Boolean)
-    if (!points.length) return null
     const clusterProps = {
       isMultiMarker,
-      points,
+      points: cluster.points,
       key: cluster.id,
       lat: cluster.lat,
       lng: cluster.lng,
-      onClick: () => this.frameCluster(points),
+      onClick: () => this.frameCluster(cluster.points),
       highlight: cluster.points.filter(this.isHighlight)
     }
     const Component = isMultiMarker ? MultiMarker : ClusterMarker
@@ -452,7 +443,6 @@ export default class MapContainer extends PureComponent {
 
   render() {
     const {
-      children,
       id,
       style,
       className,
@@ -462,7 +452,7 @@ export default class MapContainer extends PureComponent {
       defaultCenter,
       defaultZoom
     } = this.props
-    const {hasAggregators, clusters} = this.state
+    const {hasAggregators, clusters, children, markers} = this.state
 
     return (
       <div
@@ -487,7 +477,9 @@ export default class MapContainer extends PureComponent {
             onGoogleApiLoaded={this.onMapLoaded}
           >
             {children}
-            {hasAggregators && clusters.map(this.renderCluster)}
+            {hasAggregators
+              ? clusters.map(this.renderCluster)
+              : markers.filter(({props}) => this.isFramed(props))}
           </GoogleMapReact>
         </Provider>
       </div>

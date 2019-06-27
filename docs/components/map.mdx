@@ -6,7 +6,7 @@ menu: Components
 import {Playground, Props} from 'docz'
 import View from '@emcasa/ui-dom/src/View'
 import Map from '@emcasa/ui-dom/src/Map'
-import {MarkerBase} from '@emcasa/ui-dom/src/Map/Marker'
+import Marker from '@emcasa/ui-dom/src/Map/Marker'
 import {MultiMarkerBase} from '@emcasa/ui-dom/src/Map/MultiMarker'
 import PaginatedMultiMarker from '@emcasa/ui-dom/src/Map/PaginatedMultiMarker'
 import ButtonControl from '@emcasa/ui-dom/src/Map/ButtonControl'
@@ -39,7 +39,7 @@ All markers must be direct children of `<Map />` and should have `lat` and `lng`
 
 ## Map.Marker
 
-<Props of={MarkerBase} />
+<Props of={Marker} />
 
 `Map.Marker`s get clustered according to the parent `Map`'s supercluster options.
 
