@@ -21,6 +21,18 @@ const shouldCluster = (child) => child && child.props && child.props.cluster
 
 const partitionMarkers = partition(shouldCluster)
 
+const getBounds = (map) => {
+  const bounds = map.getBounds()
+  const ne = bounds.getNorthEast(),
+    sw = bounds.getSouthWest()
+  return {
+    ne: {lat: ne.lat(), lng: ne.lng()},
+    nw: {lat: ne.lat(), lng: sw.lng()},
+    se: {lat: sw.lat(), lng: ne.lng()},
+    sw: {lat: sw.lat(), lng: sw.lng()}
+  }
+}
+
 const Point = ({id, lat, lng}, index) =>
   turf.point([lng, lat], {id, lat, lng, index}, {id})
 
@@ -216,11 +228,10 @@ export default class MapContainer extends PureComponent {
       },
       typeof cluster === 'object' ? cluster : {}
     )
-
     if (typeof options.boundsOffset !== 'object')
       options.boundsOffset = {
-        x: options.boundsOffset || 0,
-        y: options.boundsOffset || 0
+        lat: options.boundsOffset || 0,
+        lng: options.boundsOffset || 0
       }
     return options
   }
@@ -362,7 +373,7 @@ export default class MapContainer extends PureComponent {
           mapOptions: {
             center,
             zoom,
-            bounds
+            bounds: this.state.map ? getBounds(this.state.map) : bounds
           }
         },
         this.boundsUpdated
