@@ -48,6 +48,20 @@ const Cluster = curry(
   }
 )
 
+// Join clusters with same lat/lng
+const reduceClusters = (clusters) => {
+  const coordinatesMap = new Map()
+  clusters.forEach((cluster) => {
+    const position = `${cluster.lng},${cluster.lat}`
+    if (coordinatesMap.has(position)) {
+      coordinatesMap.get(position).points.push(...cluster.points)
+    } else {
+      coordinatesMap.set(position, cluster)
+    }
+  })
+  return Array.from(coordinatesMap.values())
+}
+
 const getClusterPointIds = (clusters) =>
   new Set(
     clusters.reduce(
@@ -128,7 +142,7 @@ export default class MapContainer extends PureComponent {
     defaultCenter: {lat: -22.9608099, lng: -43.2096142},
     minZoom: 7,
     maxZoom: 20,
-    multiMarkerRadius: 10,
+    multiMarkerRadius: 0,
     highlight: ({lng, lat, id}) => false,
     getClusterProps: (props) => props,
     getInitialFrame: ({clusters, markers}) => clusters,
@@ -246,7 +260,7 @@ export default class MapContainer extends PureComponent {
     const x = 0.01
     const bbox = [nw.lng - x, se.lat - x, se.lng + x, nw.lat + x]
     const clusters = this.supercluster.getClusters(bbox, zoom)
-    return clusters.map(Cluster(this.supercluster))
+    return reduceClusters(clusters.map(Cluster(this.supercluster)))
   }
 
   updateClusters = async (_clusters) => {
@@ -415,12 +429,17 @@ export default class MapContainer extends PureComponent {
 
   isFramed = ({id}) => this.state.framedMarkers.has(id)
 
-  isHighlight = (id) => {
+  isClustered = ({id}) => this.state.clusteredMarkers.has(id)
+
+  isVisible = (props) =>
+    this.isFramed(props) &&
+    (!this.multiMarkerEnabled || !this.isClustered(props))
+
+  isHighlight = (markerProps) => {
+    if (!markerProps) return false
     const {highlight} = this.props
-    const marker = this.state.markers[id]
-    if (!marker) return false
-    const {lat, lng} = marker
-    if (typeof highlight === 'function') return highlight({id, lat, lng})
+    const {lat, lng} = markerProps
+    if (typeof highlight === 'function') return highlight(markerProps)
     else if (highlight) return highlight.lat == lat && highlight.lng == lng
     else return false
   }
@@ -435,7 +454,9 @@ export default class MapContainer extends PureComponent {
       lat: cluster.lat,
       lng: cluster.lng,
       onClick: () => this.frameCluster(cluster.points),
-      highlight: cluster.points.filter(this.isHighlight)
+      highlight: cluster.points
+        .filter(this.isHighlight)
+        .map((point) => point.id)
     }
     const Component = isMultiMarker ? MultiMarker : ClusterMarker
     return <Component {...getClusterProps(clusterProps)} />
@@ -453,7 +474,8 @@ export default class MapContainer extends PureComponent {
       defaultZoom
     } = this.props
     const {hasAggregators, clusters, children, markers} = this.state
-
+    const multiMarkerEnabled = this.multiMarkerEnabled
+    const markersVisible = multiMarkerEnabled || !hasAggregators
     return (
       <div
         id={id}
@@ -477,9 +499,9 @@ export default class MapContainer extends PureComponent {
             onGoogleApiLoaded={this.onMapLoaded}
           >
             {children}
-            {hasAggregators
-              ? clusters.map(this.renderCluster)
-              : markers.filter(({props}) => this.isFramed(props))}
+            {hasAggregators && clusters.map(this.renderCluster)}
+            {markersVisible &&
+              markers.filter(({props}) => this.isVisible(props))}
           </GoogleMapReact>
         </Provider>
       </div>
