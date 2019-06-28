@@ -78,7 +78,15 @@ const T = {
   SuperClusterOptions: PropTypes.shape({
     minZoom: PropTypes.number.isRequired,
     maxZoom: PropTypes.number.isRequired,
-    radius: PropTypes.number.isRequired
+    radius: PropTypes.number.isRequired,
+    // Offset by which to adjust visible bounds
+    boundsOffset: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.shape({
+        lat: PropTypes.number,
+        lng: PropTypes.number
+      })
+    ])
   })
 }
 
@@ -200,13 +208,21 @@ export default class MapContainer extends PureComponent {
 
   get clusterOptions() {
     const {cluster} = this.props
-    const options = typeof cluster === 'object' ? cluster : {}
-    return {
-      minZoom: 0,
-      maxZoom: 17,
-      radius: 65,
-      ...options
-    }
+    const options = Object.assign(
+      {
+        minZoom: 0,
+        maxZoom: 17,
+        radius: 65
+      },
+      typeof cluster === 'object' ? cluster : {}
+    )
+
+    if (typeof options.boundsOffset !== 'object')
+      options.boundsOffset = {
+        x: options.boundsOffset || 0,
+        y: options.boundsOffset || 0
+      }
+    return options
   }
 
   get multiMarkerEnabled() {
@@ -257,8 +273,13 @@ export default class MapContainer extends PureComponent {
         bounds: {nw, se}
       }
     } = this.state
-    const x = 0.01
-    const bbox = [nw.lng - x, se.lat - x, se.lng + x, nw.lat + x]
+    const {boundsOffset} = this.clusterOptions
+    const bbox = [
+      nw.lng - boundsOffset.lng,
+      se.lat - boundsOffset.lat,
+      se.lng + boundsOffset.lng,
+      nw.lat + boundsOffset.lat
+    ]
     const clusters = this.supercluster.getClusters(bbox, zoom)
     return reduceClusters(clusters.map(Cluster(this.supercluster)))
   }
