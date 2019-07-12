@@ -47,7 +47,7 @@
     "react-pose": "^4.0.6",
     "react-responsive": "^6.1.1",
     "react-spinners": "^0.5.4",
-    "styled-components": "4.2.0"
+    "styled-components": "5.0.0-beta.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
