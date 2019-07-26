@@ -42,12 +42,15 @@ Marker.defaultProps = slider.marker.defaultProps
 const Container = styled(function SliderContainer({onLayout, ...props}) {
   return (
     <Measure
-      onResize={({entry}) =>
-        onLayout({
+      onResize={({entry}) => {
+        if (!entry) {
+          return
+        }
+        return onLayout({
           width: entry.width,
           height: entry.height
         })
-      }
+      }}
     >
       {({measureRef}) => <View ref={measureRef} {...props} />}
     </Measure>

@@ -81,8 +81,12 @@ export default class MarkerHandler extends PureComponent {
     if (!this.props.disabled) this._unregisterListeners()
   }
 
-  onResize = ({entry}) =>
+  onResize = ({entry}) => {
+    if (!entry) {
+      return
+    }
     this.setState({layout: {width: entry.width, height: entry.height}})
+  }
 
   onChange = (x) => {
     const {index, onSlide} = this.props
