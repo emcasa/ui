@@ -20,6 +20,8 @@ In order to deploy the documentation website, simply merge your branch to master
 
 ## Npm deploy
 
+`npm install lerna`
+
 To deploy a new version of the library to npm run `lerna version`.
 This bumps the version in each package and pushes it to the repository with a new tag.
 
