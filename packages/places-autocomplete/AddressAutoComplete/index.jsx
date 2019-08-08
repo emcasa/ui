@@ -49,7 +49,7 @@ export class AddressAutoComplete extends PureComponent {
   }
 
   loadPlace = async (place) => {
-    const {format, options, onSelect} = this.props
+    const {format, options, onSelect, validate} = this.props
     const endpoint = this.constructor.API_ENDPOINT
     this.setState({loading: true, error: undefined})
     try {
@@ -60,16 +60,12 @@ export class AddressAutoComplete extends PureComponent {
           : options
       )
       const {result} = await response.json()
-      const streetNumber = filterComponent(
-        result.address_components,
-        'street_number'
-      ).long_name
-      const postalCode = filterComponent(
-        result.address_components,
-        'postal_code'
-      ).long_name
-      if (!streetNumber || !postalCode)
-        throw new Error('Não encontramos um endereço válido com esse número.')
+      let error
+      if (
+        validate &&
+        (error = validate(result, filterComponent(result.address_components)))
+      )
+        throw new Error(error)
       const value = format(place, result)
       this.setState({value, focused: false}, () => {
         if (onSelect) onSelect(place, result, value)
