@@ -1,5 +1,6 @@
-export function filterComponent(array, property) {
+export const filterComponent = (components) => (property) => {
   return (
-    array.filter((component) => component.types.includes(property))[0] || {}
-  )
+    components.filter((component) => component.types.includes(property))[0] ||
+    {}
+  ).long_name
 }
