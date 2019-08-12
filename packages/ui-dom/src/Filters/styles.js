@@ -49,6 +49,7 @@ export const Panel = styled(Col).attrs({elevation: 2})`
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
   }
   .panelFooter {
     margin-top: ${themeGet('space.4')}px;
