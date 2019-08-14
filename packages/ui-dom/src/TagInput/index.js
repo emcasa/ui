@@ -211,7 +211,7 @@ export default class TagInput extends PureComponent {
   }
 
   isDuplicate = (tag, tags) => {
-    return tags.find((t) => t.name.trim().toLowerCase() === tag.name.trim().toLowerCase())
+    return tags.find((t) => t.name.trim().toLowerCase() === tag ? tag.name.trim().toLowerCase() : '')
   }
 
   getTag = (name, tags) => {
