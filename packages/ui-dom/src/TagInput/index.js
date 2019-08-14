@@ -190,6 +190,34 @@ export default class TagInput extends PureComponent {
     return children
   }
 
+  onPaste = (e) => {
+    const pastedText = e.clipboardData.getData('Text')
+    const pastedItems = pastedText.split(';')
+    if (pastedItems.length > 0) {
+      const newValues = JSON.parse(JSON.stringify(this.state.values))
+      pastedItems.forEach((item) => {
+        const tagFound = this.getTag(item, this.props.options)
+        const isDuplicate = this.isDuplicate(tagFound, newValues)
+        if (tagFound && !isDuplicate) {
+          newValues.push(tagFound)
+        }
+      })
+      this.onChange(newValues)
+      setTimeout(() => {
+        this.onChangeText('')
+        this.inputRef.current.value = ''
+      }, 1000)
+    }
+  }
+
+  isDuplicate = (tag, tags) => {
+    return tags.find((t) => t.name.trim().toLowerCase() === tag.name.trim().toLowerCase())
+  }
+
+  getTag = (name, tags) => {
+    return tags.find((t) => t.name.trim().toLowerCase() === name.trim().toLowerCase())
+  }
+
   renderLabel() {
     const {
       onChangeText,
@@ -206,6 +234,7 @@ export default class TagInput extends PureComponent {
           height={height}
           placeholder={placeholder}
           onChange={(e) => this.onChangeText(e.target.value)}
+          onPaste={this.onPaste}
           onMouseDown={(e) => {
             e.stopPropagation()
             if (!focus) setTimeout(this.onFocus, 0)
