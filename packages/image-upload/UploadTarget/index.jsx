@@ -127,11 +127,6 @@ export default class ImageUploader extends PureComponent {
   }
 
   render() {
-    return (
-      <Target
-        progress={this.progress}
-        onDrop={this.onUpload}
-      />
-    )
+    return <Target progress={this.progress} onDrop={this.onUpload} />
   }
 }

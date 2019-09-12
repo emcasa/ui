@@ -9,7 +9,7 @@ export default [
     },
     styles: {
       UploadTarget: {
-        fontSize: 'small'
+        fontSize: 0
       },
       ButtonContainer: {
         display: 'none'
@@ -39,5 +39,5 @@ export default [
         fontSize: 'large'
       }
     }
-  }
+  },
 ]
