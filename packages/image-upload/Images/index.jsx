@@ -6,13 +6,11 @@ import Image from '../ImageSource'
 export default class Images extends PureComponent {
   static propTypes = {
     onChangePosition: PropTypes.func,
-    onDeactivate: PropTypes.func
+    onDeactivate: PropTypes.func,
+    onActivate: PropTypes.func
   }
 
   state = {
-    loading: true,
-    gridSize: 1,
-    showInactive: false,
     images: undefined
   }
 
