@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import UploadTarget from '../UploadTarget'
 import Images from '../Images'
 import ThemeProvider from '../theme/Provider'
-import theme from '../theme'
 import {Container} from './styles'
 
 export default function ImageUpload({
@@ -32,8 +31,6 @@ export default function ImageUpload({
     </ThemeProvider>
   )
 }
-
-ImageUpload.defaultProps = {theme}
 
 ImageUpload.propTypes = {
   showInactive: PropTypes.bool,
