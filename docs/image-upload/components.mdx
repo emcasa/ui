@@ -1,0 +1,31 @@
+---
+name: Components
+menu: Image Upload
+---
+
+import {Playground, Props} from 'docz'
+import ImageUploadBase from '@emcasa/image-upload/ImageUpload/index.jsx'
+import ImageUpload from '@emcasa/image-upload/html5'
+
+# ImageUpload
+
+<Props of={ImageUploadBase} />
+
+<Playground style={{minHeight: "250px"}}>
+  <ImageUpload
+    showInactive
+    images={[
+      {id: 1, filename: 'https://bit.ly/2VQOSeF', isActive: true},
+      {id: 2, filename: 'https://bit.ly/30IXSBs', isActive: true},
+      {id: 3, filename: 'https://bit.ly/2JwCtWu', isActive: true},
+      {id: 4, filename: 'https://bit.ly/2lPi848', isActive: false}
+    ]}
+    onUpload={(img) => {
+      console.log('upload', img)
+      return new Promise(resolve => setTimeout(resolve, 2500))
+    }}
+    onChangePosition={(img) => console.log('move', img)}
+    onDeactivate={(img) => console.log('deactivate', img)}
+    onActivate={(img) => console.log('activate', img)}
+  />
+</Playground>

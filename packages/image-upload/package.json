@@ -1,0 +1,36 @@
+{
+  "name": "@emcasa/image-upload",
+  "version": "2.4.7",
+  "description": "EmCasa's image upload component",
+  "license": "MIT",
+  "main": "index.js",
+  "author": "EmCasa <dev@emcasa.com>",
+  "scripts": {
+    "clean": "rm -rf components",
+    "build": "babel . -d . --ignore \"**/*.js\"",
+    "watch": "yarn build --watch",
+    "test": "jest",
+    "prepublish": "yarn build"
+  },
+  "dependencies": {
+    "@emcasa/ui": "^2.4.7",
+    "@emcasa/ui-dom": "^2.4.7",
+    "immutability-helper": "2.9.0",
+    "recompose": "~0.30.0",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "jest": "23.6.0",
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "react-spinners": "^0.5.4",
+    "react-dnd": "^9.3.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
