@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
 import PulseLoader from 'react-spinners/PulseLoader'
 import Card from '../Card'
 
