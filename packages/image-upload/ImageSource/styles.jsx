@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import {gridStyle} from '../styles/grid'
 
@@ -45,8 +44,8 @@ export const ButtonContainer = styled.div.attrs((props) => ({
   display: flex;
   flex-direction: row-reverse;
   position: absolute;
-  top: ${themeGet('space.2')}px;
-  left: ${themeGet('space.2')}px;
+  top: 0;
+  right: 0;
   svg {
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.46));
   }

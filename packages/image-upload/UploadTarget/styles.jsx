@@ -5,8 +5,6 @@ import PulseLoader from 'react-spinners/PulseLoader'
 import Card from '../Card'
 
 export const UploadCard = styled(Card)`
-  border: 2px ${({isActive}) => (isActive ? 'solid' : 'dashed')}
-    ${themeGet('colors.pink')};
   ${({isActive}) =>
     isActive && {
       transform: 'scale(1.05)'

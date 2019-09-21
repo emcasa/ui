@@ -7,6 +7,7 @@ import {NativeTypes} from 'react-dnd-html5-backend'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Text from '@emcasa/ui-dom/components/Text'
 import Row from '@emcasa/ui-dom/components/Row'
+import Col from '@emcasa/ui-dom/components/Col'
 import {UploadCard, Spinner} from './styles'
 import {gridStyle} from '../styles/grid'
 
@@ -58,8 +59,46 @@ class FileTarget extends PureComponent {
     setTimeout(this.openFileExplorer, 1)
   }
 
+  renderProgress() {
+    const {progress, fontSize} = this.props
+    return (
+      <Col m="5.5%">
+        <Row height="40px" justifyContent="center" alignItems="center">
+          <Spinner size={10} />
+        </Row>
+        <Text inline textAlign="center" color="pink" fontSize={fontSize}>
+          Subindo fotos {progress[0]}/{progress[1]}
+        </Text>
+      </Col>
+    )
+  }
+
+  renderButton() {
+    const {fontSize, hideText} = this.props
+    return (
+      <Row width="100%" m="5.5%" alignItems="center" justifyContent="center">
+        <Row mr={hideText ? 0 : 4} justifyContent="center" alignItems="center">
+          <Icon color="dark" size={30} name="arrow-up" />
+        </Row>
+        {!hideText && (
+          <Text
+            inline
+            fontWeight="bold"
+            color="dark"
+            fontSize={fontSize}
+            lineHeight={1.25}
+          >
+            Adicionar
+            <br />
+            imagens
+          </Text>
+        )}
+      </Row>
+    )
+  }
+
   render() {
-    const {isOver, connectDropTarget, progress, fontSize} = this.props
+    const {isOver, connectDropTarget, progress} = this.props
     return (
       <UploadCard
         isActive={isOver}
@@ -77,22 +116,7 @@ class FileTarget extends PureComponent {
           onClick={this.onInputClick}
           onChange={this.onSelectFiles}
         />
-        <Row height="40px" justifyContent="center" alignItems="center">
-          {progress ? (
-            <Spinner size={10} />
-          ) : (
-            <Icon color="pink" size={30} name="plus" />
-          )}
-        </Row>
-        <Text inline textAlign="center" color="pink" fontSize={fontSize}>
-          {progress ? (
-            <>
-              Subindo fotos {progress[0]}/{progress[1]}
-            </>
-          ) : (
-            'Adicionar fotos'
-          )}
-        </Text>
+        {progress ? this.renderProgress() : this.renderButton()}
       </UploadCard>
     )
   }

@@ -20,7 +20,7 @@ export const DraggableContainer = styled.div`
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 2px 2px 0 #ffffff, 0 4px 30px 0 rgba(38, 38, 38, 0.3);
+  box-shadow: 0 4px 12px 0 rgba(38, 38, 38, 0.35);
   opacity: ${({isDragging}) => (isDragging ? 0 : 1)};
   cursor: ${({isDragging}) => (isDragging ? 'grabbing' : 'grab')};
   flex: 1;
