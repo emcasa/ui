@@ -62,7 +62,7 @@ export default class Images extends PureComponent {
         onDrop={this.onMove}
         onHover={this.onHover}
         onDeactivate={onDeactivate}
-        onDeactivate={onActivate}
+        onActivate={onActivate}
       />
     ))
   }
