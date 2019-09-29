@@ -32,6 +32,10 @@ export default function ImageUpload({
   )
 }
 
+ImageUpload.defaultProps = {
+  theme: {}
+}
+
 ImageUpload.propTypes = {
   showInactive: PropTypes.bool,
   theme: PropTypes.object.isRequired,
