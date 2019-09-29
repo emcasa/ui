@@ -81,7 +81,6 @@ export default class ImageUploader extends PureComponent {
   }
 
   handleUploadSuccess = (file) => async () => {
-    const {onUpload} = this.props
     const index = this.state.uploads.findIndex((upload) => upload.file == file)
     this.setState((state) =>
       update(state, {
@@ -127,6 +126,8 @@ export default class ImageUploader extends PureComponent {
   }
 
   render() {
-    return <Target progress={this.progress} onDrop={this.onUpload} />
+    return (
+      <Target {...this.props} progress={this.progress} onDrop={this.onUpload} />
+    )
   }
 }

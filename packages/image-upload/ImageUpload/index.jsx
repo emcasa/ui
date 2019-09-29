@@ -8,6 +8,7 @@ import {Container} from './styles'
 export default function ImageUpload({
   showInactive,
   theme,
+  disabled,
   images,
   onUpload,
   onChangePosition,
@@ -20,7 +21,7 @@ export default function ImageUpload({
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <UploadTarget onUpload={onUpload} />
+        <UploadTarget onUpload={onUpload} disabled={disabled} />
         <Images
           images={visibleImages}
           onChangePosition={onChangePosition}
@@ -38,6 +39,7 @@ ImageUpload.defaultProps = {
 
 ImageUpload.propTypes = {
   showInactive: PropTypes.bool,
+  disabled: PropTypes.bool,
   theme: PropTypes.object.isRequired,
   /**
    * Upload function called for each selected file, should return a Promise.

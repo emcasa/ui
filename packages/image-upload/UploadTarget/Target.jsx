@@ -86,17 +86,18 @@ class FileTarget extends PureComponent {
   }
 
   renderButton() {
-    const {fontSize, iconSize, hideText} = this.props
+    const {fontSize, iconSize, hideText, disabled} = this.props
+    const color = disabled ? 'disabled' : 'dark'
     return (
       <Row width="100%" m="5.5%" alignItems="center" justifyContent="center">
         <Row mx={2} justifyContent="center" alignItems="center">
-          <Icon color="dark" size={iconSize} name="arrow-up" />
+          <Icon color={color} size={iconSize} name="arrow-up" />
         </Row>
         {!hideText && (
           <Text
             inline
             fontWeight="bold"
-            color="dark"
+            color={color}
             fontSize={fontSize}
             lineHeight={1.25}
           >
@@ -110,11 +111,11 @@ class FileTarget extends PureComponent {
   }
 
   render() {
-    const {isOver, connectDropTarget, progress} = this.props
+    const {isOver, connectDropTarget, progress, disabled} = this.props
     return (
       <UploadCard
         isActive={isOver}
-        onClick={this.onTargetClick}
+        onClick={disabled ? undefined : this.onTargetClick}
         ref={connectDropTarget}
       >
         <input
