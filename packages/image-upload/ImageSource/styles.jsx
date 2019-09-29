@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {display} from 'styled-system'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import {gridStyle} from '../styles/grid'
 
@@ -37,15 +38,14 @@ export const IconButton = styled(function IconButton({name, ...props}) {
   cursor: pointer;
 `
 
-export const ButtonContainer = styled.div.attrs((props) => ({
-  style: gridStyle('ButtonContainer', props)
-}))`
+export const ButtonContainer = styled.div.attrs(gridStyle('ButtonContainer'))`
   z-index: 1;
   display: flex;
   flex-direction: row-reverse;
   position: absolute;
   top: 0;
   right: 0;
+  ${display};
   svg {
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.46));
   }

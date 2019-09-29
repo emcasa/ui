@@ -1,6 +1,7 @@
 import {groupBy} from 'lodash/fp'
 import {compose, withProps} from 'recompose'
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {withTheme} from 'styled-components'
 import {DropTarget} from 'react-dnd'
 import {NativeTypes} from 'react-dnd-html5-backend'
@@ -34,6 +35,17 @@ const Target = DropTarget(NativeTypes.FILE, fileTarget, (connect, monitor) => ({
 
 class FileTarget extends PureComponent {
   inputRef = React.createRef()
+
+  static defaultProps = {
+    fontSize: 16,
+    iconSize: 30
+  }
+
+  static propTypes = {
+    hideText: PropTypes.bool,
+    fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    iconSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  }
 
   openFileExplorer = () => {
     if (this.inputRef.current) {
@@ -74,11 +86,11 @@ class FileTarget extends PureComponent {
   }
 
   renderButton() {
-    const {fontSize, hideText} = this.props
+    const {fontSize, iconSize, hideText} = this.props
     return (
       <Row width="100%" m="5.5%" alignItems="center" justifyContent="center">
-        <Row mr={hideText ? 0 : 4} justifyContent="center" alignItems="center">
-          <Icon color="dark" size={30} name="arrow-up" />
+        <Row mx={2} justifyContent="center" alignItems="center">
+          <Icon color="dark" size={iconSize} name="arrow-up" />
         </Row>
         {!hideText && (
           <Text

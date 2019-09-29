@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {themeGet} from 'styled-system'
-import {breakpoint} from '@emcasa/ui/lib/styles'
-import {gridSize, GRID_SPACING} from '../styles/grid'
+import {breakpoint, elevation} from '@emcasa/ui/lib/styles'
+import {gridSize, gridStyle, GRID_SPACING} from '../styles/grid'
 
 export const DraggableContent = styled.div`
   display: flex;
@@ -15,17 +15,17 @@ export const DraggableContent = styled.div`
   bottom: 0;
 `
 
-export const DraggableContainer = styled.div`
+export const DraggableContainer = styled.div.attrs(gridStyle('Card'))`
   min-width: 100%;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 4px 12px 0 rgba(38, 38, 38, 0.35);
   opacity: ${({isDragging}) => (isDragging ? 0 : 1)};
   cursor: ${({isDragging}) => (isDragging ? 'grabbing' : 'grab')};
   flex: 1;
   padding-bottom: 64%;
   transition: all 300ms;
+  ${elevation}
 
   > div.trash {
     position: absolute;
@@ -39,6 +39,10 @@ export const DraggableContainer = styled.div`
     }
   }
 `
+
+DraggableContainer.defaultProps = {
+  elevation: 3
+}
 
 export const DraggableWrapper = styled.div`
   box-sizing: border-box;

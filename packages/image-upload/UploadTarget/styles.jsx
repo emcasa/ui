@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import Text from '@emcasa/ui-dom/components/Text'
+import {breakpoint} from '@emcasa/ui/lib/styles'
 import PulseLoader from 'react-spinners/PulseLoader'
 import Card from '../Card'
 
@@ -12,6 +14,14 @@ export const UploadCard = styled(Card)`
   background: white;
   * {
     cursor: pointer;
+  }
+  ${Text} {
+    margin: 0 4px;
+  }
+  @media ${breakpoint.down('tablet')} {
+    ${Text} {
+      display: none;
+    }
   }
 `
 
