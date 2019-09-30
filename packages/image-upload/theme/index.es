@@ -1,7 +1,5 @@
-import gridSizes from './gridSizes'
-
 export default {
-  gridSize: 1,
-  gridSizes,
+  gridTypes: [],
+  grid: undefined,
   getImageUrl: ({filename}) => `${filename}`
 }

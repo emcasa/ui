@@ -15,7 +15,8 @@ const isUploadPending = ({progress}) =>
 
 export default class ImageUploader extends PureComponent {
   static defaultProps = {
-    queueUploads: 3
+    queueUploads: 3,
+    filterFiles: (files) => files
   }
 
   state = {
@@ -81,7 +82,6 @@ export default class ImageUploader extends PureComponent {
   }
 
   handleUploadSuccess = (file) => async () => {
-    const {onUpload} = this.props
     const index = this.state.uploads.findIndex((upload) => upload.file == file)
     this.setState((state) =>
       update(state, {
@@ -104,10 +104,11 @@ export default class ImageUploader extends PureComponent {
   }
 
   onUpload = async (files) => {
+    const {filterFiles} = this.props
     this.setState((state) =>
       update(state, {
         uploads: {
-          $push: files.map((file) => ({
+          $push: filterFiles(files).map((file) => ({
             file,
             progress: UploadState.QUEUED,
             error: undefined
@@ -127,6 +128,8 @@ export default class ImageUploader extends PureComponent {
   }
 
   render() {
-    return <Target progress={this.progress} onDrop={this.onUpload} />
+    return (
+      <Target {...this.props} progress={this.progress} onDrop={this.onUpload} />
+    )
   }
 }

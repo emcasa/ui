@@ -9,6 +9,9 @@ export default function ImageUpload({
   showInactive,
   theme,
   images,
+  disabled,
+  queueUploads,
+  filterFiles,
   onUpload,
   onChangePosition,
   onActivate,
@@ -20,7 +23,12 @@ export default function ImageUpload({
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <UploadTarget onUpload={onUpload} />
+        <UploadTarget
+          onUpload={onUpload}
+          disabled={disabled}
+          filterFiles={filterFiles}
+          queueUploads={queueUploads}
+        />
         <Images
           images={visibleImages}
           onChangePosition={onChangePosition}
@@ -32,9 +40,25 @@ export default function ImageUpload({
   )
 }
 
+ImageUpload.defaultProps = {
+  theme: {},
+  queueUploads: 3,
+  filterFiles: (files) => files
+}
+
 ImageUpload.propTypes = {
   showInactive: PropTypes.bool,
+  disabled: PropTypes.bool,
   theme: PropTypes.object.isRequired,
+  /**
+   * Max number of files to process in parallel.
+   */
+  queueUploads: PropTypes.number,
+  /**
+   * Function called when a user selects files to upload. Receives an array
+   * of File objects and should return an array of files to process.
+   */
+  filterFiles: PropTypes.func,
   /**
    * Upload function called for each selected file, should return a Promise.
    */

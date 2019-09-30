@@ -118,7 +118,7 @@ class DraggableImage extends Component {
       >
         <ButtonContainer gridSize={gridSize}>
           <IconButton
-            name={image.isActive ? 'trash-alt' : 'trash-restore-alt'}
+            name={image.isActive ? 'times-circle' : 'arrow-circle-up'}
             onClick={image.isActive ? this.onDeactivate : this.onActivate}
           />
         </ButtonContainer>

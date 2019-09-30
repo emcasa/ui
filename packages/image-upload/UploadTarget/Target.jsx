@@ -1,12 +1,14 @@
 import {groupBy} from 'lodash/fp'
 import {compose, withProps} from 'recompose'
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {withTheme} from 'styled-components'
 import {DropTarget} from 'react-dnd'
 import {NativeTypes} from 'react-dnd-html5-backend'
 import Icon from '@emcasa/ui-dom/components/Icon'
 import Text from '@emcasa/ui-dom/components/Text'
 import Row from '@emcasa/ui-dom/components/Row'
+import Col from '@emcasa/ui-dom/components/Col'
 import {UploadCard, Spinner} from './styles'
 import {gridStyle} from '../styles/grid'
 
@@ -34,6 +36,17 @@ const Target = DropTarget(NativeTypes.FILE, fileTarget, (connect, monitor) => ({
 class FileTarget extends PureComponent {
   inputRef = React.createRef()
 
+  static defaultProps = {
+    fontSize: 16,
+    iconSize: 30
+  }
+
+  static propTypes = {
+    hideText: PropTypes.bool,
+    fontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    iconSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  }
+
   openFileExplorer = () => {
     if (this.inputRef.current) {
       this.inputRef.current.value = null
@@ -58,12 +71,51 @@ class FileTarget extends PureComponent {
     setTimeout(this.openFileExplorer, 1)
   }
 
+  renderProgress() {
+    const {progress, fontSize} = this.props
+    return (
+      <Col m="5.5%">
+        <Row height="40px" justifyContent="center" alignItems="center">
+          <Spinner size={10} />
+        </Row>
+        <Text inline textAlign="center" color="pink" fontSize={fontSize}>
+          Subindo fotos {progress[0]}/{progress[1]}
+        </Text>
+      </Col>
+    )
+  }
+
+  renderButton() {
+    const {fontSize, iconSize, hideText, disabled} = this.props
+    const color = disabled ? 'disabled' : 'dark'
+    return (
+      <Row width="100%" m="5.5%" alignItems="center" justifyContent="center">
+        <Row mx={2} justifyContent="center" alignItems="center">
+          <Icon color={color} size={iconSize} name="arrow-up" />
+        </Row>
+        {!hideText && (
+          <Text
+            inline
+            fontWeight="bold"
+            color={color}
+            fontSize={fontSize}
+            lineHeight={1.25}
+          >
+            Adicionar
+            <br />
+            imagens
+          </Text>
+        )}
+      </Row>
+    )
+  }
+
   render() {
-    const {isOver, connectDropTarget, progress, fontSize} = this.props
+    const {isOver, connectDropTarget, progress, disabled} = this.props
     return (
       <UploadCard
         isActive={isOver}
-        onClick={this.onTargetClick}
+        onClick={disabled ? undefined : this.onTargetClick}
         ref={connectDropTarget}
       >
         <input
@@ -77,22 +129,7 @@ class FileTarget extends PureComponent {
           onClick={this.onInputClick}
           onChange={this.onSelectFiles}
         />
-        <Row height="40px" justifyContent="center" alignItems="center">
-          {progress ? (
-            <Spinner size={10} />
-          ) : (
-            <Icon color="pink" size={30} name="plus" />
-          )}
-        </Row>
-        <Text inline textAlign="center" color="pink" fontSize={fontSize}>
-          {progress ? (
-            <>
-              Subindo fotos {progress[0]}/{progress[1]}
-            </>
-          ) : (
-            'Adicionar fotos'
-          )}
-        </Text>
+        {progress ? this.renderProgress() : this.renderButton()}
       </UploadCard>
     )
   }
