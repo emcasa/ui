@@ -10,7 +10,7 @@ export const Image = styled.div`
     theme: {
       ImageUpload: {getImageUrl}
     }
-  }) => `url(${getImageUrl(image)})`};
+  }) => `url(${getImageUrl ? getImageUrl(image) : image.filename})`};
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
