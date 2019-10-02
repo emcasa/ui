@@ -1,6 +1,7 @@
 import {css} from 'styled-components'
-import {space, backgroundColor, justifyContent, alignItems} from 'styled-system'
+import {space, background, justifyContent, alignItems} from 'styled-system'
 import PropTypes from 'prop-types'
+import propTypesSS from '@styled-system/prop-types'
 
 import {container as col} from '../Col'
 import {container as text} from '../Text'
@@ -35,17 +36,16 @@ export const tabBar = css`
     if (value) return {height: value.height, flexBasis: value.height}
   }};
   ${space};
-  ${backgroundColor};
+  ${background};
   ${justifyContent};
   ${alignItems};
 `
 
 tabBar.propTypes = {
-  ...buttonHeight.propTypes,
-  ...space.propTypes,
-  ...backgroundColor.propTypes,
-  ...justifyContent.proptypes,
-  ...alignItems.propTypes
+  ...propTypesSS.buttonStyle,
+  ...propTypesSS.space,
+  ...propTypesSS.background,
+  ...propTypesSS.flexbox
 }
 
 export const tabBarButton = css`

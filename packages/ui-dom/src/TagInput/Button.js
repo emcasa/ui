@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import {themeGet, space} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
+import {space} from 'styled-system'
 import {buttonHeight} from '@emcasa/ui/lib/styles'
 import Col from '../Col'
 import Button from '../Button'

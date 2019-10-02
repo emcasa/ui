@@ -3,7 +3,7 @@ name: Dropdown
 menu: Components
 ---
 
-import { Playground } from 'docz'
+import { Fragment } from 'react'
 import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 import View from '@emcasa/ui-dom/components/View'
 import Row from '@emcasa/ui-dom/components/Row'
@@ -17,83 +17,74 @@ Dropdown component.
 
 ## Basic usage
 
-<Playground style={{minHeight: "250px"}}>
-  <Dropdown onChange={(value) => console.log('selected', value)}>
+<Dropdown onChange={(value) => console.log('selected', value)}>
+  <Dropdown.Option value="a">Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Option B</Dropdown.Option>
+  <Dropdown.Option value="c">Option C</Dropdown.Option>
+</Dropdown>
+
+## Placeholder and labels
+
+<View mb="10px">
+  <Text>Dropdown with placeholder</Text>
+  <Dropdown placeholder="Placeholder">
+    <Dropdown.Option value="a">Option A</Dropdown.Option>
+    <Dropdown.Option value="b">Option B</Dropdown.Option>
+    <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
+  </Dropdown>
+</View>
+<View mb="10px">
+  <Text>Dropdown with fixed label</Text>
+  <Dropdown label="Fixed label">
     <Dropdown.Option value="a">Option A</Dropdown.Option>
     <Dropdown.Option value="b">Option B</Dropdown.Option>
     <Dropdown.Option value="c">Option C</Dropdown.Option>
   </Dropdown>
-</Playground>
-
-## Placeholder and labels
-
-<Playground style={{minHeight: "250px"}}>
-  <View mb="10px">
-    <Text>Dropdown with placeholder</Text>
-    <Dropdown placeholder="Placeholder">
-      <Dropdown.Option value="a">Option A</Dropdown.Option>
-      <Dropdown.Option value="b">Option B</Dropdown.Option>
-      <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
-    </Dropdown>
-  </View>
-  <View mb="10px">
-    <Text>Dropdown with fixed label</Text>
-    <Dropdown label="Fixed label">
-      <Dropdown.Option value="a">Option A</Dropdown.Option>
-      <Dropdown.Option value="b">Option B</Dropdown.Option>
-      <Dropdown.Option value="c">Option C</Dropdown.Option>
-    </Dropdown>
-  </View>
-</Playground>
+</View>
 
 ## Icons
 
 You can use the `icon` and `iconProps` props on the `Dropdown` component to style the button icon.
 
-<Playground style={{minHeight: "250px"}}>
-  <Dropdown icon="heart" iconProps={{color: 'red'}} placeholder="What's your favorite animal?">
-    <Dropdown.Option value="cat" label="Cat">
-      <Icon name="cat" color="dark" mr="15px" />
-      <Text inline>Cat</Text>
-    </Dropdown.Option>
-    <Dropdown.Option value="dog" label="Dog">
-      <Icon name="dog" color="dark" mr="15px" />
-      <Text inline>Dog</Text>
-    </Dropdown.Option>
-    <Dropdown.Option value="kiwi" label="Kiwi">
-      <Icon name="kiwi-bird" color="dark" mr="15px" />
-      <Text inline>Kiwi</Text>
-    </Dropdown.Option>
-    <Dropdown.Option value="dragon" label="Dragon">
-      <Icon name="dragon" color="dark" mr="15px" />
-      <Text inline>Dragon</Text>
-    </Dropdown.Option>
-  </Dropdown>
-</Playground>
+<Dropdown icon="heart" iconProps={{color: 'red'}} placeholder="What's your favorite animal?">
+  <Dropdown.Option value="cat" label="Cat">
+    <Icon name="cat" color="dark" mr="15px" />
+    <Text inline>Cat</Text>
+  </Dropdown.Option>
+  <Dropdown.Option value="dog" label="Dog">
+    <Icon name="dog" color="dark" mr="15px" />
+    <Text inline>Dog</Text>
+  </Dropdown.Option>
+  <Dropdown.Option value="kiwi" label="Kiwi">
+    <Icon name="kiwi-bird" color="dark" mr="15px" />
+    <Text inline>Kiwi</Text>
+  </Dropdown.Option>
+  <Dropdown.Option value="dragon" label="Dragon">
+    <Icon name="dragon" color="dark" mr="15px" />
+    <Text inline>Dragon</Text>
+  </Dropdown.Option>
+</Dropdown>
 
 Use `flexDirection` to position the dropdown icon and `textAlign` to position the dropdown text.
 
-<Playground style={{minHeight: "250px"}}>
-  <View mb="10px">
-    <Dropdown flexDirection="row-reverse" placeholder="Select an option">
-      <Dropdown.Option value="a">Option A</Dropdown.Option>
-      <Dropdown.Option value="b">Option B</Dropdown.Option>
-      <Dropdown.Option value="c">Option C</Dropdown.Option>
-    </Dropdown>
-  </View>
-  <View mb="10px">
-    <Dropdown flexDirection="row-reverse" textAlign="right" placeholder="Select an option">
-      <Dropdown.Option value="a">Option A</Dropdown.Option>
-      <Dropdown.Option value="b">Option B</Dropdown.Option>
-      <Dropdown.Option value="c">Option C</Dropdown.Option>
-    </Dropdown>
-  </View>
-</Playground>
+<View mb="10px">
+  <Dropdown flexDirection="row-reverse" placeholder="Select an option">
+    <Dropdown.Option value="a">Option A</Dropdown.Option>
+    <Dropdown.Option value="b">Option B</Dropdown.Option>
+    <Dropdown.Option value="c">Option C</Dropdown.Option>
+  </Dropdown>
+</View>
+<View mb="10px">
+  <Dropdown flexDirection="row-reverse" textAlign="right" placeholder="Select an option">
+    <Dropdown.Option value="a">Option A</Dropdown.Option>
+    <Dropdown.Option value="b">Option B</Dropdown.Option>
+    <Dropdown.Option value="c">Option C</Dropdown.Option>
+  </Dropdown>
+</View>
 
 ## Advanced usage
 
-<Playground style={{minHeight: "250px"}}>
-  <ItunesSearch>
+<ItunesSearch>
   {({search, results, onChange}) => (
     <Dropdown
       icon="search"
@@ -124,6 +115,5 @@ Use `flexDirection` to position the dropdown icon and `textAlign` to position th
       )}
     </Dropdown>
   )}
-  </ItunesSearch>
-</Playground>
+</ItunesSearch>
 

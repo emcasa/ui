@@ -1,7 +1,6 @@
-import isEmpty from 'lodash/isEmpty'
 import React from 'react'
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
 import {ControlledFilter} from './Filter'
 import Button from '../Button'
 

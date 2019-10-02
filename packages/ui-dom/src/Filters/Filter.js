@@ -104,7 +104,7 @@ export default class Filter extends PureComponent {
 
   render() {
     const {selected, isFilterExpanded, contentRef} = this.props
-    if (!selected || !this.hasPanel) return this.renderButton()
+    if (!selected || !this.hasPanel || !contentRef.current) return this.renderButton()
     else if (isFilterExpanded) {
       return (
         <>

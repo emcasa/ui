@@ -1,5 +1,7 @@
 import {css} from 'styled-components'
-import {color, themeGet} from 'styled-system'
+import {color} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
+import propTypes from '@styled-system/prop-types'
 import {
   defaultFontFamily,
   fontSize,
@@ -23,10 +25,9 @@ const container = css`
 `
 
 container.propTypes = {
-  ...buttonHeight.propTypes,
-  ...color.propTypes,
-  ...fontSize.propTypes,
-  ...buttonHeight.propTypes
+  ...propTypes.buttonStyle,
+  ...propTypes.color,
+  ...propTypes.typography
 }
 
 container.defaultProps = {

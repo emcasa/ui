@@ -3,7 +3,6 @@ name: Breakpoint
 menu: Components
 ---
 
-import { Playground } from 'docz'
 import Breakpoint, {BreakpointProvider} from '@emcasa/ui-dom/components/Breakpoint'
 import Row from '@emcasa/ui-dom/components/Row'
 import Col from '@emcasa/ui-dom/components/Col'
@@ -13,38 +12,31 @@ import View from '@emcasa/ui-dom/components/View'
 ## Breakpoint
 
 Renders children when breakpoint requirements are met
-
-<Playground>
-  <Breakpoint only="phone">
-    <Text>Only phone</Text>
-  </Breakpoint>
-  <Breakpoint down="tablet">
-    <Text>Tablet & Phone</Text>
-  </Breakpoint>
-  <Breakpoint up="desktop">
-    <Text>Desktop</Text>
-  </Breakpoint>
-</Playground>
-
+<Breakpoint only="phone">
+  <Text>Only phone</Text>
+</Breakpoint>
+<Breakpoint down="tablet">
+  <Text>Tablet & Phone</Text>
+</Breakpoint>
+<Breakpoint up="desktop">
+  <Text>Desktop</Text>
+</Breakpoint>
 ## BreakpointProvider
 
 Returns current breakpoint
 
-<Playground>
-  <BreakpointProvider>
-    {({breakpoint, isMobile}) => (
-      <Row>
-        <Col mr={2}>
-          <Text>{breakpoint}</Text>
-        </Col>
-        <Col>
-          <Text color={isMobile ? 'pink' : 'grey'}>({isMobile ? 'is mobile' : 'not mobile'})</Text>
-        </Col>
-      </Row>
-    )}
-  </BreakpointProvider>
-</Playground>
-
+<BreakpointProvider>
+  {({breakpoint, isMobile}) => (
+    <Row>
+      <Col mr={2}>
+        <Text>{breakpoint}</Text>
+      </Col>
+      <Col>
+        <Text color={isMobile ? 'pink' : 'grey'}>({isMobile ? 'is mobile' : 'not mobile'})</Text>
+      </Col>
+    </Row>
+  )}
+</BreakpointProvider>
 ## withBreakpoint
 
 Wraps the target component in a `BreakpointProvider` and passes the resulting `breakpoint` to props

@@ -10,7 +10,7 @@ import {
   order,
   flex,
   alignSelf,
-  backgroundColor
+  background
 } from 'styled-system'
 import elevation from '../../styles/elevation'
 
@@ -25,7 +25,7 @@ export const container = css`
   ${order}
   ${flex}
   ${alignSelf}
-  ${backgroundColor}
+  ${background}
   ${elevation}
 `
 
@@ -40,7 +40,7 @@ container.propTypes = {
   ...flex.propTypes,
   ...order.propTypes,
   ...alignSelf.propTypes,
-  ...backgroundColor.propTypes,
+  ...background.propTypes,
   ...elevation.propTypes
 }
 

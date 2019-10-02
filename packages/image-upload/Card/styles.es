@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {themeGet} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
 import {breakpoint} from '@emcasa/ui/lib/styles'
 import {gridSize, GRID_SPACING} from '../styles/grid'
 

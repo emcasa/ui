@@ -1,6 +1,6 @@
 import {css} from 'styled-components'
+import {themeGet} from '@styled-system/theme-get'
 import {
-  themeGet,
   color,
   border,
   borderColor,
@@ -34,7 +34,6 @@ export const container = css`
 `
 
 container.propTypes = {
-  ...buttonHeight.propTypes,
   ...border.propTypes,
   ...borderColor.propTypes
 }
@@ -57,8 +56,6 @@ export const text = css`
 
 text.propTypes = {
   ...color.propTypes,
-  ...fontSize.propTypes,
-  ...letterSpacing.propTypes,
   ...fontFamily.propTypes
 }
 
@@ -73,11 +70,6 @@ export const error = css`
   ${fontSize};
   ${letterSpacing};
 `
-
-error.propTypes = {
-  ...fontSize.propTypes,
-  ...letterSpacing.propTypes
-}
 
 error.defaultProps = {
   fontSize: 'small',
