@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@styled-system/theme-get": "^5.1.2",
+    "dotenv": "^8.1.0",
     "formik": "1.5.8",
     "google-map-react": "1.1.5",
     "lodash": "4.17.15",
@@ -66,7 +67,7 @@
     "babel-eslint": "10.0.3",
     "babel-preset-react-native": "^5.0.2",
     "concurrently": "4.1.2",
-    "docz": "2.0.0-rc.42",
+    "docz": "2.0.0-rc.55",
     "docz-theme-default": "1.2.0",
     "eslint": "6.4.0",
     "eslint-config-prettier": "6.3.0",
@@ -78,5 +79,8 @@
     "metro-react-native-babel-preset": "0.56.0",
     "theme-ui": "^0.2.43"
   },
-  "optionalDependencies": {}
+  "optionalDependencies": {},
+  "resolutions": {
+    "fsevents": "2.1.1"
+  }
 }
