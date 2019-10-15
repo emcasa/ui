@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import {themeGet} from '@styled-system/theme-get'
+import Text from '@emcasa/ui-dom/components/Text'
+import {breakpoint} from '@emcasa/ui/lib/styles'
 import PulseLoader from 'react-spinners/PulseLoader'
 import Card from '../Card'
 
 export const UploadCard = styled(Card)`
-  border: 2px ${({isActive}) => (isActive ? 'solid' : 'dashed')}
-    ${themeGet('colors.pink')};
   ${({isActive}) =>
     isActive && {
       transform: 'scale(1.05)'
@@ -15,6 +14,14 @@ export const UploadCard = styled(Card)`
   background: white;
   * {
     cursor: pointer;
+  }
+  ${Text} {
+    margin: 0 4px;
+  }
+  @media ${breakpoint.down('tablet')} {
+    ${Text} {
+      display: none;
+    }
   }
 `
 
