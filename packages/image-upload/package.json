@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/image-upload",
-  "version": "2.4.9",
+  "version": "2.5.0",
   "description": "EmCasa's image upload component",
   "license": "MIT",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@emcasa/ui": "^2.4.9",
+    "@emcasa/ui": "^2.5.0",
     "@emcasa/ui-dom": "^2.4.9",
     "immutability-helper": "2.9.0",
     "lodash": "^4.17.11",
