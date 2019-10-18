@@ -46,7 +46,7 @@ export function getDefaultGroupColor(group) {
   return color.toHexString()
 }
 
-const isTag = (tag) => (t) => t.name == tag.name
+const isTag = (tag) => (t) => t.name === tag.name
 
 const selectStrategy = {
   getInitialValue: toArray,
@@ -211,11 +211,15 @@ export default class TagInput extends PureComponent {
   }
 
   isDuplicate = (tag, tags) => {
-    return tags.find((t) => t.name.trim().toLowerCase() === tag ? tag.name.trim().toLowerCase() : '')
+    return tags.find((t) =>
+      t.name.trim().toLowerCase() === tag ? tag.name.trim().toLowerCase() : ''
+    )
   }
 
   getTag = (name, tags) => {
-    return tags.find((t) => t.name.trim().toLowerCase() === name.trim().toLowerCase())
+    return tags.find(
+      (t) => t.name.trim().toLowerCase() === name.trim().toLowerCase()
+    )
   }
 
   renderLabel() {

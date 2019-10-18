@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import {themeGet, space} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
+import {space} from 'styled-system'
 import {getColor} from '../Marker/styles'
 
 export const Pagination = styled.div`

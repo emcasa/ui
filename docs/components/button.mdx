@@ -3,7 +3,6 @@ name: Button
 menu: Components
 ---
 
-import { Playground } from 'docz'
 import Button from '@emcasa/ui-dom/components/Button'
 import Text from '@emcasa/ui-dom/components/Text'
 import View from '@emcasa/ui-dom/components/View'
@@ -14,33 +13,29 @@ Button component.
 
 ## Basic usage
 
-<Playground>
-  <View m={4}>
-    <Button active>Active</Button>
-    <Button>Normal</Button>
-    <Button disabled>Disabled</Button>
-    <Button link>Link</Button>
-    <Button link disabled>Disabled link</Button>
-    <Button active disabled>Active and disabled</Button>
-    <View my={4}>
-      <Button fluid active>This Button takes up all available space</Button>
-    </View>
+<View m={4}>
+  <Button active>Active</Button>
+  <Button>Normal</Button>
+  <Button disabled>Disabled</Button>
+  <Button link>Link</Button>
+  <Button link disabled>Disabled link</Button>
+  <Button active disabled>Active and disabled</Button>
+  <View my={4}>
+    <Button fluid active>This Button takes up all available space</Button>
   </View>
-  <View m={4}>
-    <Button height="tall">Tall</Button>
-    <Button height="medium">Medium</Button>
-    <Button height="short">Short</Button>
-  </View>
-</Playground>
+</View>
+<View m={4}>
+  <Button height="tall">Tall</Button>
+  <Button height="medium">Medium</Button>
+  <Button height="short">Short</Button>
+</View>
 
 # Button.Group
 
 Selectable group of buttons
 
-<Playground>
-  <Button.Group onChange={(value) => console.log('selected', value)}>
-    <Button value="a">Button A</Button>
-    <Button value="b">Button B</Button>
-    <Button value="c">Button C</Button>
-  </Button.Group>
-</Playground>
+<Button.Group onChange={(value) => console.log('selected', value)}>
+  <Button value="a">Button A</Button>
+  <Button value="b">Button B</Button>
+  <Button value="c">Button C</Button>
+</Button.Group>

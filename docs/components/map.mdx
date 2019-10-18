@@ -3,7 +3,8 @@ name: Map
 menu: Components
 ---
 
-import {Playground, Props} from 'docz'
+import {Props} from 'docz'
+import {Fragment} from 'react'
 import View from '@emcasa/ui-dom/src/View'
 import Map from '@emcasa/ui-dom/src/Map'
 import Marker from '@emcasa/ui-dom/src/Map/Marker'
@@ -27,7 +28,7 @@ import {GOOGLE_MAPS_API_KEY} from '../config'
 
 All markers must be direct children of `<Map />` and should have `lat` and `lng` props.
 
-<Playground>
+<Fragment>
   <View m={4} height={400}>
     <Map apiKey={GOOGLE_MAPS_API_KEY} libraries={['places']}>
       <View {...markers[0]} mt={-25} width={25} height={25}>
@@ -35,7 +36,7 @@ All markers must be direct children of `<Map />` and should have `lat` and `lng`
       </View>
     </Map>
   </View>
-</Playground>
+</Fragment>
 
 ## Map.Marker
 
@@ -49,7 +50,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
 
 ### Basic usage
 
-<Playground>
+<Fragment>
   <View m={4} height={400}>
     <Map
       cluster
@@ -68,7 +69,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
       ))}
     </Map>
   </View>
-</Playground>
+</Fragment>
 
 ## Map.MultiMarker
 
@@ -80,7 +81,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
 
 ### Configuring cluster components
 
-<Playground>
+<Fragment>
   <View m={4} height={400}>
     <Map
       cluster
@@ -105,11 +106,11 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
       ))}
     </Map>
   </View>
-</Playground>
+</Fragment>
 
 ## Map.ButtonControl
 
-<Playground>
+<Fragment>
   <View m={4} height={400}>
     <PlaceSearch type="park">
       {({active, places, onMapLoaded, onChange, onTogglePlaces}) => (
@@ -142,11 +143,11 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
       )}
     </PlaceSearch>
   </View>
-</Playground>
+</Fragment>
 
 ## Map.SelectControl
 
-<Playground>
+<Fragment>
   <View m={4} height={400}>
     <Map apiKey={GOOGLE_MAPS_API_KEY}>
       <Map.SelectControl
@@ -157,7 +158,7 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
         zIndex={100}
         onChange={console.log}
       >
-        <Map.SelectControl.Option key={name} color="extraDarkSmoke" value={null}>
+        <Map.SelectControl.Option color="extraDarkSmoke" value={null}>
           Select an option
         </Map.SelectControl.Option>
         {['A', 'B','C'].map((name) =>
@@ -171,4 +172,4 @@ Use `multiMarkerRadius` to adjust the cluster radius in pixels. `0` only groups 
       </View>
     </Map>
   </View>
-</Playground>
+</Fragment>

@@ -1,4 +1,4 @@
-import {themeGet} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
 
 export const MIN_AREA = 35
 

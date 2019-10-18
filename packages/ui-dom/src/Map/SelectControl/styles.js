@@ -1,6 +1,7 @@
 import curry from 'lodash/curry'
 import styled from 'styled-components'
-import {themeGet, zIndex} from 'styled-system'
+import {themeGet} from '@styled-system/theme-get'
+import {zIndex} from 'styled-system'
 import {buttonHeight} from '@emcasa/ui/lib/styles'
 import BaseButton from '../../Button'
 

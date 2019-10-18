@@ -4,7 +4,6 @@ menu: Components
 ---
 
 import './filters.js'
-import { Playground } from 'docz'
 import Filters from '@emcasa/ui-dom/components/Filters'
 import Button from '@emcasa/ui-dom/components/Filters/FilterButton'
 import SliderRangeFilter from '@emcasa/ui-dom/components/Filters/SliderRangeFilter'
@@ -28,66 +27,60 @@ import tags from './tags.json'
 
 # Filters
 
-<Playground className="filtersPlayground">
-  <View height="150px">
-    <Filters
-      onSubmit={console.log}
-      initialValues={{slider: {min: 0, max: 1}}}
+<View height="150px">
+  <Filters
+    onSubmit={console.log}
+    initialValues={{slider: {min: 0, max: 1}}}
+  >
+    <SliderRangeFilter
+      name="slider"
+      label="Slider range"
+      range={[0, 1]}
+    />
+    <ButtonGroupFilter
+      name="buttons"
+      label="Button group"
     >
-      <SliderRangeFilter
-        name="slider"
-        label="Slider range"
-        range={[0, 1]}
-      />
-      <ButtonGroupFilter
-        name="buttons"
-        label="Button group"
-      >
-        <Button value={0}>0</Button>
-        <Button value={1}>1</Button>
-        <Button value={2}>2</Button>
-        <Button value={3}>3</Button>
-      </ButtonGroupFilter>
-      <ButtonRangeFilter
-        name="buttonRange"
-        label="Button range"
-        range={[1, 5]}
-        formatLast={() => '+'}
-      />
-    </Filters>
-  </View>
-</Playground>
+      <Button value={0}>0</Button>
+      <Button value={1}>1</Button>
+      <Button value={2}>2</Button>
+      <Button value={3}>3</Button>
+    </ButtonGroupFilter>
+    <ButtonRangeFilter
+      name="buttonRange"
+      label="Button range"
+      range={[1, 5]}
+      formatLast={() => '+'}
+    />
+  </Filters>
+</View>
 
 ## Listing filters
 
-<Playground>
-  <View height="150px">
-    <Filters
-      showMobileHeader
-      onSubmit={console.log}
-      startExpanded
-      initialValues={{
-        area: AreaFilter.initialValue,
-        price: PriceFilter.initialValue,
-        pricePerArea: PricePerAreaFilter.initialValue,
-        constructionYear: ConstructionYearFilter.initialValue
-      }}
-    >
-      <TagsFilter
-        options={tags}
-        onChangeText={console.log}
-        placeholder="Search tags"
-      />
-      <TypesFilter />
-      <PriceFilter />
-      <MaintenanceFeeFilter />
-      <PricePerAreaFilter />
-      <AreaFilter />
-      <RoomsFilter />
-      <SuitesFilter />
-      <GarageSpotsFilter />
-      <GarageTypesFilter />
-      <ConstructionYearFilter />
-    </Filters>
-  </View>
-</Playground>
+<View height="150px">
+  <Filters
+    onSubmit={console.log}
+    initialValues={{
+      area: AreaFilter.initialValue,
+      price: PriceFilter.initialValue,
+      pricePerArea: PricePerAreaFilter.initialValue,
+      constructionYear: ConstructionYearFilter.initialValue
+    }}
+  >
+    <TagsFilter
+      options={tags}
+      onChangeText={console.log}
+      placeholder="Search tags"
+    />
+    <TypesFilter name="types" />
+    <PriceFilter name="price" />
+    <MaintenanceFeeFilter name="maintenanceFee" />
+    <PricePerAreaFilter name="pricePerArea" />
+    <AreaFilter name="area" />
+    <RoomsFilter name="rooms" />
+    <SuitesFilter name="suites" />
+    <GarageSpotsFilter name="garageSpots" />
+    <GarageTypesFilter name="garageTypes" />
+    <ConstructionYearFilter name="constructionYear" />
+  </Filters>
+</View>

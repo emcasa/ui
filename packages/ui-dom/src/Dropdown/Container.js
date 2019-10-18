@@ -28,7 +28,7 @@ export default styled(
     onDocumentClick = (e) => {
       const {focused, onDropdownBlur} = this.props
       const target = this.targetDOMNode
-      if (focused && target && onDropdownBlur && !target.contains(e.target)) {
+      if (focused && target && onDropdownBlur && target && !target.contains(e.target)) {
         onDropdownBlur()
       }
     }
@@ -36,8 +36,8 @@ export default styled(
     onDocumentFocus = (e) => {
       const {focused, onDropdownBlur, onDropdownFocus} = this.props
       const target = this.targetDOMNode
-      if (focused && !target.contains(e.target)) onDropdownBlur()
-      else if (!focused && target.contains(e.target)) onDropdownFocus()
+      if (focused && target && !target.contains(e.target)) onDropdownBlur()
+      else if (!focused && target && target.contains(e.target)) onDropdownFocus()
     }
 
     render() {

@@ -3,7 +3,7 @@ name: Group
 menu: Components
 ---
 
-import { Playground } from 'docz'
+import { Fragment } from 'react'
 import View from '@emcasa/ui-dom/components/View'
 import Text from '@emcasa/ui-dom/components/Text'
 import Button from '@emcasa/ui-dom/components/Button'
@@ -14,7 +14,7 @@ import Col from '@emcasa/ui-dom/components/Col'
 
 ## Basic usage
 
-<Playground>
+<Fragment>
   <Text>Uncontrolled radio group</Text>
   <RadioButton.Group initialValue="a" onChange={(value) => console.log('selected', value)}>
     <RadioButton label="Option 1" value="a" />
@@ -28,14 +28,14 @@ import Col from '@emcasa/ui-dom/components/Col'
     <RadioButton label="Option 2" value="b" />
     <RadioButton label="Option 3" value="c" disabled />
   </RadioButton.Group>
-</Playground>
+</Fragment>
 
 ## renderItem
 
 All children on a Group must be an instance of it's base component, or at least work with the same props.
 use `renderItem` to render components around each child.
 
-<Playground>
+<Fragment>
   <Text>With option wrapper</Text>
   <Button.Group
     initialValue="b"
@@ -45,12 +45,12 @@ use `renderItem` to render components around each child.
     <Button fluid value="b">Button B</Button>
     <Button fluid value="c">Button C</Button>
   </Button.Group>
-</Playground>
+</Fragment>
 
 
 ## Select Strategies
 
-<Playground>
+<Fragment>
   <Text>Pre-defined strategies:</Text>
   <Text fontSize="small">simple</Text>
   <Button.Group
@@ -84,4 +84,4 @@ use `renderItem` to render components around each child.
     <Button value="b">Button B</Button>
     <Button value="c">Button C</Button>
   </Button.Group>
-</Playground>
+</Fragment>

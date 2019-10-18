@@ -1,12 +1,12 @@
 import {css} from 'styled-components'
+import {themeGet} from '@styled-system/theme-get'
 import {
-  themeGet,
   color,
   width,
   maxHeight,
   textAlign,
   borderColor,
-  backgroundColor
+  background
 } from 'styled-system'
 import PropTypes from 'prop-types'
 
@@ -79,7 +79,7 @@ export const button = css`
   ${width};
   ${buttonHeight};
   ${borderColor};
-  ${backgroundColor};
+  ${background};
 `
 
 button.textContainer = css`
@@ -118,9 +118,7 @@ button.propTypes = {
   onFocusChange: PropTypes.func,
   onLayout: PropTypes.func,
   ...width.propTypes,
-  ...buttonHeight.propTypes,
   ...textAlign.propTypes,
-  ...fontSize.propTypes,
   ...color.propTypes,
   ...row.propTypes
 }
@@ -156,7 +154,6 @@ option.hover = css`
 option.propTypes = {
   selected: PropTypes.bool,
   onSelect: PropTypes.func,
-  ...fontSize.propTypes,
   ...color.propTypes,
   ...row.propTypes
 }

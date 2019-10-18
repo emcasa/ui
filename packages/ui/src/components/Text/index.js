@@ -6,8 +6,13 @@ import {
   lineHeight,
   textAlign
 } from 'styled-system'
-
-import {letterSpacing, fontSize, fontWeight, defaultFontFamily} from '../../styles'
+import propTypes from '@styled-system/prop-types'
+import {
+  letterSpacing,
+  fontSize,
+  fontWeight,
+  defaultFontFamily
+} from '../../styles'
 
 export const container = css`
   ${defaultFontFamily}
@@ -22,14 +27,8 @@ export const container = css`
 `
 
 container.propTypes = {
-  ...letterSpacing.propTypes,
-  ...color.propTypes,
-  ...fontSize.propTypes,
-  ...fontWeight.propTypes,
-  ...fontFamily.propTypes,
-  ...fontStyle.propTypes,
-  ...lineHeight.propTypes,
-  ...textAlign.propTypes
+  ...propTypes.typography,
+  ...color.propTypes
 }
 
 container.defaultProps = {

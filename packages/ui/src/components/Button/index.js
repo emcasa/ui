@@ -81,9 +81,7 @@ export const text = css`
 
 text.propTypes = {
   ...buttonProps,
-  ...letterSpacing.propTypes,
   ...fontFamily.propTypes,
-  ...fontSize.propTypes,
   ...color.propTypes
 }
 

@@ -1,5 +1,6 @@
 import {css} from 'styled-components'
 import {fontFamily} from 'styled-system'
+import propTypes from '@styled-system/prop-types'
 
 import {container as text} from '../Text'
 import {
@@ -23,10 +24,6 @@ export const container = css`
   align-items: center;
   ${buttonHeight};
 `
-
-container.propTypes = {
-  ...buttonHeight.propTypes
-}
 
 container.defaultProps = {
   height: 'tall',
@@ -74,7 +71,6 @@ export const label = css`
 `
 
 label.propTypes = {
-  ...fontSize.propTypes,
-  ...letterSpacing.propTypes,
+  ...propTypes.typography,
   ...fontFamily.propTypes
 }
