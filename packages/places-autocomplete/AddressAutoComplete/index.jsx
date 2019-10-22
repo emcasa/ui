@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {filterComponent} from '../helpers'
+import {filterComponentName} from '../helpers'
 import GoogleMapsAutoComplete from '../GoogleMapsAutoComplete'
 
 export class AddressAutoComplete extends PureComponent {
@@ -63,7 +63,10 @@ export class AddressAutoComplete extends PureComponent {
       let error
       if (
         validate &&
-        (error = validate(result, filterComponent(result.address_components)))
+        (error = validate(
+          result,
+          filterComponentName(result.address_components)
+        ))
       )
         throw new Error(error)
       const value = format(place, result)
