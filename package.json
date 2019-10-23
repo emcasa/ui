@@ -56,7 +56,6 @@
   "devDependencies": {
     "@babel/cli": "7.6.2",
     "@babel/core": "7.6.2",
-    "@babel/helpers": "7.6.2",
     "@babel/plugin-proposal-class-properties": "7.5.5",
     "@babel/plugin-proposal-object-rest-spread": "7.6.2",
     "@babel/preset-env": "7.6.2",
@@ -82,5 +81,8 @@
   },
   "optionalDependencies": {
     "fsevents": "2.1.1"
+  },
+  "resolutions": {
+    "@babel/helpers": "7.6.2"
   }
 }
