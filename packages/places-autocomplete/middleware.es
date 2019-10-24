@@ -1,46 +1,18 @@
-import isArray from 'lodash/isArray'
 import express from 'express'
-import googleMaps from '@google/maps'
+import GoogleMapsClient from './GoogleMapsClient'
 
-const isValidRadius = (radius) => radius && !isNaN(radius)
-const isValidLocation = (location) =>
-  isArray(location) && location.length === 2 && location.findIndex(isNaN) === -1
-
-export default function createMiddleware({
-  apiKey,
-  language = 'pt-BR',
-  country = 'br',
-  autoCompleteTypes = ['address', 'establishment'],
-  ...options
-}) {
+export default function createMiddleware(options) {
   const router = express.Router()
 
-  const client = googleMaps.createClient({
-    ...options,
-    key: apiKey,
-    language,
-    Promise: Promise
-  })
+  const client = new GoogleMapsClient(options)
 
   router.get('/autocomplete', async (req, res) => {
-    const {q, sessionToken, location, radius, types = 'address'} = req.query
-    const query = {
-      input: q,
-      language,
-      components: {country},
-      types: []
-        .concat(types)
-        .filter((t) => autoCompleteTypes.indexOf(t) !== -1),
-      sessiontoken: sessionToken
-    }
-    if (isValidLocation(location)) {
-      query.location = location.map(parseFloat)
-      if (isValidRadius(radius)) query.radius = parseInt(radius)
-    }
+    const {q, ...params} = req.query
     try {
-      const result = await client.placesAutoComplete(query).asPromise()
-      res.status(200).send(result.json)
+      const response = await client.autoComplete(q, params)
+      res.status(200).send(response)
     } catch (e) {
+      console.error('[@emcasa/places-autocomplete]', e)
       res.status(500).send({error: e})
     }
   })
@@ -48,14 +20,10 @@ export default function createMiddleware({
   router.get('/details', async (req, res) => {
     const {q} = req.query
     try {
-      const result = await client
-        .place({
-          placeid: q,
-          language
-        })
-        .asPromise()
-      res.status(200).send(result.json)
+      const response = await client.details(q)
+      res.status(200).send(response)
     } catch (e) {
+      console.error('[@emcasa/places-autocomplete]', e)
       res.status(500).send({error: e})
     }
   })
