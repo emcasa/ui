@@ -1,7 +1,6 @@
 import isArray from 'lodash/isArray'
-import isEmpty from 'lodash/fp/isEmpty'
 import googleMaps from '@google/maps'
-import {filterComponent} from '../helpers'
+import {filterComponent} from './helpers'
 
 const isValidRadius = (radius) => radius && !isNaN(radius)
 
