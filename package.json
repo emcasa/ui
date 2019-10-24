@@ -79,8 +79,10 @@
     "metro-react-native-babel-preset": "0.56.0",
     "theme-ui": "^0.2.43"
   },
-  "optionalDependencies": {},
-  "resolutions": {
+  "optionalDependencies": {
     "fsevents": "2.1.1"
+  },
+  "resolutions": {
+    "@babel/helpers": "7.6.2"
   }
 }
