@@ -20,8 +20,12 @@ export default class GoogleMapsClient {
    * @param {String}   options.apiKey
    * @param {String}   options.language
    * @param {String}   options.country
-   * @param {Boolean}  options.approximatePostalCode
-   * @param {String[]} options.autoCompleteTypes
+   * @param {String[]} options.approximateAddressComponents Address components that should be present in the
+   *                                                        response from `/details`. When a result lacks any
+   *                                                        of these properties the client will attempt to
+   *                                                        get an approximated result from nearby addresses.
+   *                                                        When this happens, `result.approximated` is set to `true`
+   * @param {String[]} options.autoCompleteTypes            Place types to include in the response from `/autoComplete`
    */
   constructor({apiKey, ...options}) {
     this.options = Object.assign(
