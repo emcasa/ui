@@ -49,7 +49,7 @@ export default class GoogleMapsClient {
       if (results.length) {
         const postalCodeComponent = getPostalCode(results[0])
         response.result.address_components.push(postalCodeComponent)
-        response.approximated = true
+        response.result.approximated = true
       }
     }
     return response
