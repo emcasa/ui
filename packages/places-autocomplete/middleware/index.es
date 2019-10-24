@@ -12,6 +12,7 @@ export default function createMiddleware(options) {
       const response = await client.autoComplete(q, params)
       res.status(200).send(response)
     } catch (e) {
+      console.error('[@emcasa/places-autocomplete]', e)
       res.status(500).send({error: e})
     }
   })
@@ -22,6 +23,7 @@ export default function createMiddleware(options) {
       const response = await client.details(q)
       res.status(200).send(response)
     } catch (e) {
+      console.error('[@emcasa/places-autocomplete]', e)
       res.status(500).send({error: e})
     }
   })
