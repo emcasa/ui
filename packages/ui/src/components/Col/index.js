@@ -1,5 +1,5 @@
 import {css} from 'styled-components'
-import {flex, order, alignSelf, justifySelf} from 'styled-system'
+import {flex, order, alignSelf, justifySelf, color} from 'styled-system'
 
 import {container as view} from '../View'
 
@@ -9,6 +9,7 @@ export const container = css`
   ${order}
   ${alignSelf}
   ${justifySelf}
+  ${color}
 `
 
 container.propTypes = {
@@ -16,5 +17,6 @@ container.propTypes = {
   ...flex.propTypes,
   ...order.propTypes,
   ...alignSelf.propTypes,
-  ...justifySelf.propTypes
+  ...justifySelf.propTypes,
+  ...color.propTypes
 }
