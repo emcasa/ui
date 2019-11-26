@@ -31,6 +31,13 @@ export class AddressAutoComplete extends PureComponent {
     }
   }
 
+  get isControlled() {
+    return (
+      typeof this.props.value !== 'undefined' &&
+      Boolean(this.props.onChangeText)
+    )
+  }
+
   static getDerivedStateFromProps(props, state) {
     return {
       focused:
@@ -84,29 +91,30 @@ export class AddressAutoComplete extends PureComponent {
 
   focus = () => this.setState({focused: true}, this.props.onFocus)
 
-  changeText = (value) =>
-    this.setState(
-      {value, focused: true},
-      this.props.onChangeText ? () => this.props.onChangeText(value) : undefined
-    )
+  changeText = async (value) => {
+    if (this.isControlled) return this.props.onChangeText(value)
+    else
+      return new Promise((resolve) =>
+        this.setState({value, focused: true}, resolve)
+      )
+  }
 
-  selectPlace = (place) => {
+  selectPlace = async (place) => {
     const [street, streetNumber] = place.structured_formatting.main_text.split(
       ','
     )
     if (!streetNumber) {
       const placeholder = 'número'
-      this.setState({value: `${street}, ${placeholder}`}, () =>
-        setTimeout(() => {
-          if (!this.props.inputRef.current) return
-          const start = street.length + 2
-          this.props.inputRef.current.setSelectionRange(
-            start,
-            start + placeholder.length
-          )
-          this.props.inputRef.current.focus()
-        }, 0)
-      )
+      await this.changeText(`${street}, ${placeholder}`)
+      setTimeout(() => {
+        if (!this.props.inputRef.current) return
+        const start = street.length + 2
+        this.props.inputRef.current.setSelectionRange(
+          start,
+          start + placeholder.length
+        )
+        this.props.inputRef.current.focus()
+      }, 0)
     } else this.loadPlace(place)
   }
 
