@@ -1,0 +1,59 @@
+{
+  "presets": ["@babel/preset-react", ["@babel/preset-env", {}]],
+  "plugins": [
+    "@babel/plugin-transform-react-inline-elements",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-react-constant-elements",
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ],
+    [
+      "module-resolver",
+      {
+        "root": "./",
+        "alias": {
+          "@": "./src"
+        }
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "modules": "cjs"
+          }
+        ]
+      ]
+    },
+    "development": {
+      "plugins": [
+        [
+          "styled-components",
+          {
+            "ssr": true,
+            "displayName": true,
+            "fileName": true
+          }
+        ]
+      ]
+    },
+    "production": {
+      "plugins": [
+        "lodash",
+        [
+          "styled-components",
+          {
+            "ssr": true,
+            "minify": true
+          }
+        ]
+      ]
+    }
+  }
+}

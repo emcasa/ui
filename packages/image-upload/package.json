@@ -9,7 +9,7 @@
     "clean": "rm -rf components",
     "build": "babel . -d . --ignore \"**/*.js\"",
     "watch": "yarn build --watch",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "prepublish": "yarn build"
   },
   "dependencies": {
