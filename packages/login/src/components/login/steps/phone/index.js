@@ -1,0 +1,119 @@
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import Row from '@emcasa/ui-dom/components/Row'
+import InputMask from 'react-input-mask'
+import {
+  InfoText,
+  TitleText,
+  CTAButton,
+  CenterInput
+} from '@/components/login/steps/shared/styles'
+import Loading from '@/components/login/steps/loading'
+import Login from '@/components/login'
+
+class Phone extends Component {
+  static ERROR_MESSAGES = {
+    invalidPhone: 'Por favor, entre com um número de telefone válido',
+    apiError: 'Ocorreu um erro! Por favor, tente novamente!'
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      phone: props.phone,
+      errorMessage: null,
+      isLoading: false
+    }
+  }
+
+  changePhone = (event) => {
+    const {value} = event.target
+    if (this.state.errorMessage) {
+      this.setState({errorMessage: null})
+    }
+    this.setState({phone: value})
+  }
+
+  clearPhone = (phone) => {
+    const charsToClean = [' ', '(', ')', '-', '_']
+    let newPhone = phone
+    charsToClean.forEach((char) => {
+      newPhone = newPhone.split(char).join('')
+    })
+    return newPhone
+  }
+
+  requestToken = (phone) => {
+    this.setState({isLoading: true})
+    this.props
+      .requestToken(phone)
+      .then(() => this.props.goToStep(Login.STEP_NAMES.token))
+      .catch(() =>
+        this.setState({
+          isLoading: false,
+          errorMessage: Phone.ERROR_MESSAGES.apiError
+        })
+      )
+  }
+
+  onSubmit = () => {
+    if (this.state.errorMessage) {
+      this.setState({errorMessage: null})
+    }
+
+    const cleanPhone = this.clearPhone(this.state.phone)
+    if (cleanPhone.length !== 11) {
+      this.setState({errorMessage: Phone.ERROR_MESSAGES.invalidPhone})
+    } else {
+      this.requestToken(cleanPhone)
+    }
+  }
+
+  isButtonDisabled = () => {
+    return this.clearPhone(this.state.phone).length !== 11
+  }
+
+  renderForm = () => (
+    <Row flexDirection="column">
+      <TitleText color="pink">Entre na sua conta</TitleText>
+      <InfoText>
+        Entre com o seu celular. Enviaremos o código de acesso no seu WhatsApp
+      </InfoText>
+      <InputMask
+        mask="(99) 99999-9999"
+        value={this.state.phone}
+        onChange={this.changePhone}
+      >
+        <CenterInput
+          height="medium"
+          mt="16px"
+          mb={2}
+          placeholder="(11) 99999-9999"
+          hideLabelView
+          error={this.state.errorMessage}
+        />
+      </InputMask>
+      <CTAButton
+        fluid
+        active
+        onClick={this.onSubmit}
+        disabled={this.isButtonDisabled()}
+      >
+        Entrar
+      </CTAButton>
+    </Row>
+  )
+
+  render() {
+    return this.state.isLoading ? <Loading /> : this.renderForm()
+  }
+}
+
+Phone.propTypes = {
+  requestToken: PropTypes.func.isRequired,
+  goToStep: PropTypes.func.isRequired,
+  phone: PropTypes.string.isRequired
+}
+
+export default Phone

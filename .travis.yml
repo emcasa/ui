@@ -17,6 +17,7 @@ install:
   - npm install -g lerna
 
 script:
+  - yarn test
   - yarn build
   - yarn docz
 
