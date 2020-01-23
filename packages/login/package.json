@@ -3,11 +3,11 @@
   "version": "2.8.0",
   "description": "EmCasa's login component",
   "license": "MIT",
-  "main": "components/index.js",
+  "main": "lib/index.js",
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
-    "clean": "rm -rf components",
-    "build": "babel . -d components --ignore \"test/**/*.js\" --ignore \"node_modules\"",
+    "clean": "rm -rf lib",
+    "build": "babel . -d lib --ignore \"test/**/*.js\" --ignore \"node_modules\"",
     "watch": "yarn build --watch",
     "test": "jest",
     "prepublish": "yarn build"
