@@ -7,7 +7,7 @@
   "author": "EmCasa <dev@emcasa.com>",
   "scripts": {
     "clean": "rm -rf lib",
-    "build": "babel . -d lib --ignore \"test/**/*.js\" --ignore \"node_modules\"",
+    "build": "babel . -d lib --ignore \"test/**/*.js\" --ignore \"node_modules\" --ignore \"lib\" ",
     "watch": "yarn build --watch",
     "test": "jest",
     "prepublish": "yarn build"
