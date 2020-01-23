@@ -34,7 +34,7 @@
     "@emcasa/ui-dom": "^2.9.1",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.15",
-    "react-input-mask": "^2.0.4",
+    "react-input-mask": "3.0.0-alpha.2",
     "react-redux": "^7.1.3",
     "redux-saga": "^1.1.3"
   },
