@@ -9,7 +9,7 @@ import {
   TitleText
 } from '@/components/login/steps/shared/styles'
 import Login from '@/components/login'
-import Loading from "@/components/login/steps/loading";
+import Loading from '@/components/login/steps/loading'
 
 class Token extends Component {
   static ERROR_MESSAGES = {
@@ -68,6 +68,8 @@ class Token extends Component {
     return this.clearToken(this.state.token).length !== 4
   }
 
+  onBack = () => this.props.goToStep(Login.STEP_NAMES.phone)
+
   renderForm() {
     return (
       <Row flexDirection="column">
@@ -84,7 +86,9 @@ class Token extends Component {
           />
         </InputMask>
         <Row>
-          <BackButton mr={3}>Voltar</BackButton>
+          <BackButton mr={3} onClick={this.onBack}>
+            Voltar
+          </BackButton>
           <CTAButton
             fluid
             active
