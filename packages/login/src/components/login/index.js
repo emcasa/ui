@@ -30,7 +30,7 @@ class Login extends Component {
   onClose = () => {
     this.setState({...Login.INITIAL_STATE})
   }
-  open = () => this.setState({isOpen: true})
+  open = (phone = '') => this.setState({phone, isOpen: true})
 
   goToStep = (stepName) => this.setState({currentStep: stepName})
 
