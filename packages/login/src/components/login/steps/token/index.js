@@ -26,6 +26,13 @@ class Token extends Component {
     }
   }
 
+  onKeyPressed = ({keyCode}) => {
+    if (keyCode === 13) {
+      this.onSubmit()
+      return false
+    }
+  }
+
   changeToken = (event) => {
     const {value} = event.target
     if (this.state.errorMessage) {
@@ -75,13 +82,14 @@ class Token extends Component {
       <Row flexDirection="column">
         <TitleText color="pink">Código enviado</TitleText>
         <InfoText>Digite o código enviado para o seu Whatsapp</InfoText>
-        <InputMask mask="9 9 9 9" onChange={this.changeToken}>
+        <InputMask mask="9 9 9 9" onChange={this.changeToken} onKeyDown={this.onKeyPressed}>
           <CenterInput
             height="medium"
             mt={4}
             mb={2}
             placeholder="9 9 9 9"
             pattern="\d*"
+            inputMode="numeric"
             hideLabelView
           />
         </InputMask>
