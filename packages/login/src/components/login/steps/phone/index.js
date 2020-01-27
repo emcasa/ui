@@ -27,6 +27,13 @@ class Phone extends Component {
     }
   }
 
+  onKeyPressed = ({keyCode}) => {
+    if (keyCode === 13) {
+      this.onSubmit()
+      return false
+    }
+  }
+
   changePhone = (event) => {
     const {value} = event.target
     if (this.state.errorMessage) {
@@ -84,11 +91,14 @@ class Phone extends Component {
         mask="(99) 99999-9999"
         value={this.state.phone}
         onChange={this.changePhone}
+        onKeyDown={this.onKeyPressed}
       >
         <CenterInput
           height="medium"
           mt="16px"
           mb={2}
+          pattern="\d*"
+          inputMode="numeric"
           placeholder="(11) 99999-9999"
           hideLabelView
           error={this.state.errorMessage}
