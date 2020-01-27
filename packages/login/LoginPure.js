@@ -15,7 +15,9 @@ class LoginPure extends Component {
         variables: {phone: `+55${phone}`}
       })
       .then(({data: {signInCreateAuthenticationCode: response}}) =>
-        response.enqueued === 'SUCCESS' ? Promise.resolve() : Promise.reject()
+        response.enqueued === 'SUCCESS'
+          ? Promise.resolve()
+          : Promise.reject({response, message: 'unexpected response returned'})
       )
       .catch((error) => {
         onError(error)
@@ -30,10 +32,16 @@ class LoginPure extends Component {
         mutation: SUBMIT_TOKEN_MUTATION,
         variables: {phone: `+55${phone}`, code: token}
       })
-      .then(({data: {signInVerifyAuthenticationCode: {jwt}}}) => {
-        onSuccess(jwt)
-        return Promise.resolve(jwt)
-      })
+      .then(
+        ({
+          data: {
+            signInVerifyAuthenticationCode: {jwt}
+          }
+        }) => {
+          onSuccess(jwt)
+          return Promise.resolve(jwt)
+        }
+      )
       .catch((error) => {
         onError(error)
         return Promise.reject(error)

@@ -18,7 +18,10 @@ export function* requestTokenSaga({promiseDispatcher, phone, onError}) {
     if (response.enqueued === 'SUCCESS') {
       yield call(promiseDispatcher.resolve)
     } else {
-      yield call(promiseDispatcher.reject)
+      yield call(promiseDispatcher.reject, {
+        response,
+        message: 'unexpected response returned'
+      })
     }
   } catch (error) {
     if (onError) yield call(onError, error)

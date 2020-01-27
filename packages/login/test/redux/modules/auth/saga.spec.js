@@ -1,6 +1,5 @@
 /* globals describe, it, cExpect */
 import {all, takeLatest, call, getContext} from 'redux-saga/effects'
-import sinon from 'sinon'
 import {TYPES} from '@/redux/modules/auth/actions'
 import authSaga, {
   requestTokenSaga,
@@ -66,7 +65,12 @@ describe('requestTokenSaga', () => {
       generator.next({
         data: {signInCreateAuthenticationCode: {enqueued: 'FAILED'}}
       }).value
-    ).to.deep.equal(call(promiseDispatcher.reject))
+    ).to.deep.equal(
+      call(promiseDispatcher.reject, {
+        response: {enqueued: 'FAILED'},
+        message: 'unexpected response returned'
+      })
+    )
 
     cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
   })
