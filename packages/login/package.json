@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/login",
-  "version": "2.9.5",
+  "version": "2.9.6",
   "description": "EmCasa's login component",
   "license": "MIT",
   "main": "lib/index.js",
@@ -30,8 +30,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",
-    "@emcasa/ui": "^2.9.5",
-    "@emcasa/ui-dom": "^2.9.5",
+    "@emcasa/ui": "^2.9.6",
+    "@emcasa/ui-dom": "^2.9.6",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.15",
     "react-input-mask": "3.0.0-alpha.2",
