@@ -27,6 +27,12 @@ class Phone extends Component {
     }
   }
 
+  phoneInput = React.createRef()
+
+  componentDidMount() {
+    this.phoneInput.current.focus()
+  }
+
   onKeyPressed = ({keyCode}) => {
     if (keyCode === 13) {
       this.onSubmit()
@@ -102,6 +108,7 @@ class Phone extends Component {
           placeholder="(11) 99999-9999"
           hideLabelView
           error={this.state.errorMessage}
+          ref={this.phoneInput}
         />
       </InputMask>
       <CTAButton
