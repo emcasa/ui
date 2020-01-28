@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Row from '@emcasa/ui-dom/components/Row'
+import Button from '@emcasa/ui-dom/components/Button'
 import InputMask from 'react-input-mask'
-import {BackButton} from '@/components/login/steps/token/styles'
 import {
   CenterInput,
   CTAButton,
@@ -105,9 +105,9 @@ class Token extends Component {
           />
         </InputMask>
         <Row>
-          <BackButton mr={3} onClick={this.onBack}>
+          <Button fluid mr={3} onClick={this.onBack}>
             Voltar
-          </BackButton>
+          </Button>
           <CTAButton
             fluid
             active
