@@ -16,7 +16,7 @@ We basically have to main components one is called LoginPure and the other is Lo
 
 1) The components expects that you pass two functions:
 
-    1. `onSuccess = (jwt) => {}` -  This function it's like a callback that is invoked when the authentication is successful. The first and only param of this function is the JWT token returned by the API. Your application should decide what to do with this token
+    1. `onSuccess = (jwt, user) => {}` -  This function it's like a callback that is invoked when the authentication is successful. The first param of this function is the JWT token returned by the API and the second is the user associated with that JWT token. Your application should decide what to do with this token
     2. `onError = (errors) => {}` - This function it's like a callback for when some error happens during some API call. You should use this to log your erros (Logger, Sentry and etc)
 
 2) A global object called `EmCasaLogin` is injected at your `window`. This object holds two functions:
