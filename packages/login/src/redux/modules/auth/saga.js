@@ -53,9 +53,14 @@ export function* submitTokenSaga({
   }
 }
 
-export default function* authSaga() {
-  yield all([
-    takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, requestTokenSaga),
-    takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, submitTokenSaga)
-  ])
+const withOptions = (options) => (saga) => (...args) => saga(...args, options)
+
+export default (options = {}) => {
+  const enhanceSaga = withOptions(options)
+  return function* authSaga() {
+    yield all([
+      takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, enhanceSaga(requestTokenSaga)),
+      takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, enhanceSaga(submitTokenSaga))
+    ])
+  }
 }
