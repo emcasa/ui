@@ -131,12 +131,12 @@ describe('submitTokenSaga', () => {
 
     cExpect(
       generator.next({
-        data: {signInVerifyAuthenticationCode: {jwt: 'abcd'}}
+        data: {signInVerifyAuthenticationCode: {jwt: 'abcd', user: {id: 123, name: 'Suzana Vieira'}}}
       }).value
-    ).to.deep.equal(call(onSuccess, 'abcd'))
+    ).to.deep.equal(call(onSuccess, 'abcd', {id: 123, name: 'Suzana Vieira'}))
 
     cExpect(generator.next().value).to.deep.equal(
-      call(promiseDispatcher.resolve, 'abcd')
+      call(promiseDispatcher.resolve, 'abcd', {id: 123, name: 'Suzana Vieira'})
     )
 
     cExpect(generator.next()).to.deep.equal({value: undefined, done: true})

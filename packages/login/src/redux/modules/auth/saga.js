@@ -45,8 +45,8 @@ export function* submitTokenSaga({
       variables: {phone: `+55${phone}`, code: token}
     })
 
-    yield call(onSuccess, response.jwt)
-    yield call(promiseDispatcher.resolve, response.jwt)
+    yield call(onSuccess, response.jwt, response.user)
+    yield call(promiseDispatcher.resolve, response.jwt, response.user)
   } catch (error) {
     if (onError) yield call(onError, error)
     yield call(promiseDispatcher.reject, error)
