@@ -12,7 +12,7 @@ or
 npm install --save @emcasa/login
 ```
 
-We basically have to main components one is called LoginPure and the other is LoginSaga. Independently of witch one of these you choose, there are two things that you should know:
+We basically have to main components one is called LoginPure and the other is LoginSaga. Independently of which one of these you choose, there are two things that you should know:
 
 1) The components expects that you pass two functions:
 
@@ -58,7 +58,7 @@ ReactDOM.render(
 
 ### Login Saga
 
-If your application uses redux-saga, you can use this version of login. Witch in addition to place the component somewhere else in your code, you also have to use the `fork` effect to run a saga that you should import. It will be explained next.
+If your application uses redux-saga, you can use this version of login. Which, in addition to place the component somewhere else in your code, you also have to use the `fork` effect to run a saga that you should import. It will be explained next.
 
 - First the import:
 
@@ -90,15 +90,17 @@ ReactDOM.render(
 
 ```
 import {all, fork} from 'redux-saga/effects'
-import libAuthSaga from '@emcasa/login/lib/sagas/authSaga'
+import authSaga from '@emcasa/login/lib/sagas/authSaga'
 
-  function* root() {
-    return yield all([
-      //your other sagas here,
-      fork(libAuthSaga)
-    ])
-  }
-
+function* root() {
+  return yield all([
+    //your other sagas here,
+    fork(authSaga({
+      onSuccess: function* () { /* some success saga */ },
+      onError: function* () { /* some error saga */ }
+    }))
+  ])
+}
 ```
 
 One important this is, is expected that you provide a client from graphql using the redux-saga context with the name: `apolloClient`
