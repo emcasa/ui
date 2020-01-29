@@ -13,6 +13,13 @@ export const SUBMIT_TOKEN_MUTATION = gql`
   mutation signInVerifyAuthenticationCode($phone: String!, $code: String!) {
     signInVerifyAuthenticationCode(phone: $phone, code: $code) {
       jwt
+      user {
+        name
+        id
+        email
+        phone
+        role
+      }
     }
   }
 `

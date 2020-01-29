@@ -35,11 +35,11 @@ class LoginPure extends Component {
       .then(
         ({
           data: {
-            signInVerifyAuthenticationCode: {jwt}
+            signInVerifyAuthenticationCode: {jwt, user}
           }
         }) => {
-          onSuccess(jwt)
-          return Promise.resolve(jwt)
+          onSuccess(jwt, user)
+          return Promise.resolve(jwt, user)
         }
       )
       .catch((error) => {
