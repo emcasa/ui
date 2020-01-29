@@ -11,9 +11,9 @@ function* callSequence(fns, ...args) {
   }
 }
 
-export function* requestTokenSaga(
-  {promiseDispatcher, phone, ...action},
-  options = {}
+export const requestTokenSaga = function* _requestTokenSaga(
+  options = {},
+  {promiseDispatcher, phone, ...action}
 ) {
   const client = yield getContext('apolloClient')
   const onError = [options.onError, action.onError, promiseDispatcher.reject]
@@ -43,9 +43,9 @@ export function* requestTokenSaga(
   }
 }
 
-export function* submitTokenSaga(
-  {promiseDispatcher, phone, token, ...action},
-  options = {}
+export const submitTokenSaga = function* _submitTokenSaga(
+  options = {},
+  {promiseDispatcher, phone, token, ...action}
 ) {
   const client = yield getContext('apolloClient')
   const onError = [options.onError, action.onError, promiseDispatcher.reject]
@@ -57,7 +57,7 @@ export function* submitTokenSaga(
   try {
     const {
       data: {signInVerifyAuthenticationCode: response}
-    } = yield* call([client, client.mutate], {
+    } = yield call([client, client.mutate], {
       mutation: SUBMIT_TOKEN_MUTATION,
       variables: {phone: `+55${phone}`, code: token}
     })
@@ -67,14 +67,10 @@ export function* submitTokenSaga(
   }
 }
 
-const withOptions = (options) => (saga) => (...args) => saga(...args, options)
-
-export default (options = {}) => {
-  const enhanceSaga = withOptions(options)
-  return function* authSaga() {
+export default (options = {}) =>
+  function* authSaga() {
     yield all([
-      takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, enhanceSaga(requestTokenSaga)),
-      takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, enhanceSaga(submitTokenSaga))
+      takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, requestTokenSaga, options),
+      takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, submitTokenSaga, options)
     ])
   }
-}

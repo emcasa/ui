@@ -1,7 +1,7 @@
 /* globals describe, it, cExpect */
 import {all, takeLatest, call, getContext} from 'redux-saga/effects'
 import {TYPES} from '@/redux/modules/auth/actions'
-import authSaga, {
+import createAuthSaga, {
   requestTokenSaga,
   submitTokenSaga
 } from '@/redux/modules/auth/saga'
@@ -10,12 +10,17 @@ import {
   SUBMIT_TOKEN_MUTATION
 } from '@/graphql/mutations/auth'
 
+const options = {
+  onError: function onOptionError() {},
+  onSuccess: function onOptionSuccess() {}
+}
+
 describe('authSaga', () => {
-  it('should run all sagas defined in the body', () => {
-    const generator = authSaga()
+  it('should run all sagas defined in the body with bounded options', () => {
+    const generator = createAuthSaga(options)()
     const allEffect = all([
-      takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, requestTokenSaga),
-      takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, submitTokenSaga)
+      takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, requestTokenSaga, options),
+      takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, submitTokenSaga, options)
     ])
     expect(generator.next().value).toEqual(allEffect)
     expect(generator.next()).toEqual({value: undefined, done: true})
@@ -24,33 +29,23 @@ describe('authSaga', () => {
 
 describe('requestTokenSaga', () => {
   const apolloClient = {mutate: () => null}
+  const phone = '5521999999999'
   const promiseDispatcher = {resolve: () => {}, reject: () => {}}
+  const action = {
+    phone,
+    promiseDispatcher,
+    onError: function onActionError() {},
+    onSuccess: function onActionSuccess() {}
+  }
+  const onError = [options.onError, action.onError, promiseDispatcher.reject]
+  const onSuccess = [
+    options.onSuccess,
+    action.onSuccess,
+    promiseDispatcher.resolve
+  ]
 
-  it('should resolve promiseDispatcher when the mutation return a success status', () => {
-    const phone = '5521999999999'
-    const generator = requestTokenSaga({promiseDispatcher, phone})
-
-    cExpect(generator.next().value).to.deep.equal(getContext('apolloClient'))
-
-    cExpect(generator.next(apolloClient).value).to.deep.equal(
-      call([apolloClient, apolloClient.mutate], {
-        mutation: REQUEST_TOKEN_MUTATION,
-        variables: {phone: `+55${phone}`}
-      })
-    )
-
-    cExpect(
-      generator.next({
-        data: {signInCreateAuthenticationCode: {enqueued: 'SUCCESS'}}
-      }).value
-    ).to.deep.equal(call(promiseDispatcher.resolve))
-
-    cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
-  })
-
-  it('should reject promiseDispatcher when the mutation return a failed status', () => {
-    const phone = '5521999999999'
-    const generator = requestTokenSaga({promiseDispatcher, phone})
+  it('should invoke success callbacks when the mutation return a success status', () => {
+    const generator = requestTokenSaga(options, action)
 
     cExpect(generator.next().value).to.deep.equal(getContext('apolloClient'))
 
@@ -61,28 +56,19 @@ describe('requestTokenSaga', () => {
       })
     )
 
-    cExpect(
-      generator.next({
-        data: {signInCreateAuthenticationCode: {enqueued: 'FAILED'}}
-      }).value
-    ).to.deep.equal(
-      call(promiseDispatcher.reject, {
-        response: {enqueued: 'FAILED'},
-        message: 'unexpected response returned'
-      })
+    onSuccess.map((fn) =>
+      cExpect(
+        generator.next({
+          data: {signInCreateAuthenticationCode: {enqueued: 'SUCCESS'}}
+        }).value
+      ).to.deep.equal(call(fn))
     )
 
     cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
   })
 
-  it('should reject promiseDispatcher when some exception occurs', () => {
-    const phone = '5521999999999'
-    const onError = jest.fn()
-    const generator = requestTokenSaga({
-      promiseDispatcher,
-      phone,
-      onError
-    })
+  it('should invoke error callbacks when the mutation return a failed status', () => {
+    const generator = requestTokenSaga(options, action)
 
     cExpect(generator.next().value).to.deep.equal(getContext('apolloClient'))
 
@@ -93,13 +79,41 @@ describe('requestTokenSaga', () => {
       })
     )
 
-    cExpect(generator.throw('some error').value).to.deep.equal(
-      call(onError, 'some error')
+    onError.map((fn) =>
+      cExpect(
+        generator.next({
+          data: {signInCreateAuthenticationCode: {enqueued: 'FAILED'}}
+        }).value
+      ).to.deep.equal(
+        call(fn, {
+          response: {enqueued: 'FAILED'},
+          message: 'unexpected response returned'
+        })
+      )
     )
 
-    cExpect(generator.next().value).to.deep.equal(
-      call(promiseDispatcher.reject, 'some error')
+    cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
+  })
+
+  it('should invoke error callbacks when some exception occurs', () => {
+    const generator = requestTokenSaga(options, action)
+
+    cExpect(generator.next().value).to.deep.equal(getContext('apolloClient'))
+
+    cExpect(generator.next(apolloClient).value).to.deep.equal(
+      call([apolloClient, apolloClient.mutate], {
+        mutation: REQUEST_TOKEN_MUTATION,
+        variables: {phone: `+55${phone}`}
+      })
     )
+
+    for (
+      let fns = [...onError], value = generator.throw('some error').value;
+      fns.length;
+      (fns = fns.slice(1)).length && (value = generator.next().value)
+    ) {
+      cExpect(value).to.deep.equal(call(fns[0], 'some error'))
+    }
 
     cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
   })
@@ -107,18 +121,25 @@ describe('requestTokenSaga', () => {
 
 describe('submitTokenSaga', () => {
   const apolloClient = {mutate: () => null}
-  const promiseDispatcher = {resolve: () => {}, reject: () => {}}
   const phone = '44999999999'
   const token = '1234'
+  const promiseDispatcher = {resolve: () => {}, reject: () => {}}
+  const action = {
+    promiseDispatcher,
+    phone,
+    token,
+    onError: function onActionError() {},
+    onSuccess: function onActionSuccess() {}
+  }
+  const onError = [options.onError, action.onError, promiseDispatcher.reject]
+  const onSuccess = [
+    options.onSuccess,
+    action.onSuccess,
+    promiseDispatcher.resolve
+  ]
 
-  it('should invoke on success and resolve the promiseDispatcher when the api return a jwt token', () => {
-    const onSuccess = jest.fn()
-    const generator = submitTokenSaga({
-      promiseDispatcher,
-      phone,
-      token,
-      onSuccess
-    })
+  it('should invoke success callbacks when the api return a jwt token', () => {
+    const generator = submitTokenSaga(options, action)
 
     cExpect(generator.next().value).to.deep.equal(getContext('apolloClient'))
 
@@ -129,27 +150,24 @@ describe('submitTokenSaga', () => {
       })
     )
 
-    cExpect(
-      generator.next({
-        data: {signInVerifyAuthenticationCode: {jwt: 'abcd', user: {id: 123, name: 'Suzana Vieira'}}}
-      }).value
-    ).to.deep.equal(call(onSuccess, 'abcd', {id: 123, name: 'Suzana Vieira'}))
-
-    cExpect(generator.next().value).to.deep.equal(
-      call(promiseDispatcher.resolve, 'abcd', {id: 123, name: 'Suzana Vieira'})
+    onSuccess.forEach((fn) =>
+      cExpect(
+        generator.next({
+          data: {
+            signInVerifyAuthenticationCode: {
+              jwt: 'abcd',
+              user: {id: 123, name: 'Suzana Vieira'}
+            }
+          }
+        }).value
+      ).to.deep.equal(call(fn, 'abcd', {id: 123, name: 'Suzana Vieira'}))
     )
 
     cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
   })
 
-  it('should call onError function and reject promiseDispatcher when an exception happens', () => {
-    const onError = jest.fn()
-    const generator = submitTokenSaga({
-      promiseDispatcher,
-      phone,
-      token,
-      onError
-    })
+  it('should invoke error callbacks when an exception happens', () => {
+    const generator = submitTokenSaga(options, action)
 
     cExpect(generator.next().value).to.deep.equal(getContext('apolloClient'))
 
@@ -160,12 +178,13 @@ describe('submitTokenSaga', () => {
       })
     )
 
-    const error = 'some error happen'
-    cExpect(generator.throw(error).value).to.deep.equal(call(onError, error))
-
-    cExpect(generator.next().value).to.deep.equal(
-      call(promiseDispatcher.reject, error)
-    )
+    for (
+      let fns = [...onError], value = generator.throw('some error').value;
+      fns.length;
+      (fns = fns.slice(1)).length && (value = generator.next().value)
+    ) {
+      cExpect(value).to.deep.equal(call(fns[0], 'some error'))
+    }
 
     cExpect(generator.next()).to.deep.equal({value: undefined, done: true})
   })
