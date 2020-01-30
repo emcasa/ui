@@ -5,8 +5,23 @@ import {
   SUBMIT_TOKEN_MUTATION
 } from '@/graphql/mutations/auth'
 
-export function* requestTokenSaga({promiseDispatcher, phone, onError}) {
+function* callSequence(fns, ...args) {
+  for (const fn of fns) {
+    if (fn) yield call(fn, ...args)
+  }
+}
+
+export const requestTokenSaga = function* _requestTokenSaga(
+  options = {},
+  {promiseDispatcher, phone, ...action}
+) {
   const client = yield getContext('apolloClient')
+  const onError = [options.onError, action.onError, promiseDispatcher.reject]
+  const onSuccess = [
+    options.onSuccess,
+    action.onSuccess,
+    promiseDispatcher.resolve
+  ]
   try {
     const {
       data: {signInCreateAuthenticationCode: response}
@@ -16,27 +31,29 @@ export function* requestTokenSaga({promiseDispatcher, phone, onError}) {
     })
 
     if (response.enqueued === 'SUCCESS') {
-      yield call(promiseDispatcher.resolve)
+      yield* callSequence(onSuccess)
     } else {
-      yield call(promiseDispatcher.reject, {
+      yield* callSequence(onError, {
         response,
         message: 'unexpected response returned'
       })
     }
   } catch (error) {
-    if (onError) yield call(onError, error)
-    yield call(promiseDispatcher.reject, error)
+    yield* callSequence(onError, error)
   }
 }
 
-export function* submitTokenSaga({
-  promiseDispatcher,
-  phone,
-  token,
-  onError,
-  onSuccess
-}) {
+export const submitTokenSaga = function* _submitTokenSaga(
+  options = {},
+  {promiseDispatcher, phone, token, ...action}
+) {
   const client = yield getContext('apolloClient')
+  const onError = [options.onError, action.onError, promiseDispatcher.reject]
+  const onSuccess = [
+    options.onSuccess,
+    action.onSuccess,
+    promiseDispatcher.resolve
+  ]
   try {
     const {
       data: {signInVerifyAuthenticationCode: response}
@@ -44,18 +61,16 @@ export function* submitTokenSaga({
       mutation: SUBMIT_TOKEN_MUTATION,
       variables: {phone: `+55${phone}`, code: token}
     })
-
-    yield call(onSuccess, response.jwt, response.user)
-    yield call(promiseDispatcher.resolve, response.jwt, response.user)
+    yield* callSequence(onSuccess, response.jwt, response.user)
   } catch (error) {
-    if (onError) yield call(onError, error)
-    yield call(promiseDispatcher.reject, error)
+    yield* callSequence(onError, error)
   }
 }
 
-export default function* authSaga() {
-  yield all([
-    takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, requestTokenSaga),
-    takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, submitTokenSaga)
-  ])
-}
+export default (options = {}) =>
+  function* authSaga() {
+    yield all([
+      takeLatest(TYPES.EM_CASA_REQUEST_TOKEN, requestTokenSaga, options),
+      takeLatest(TYPES.EM_CASA_SUBMIT_TOKEN, submitTokenSaga, options)
+    ])
+  }
