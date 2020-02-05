@@ -21,7 +21,8 @@ export const DraggableContainer = styled.div.attrs(gridStyle('Card'))`
   overflow: hidden;
   position: relative;
   opacity: ${({isDragging}) => (isDragging ? 0 : 1)};
-  cursor: ${({isDragging}) => (isDragging ? 'grabbing' : 'grab')};
+  cursor: ${({isDragging, isClickable}) =>
+    isDragging ? 'grabbing' : isClickable ? 'pointer' : 'grab'};
   flex: 1;
   padding-bottom: 64%;
   transition: all 300ms;

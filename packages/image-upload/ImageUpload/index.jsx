@@ -15,7 +15,8 @@ export default function ImageUpload({
   onUpload,
   onChangePosition,
   onActivate,
-  onDeactivate
+  onDeactivate,
+  onClick
 }) {
   const visibleImages = showInactive
     ? images
@@ -34,6 +35,7 @@ export default function ImageUpload({
           onChangePosition={onChangePosition}
           onActivate={onActivate}
           onDeactivate={onDeactivate}
+          onClick={onClick}
         />
       </Container>
     </ThemeProvider>
@@ -65,5 +67,6 @@ ImageUpload.propTypes = {
   onUpload: PropTypes.func.isRequired,
   onChangePosition: PropTypes.func,
   onActivate: PropTypes.func,
-  onDeactivate: PropTypes.func
+  onDeactivate: PropTypes.func,
+  onClick: PropTypes.func
 }

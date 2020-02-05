@@ -104,13 +104,15 @@ class DraggableImage extends Component {
       isActive,
       gridSize,
       connectDragSource,
-      connectDropTarget
+      connectDropTarget,
+      onClick
     } = this.props
     return (
       <DraggableCard
         isDragging={isDragging}
         isActive={isActive}
         gridSize={gridSize}
+        onClick={(e) => !isDragging && onClick(image, e)}
         ref={(instance) => {
           connectDragSource(instance)
           connectDropTarget(instance)

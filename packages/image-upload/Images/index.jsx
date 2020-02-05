@@ -51,7 +51,7 @@ export default class Images extends PureComponent {
   }
 
   render() {
-    const {onDeactivate, onActivate} = this.props
+    const {onDeactivate, onActivate, onClick} = this.props
     const {images, activeTarget} = this.state
     return images.map((image, index) => (
       <Image
@@ -63,6 +63,7 @@ export default class Images extends PureComponent {
         onHover={this.onHover}
         onDeactivate={onDeactivate}
         onActivate={onActivate}
+        onClick={onClick}
       />
     ))
   }
