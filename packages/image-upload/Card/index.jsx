@@ -9,7 +9,10 @@ function DraggableCard({children, isDragging, isActive, innerRef, ...props}) {
       isActive={isActive}
       {...props}
     >
-      <DraggableContainer isDragging={isDragging}>
+      <DraggableContainer
+        isDragging={isDragging}
+        isClickable={Boolean(props.onClick)}
+      >
         <DraggableContent>{children}</DraggableContent>
       </DraggableContainer>
     </DraggableWrapper>
