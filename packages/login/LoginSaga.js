@@ -13,8 +13,8 @@ const LoginSaga = (props) => (
 )
 
 LoginSaga.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
-  onError: PropTypes.func.isRequired
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func
 }
 
 export default mapAsyncDispatchToProps({
