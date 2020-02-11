@@ -108,8 +108,8 @@ Login.defaultProps = {
 Login.propTypes = {
   submitToken: PropTypes.func.isRequired,
   requestToken: PropTypes.func.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-  onError: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
   children: PropTypes.func
 }
 
