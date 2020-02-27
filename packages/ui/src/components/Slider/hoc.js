@@ -183,7 +183,10 @@ export default ({
 
     get _getPositionFromValue() {
       if (!this.state.layout || !this.props.range) return identity
-      return interpolatePosition(this.props.range, [0, this.state.layout.width])
+      return flow(
+        interpolatePosition(this.props.range, [0, this.state.layout.width]),
+        (pos) => clamp(pos, 0, this.state.layout.width)
+      )
     }
 
     _onChangeCallback = () => {
