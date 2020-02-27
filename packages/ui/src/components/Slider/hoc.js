@@ -52,7 +52,12 @@ export default ({
       initialValue: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.array,
-        PropTypes.object
+        PropTypes.object,
+      ]).isRequired,
+      value: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.array,
+        PropTypes.object,
       ]).isRequired,
       formatValue: PropTypes.func,
       getMarkerLayout: PropTypes.func,
@@ -78,6 +83,7 @@ export default ({
         prevState.layout.width !== this.state.layout.width
       )
         this._updateBounds()
+      if (prevProps.value !== this.props.value) this._updateMarkerValues()
     }
 
     _getInitialState() {
@@ -88,7 +94,7 @@ export default ({
     }
 
     _getInitialMarkerState(layout) {
-      const {initialValue} = this.props
+      const initialValue = this.props.value || this.props.initialValue
       const outputRange = this.props.range || [0, 1]
       const layoutRange = [0, layout.width]
       const getPosition = interpolatePosition(outputRange, layoutRange)
@@ -123,6 +129,35 @@ export default ({
         markers.push(marker)
       })
       return markers
+    }
+
+    _updateMarkerValues() {
+      const {value} = this.props
+      const {layout} = this.state
+      const outputRange = this.props.range || [0, 1]
+      const layoutRange = [0, layout.width]
+      const getPosition = interpolatePosition(outputRange, layoutRange)
+      const getValue = (key) => {
+        if (!isNaN(value)) return value || 0
+        if (!(key in value))
+          throw new Error(`Undefined value for slider marker "${key}".`)
+        return value[key]
+      }
+      this.setState(
+        ({markers, layout}) => ({
+          markers: markers.map((marker) => {
+            const nextMarker = {...marker}
+            const value = clamp(getValue(marker.key), ...outputRange)
+            nextMarker.state = {
+              ...marker.state,
+              value,
+              position: clamp(getPosition(value), 0, layout.width)
+            }
+            return nextMarker
+          })
+        }),
+        this._updateBounds
+      )
     }
 
     _getMarkerLayout(data) {
