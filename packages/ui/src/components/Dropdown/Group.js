@@ -43,6 +43,8 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         delete props.renderItem
         delete props.onChange
         delete props.initialValue
+        delete props.style
+        delete props.className
         return {
           ...props,
           ...buttonProps,
