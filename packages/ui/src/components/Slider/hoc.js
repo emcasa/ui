@@ -83,7 +83,8 @@ export default ({
         prevState.layout.width !== this.state.layout.width
       )
         this._updateBounds()
-      if (prevProps.value !== this.props.value) this._updateMarkerValues()
+      if (this.state.layout && prevProps.value !== this.props.value)
+        this._updateMarkerValues()
     }
 
     _getInitialState() {
