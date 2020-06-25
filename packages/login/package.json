@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/login",
-  "version": "2.9.16",
+  "version": "2.9.17",
   "description": "EmCasa's login component",
   "license": "MIT",
   "main": "lib/index.js",
