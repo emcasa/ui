@@ -89,10 +89,12 @@ class Phone extends Component {
 
   renderForm = () => (
     <Row flexDirection="column">
-      <TitleText color="pink">Entre na sua conta</TitleText>
-      <InfoText>
-        Entre com o seu celular. Enviaremos o código de acesso no seu WhatsApp
-      </InfoText>
+      <TitleText color="pink">{this.props.title}</TitleText>
+      {this.props.renderInfo() || (
+        <InfoText>
+          Entre com o seu celular. Enviaremos o código de acesso no seu WhatsApp
+        </InfoText>
+      )}
       <InputMask
         mask="(99) 99999-9999"
         value={this.state.phone}
@@ -130,7 +132,9 @@ class Phone extends Component {
 Phone.propTypes = {
   requestToken: PropTypes.func.isRequired,
   goToStep: PropTypes.func.isRequired,
-  phone: PropTypes.string.isRequired
+  phone: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  renderInfo: PropTypes.func.isRequired
 }
 
 export default Phone

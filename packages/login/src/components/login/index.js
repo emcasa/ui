@@ -28,8 +28,12 @@ class Login extends Component {
   state = {...Login.INITIAL_STATE}
 
   onClose = () => {
+    if (this.props.onClose) {
+      this.props.onClose()
+    }
     this.setState({...Login.INITIAL_STATE})
   }
+
   open = (phone = '') => this.setState({phone, isOpen: true})
 
   goToStep = (stepName) => this.setState({currentStep: stepName})
@@ -50,6 +54,8 @@ class Login extends Component {
       case Login.STEP_NAMES.phone:
         return (
           <Phone
+            title={this.props.title}
+            renderInfo={this.props.renderInfo}
             phone={this.state.phone}
             requestToken={this.requestToken}
             goToStep={this.goToStep}
@@ -58,7 +64,7 @@ class Login extends Component {
       case Login.STEP_NAMES.token:
         return <Token submitToken={this.submitToken} goToStep={this.goToStep} />
       case Login.STEP_NAMES.success:
-        return <Success onContinue={this.onClose} />
+        return this.props.renderSuccess({onClose: this.onClose})
       case Login.STEP_NAMES.tokenError:
         return <TokenError goToStep={this.goToStep} />
     }
@@ -102,12 +108,19 @@ Login.defaultProps = {
         <Button onClick={open}>Open</Button>
       </div>
     )
-  }
+  },
+  renderInfo: () => null,
+  renderSuccess: ({onClose}) => <Success onContinue={onClose} />,
+  title: 'Entre na sua conta'
 }
 
 Login.propTypes = {
   submitToken: PropTypes.func.isRequired,
   requestToken: PropTypes.func.isRequired,
+  renderInfo: PropTypes.func.isRequired,
+  renderSuccess: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  onClose: PropTypes.func,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
   children: PropTypes.func
