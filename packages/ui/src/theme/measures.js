@@ -6,9 +6,9 @@ export const LETTER_SPACING = new Map([
 ])
 
 export const BUTTON_HEIGHT = new Map([
-  ['tall', 60],
-  ['medium', 40],
-  ['short', 32]
+  ['tall', 56],
+  ['medium', 48],
+  ['short', 42]
 ])
 
 export const FONT_SIZE = new Map([
@@ -32,3 +32,7 @@ export const BREAKPOINTS = new Map([
   ['tablet', '480px'],
   ['desktop', '780px']
 ])
+
+export const borderRadius = {
+  default: 8
+}

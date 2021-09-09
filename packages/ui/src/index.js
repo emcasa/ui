@@ -6,14 +6,15 @@ import {
   FONT_SIZE,
   FONT_WEIGHT,
   ICON_SIZE,
-  BREAKPOINTS
+  BREAKPOINTS,
+  borderRadius
 } from './theme/measures'
 
 export default {
   fontFamily: 'Rubik',
   breakpoints: Array.from(BREAKPOINTS.values()),
   breakpointNames: Array.from(BREAKPOINTS.keys()),
-  space: [0, 4, 10, 14, 20, 25, 80],
+  space: [0, 4, 8, 12, 16, 20, 24],
   fontSizes: Array.from(FONT_SIZE.values()),
   fontWeights: Array.from(FONT_WEIGHT.values()),
   letterSpacing: Array.from(LETTER_SPACING.values()),
@@ -22,5 +23,6 @@ export default {
   defaultIcon: 'question-circle',
   shadowOpacity,
   shadows,
-  colors
+  colors,
+  borderRadius
 }
