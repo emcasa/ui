@@ -21,12 +21,16 @@ export const textContainer = css`
 `
 
 export const label = css`
-  font-size: ${themeGet('fontSizes.1')}px;
+  margin-bottom: ${themeGet('space.3')}px;
+  color: ${themeGet('colors.grey900')};
+  font-size: ${themeGet('fontSizes.2')}px;
+  font-weight: ${themeGet('fontWeights.0')};
   ${defaultFontFamily};
 `
 
 export const error = css`
-  color: ${themeGet('colors.red')};
+  margin-top: ${themeGet('space.3')}px;
+  color: ${themeGet('colors.pink500')};
   font-size: ${themeGet('fontSizes.1')}px;
   ${defaultFontFamily};
 `

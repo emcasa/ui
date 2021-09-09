@@ -11,6 +11,12 @@ export const BUTTON_HEIGHT = new Map([
   ['short', 42]
 ])
 
+export const BUTTON_FONT_SIZE = new Map([
+  ['small', 14],
+  ['default', 16],
+  ['large', 20]
+])
+
 export const FONT_SIZE = new Map([
   ['xsmall', 10],
   ['small', 14],
