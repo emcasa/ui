@@ -5,7 +5,6 @@ import {color, border, borderColor, fontFamily, space} from 'styled-system'
 import {
   letterSpacing,
   buttonHeight,
-  fontSize,
   buttonFontSize,
   defaultFontFamily
 } from '../../styles'
