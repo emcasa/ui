@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/places-autocomplete",
-  "version": "2.9.15",
+  "version": "2.10.0",
   "description": "EmCasa's places autocomplete input component",
   "license": "MIT",
   "main": "components/index.js",
@@ -13,8 +13,8 @@
     "prepublish": "yarn build"
   },
   "dependencies": {
-    "@emcasa/ui": "^2.9.15",
-    "@emcasa/ui-dom": "^2.9.15",
+    "@emcasa/ui": "^2.10.0",
+    "@emcasa/ui-dom": "^2.10.0",
     "@google/maps": "^0.5.5"
   },
   "devDependencies": {
