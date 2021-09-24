@@ -1,32 +1,26 @@
 import {css} from 'styled-components'
 import {themeGet} from '@styled-system/theme-get'
-import {
-  color,
-  border,
-  borderColor,
-  fontFamily,
-  space
-} from 'styled-system'
+import {color, border, borderColor, fontFamily, space} from 'styled-system'
 
 import {
   letterSpacing,
   buttonHeight,
-  fontSize,
+  buttonFontSize,
   defaultFontFamily
 } from '../../styles'
 
 export const container = css`
-  border-radius: 4px;
+  border-radius: ${themeGet('borderRadius.default')}px;
   border: 1px solid;
   border-color: ${({active, disabled, focus, theme: {colors}}) => {
-    if (focus) return colors.blue
-    else if (active && !disabled) return colors.pink
-    else return colors.lightGrey
+    if (focus) return colors.grey900
+    else if (active && !disabled) return colors.pink500
+    else return colors.grey300
   }};
   padding: ${({area, theme: {space}}) =>
     area
-      ? `${space[2]}px ${space[2]}px ${space[2]}px ${space[2]}px`
-      : `${space[0]}px ${space[2]}px ${space[0]}px ${space[2]}px`};
+      ? `${space[4]}px ${space[4]}px ${space[4]}px ${space[4]}px`
+      : `${space[0]}px ${space[4]}px ${space[0]}px ${space[4]}px`};
   ${buttonHeight};
   ${border};
   ${borderColor};
@@ -46,10 +40,10 @@ container.defaultProps = {
 
 export const text = css`
   color: ${({disabled, theme: {colors}}) =>
-    disabled ? colors.disabled : colors.dark};
+    disabled ? colors.disabled : colors.grey900};
   ${defaultFontFamily};
   ${color};
-  ${fontSize};
+  ${buttonFontSize};
   ${letterSpacing};
   ${fontFamily};
 `
@@ -65,9 +59,9 @@ text.defaultProps = {
 }
 
 export const error = css`
-  color: ${themeGet('colors.red')};
+  color: ${themeGet('colors.pink500')};
   ${defaultFontFamily};
-  ${fontSize};
+  ${buttonFontSize};
   ${letterSpacing};
 `
 
@@ -77,7 +71,7 @@ error.defaultProps = {
 }
 
 export const placeholder = css`
-  color: ${themeGet('colors.disabled')};
+  color: ${themeGet('colors.grey500')};
 `
 
 placeholder.propTypes = {}

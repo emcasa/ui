@@ -16,5 +16,19 @@ export default {
   extraDarkSmoke: '#C0CCDA',
   snow: '#F9FAFC',
   darkSnow: '#EFF2F7',
-  extraDarkSnow: '#E5E9F2'
+  extraDarkSnow: '#E5E9F2',
+  black: '#000',
+  green100: '#e5fffb',
+  green500: '#00806a',
+  grey100: '#f0f1f7',
+  grey300: '#c0c2cc',
+  grey500: '#737580',
+  grey900: '#090a0d',
+  pink100: '#ffe5f0',
+  pink300: '#fe98c1',
+  pink500: '#e5005b',
+  purple300: '#c291f2',
+  purple500: '#7436b2',
+  purple700: '#501980',
+  red500: '#e50b0b'
 }
