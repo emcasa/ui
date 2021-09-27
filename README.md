@@ -37,4 +37,8 @@ Picking a version:
 
 ### 3. Publish on npm:
 
-Check out into the new version's tag using `git checkout v[your-new-version]` and run `npm publish`.
+Configure your npm token if you haven't done so already:
+
+`echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc`
+
+Check out into the new version's tag using `git checkout v[your-new-version]` and run `npm run release`.
