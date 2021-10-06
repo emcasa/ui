@@ -33,7 +33,11 @@ function Field({
   return (
     <View>
       {!hideLabelView && <LabelText>{label}</LabelText>}
-      {Component ? <Component {...refProp} {...props} /> : children}
+      {Component ? (
+        <Component {...refProp} {...props} error={error} />
+      ) : (
+        children
+      )}
       {!hideErrorView && <ErrorText>{error}</ErrorText>}
     </View>
   )

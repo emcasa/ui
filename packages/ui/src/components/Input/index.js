@@ -12,10 +12,14 @@ import {
 export const container = css`
   border-radius: ${themeGet('borderRadius.default')}px;
   border: 1px solid;
-  border-color: ${({active, disabled, focus, theme: {colors}}) => {
-    if (focus) return colors.grey900
-    else if (active && !disabled) return colors.pink500
-    else return colors.grey300
+  border-color: ${({active, disabled, focus, error}) => {
+    if (focus && !error) return themeGet('colors.grey900')
+    else if (active && !disabled) return themeGet('colors.pink500')
+    else if (error) return themeGet('colors.red500')
+    else return themeGet('colors.grey300')
+  }};
+  background-color: ${({disabled}) => {
+    disabled ? themeGet('colors.grey100') : themeGet('colors.white')
   }};
   padding: ${({area, theme: {space}}) =>
     area
@@ -40,7 +44,7 @@ container.defaultProps = {
 
 export const text = css`
   color: ${({disabled, theme: {colors}}) =>
-    disabled ? colors.disabled : colors.grey900};
+    disabled ? colors.grey500 : colors.grey900};
   ${defaultFontFamily};
   ${color};
   ${buttonFontSize};
