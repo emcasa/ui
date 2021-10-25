@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react'
+import uniqueId from 'lodash/uniqueId'
 import Group from '../Group'
 import {propTypes} from './index'
 
@@ -14,7 +15,8 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         blurOnChange: true,
         height: 'tall',
         containerProps: {},
-        buttonProps: {}
+        buttonProps: {},
+        dropdownId: uniqueId('ecDropdown')
       }
 
       state = {
@@ -37,7 +39,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       get _buttonProps() {
-        const {buttonProps, ...props} = this.props
+        const {buttonProps, dropdownId, ...props} = this.props
         const {focused} = this.state
         delete props.renderButton
         delete props.renderItem
@@ -48,6 +50,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         return {
           ...props,
           ...buttonProps,
+          dropdownId: dropdownId,
           focused,
           isPlaceholder: Boolean(!props.label && !props.selectedValue),
           onFocusChange: focused ? this.onBlur : this.onFocus,
@@ -56,11 +59,12 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       get _containerProps() {
-        const {width, containerProps} = this.props
+        const {width, containerProps, dropdownId} = this.props
         const {focused, target, layout} = this.state
         return {
           width,
           ...containerProps,
+          dropdownId: dropdownId,
           focused,
           target,
           layout,
