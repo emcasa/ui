@@ -97,23 +97,14 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <View my="40px"></View>
 
 ### Advanced usage
-```JS
-  <Dropdown
-    label={{
-      props: {
-        onChange: (e) => onChange(e.target.value)
-      }
-    }}></Dropdown>
-```
 <ItunesSearch>
   {({search, results, onChange}) => (
     <Dropdown
       placeholder="Input text placeholder"
       height="tall"
-      label={{
-        props: {
-          onChange: (e) => onChange(e.target.value)
-        }
+      inputProps={{
+        value: search,
+        onChange: (e) => onChange(e.target.value)
       }}>
       {results && results.length ? (
         results.map(({collectionId, artworkUrl60, artistName, collectionName}) => (
@@ -137,9 +128,40 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
   )}
 </ItunesSearch>
 
+#### Input text
+```JS
+  <Dropdown
+    inputProps={{
+      value: search,
+      onChange: (e) => onChange(e.target.value)
+    }}
+  ></Dropdown>
+```
+##### Old methods
+
 > Note: It still suport passing a input element tag in *label* props, but it just take its props.
 
+```JS
+  <Dropdown
+    label={{
+      props: {
+        value: search,
+        onChange: (e) => onChange(e.target.value)
+      }
+    }}></Dropdown>
+```
 
+or
+
+```JS
+  <Dropdown
+    label={(
+      <ItunesSearch.Input
+        value={search}
+        onChange={(e) => onChange(e.target.value)} />
+    )}
+  ></Dropdown>
+```
 <View mb="60px"></View>
 
 ---
