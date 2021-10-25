@@ -66,9 +66,10 @@ const DropdownButton = ({
   height,
   dropdownId,
   placeholder,
+  inputProps,
   ...props
 }) => {
-  const hasSearchInput = props.label && props.label.props
+  const searchInputProps = inputProps || (props.label && props.label.props)
 
   let buttonProps = {
     id: `${dropdownId}btn`,
@@ -83,16 +84,16 @@ const DropdownButton = ({
     onClick: onClick
   }
 
-  if (hasSearchInput) {
+  if (searchInputProps) {
     buttonProps = {
       ...buttonProps,
-      ...props.label.props
+      ...searchInputProps
     }
   }
 
   return (
     <Wrapper height={height}>
-      {hasSearchInput ? (
+      {searchInputProps ? (
         <Button as="input" placeholder={placeholder} {...buttonProps} />
       ) : (
         <Button {...buttonProps}>{children}</Button>
