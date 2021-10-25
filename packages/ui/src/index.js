@@ -3,6 +3,7 @@ import shadows, {shadowOpacity} from './theme/shadows'
 import {
   LETTER_SPACING,
   BUTTON_HEIGHT,
+  BUTTON_FONT_SIZE,
   FONT_SIZE,
   FONT_WEIGHT,
   ICON_SIZE,
@@ -19,6 +20,7 @@ export default {
   fontWeights: Array.from(FONT_WEIGHT.values()),
   letterSpacing: Array.from(LETTER_SPACING.values()),
   buttonHeight: Array.from(BUTTON_HEIGHT.values()),
+  buttonFontSize: Array.from(BUTTON_FONT_SIZE.values()),
   iconSize: Array.from(ICON_SIZE.values()),
   defaultIcon: 'question-circle',
   shadowOpacity,
