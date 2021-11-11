@@ -38,6 +38,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
   <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
   <Dropdown.Option value="d">Label for option D</Dropdown.Option>
   <Dropdown.Option value="e">Label for option E</Dropdown.Option>
+  <Dropdown.Option value="f">Label for option F</Dropdown.Option>
 </Dropdown>
 
 <View my="60px"></View>
@@ -52,6 +53,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
   <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
   <Dropdown.Option value="d">Option D</Dropdown.Option>
   <Dropdown.Option value="e">Option E</Dropdown.Option>
+  <Dropdown.Option value="f">Option F</Dropdown.Option>
 </Dropdown>
 
 <View my="40px"></View>
@@ -72,7 +74,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 ```JS
 <Dropdown error></Dropdown>
 ```
-<Dropdown error label="Fixed label">
+<Dropdown error>
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
   <Dropdown.Option value="c">Option C</Dropdown.Option>
@@ -87,9 +89,10 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown height="short" placeholder="Placeholder">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Option C</Dropdown.Option>
   <Dropdown.Option value="d">Option D</Dropdown.Option>
   <Dropdown.Option value="e">Option E</Dropdown.Option>
+  <Dropdown.Option value="f">Option F</Dropdown.Option>
 </Dropdown>
 
 <View my="40px"></View>
@@ -101,19 +104,20 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown height="tall" placeholder="Placeholder">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Option C</Dropdown.Option>
   <Dropdown.Option value="d">Option D</Dropdown.Option>
   <Dropdown.Option value="e">Option E</Dropdown.Option>
+  <Dropdown.Option value="f">Option F</Dropdown.Option>
 </Dropdown>
 
 <View my="40px"></View>
+
 
 ### Advanced usage
 <ItunesSearch>
   {({search, results, onChange}) => (
     <Dropdown
       placeholder="Input text placeholder"
-      height="tall"
       inputProps={{
         value: search,
         onChange: (e) => onChange(e.target.value)
