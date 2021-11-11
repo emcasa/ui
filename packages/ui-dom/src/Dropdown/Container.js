@@ -5,7 +5,7 @@ import {themeGet} from '@styled-system/theme-get'
 import theme from '@emcasa/ui'
 import {container} from '@emcasa/ui/lib/components/Dropdown'
 
-const MAX_HEIGHT = theme.buttonHeight[0] * 3 + theme.buttonHeight[0] / 2
+const MAX_HEIGHT = theme.buttonHeight[0] * 4 + theme.buttonHeight[0] / 2
 
 const Listbox = styled.ul`
   z-index: -1;
