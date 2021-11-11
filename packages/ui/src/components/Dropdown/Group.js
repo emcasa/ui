@@ -13,7 +13,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
 
       static defaultProps = {
         blurOnChange: true,
-        height: 'tall',
+        height: 'medium',
         containerProps: {},
         buttonProps: {},
         dropdownId: uniqueId('ecDropdown')
