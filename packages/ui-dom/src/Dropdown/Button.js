@@ -12,15 +12,17 @@ const Wrapper = styled.div`
     height === 'short'
       ? themeGet('buttonHeight.2')
       : height === 'tall'
-      ? themeGet('buttonHeight.0')
-      : themeGet('buttonHeight.1')}px;
+        ? themeGet('buttonHeight.0')
+        : themeGet('buttonHeight.1')}px;
   font-size: ${({height}) =>
     height === 'short'
       ? themeGet('buttonFontSize.0')
       : height === 'tall'
-      ? themeGet('buttonFontSize.2')
-      : themeGet('buttonFontSize.1')}px;
-  border: 1px solid ${themeGet('colors.grey300')};
+        ? themeGet('buttonFontSize.2')
+        : themeGet('buttonFontSize.1')}px;
+  border: 1px solid
+    ${({error}) =>
+    !!error ? themeGet('colors.red500') : themeGet('colors.grey300')};
   border-radius: 8px;
   background-color: ${themeGet('colors.white')};
   user-select: none;
@@ -67,6 +69,7 @@ const DropdownButton = ({
   dropdownId,
   placeholder,
   inputProps,
+  error,
   ...props
 }) => {
   const searchInputProps = inputProps || (props.label && props.label.props)
@@ -92,7 +95,7 @@ const DropdownButton = ({
   }
 
   return (
-    <Wrapper height={height}>
+    <Wrapper height={height} error={error}>
       {searchInputProps ? (
         <Button as="input" placeholder={placeholder} {...buttonProps} />
       ) : (
