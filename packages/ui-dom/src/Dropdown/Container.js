@@ -8,7 +8,7 @@ import {container} from '@emcasa/ui/lib/components/Dropdown'
 const MAX_HEIGHT = theme.buttonHeight[0] * 4 + theme.buttonHeight[0] / 2
 
 const Listbox = styled.ul`
-  z-index: -1;
+  z-index: 2;
   position: absolute;
   left: 0;
   top: calc(100% + ${themeGet('space.1')}px);

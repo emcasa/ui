@@ -12,7 +12,6 @@ import DropdownOption from './Option'
  */
 const Dropdown = DropdownGroup({DropdownButton, DropdownContainer})(
   styled.div`
-    z-index: ${({zIndex = 0, focused}) => zIndex + (focused ? 1 : 0)};
     position: relative;
     flex: 1;
     display: flex;
