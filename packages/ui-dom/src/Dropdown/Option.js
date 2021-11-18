@@ -10,6 +10,7 @@ const Button = styled.li`
   padding: 0 ${themeGet('space.4')}px;
   box-sizing: border-box;
   overflow: hidden;
+  font-family: ${themeGet('fontFamily')};
   font-size: ${themeGet('buttonFontSize.0')}px;
   color: ${themeGet('colors.grey900')};
   line-height: 20px;
