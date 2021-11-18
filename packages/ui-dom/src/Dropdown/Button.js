@@ -99,7 +99,9 @@ const DropdownButton = ({
       {searchInputProps ? (
         <Button as="input" placeholder={placeholder} {...buttonProps} />
       ) : (
-        <Button {...buttonProps}>{children}</Button>
+        <Button type="button" {...buttonProps}>
+          {children}
+        </Button>
       )}
       <ButtonIcon
         focused={focused}
