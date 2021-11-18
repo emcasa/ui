@@ -12,90 +12,117 @@ import Icon from '@emcasa/ui-dom/components/Icon'
 import ItunesSearch from './ItunesSearch'
 
 # Dropdown
+Single-select collapsible listbox that expands when activated, similar to HTML select.
+The Dropdown displays a list of actions or options to a user.
 
-Dropdown component.
 
-## Basic usage
+<View mb="60px"></View>
 
+---
+
+<View mt="60px"></View>
+
+## Usage
+### Basic usage
+```JS
+import Dropdown from '@emcasa/ui-dom/components/Dropdown'
+
+<Dropdown onChange={FUNCTION}>
+  <Dropdown.Option value="VALUE">LABEL</Dropdown.Option>
+  ...
+</Dropdown>
+```
 <Dropdown onChange={(value) => console.log('selected', value)}>
+  <Dropdown.Option value="a">Label for Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Label for option B</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
+  <Dropdown.Option value="d">Label for option D</Dropdown.Option>
+  <Dropdown.Option value="e">Label for option E</Dropdown.Option>
+  <Dropdown.Option value="f">Label for option F</Dropdown.Option>
+</Dropdown>
+
+<View my="60px"></View>
+
+### Dropdown with placeholder
+```JS
+<Dropdown placeholder="Placeholder"></Dropdown>
+```
+<Dropdown placeholder="Placeholder">
+  <Dropdown.Option value="a">Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Option B</Dropdown.Option>
+  <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
+  <Dropdown.Option value="d">Option D</Dropdown.Option>
+  <Dropdown.Option value="e">Option E</Dropdown.Option>
+  <Dropdown.Option value="f">Option F</Dropdown.Option>
+</Dropdown>
+
+<View my="40px"></View>
+
+### Dropdown with fixed label
+```JS
+<Dropdown label="Fixed label"></Dropdown>
+```
+<Dropdown label="Fixed label">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
   <Dropdown.Option value="c">Option C</Dropdown.Option>
 </Dropdown>
 
-## Placeholder and labels
+<View my="40px"></View>
 
-<View mb="10px">
-  <Text>Dropdown with placeholder</Text>
-  <Dropdown placeholder="Placeholder">
-    <Dropdown.Option value="a">Option A</Dropdown.Option>
-    <Dropdown.Option value="b">Option B</Dropdown.Option>
-    <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
-  </Dropdown>
-</View>
-<View mb="10px">
-  <Text>Dropdown with fixed label</Text>
-  <Dropdown label="Fixed label">
-    <Dropdown.Option value="a">Option A</Dropdown.Option>
-    <Dropdown.Option value="b">Option B</Dropdown.Option>
-    <Dropdown.Option value="c">Option C</Dropdown.Option>
-  </Dropdown>
-</View>
-
-## Icons
-
-You can use the `icon` and `iconProps` props on the `Dropdown` component to style the button icon.
-
-<Dropdown icon="heart" iconProps={{color: 'red'}} placeholder="What's your favorite animal?">
-  <Dropdown.Option value="cat" label="Cat">
-    <Icon name="cat" color="dark" mr="15px" />
-    <Text inline>Cat</Text>
-  </Dropdown.Option>
-  <Dropdown.Option value="dog" label="Dog">
-    <Icon name="dog" color="dark" mr="15px" />
-    <Text inline>Dog</Text>
-  </Dropdown.Option>
-  <Dropdown.Option value="kiwi" label="Kiwi">
-    <Icon name="kiwi-bird" color="dark" mr="15px" />
-    <Text inline>Kiwi</Text>
-  </Dropdown.Option>
-  <Dropdown.Option value="dragon" label="Dragon">
-    <Icon name="dragon" color="dark" mr="15px" />
-    <Text inline>Dragon</Text>
-  </Dropdown.Option>
+### error
+```JS
+<Dropdown error></Dropdown>
+```
+<Dropdown error>
+  <Dropdown.Option value="a">Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Option B</Dropdown.Option>
+  <Dropdown.Option value="c">Option C</Dropdown.Option>
 </Dropdown>
 
-Use `flexDirection` to position the dropdown icon and `textAlign` to position the dropdown text.
+<View my="40px"></View>
 
-<View mb="10px">
-  <Dropdown flexDirection="row-reverse" placeholder="Select an option">
-    <Dropdown.Option value="a">Option A</Dropdown.Option>
-    <Dropdown.Option value="b">Option B</Dropdown.Option>
-    <Dropdown.Option value="c">Option C</Dropdown.Option>
-  </Dropdown>
-</View>
-<View mb="10px">
-  <Dropdown flexDirection="row-reverse" textAlign="right" placeholder="Select an option">
-    <Dropdown.Option value="a">Option A</Dropdown.Option>
-    <Dropdown.Option value="b">Option B</Dropdown.Option>
-    <Dropdown.Option value="c">Option C</Dropdown.Option>
-  </Dropdown>
-</View>
+### Height "short"
+```JS
+<Dropdown height="short"></Dropdown>
+```
+<Dropdown height="short" placeholder="Placeholder">
+  <Dropdown.Option value="a">Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Option B</Dropdown.Option>
+  <Dropdown.Option value="c">Option C</Dropdown.Option>
+  <Dropdown.Option value="d">Option D</Dropdown.Option>
+  <Dropdown.Option value="e">Option E</Dropdown.Option>
+  <Dropdown.Option value="f">Option F</Dropdown.Option>
+</Dropdown>
 
-## Advanced usage
+<View my="40px"></View>
 
+### Height "tall"
+```JS
+<Dropdown height="tall"></Dropdown>
+```
+<Dropdown height="tall" placeholder="Placeholder">
+  <Dropdown.Option value="a">Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Option B</Dropdown.Option>
+  <Dropdown.Option value="c">Option C</Dropdown.Option>
+  <Dropdown.Option value="d">Option D</Dropdown.Option>
+  <Dropdown.Option value="e">Option E</Dropdown.Option>
+  <Dropdown.Option value="f">Option F</Dropdown.Option>
+</Dropdown>
+
+<View my="40px"></View>
+
+
+### Advanced usage
 <ItunesSearch>
   {({search, results, onChange}) => (
     <Dropdown
-      icon="search"
-      height="tall"
-      containerProps={{maxHeight: "150px"}}
-      label={(
-        <ItunesSearch.Input
-          value={search}
-          onChange={(e) => onChange(e.target.value)} />
-      )}>
-      {results.length ? (
+      placeholder="Input text placeholder"
+      inputProps={{
+        value: search,
+        onChange: (e) => onChange(e.target.value)
+      }}>
+      {results && results.length ? (
         results.map(({collectionId, artworkUrl60, artistName, collectionName}) => (
           <Dropdown.Option key={collectionId} value={collectionId}>
             <View mr="15px">
@@ -105,11 +132,11 @@ Use `flexDirection` to position the dropdown icon and `textAlign` to position th
           </Dropdown.Option>
         ))
       ) : search.length ? (
-        <View mr="15px" ml="15px">
+        <View px="4">
           <Text>No results for "{search}"</Text>
         </View>
       ) : (
-        <View mr="15px" ml="15px">
+        <View px="4">
           <Text>Start typing to search albums</Text>
         </View>
       )}
@@ -117,3 +144,74 @@ Use `flexDirection` to position the dropdown icon and `textAlign` to position th
   )}
 </ItunesSearch>
 
+#### Input text
+```JS
+  <Dropdown
+    inputProps={{
+      value: search,
+      onChange: (e) => onChange(e.target.value)
+    }}
+  ></Dropdown>
+```
+##### Old methods
+
+> Note: It still suport passing a input element tag in *label* props, but it just take its props.
+
+```JS
+  <Dropdown
+    label={{
+      props: {
+        value: search,
+        onChange: (e) => onChange(e.target.value)
+      }
+    }}></Dropdown>
+```
+
+or
+
+```JS
+  <Dropdown
+    label={(
+      <ItunesSearch.Input
+        value={search}
+        onChange={(e) => onChange(e.target.value)} />
+    )}
+  ></Dropdown>
+```
+<View mb="60px"></View>
+
+---
+
+<View mt="60px"></View>
+
+## HTML Source Code
+
+It follows the W3C Listbox patterns
+- [W3 Collapsible Dropdown Listbox](https://www.w3.org/TR/wai-aria-practices-1.1//#Listbox)
+- [MDN ARIA: listbox role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role)
+
+```HTML
+<div>
+  <div>
+    <[button | input] id="btn" aria-labelledby="btn" aria-haspopup="listbox" aria-controls="droplist" aria-expanded="true | null">
+      Option B
+    </[button | input]>
+    <div>
+      <svg />
+    </div>
+  </div>
+  <ul id="droplist" tabindex="-1" role="listbox">
+    <li role="option" aria-selected="false">
+      Option A
+    </li>
+    <li role="option" aria-selected="true">
+      Option B
+    </li>
+    <li role="option" aria-selected="false">
+      Option C
+    </li>
+  </ul>
+</div>
+```
+
+> 💡 Pretty nice to have: [keyboard interaction and multiple selection](https://www.w3.org/TR/wai-aria-practices-1.1//#listbox_kbd_interaction)
