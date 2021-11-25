@@ -1,16 +1,14 @@
 import React from 'react'
-import styled from 'styled-components'
-import {themeGet} from '@styled-system/theme-get'
 import PulseLoader from 'react-spinners/PulseLoader'
 import Row from '@emcasa/ui-dom/components/Row'
+import colors from '@emcasa/ui/src/theme/colors'
 
-export default styled(function Spinner(props) {
+const Spinner = () => {
   return (
     <Row alignItems="center" justifyContent="center" p={3}>
-      <PulseLoader {...props} />
+      <PulseLoader size={6} color={colors.grey300} />
     </Row>
   )
-}).attrs({
-  size: 6,
-  color: themeGet('colors.pink')
-})``
+}
+
+export default Spinner

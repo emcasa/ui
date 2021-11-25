@@ -191,21 +191,14 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     return (
       <Dropdown
         focused={focused}
-        label={
-          <Row mr="-10px" flex={1} justifyContent="center" alignItems="center">
-            <Col flex={1}>
-              <Input
-                ref={this.props.inputRef}
-                autoComplete="new-password"
-                value={value}
-                onChange={this.changeText}
-                {...pick(props, inputProps)}
-                {...props.inputProps}
-              />
-            </Col>
-            {renderControls && renderControls(this.state)}
-          </Row>
-        }
+        inputProps={{
+          ref: this.props.inputRef,
+          autoComplete: "new-password",
+          value: value,
+          onChange: this.changeText,
+          ...pick(props, inputProps),
+          ...props.inputProps
+        }}
         onFocus={this.focus}
         onBlur={this.blur}
         onChange={this.selectPlace}
