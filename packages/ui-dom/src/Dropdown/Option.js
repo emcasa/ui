@@ -1,7 +1,8 @@
 import React from 'react'
-import styled, {css} from 'styled-components'
+import styled from 'styled-components'
 import {themeGet} from '@styled-system/theme-get'
 import {option} from '@emcasa/ui/lib/components/Dropdown'
+import Icon from '../Icon'
 
 const Button = styled.li`
   display: flex;
@@ -12,24 +13,27 @@ const Button = styled.li`
   overflow: hidden;
   font-family: ${themeGet('fontFamily')};
   font-size: ${themeGet('buttonFontSize.0')}px;
-  color: ${themeGet('colors.grey900')};
   line-height: 20px;
   text-align: left;
+  color: ${themeGet('colors.grey900')};
   background-color: ${themeGet('colors.white')};
   outline: none;
   cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
   &:hover,
   &:focus {
     background-color: ${themeGet('colors.grey100')};
   }
 `
+const RADIO_WIDTH = 22
 
 const Radio = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 22px;
-  height: 22px;
+  flex: 0 0 ${RADIO_WIDTH}px;
+  height: ${RADIO_WIDTH}px;
   margin-right: ${themeGet('space.3')}px;
   border: 1px solid ${themeGet('colors.grey900')};
   border-radius: 100%;
@@ -41,25 +45,26 @@ const Radio = styled.span`
     background-color: ${themeGet('colors.grey900')};
     transition: transform 0.45s cubic-bezier(0.4, 0.2, 0, 1);
     border-radius: 100%;
-    ${({selected}) =>
-      selected
-        ? css`
-            transform: scale(1);
-          `
-        : css`
-            transform: scale(0);
-          `}
+    transform: scale(${({selected}) => (selected ? '1' : '0')});
   }
 `
 
-const DropdownOption = ({children, selected, onSelect}) => (
+const LeadingIcon = styled(Icon).attrs({
+  width: RADIO_WIDTH,
+  height: '100%'
+})`
+  flex: 0 0 ${RADIO_WIDTH}px;
+  margin-right: ${themeGet('space.3')}px;
+`
+
+const DropdownOption = ({children, selected, onSelect, iconProps}) => (
   <Button
     role="option"
     aria-selected={selected}
     tabIndex={0}
     onMouseDown={onSelect}
   >
-    <Radio selected={selected} />
+    {iconProps ? <LeadingIcon {...iconProps} /> : <Radio selected={selected} />}
     {children}
   </Button>
 )
