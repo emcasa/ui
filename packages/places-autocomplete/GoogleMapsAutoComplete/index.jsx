@@ -5,28 +5,18 @@ import pick from 'lodash/pick'
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Dropdown from '@emcasa/ui-dom/components/Dropdown'
-import View from '@emcasa/ui-dom/components/View'
-import Row from '@emcasa/ui-dom/components/Row'
-import Col from '@emcasa/ui-dom/components/Col'
-import Text from '@emcasa/ui-dom/components/Text'
 import Spinner from './Spinner'
-import Input from './Input'
+import Message from './Message'
 import {placesAutoCompleteSessionToken} from '@google/maps/lib/util'
 
 const ABORT_CONTROLLER_SUPPORT = process.browser && 'AbortController' in window
 
-const spaceProps = ['p', 'pr', 'pl', 'pb', 'pt', 'm', 'mr', 'ml', 'mb', 'mt']
 const dropdownProps = [
-  'style',
-  'className',
-  'width',
   'height',
-  'icon',
-  'iconProps',
-  'containerProps',
-  ...spaceProps
+  'hideTrailingIcon',
+  'leadingIconProps'
 ]
-const inputProps = ['height', 'color', 'fonSize', 'placeholder']
+const inputProps = ['height', 'placeholder']
 
 export default class GoogleMapsAutoComplete extends PureComponent {
   static API_ENDPOINT = 'autocomplete'
@@ -36,12 +26,8 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     apiUrl: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
     /** Fetch options */
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
-    /** Dropdown height */
-    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    /** Dropdown icon name */
-    icon: PropTypes.string,
-    /** Dropdown Icon component props */
-    iconProps: PropTypes.object,
+    /** Dropdown height - BUTTON_HEIGHT from packages/ui/src/theme/measures.js */
+    height: PropTypes.string,
     /** Dropdown container props */
     containerProps: PropTypes.object,
     /** Input component props */
@@ -72,18 +58,25 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     apiUrl: '/maps',
     options: {mode: 'same-origin'},
     height: 'medium',
-    icon: 'map-marker-alt',
+    hideTrailingIcon: true,
+    leadingIconProps: {
+      name: 'map-marker-alt',
+      color: 'grey300'
+    },
     inputProps: {},
     renderLoading: () => <Spinner />,
     renderEmpty: ({value}) => (
-      <Text inline>
+      <Message>
         {value
           ? 'Endereço não encontrado. Tente outros termos.'
           : 'Digite um endereço para buscar.'}
-      </Text>
+      </Message>
     ),
     renderPrediction: ({description, place_id}) => (
-      <Dropdown.Option key={place_id} value={place_id}>
+      <Dropdown.Option key={place_id} value={place_id} iconProps={{
+        name: 'map-marker',
+        color: 'grey300'
+      }}>
         {description}
       </Dropdown.Option>
     ),
@@ -204,19 +197,16 @@ export default class GoogleMapsAutoComplete extends PureComponent {
         onChange={this.selectPlace}
         {...pick(props, dropdownProps)}
       >
-        {error && (
-          <View m="5px 15px 10px">
-            <Text inline color="red" fontSize="small" textAlign="center">
-              {error.message}
-            </Text>
-          </View>
-        )}
-        {loading && !predictions.length ? (
+        {error ? (
+          <Message error>
+            {error.message}
+          </Message>
+        ) : loading && !predictions.length ? (
           renderLoading(this.state)
-        ) : !predictions.length ? (
-          <View m="10px 15px">{renderEmpty(this.state)}</View>
-        ) : (
+        ) : predictions && predictions.length ? (
           predictions.map(renderPrediction)
+        ) : (
+          renderEmpty(this.state)
         )}
       </Dropdown>
     )
