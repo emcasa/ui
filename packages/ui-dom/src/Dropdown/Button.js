@@ -1,9 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {themeGet} from '@styled-system/theme-get'
 import Icon from '../Icon'
 
-const ICON_WIDTH = '40px'
+const ICON_WIDTH = 40
+const BUTTON_PADDING_X = 36
 
 const Wrapper = styled.div`
   position: relative;
@@ -26,6 +27,7 @@ const Wrapper = styled.div`
   border-radius: 8px;
   background-color: ${themeGet('colors.white')};
   user-select: none;
+  touch-action: manipulation;
 `
 
 const Button = styled.button`
@@ -33,29 +35,45 @@ const Button = styled.button`
   height: 100%;
   background-color: ${themeGet('colors.white')};
   border: none;
-  padding: 0 ${ICON_WIDTH} 0 ${themeGet('space.3')}px;
+  padding: 0
+    ${({hideTrailingIcon}) =>
+      hideTrailingIcon ? themeGet('space.3') : BUTTON_PADDING_X}px
+    0
+    ${({leadingIconProps}) => leadingIconProps ? BUTTON_PADDING_X : themeGet('space.3')}px;
+  box-sizing: border-box;
   font-size: inherit;
   text-align: left;
+  color: ${({showPlaceholder}) =>
+    showPlaceholder ? themeGet('colors.grey500') : themeGet('colors.grey900')};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: ${({showPlaceholder}) =>
-    showPlaceholder ? themeGet('colors.grey500') : themeGet('colors.grey900')};
 
   &:focus {
     outline: none;
   }
 `
 
-const ButtonIcon = styled(Icon)`
+const iconStyle = css`
   position: absolute;
-  right: 0;
   top: 0;
   pointer-events: none;
-  display: flex;
   justify-content: center;
-  width: ${ICON_WIDTH};
-  height: 100%;
+`
+
+const iconAttrs = {
+  width: ICON_WIDTH,
+  height: '100%'
+}
+
+const LeadingIcon = styled(Icon).attrs(iconAttrs)`
+  ${iconStyle}
+  left: 0;
+`
+
+const TrailingIcon = styled(Icon).attrs(iconAttrs)`
+  ${iconStyle}
+  right: 0;
   transition: transform 0.5s cubic-bezier(0.4, 0.2, 0, 1);
   transform: rotateX(${({focused}) => (focused ? '180deg' : null)});
 `
@@ -70,6 +88,8 @@ const DropdownButton = ({
   placeholder,
   inputProps,
   error,
+  leadingIconProps,
+  hideTrailingIcon,
   ...props
 }) => {
   const searchInputProps = inputProps || (props.label && props.label.props)
@@ -78,6 +98,8 @@ const DropdownButton = ({
     id: `${dropdownId}btn`,
     height: height,
     showPlaceholder: placeholder && placeholder === children,
+    leadingIconProps,
+    hideTrailingIcon,
     role: 'combobox',
     'aria-controls': `${dropdownId}list`,
     'aria-haspopup': 'listbox',
@@ -96,6 +118,12 @@ const DropdownButton = ({
 
   return (
     <Wrapper height={height} error={error}>
+      {leadingIconProps && (
+        <LeadingIcon
+          size={height === 'short' ? 12 : 16}
+          {...leadingIconProps}
+        />
+      )}
       {searchInputProps ? (
         <Button as="input" placeholder={placeholder} {...buttonProps} />
       ) : (
@@ -103,12 +131,14 @@ const DropdownButton = ({
           {children}
         </Button>
       )}
-      <ButtonIcon
-        focused={focused}
-        name="chevron-down"
-        color="dark"
-        size={height === 'short' ? 12 : 16}
-      />
+      {!hideTrailingIcon && (
+        <TrailingIcon
+          focused={focused}
+          name="chevron-down"
+          color="dark"
+          size={height === 'short' ? 12 : 16}
+        />
+      )}
     </Wrapper>
   )
 }

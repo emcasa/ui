@@ -14,13 +14,14 @@ const Listbox = styled.ul`
   top: calc(100% + ${themeGet('space.1')}px);
   width: 100%;
   overflow-y: auto;
-  max-height: ${MAX_HEIGHT}px;
+  max-height: ${({focused}) => (focused ? MAX_HEIGHT : '0')}px;
   pointer-events: ${({focused}) => (focused ? 'initial' : 'none')};
   opacity: ${({focused}) => (focused ? '1' : '0')};
   transform: ${({focused}) =>
     focused ? 'translateY(0)' : 'translateY(-12px)'};
   transition: opacity ${({focused}) => (focused ? '0.2s' : '0.15s')} linear,
-    transform 0.5s cubic-bezier(0.4, 0.2, 0, 1);
+    transform 0.5s cubic-bezier(0.4, 0.2, 0, 1),
+    max-height ${({focused}) => (focused ? '0s' : '0.5s cubic-bezier(0.4, 0.2, 0, 1)')};
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

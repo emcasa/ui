@@ -50,7 +50,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown placeholder="Placeholder">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c" label="Label for option C">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
   <Dropdown.Option value="d">Option D</Dropdown.Option>
   <Dropdown.Option value="e">Option E</Dropdown.Option>
   <Dropdown.Option value="f">Option F</Dropdown.Option>
@@ -65,7 +65,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown label="Fixed label">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
 </Dropdown>
 
 <View my="40px"></View>
@@ -77,7 +77,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown error>
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
 </Dropdown>
 
 <View my="40px"></View>
@@ -89,7 +89,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown height="short" placeholder="Placeholder">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
   <Dropdown.Option value="d">Option D</Dropdown.Option>
   <Dropdown.Option value="e">Option E</Dropdown.Option>
   <Dropdown.Option value="f">Option F</Dropdown.Option>
@@ -104,7 +104,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 <Dropdown height="tall" placeholder="Placeholder">
   <Dropdown.Option value="a">Option A</Dropdown.Option>
   <Dropdown.Option value="b">Option B</Dropdown.Option>
-  <Dropdown.Option value="c">Option C</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
   <Dropdown.Option value="d">Option D</Dropdown.Option>
   <Dropdown.Option value="e">Option E</Dropdown.Option>
   <Dropdown.Option value="f">Option F</Dropdown.Option>
@@ -112,11 +112,63 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
 
 <View my="40px"></View>
 
+### hideTrailingIcon
+```JS
+<Dropdown hideTrailingIcon></Dropdown>
+```
+<Dropdown hideTrailingIcon placeholder="Placeholder" onChange={(value) => console.log('selected', value)}>
+  <Dropdown.Option value="a">Label for Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Label for option B</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
+  <Dropdown.Option value="d">Label for option D</Dropdown.Option>
+  <Dropdown.Option value="e">Label for option E</Dropdown.Option>
+  <Dropdown.Option value="f">Label for option F</Dropdown.Option>
+</Dropdown>
 
-### Advanced usage
+<View my="40px"></View>
+
+### leadingIconProps
+```JS
+<Dropdown leadingIconProps={{name: 'feather', color: 'pink300'}}></Dropdown>
+```
+<Dropdown leadingIconProps={{name: 'feather', color: 'pink300'}} onChange={(value) => console.log('selected', value)}>
+  <Dropdown.Option value="a">Label for Option A</Dropdown.Option>
+  <Dropdown.Option value="b">Label for option B</Dropdown.Option>
+  <Dropdown.Option value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
+  <Dropdown.Option value="d">Label for option D</Dropdown.Option>
+  <Dropdown.Option value="e">Label for option E</Dropdown.Option>
+  <Dropdown.Option value="f">Label for option F</Dropdown.Option>
+</Dropdown>
+
+<View my="40px"></View>
+
+### Option iconProps
+```JS
+<Dropdown>
+  <Dropdown.Option iconProps={{name: 'feather', color: 'pink300'}} value="a">Label for Option A</Dropdown.Option>
+</Dropdown>
+```
+<Dropdown leadingIconProps={{name: 'map', color: 'pink300'}} onChange={(value) => console.log('selected', value)}>
+  <Dropdown.Option iconProps={{name: 'cat', color: 'pink500'}} value="a">Label for Option A</Dropdown.Option>
+  <Dropdown.Option iconProps={{name: 'feather', color: 'pink300'}} value="b">Label for option B</Dropdown.Option>
+  <Dropdown.Option iconProps={{name: 'cat', color: 'pink500'}} value="c">Trying to generate a truncate value with ellipsis for option C</Dropdown.Option>
+  <Dropdown.Option iconProps={{name: 'feather', color: 'pink300'}} value="d">Label for option D</Dropdown.Option>
+  <Dropdown.Option iconProps={{name: 'cat', color: 'pink500'}} value="e">Label for option E</Dropdown.Option>
+  <Dropdown.Option iconProps={{name: 'feather', color: 'pink300'}} value="f">Label for option F</Dropdown.Option>
+</Dropdown>
+
+<View my="40px"></View>
+
+### Search usage
+Using Apple itunes search
+```JS
+`https://itunes.apple.com/search?limit=10&entity=album&term=${encodeURIComponent(search)}`
+```
+
 <ItunesSearch>
   {({search, results, onChange}) => (
     <Dropdown
+      leadingIconProps={{name: 'music', color: 'pink300'}}
       placeholder="Input text placeholder"
       inputProps={{
         value: search,
@@ -124,7 +176,7 @@ import Dropdown from '@emcasa/ui-dom/components/Dropdown'
       }}>
       {results && results.length ? (
         results.map(({collectionId, artworkUrl60, artistName, collectionName}) => (
-          <Dropdown.Option key={collectionId} value={collectionId}>
+          <Dropdown.Option key={collectionId} value={collectionId} iconProps={{name: 'music', color: 'pink300'}}>
             <View mr="15px">
               <img src={artworkUrl60} height="30px" width="30px" />
             </View>
