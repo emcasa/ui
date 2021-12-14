@@ -20,9 +20,25 @@ In order to deploy the documentation website, simply merge your branch to master
 
 ## Npm deploy
 
+### 1. Install lerna globally
+
+If you haven't already:
+
 `npm install lerna`
 
-To deploy a new version of the library to npm run `lerna version`.
-This bumps the version in each package and pushes it to the repository with a new tag.
+### 2. Bump the version
 
-After that a new version in npm will be published.
+`lerna version [patch/minor/major] --force-publish`
+
+Picking a version:
+- **patch** — new props, visual fixes
+- **minor** — non breaking changes, like changing existing props, changes to global default configs, new components
+- **major** — breaking changes
+
+### 3. Publish on npm:
+
+Configure your npm token if you haven't done so already:
+
+`echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc`
+
+Check out into the new version's tag using `git checkout v[your-new-version]` and run `npm run release`.
