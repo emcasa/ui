@@ -169,7 +169,6 @@ Using Apple itunes search
   {({search, results, onChange}) => (
     <Dropdown
       leadingIconProps={{name: 'music', color: 'pink300'}}
-      placeholder="Input text placeholder"
       inputProps={{
         value: search,
         onChange: (e) => onChange(e.target.value)
@@ -184,13 +183,13 @@ Using Apple itunes search
           </Dropdown.Option>
         ))
       ) : search.length ? (
-        <View px="4">
-          <Text>No results for "{search}"</Text>
-        </View>
+        <Dropdown.Message iconProps={{name: 'frown', color: 'grey300'}}>No results for "{search}"</Dropdown.Message>
       ) : (
-        <View px="4">
-          <Text>Start typing to search albums</Text>
-        </View>
+        <>
+          <Dropdown.Message>Start typing to search albums</Dropdown.Message>
+          <Dropdown.Message error iconProps={{name: 'exclamation', color: 'red500'}}>An error happen here! Since this is an HTML5 error page template, you can edit it as per your requirements.</Dropdown.Message>
+          <Dropdown.Message success iconProps={{name: 'check', color: 'green500'}}>Great! Since this is an HTML5 error page template, you can edit it as per your requirements. Start typing to search albums</Dropdown.Message>
+        </>
       )}
     </Dropdown>
   )}
@@ -230,6 +229,44 @@ or
     )}
   ></Dropdown>
 ```
+#### Message
+```JS
+  <Dropdown>
+    <Dropdown.Message>Mesasge</Dropdown.Message>
+    <Dropdown.Message error>Error</Dropdown.Message>
+    <Dropdown.Message success iconProps={{name: 'check', color: 'green500'}}>Success</Dropdown.Message>
+  </Dropdown>
+```
+<ItunesSearch>
+  {({search, results, onChange}) => (
+    <Dropdown
+      leadingIconProps={{name: 'music', color: 'pink300'}}
+      inputProps={{
+        value: search,
+        onChange: (e) => onChange(e.target.value)
+      }}>
+      {results && results.length ? (
+        results.map(({collectionId, artworkUrl60, artistName, collectionName}) => (
+          <Dropdown.Option key={collectionId} value={collectionId} iconProps={{name: 'music', color: 'pink300'}}>
+            <View mr="15px">
+              <img src={artworkUrl60} height="30px" width="30px" />
+            </View>
+            {artistName} - {collectionName}
+          </Dropdown.Option>
+        ))
+      ) : search.length ? (
+        <Dropdown.Message iconProps={{name: 'frown', color: 'grey300'}}>No results for "{search}"</Dropdown.Message>
+      ) : (
+        <>
+          <Dropdown.Message>Start typing to search albums</Dropdown.Message>
+          <Dropdown.Message error iconProps={{name: 'exclamation', color: 'red500'}}>An error happen here! Since this is an HTML5 error page template, you can edit it as per your requirements.</Dropdown.Message>
+          <Dropdown.Message success iconProps={{name: 'check', color: 'green500'}}>Great! Since this is an HTML5 error page template, you can edit it as per your requirements. Start typing to search albums</Dropdown.Message>
+        </>
+      )}
+    </Dropdown>
+  )}
+</ItunesSearch>
+
 <View mb="60px"></View>
 
 ---
@@ -245,7 +282,15 @@ It follows the W3C Listbox patterns
 ```HTML
 <div>
   <div>
-    <[button | input] id="btn" aria-labelledby="btn" aria-haspopup="listbox" aria-controls="droplist" aria-expanded="true | null">
+    <[button | input]
+      id="btn"
+      role="input ? combobox : null"
+      aria-labelledby="btn"
+      aria-haspopup="listbox"
+      aria-controls="droplist"
+      aria-owns="droplist"
+      aria-expanded="true | false"
+    >
       Option B
     </[button | input]>
     <div>
