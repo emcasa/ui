@@ -80,13 +80,14 @@ export default class DropdownContainer extends PureComponent {
 
   render() {
     const {children, dropdownId, focused} = this.props
+
     return (
       <Listbox
         id={`${dropdownId}list`}
         focused={focused}
         tabIndex="-1"
         role="listbox"
-        aria-labelledby="exp_elem"
+        title="Lista"
       >
         {children}
       </Listbox>
