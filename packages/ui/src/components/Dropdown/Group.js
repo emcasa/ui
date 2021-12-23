@@ -15,8 +15,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         blurOnChange: true,
         height: 'medium',
         containerProps: {},
-        buttonProps: {},
-        dropdownId: uniqueId('ecDropdown')
+        buttonProps: {}
       }
 
       state = {
@@ -39,7 +38,7 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       get _buttonProps() {
-        const {buttonProps, dropdownId, ...props} = this.props
+        const {buttonProps, ...props} = this.props
         const {focused} = this.state
         delete props.renderButton
         delete props.renderItem
@@ -50,7 +49,6 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
         return {
           ...props,
           ...buttonProps,
-          dropdownId: dropdownId,
           focused,
           isPlaceholder: Boolean(!props.label && !props.selectedValue),
           onFocusChange: focused ? this.onBlur : this.onFocus,
@@ -59,12 +57,11 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
       }
 
       get _containerProps() {
-        const {width, containerProps, dropdownId} = this.props
+        const {width, containerProps} = this.props
         const {focused, target, layout} = this.state
         return {
           width,
           ...containerProps,
-          dropdownId: dropdownId,
           focused,
           target,
           layout,
@@ -87,16 +84,19 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
           }
         })
 
-      renderButton() {
+      renderButton(dropdownId) {
         const {renderButton} = this.props
         if (renderButton) return renderButton(this._buttonProps)
         return (
-          <DropdownButton {...this._buttonProps}>{this.label}</DropdownButton>
+          <DropdownButton dropdownId={dropdownId} {...this._buttonProps}>
+            {this.label}
+          </DropdownButton>
         )
       }
 
       render() {
         const {children, zIndex, width, style, className} = this.props
+        const dropdownId = uniqueId('ecDropdown')
         return (
           <Target
             zIndex={zIndex}
@@ -106,8 +106,11 @@ export default ({DropdownButton, DropdownContainer}) => (Target) =>
             ref={(target) => this.setState({target})}
             focused={this.state.focused}
           >
-            {this.renderButton()}
-            <DropdownContainer {...this._containerProps}>
+            {this.renderButton(dropdownId)}
+            <DropdownContainer
+              dropdownId={dropdownId}
+              {...this._containerProps}
+            >
               {React.Children.map(children, this.renderItem)}
             </DropdownContainer>
           </Target>
