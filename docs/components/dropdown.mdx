@@ -258,9 +258,10 @@ or
         <Dropdown.Message iconProps={{name: 'frown', color: 'grey300'}}>No results for "{search}"</Dropdown.Message>
       ) : (
         <>
-          <Dropdown.Message>Start typing to search albums</Dropdown.Message>
-          <Dropdown.Message error iconProps={{name: 'exclamation', color: 'red500'}}>An error happen here! Since this is an HTML5 error page template, you can edit it as per your requirements.</Dropdown.Message>
-          <Dropdown.Message success iconProps={{name: 'check', color: 'green500'}}>Great! Since this is an HTML5 error page template, you can edit it as per your requirements. Start typing to search albums</Dropdown.Message>
+          <Dropdown.Message>A message goes here</Dropdown.Message>
+          <Dropdown.Message error>An error Message goes here.</Dropdown.Message>
+          <Dropdown.Message success>A success Message goes here.</Dropdown.Message>
+          <Dropdown.Message iconProps={{name: 'check', color: 'green500'}}>You can pass iconProps like with Dropdown.Option</Dropdown.Message>
         </>
       )}
     </Dropdown>
