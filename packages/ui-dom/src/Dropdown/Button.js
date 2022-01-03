@@ -75,7 +75,7 @@ const TrailingIcon = styled(Icon).attrs(iconAttrs)`
   ${iconStyle}
   right: 0;
   transition: transform 0.5s cubic-bezier(0.4, 0.2, 0, 1);
-  transform: rotateX(${({focused}) => (focused ? '180deg' : null)});
+  transform: ${({focused}) => focused && 'rotateX(180deg)'};
 `
 
 const DropdownButton = ({
@@ -100,11 +100,12 @@ const DropdownButton = ({
     showPlaceholder: placeholder && placeholder === children,
     leadingIconProps,
     hideTrailingIcon,
-    role: 'combobox',
+    role: searchInputProps ? 'combobox' : null,
     'aria-controls': `${dropdownId}list`,
+    'aria-owns': `${dropdownId}list`,
     'aria-haspopup': 'listbox',
-    'aria-labelledby': `${dropdownId}btn`,
-    'aria-expanded': focused ? 'true' : null,
+    'aria-expanded': focused ? 'true' : 'false',
+    'aria-label': placeholder || 'Ver lista',
     onMouseDown: () => setTimeout(onFocusChange, 0),
     onClick: onClick
   }

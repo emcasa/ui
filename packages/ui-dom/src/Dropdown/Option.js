@@ -1,10 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {themeGet} from '@styled-system/theme-get'
 import {option} from '@emcasa/ui/lib/components/Dropdown'
 import Icon from '../Icon'
 
-const Button = styled.li`
+export const optionStyles = css`
   display: flex;
   align-items: center;
   flex: 0 0 ${themeGet('buttonHeight.0')}px;
@@ -15,12 +15,16 @@ const Button = styled.li`
   font-size: ${themeGet('buttonFontSize.0')}px;
   line-height: 20px;
   text-align: left;
-  color: ${themeGet('colors.grey900')};
   background-color: ${themeGet('colors.white')};
+`
+
+const Button = styled.li`
+  ${optionStyles}
+  color: ${themeGet('colors.grey900')};
+  touch-action: manipulation;
+  user-select: none;
   outline: none;
   cursor: pointer;
-  user-select: none;
-  touch-action: manipulation;
   &:hover,
   &:focus {
     background-color: ${themeGet('colors.grey100')};
@@ -49,12 +53,16 @@ const Radio = styled.span`
   }
 `
 
-const LeadingIcon = styled(Icon).attrs({
+export const LeadingIcon = styled(Icon).attrs({
   width: RADIO_WIDTH,
   height: '100%'
 })`
   flex: 0 0 ${RADIO_WIDTH}px;
   margin-right: ${themeGet('space.3')}px;
+
+  svg {
+    width: 100%;
+  }
 `
 
 const DropdownOption = ({children, selected, onSelect, iconProps}) => (
