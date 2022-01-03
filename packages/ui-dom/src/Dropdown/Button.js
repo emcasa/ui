@@ -105,7 +105,7 @@ const DropdownButton = ({
     'aria-owns': `${dropdownId}list`,
     'aria-haspopup': 'listbox',
     'aria-expanded': focused ? 'true' : 'false',
-    title: searchInputProps ? placeholder || 'Ver lista' : null,
+    'aria-label': placeholder || 'Ver lista',
     onMouseDown: () => setTimeout(onFocusChange, 0),
     onClick: onClick
   }

@@ -87,7 +87,7 @@ export default class DropdownContainer extends PureComponent {
         focused={focused}
         tabIndex="-1"
         role="listbox"
-        title="Lista"
+        aria-label="Lista"
       >
         {children}
       </Listbox>
