@@ -1,6 +1,6 @@
 {
   "name": "@emcasa/login",
-  "version": "2.12.3",
+  "version": "2.12.4",
   "description": "EmCasa's login component",
   "license": "MIT",
   "main": "lib/index.js",
@@ -31,7 +31,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.3",
     "@emcasa/ui": "^2.12.3",
-    "@emcasa/ui-dom": "^2.12.3"
+    "@emcasa/ui-dom": "^2.12.4"
   },
   "devDependencies": {
     "@babel/cli": "7.8.3",
