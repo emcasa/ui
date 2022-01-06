@@ -74,7 +74,7 @@ export default class GoogleMapsAutoComplete extends PureComponent {
     ),
     renderPrediction: ({description, place_id}) => (
       <Dropdown.Option key={place_id} value={place_id} iconProps={{
-        name: 'map-marker',
+        name: 'map-marker-alt',
         color: 'grey300'
       }}>
         {description}
