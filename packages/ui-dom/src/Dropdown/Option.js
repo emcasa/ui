@@ -4,11 +4,13 @@ import {themeGet} from '@styled-system/theme-get'
 import {option} from '@emcasa/ui/lib/components/Dropdown'
 import Icon from '../Icon'
 
+const RADIO_WIDTH = 22
+
 export const optionStyles = css`
   display: flex;
   align-items: center;
   flex: 0 0 ${themeGet('buttonHeight.0')}px;
-  padding: 0 ${themeGet('space.4')}px;
+  padding: 0 ${themeGet('space.3')}px;
   box-sizing: border-box;
   overflow: hidden;
   font-family: ${themeGet('fontFamily')};
@@ -30,7 +32,6 @@ const Button = styled.li`
     background-color: ${themeGet('colors.grey100')};
   }
 `
-const RADIO_WIDTH = 22
 
 const Radio = styled.span`
   display: flex;

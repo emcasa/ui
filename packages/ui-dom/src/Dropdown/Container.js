@@ -11,7 +11,7 @@ const Listbox = styled.ul`
   z-index: 2;
   position: absolute;
   left: 0;
-  top: calc(100% + ${themeGet('space.1')}px);
+  top: calc(100% + ${themeGet('space.2')}px);
   width: 100%;
   overflow-y: auto;
   max-height: ${({focused}) => (focused ? MAX_HEIGHT : '0')}px;
