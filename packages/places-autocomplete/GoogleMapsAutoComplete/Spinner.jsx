@@ -1,7 +1,9 @@
 import React from 'react'
 import Row from '@emcasa/ui-dom/components/Row'
 
-export const SpinnerSVG = () => (
+// We should create a Spinner component. It's the same Spinner from packages/image-upload/UploadTarget/styles.jsx
+
+const SpinnerSVG = () => (
   <svg preserveAspectRatio="xMidYMid" height={18} viewBox="6 40 88 20">
     <circle cx="84" cy="50" r="10" fill="#c0c2cc">
       <animate
