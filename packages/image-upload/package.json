@@ -27,8 +27,7 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react-dnd": "^9.3.4",
-    "react-spinners": "^0.5.4"
+    "react-dnd": "^9.3.4"
   },
   "publishConfig": {
     "access": "public"

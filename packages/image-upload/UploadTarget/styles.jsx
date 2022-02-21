@@ -2,9 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import Text from '@emcasa/ui-dom/components/Text'
 import {breakpoint} from '@emcasa/ui/lib/styles'
-import PulseLoader from 'react-spinners/PulseLoader'
 import Card from '../Card'
-
+import {SpinnerSVG} from '../../places-autocomplete/GoogleMapsAutoComplete/Spinner'
 export const UploadCard = styled(Card)`
   ${({isActive}) =>
     isActive && {
@@ -25,14 +24,11 @@ export const UploadCard = styled(Card)`
   }
 `
 
-export const Spinner = styled(({className, style, ...props}) => (
+export const Spinner = styled(({className, style}) => (
   <div className={className} style={style}>
-    <PulseLoader {...props} />
+    <SpinnerSVG />
   </div>
-)).attrs(({theme}) => ({
-  size: 6,
-  color: theme.colors['pink']
-}))`
+))`
   display: flex;
   justify-content: center;
   align-items: center;
