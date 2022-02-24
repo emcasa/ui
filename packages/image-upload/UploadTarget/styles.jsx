@@ -6,7 +6,7 @@ import Card from '../Card'
 
 // We should create a Spinner component. It's the same Spinner from packages/places-autocomplete/GoogleMapsAutoComplete/Spinner.jsx
 
-const SpinnerSVG = () => (
+const LoaderDotsSVG = () => (
   <svg preserveAspectRatio="xMidYMid" height={18} viewBox="6 40 88 20">
     <circle cx="84" cy="50" r="10" fill="#c0c2cc">
       <animate
@@ -142,7 +142,7 @@ export const UploadCard = styled(Card)`
 
 export const Spinner = styled(({className, style}) => (
   <div className={className} style={style}>
-    <SpinnerSVG />
+    <LoaderDotsSVG />
   </div>
 ))`
   display: flex;

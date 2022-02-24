@@ -3,7 +3,7 @@ import Row from '@emcasa/ui-dom/components/Row'
 
 // We should create a Spinner component. It's the same Spinner from packages/image-upload/UploadTarget/styles.jsx
 
-const SpinnerSVG = () => (
+const LoaderDotsSVG = () => (
   <svg preserveAspectRatio="xMidYMid" height={18} viewBox="6 40 88 20">
     <circle cx="84" cy="50" r="10" fill="#c0c2cc">
       <animate
@@ -120,7 +120,7 @@ const SpinnerSVG = () => (
 const Spinner = () => {
   return (
     <Row alignItems="center" justifyContent="center" p={3}>
-      <SpinnerSVG />
+      <LoaderDotsSVG />
     </Row>
   )
 }
