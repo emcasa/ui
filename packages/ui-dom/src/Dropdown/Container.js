@@ -21,7 +21,8 @@ const Listbox = styled.ul`
     focused ? 'translateY(0)' : 'translateY(-12px)'};
   transition: opacity ${({focused}) => (focused ? '0.2s' : '0.15s')} linear,
     transform 0.5s cubic-bezier(0.4, 0.2, 0, 1),
-    max-height ${({focused}) => (focused ? '0s' : '0.5s cubic-bezier(0.4, 0.2, 0, 1)')};
+    max-height
+      ${({focused}) => (focused ? '0s' : '0.5s cubic-bezier(0.4, 0.2, 0, 1)')};
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

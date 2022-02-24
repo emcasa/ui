@@ -134,7 +134,7 @@ const DropdownButton = ({
       )}
       {!hideTrailingIcon && (
         <TrailingIcon
-          focused={focused}
+          focused={focused ? 1 : 0}
           name="chevron-down"
           color="dark"
           size={height === 'short' ? 12 : 16}
