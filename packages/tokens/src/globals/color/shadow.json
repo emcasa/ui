@@ -1,0 +1,9 @@
+{
+  "color": {
+    "shadow": {
+      "base" : {"value": "rgba(16, 27, 30, 0.15)"},
+      "to-top" : {"value": "rgba(33, 33, 38, 0.1)"},
+      "to-bottom" : {"value": "rgba(131, 145, 165, 0.2)"}
+    }
+  }
+}

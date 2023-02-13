@@ -1,0 +1,14 @@
+{
+  "color": {
+    "gradient": {
+      "pink": {
+        "start": {"value": "{color.base.pink.400}"},
+        "end": {"value": "{color.base.pink.500}"}
+      },
+      "purple": {
+        "start": {"value": "{color.base.purple.400}"},
+        "end": {"value": "{color.base.purple.500}"}
+      }
+    }
+  }
+}

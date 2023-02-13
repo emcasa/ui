@@ -1,0 +1,10 @@
+{
+  "color": {
+    "border": {
+      "base" : {"value": "{color.base.grey.300.value}"},
+      "success": {"value": "{color.base.green.800.value}"},
+      "error": {"value": "{color.base.red.800.value}"},
+      "warning": {"value": "{color.base.pink.800.value}"}
+    }
+  }
+}

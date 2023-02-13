@@ -1,0 +1,10 @@
+{
+  "color": {
+    "font": {
+      "base": { "value": "{color.base.grey.900.value}" },
+      "success": { "value": "{color.base.green.700.value}" },
+      "error": { "value": "{color.base.red.700.value}" },
+      "warning": { "value": "{color.base.yellow.700.value}" }
+    }
+  }
+}

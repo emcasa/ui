@@ -1,0 +1,8 @@
+{
+  "color": {
+    "brand": {
+      "primary"   : { "value": "#ccc" },
+      "secondary" : { "value": "#ddd" }
+    }
+  }
+}
