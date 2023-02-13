@@ -1,0 +1,9 @@
+{
+  "size": {
+    "icon": {
+      "small" : {"value": "12px"},
+      "default": {"value": "16px"},
+      "big" : {"value": "20px"}
+    }
+  }
+}

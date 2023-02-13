@@ -1,0 +1,11 @@
+{
+  "color": {
+    "action": {
+      "primary" : {"value": "{color.base.pink.500.value}"},
+      "secondary" : {"value": "{color.base.pink.300.value}"},
+      "success": {"value": "{color.base.green.500.value}"},
+      "error": {"value": "{color.base.red.500.value}"},
+      "warning": {"value": "{color.base.pink.500.value}"}
+    }
+  }
+}

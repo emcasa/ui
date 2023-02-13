@@ -1,0 +1,20 @@
+{
+  "border": {
+    "radius": {
+      "small": {"value": "4px"},
+      "default": {"value": "8px"},
+      "big": {"value": "16px"}
+    },
+    "weight": {
+      "default": {"value": "1px"}
+    },
+    "style": {
+      "default": {"value": "solid"}
+    },
+    "default": {
+      "shorthand": {
+        "value": "{border.weight.default} {border.style.default} {color.border.base}"
+      }
+    }
+  }
+}
